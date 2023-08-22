@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- DATA CLASS -->
+    <data class="BoxNotifBinding"/>
+
+    <!-- CLICKING AREA -->
+    <LinearLayout
+        android:id="@+id/box"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="@dimen/box_hmargin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="top|start"
+                android:paddingVertical="@dimen/bar_vpadding">
+                <TextView
+                    android:id="@+id/box_toptag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:text='9:00 AM'
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05"
+                    android:paddingVertical="2dp"/>
+                <TextView
+                    android:id="@+id/box_bottomtag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:text='notif'
+                    android:textColor="@color/grey"
+                    android:letterSpacing="0.05"
+                    android:paddingVertical="2dp"/>
+            </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:id="@+id/bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:foreground="@drawable/border_grey"
+                    android:orientation="vertical"
+                    android:layout_marginVertical="@dimen/bar_vmargin">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:id="@+id/triangle"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/shp_triangle"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginHorizontal="10dp"
+                            android:paddingVertical="@dimen/bar_vpadding">
+
+                            <TextView
+                                android:id="@+id/bar_title"
+                                android:layout_width="214dp"
+                                android:layout_height="wrap_content"
+                                android:text='title'
+                                android:theme="@style/BarTheme" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:id="@+id/bar_icon"
+                                    android:layout_height="@dimen/icon_height"
+                                    android:layout_width="@dimen/icon_height"
+                                    android:src="@drawable/ic_agendatype_calendar"
+                                    app:tint="@color/black"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="top" />
+                                <TextView
+                                    android:id="@+id/bar_description_text"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:theme="@style/BarContentTheme"
+                                    android:text='description'
+                                    android:layout_marginStart="7dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

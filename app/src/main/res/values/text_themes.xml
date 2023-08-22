@@ -1,0 +1,83 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="FragmentTitleTheme">
+        <item name="android:textSize">@dimen/fragment_title_textsize</item>
+        <item name="android:textColor">@color/theme</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="HomeTitleTheme">
+        <item name="android:textSize">@dimen/home_title_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+        <item name="android:paddingTop">@dimen/home_titles_spacing</item>
+        <item name="android:paddingBottom">@dimen/home_titles_smallspacing</item>
+    </style>
+    <style name="HomeSubtitleTheme">
+        <item name="android:textSize">@dimen/home_subtitle_textsize</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:paddingTop">@dimen/home_titles_smallspacing</item>
+        <item name="android:paddingBottom">@dimen/home_titles_spacing</item>
+    </style>
+
+    <!-- View element theme. -->
+    <style name="TitleTheme">
+        <item name="android:textSize">@dimen/title_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+    </style>
+    <style name="BoxTitleTheme">
+        <item name="android:textSize">@dimen/boxtitle_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+    <style name="BoxContentTheme">
+        <item name="android:textSize">@dimen/boxcontent_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+    </style>
+    <style name="BarTheme" parent="BoxTitleTheme">
+        <item name="android:paddingVertical" tools:ignore="NewApi">@dimen/bar_padding</item>
+    </style>
+    <style name="BarContentTheme">
+        <item name="android:textSize">@dimen/boxcontent_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+    </style>
+
+    <!-- EditText themes. -->
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/red_bg</item>
+        <item name="colorControlActivated">@color/blue_200</item>
+        <item name="android:textSize">@dimen/boxcontent_textsize</item>
+        <item name="android:textColor">@color/textcolour</item>
+
+        <item name="android:textColorHighlight">@color/blue_200_a</item>
+        <item name="android:textCursorDrawable">@drawable/edit_cursor</item>
+    </style>
+    <style name="EditTextTheme.EditableTheme" parent="EditTextTheme">
+        <item name="android:textColorHighlight">@color/blue_200_a</item>
+        <item name="android:textCursorDrawable">@drawable/edit_cursor</item>
+        <item name="colorControlActivated">@color/blue_200</item>
+    </style>
+    <style name="BarTheme.EditableTheme" parent="BarTheme">
+        <item name="android:textColorHighlight">@color/blue_200_a</item>
+        <item name="android:textCursorDrawable">@drawable/edit_cursor</item>
+        <item name="colorControlActivated">@color/blue_200</item>
+    </style>
+    <style name="BarContentTheme.EditableTheme" parent="BarContentTheme">
+        <item name="android:textColorHighlight">@color/blue_200_a</item>
+        <item name="android:textCursorDrawable">@drawable/edit_cursor</item>
+        <item name="colorControlActivated">@color/blue_200</item>
+    </style>
+
+    <!-- Dialog themes. -->
+    <style name="TypeTextTheme">
+        <item name="android:textSize">@dimen/type_text_size</item>
+        <item name="android:paddingTop">@dimen/type_text_padding_top</item>
+    </style>
+
+    <style name="DatePickerContentTheme">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textSize">@dimen/datepicker_content_text_size</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+    </style>
+</resources>

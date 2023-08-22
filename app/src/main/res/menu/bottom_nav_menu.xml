@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navigation_home"
+            android:icon="@drawable/menuic_home"
+            android:title="@string/tag_home"
+            android:checked="true"/>
+
+        <item
+            android:id="@+id/navigation_eventarranger"
+            android:icon="@drawable/menuic_eventarranger"
+            android:title="@string/tag_eventarranger" />
+
+        <item
+            android:id="@+id/navigation_project"
+            android:icon="@drawable/menuic_project"
+            android:title="@string/tag_project" />
+
+        <item
+            android:id="@+id/navigation_memos"
+            android:icon="@drawable/menuic_memos"
+            android:title="@string/tag_memos" />
+
+        <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/menuic_settings"
+            android:title="@string/tag_settings" />
+
+    </group>
+</menu>

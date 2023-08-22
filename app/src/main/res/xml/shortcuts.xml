@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="ShortcutNotificationFragment"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/title_eventarranger"
+        android:shortcutLongLabel="@string/title_eventarranger"
+        android:icon="@drawable/ic_agenda_notification">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="oasis://oasis.com/notificationfragment"/>
+    </shortcut>
+</shortcuts>

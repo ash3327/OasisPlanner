@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DATETIME FORMAT -->
+    <string name="half_date_format">d MMM</string>
+    <string name="full_date_format">dd-MMM-uuuu</string>
+    <string name="long_day_part">D</string>
+    <string name="short_day_part">d</string>
+    <string name="time_format">HH:mm</string>
+    <string name="time_format_12h">h:mm a</string>
+    <string name="week_format">E</string>
+    <string name="week_range_format_start_same_month">【\'Week\' w】d to </string>
+    <string name="week_range_format_start_different_month">【\'Week\' w】d MMM to </string>
+    <string name="week_range_format_end_same_month">d MMM</string>
+    <string name="week_range_format_end_different_month">d MMM</string>
+        <!-- SEPAREATED BY SEMICOLONS -->
+        <string name="partial_date_formats">d;_ MMM;_ uuuu</string>
+        <string name="home_date_formats">E;MMM _;uuuu,_</string>
+        <string name="bar_date_formats">d;E, _ MMM;_</string>
+        <string name="month_formats">;MMM;_ uuuu</string>
+</resources>

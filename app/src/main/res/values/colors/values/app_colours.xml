@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- App Colors -->
+<resources>
+    <!-- Basic App Colors -->
+    <color name="white">#FFFBFAFA </color>
+    <color name="cream">#FFF4EFE4 </color>
+    <color name="base"> #FFFBF4EA </color>
+    <color name="grey"> #FFADA79F </color>
+    <color name="theme">#FF4A5A40 </color>
+    <color name="black">#FF2F2E31 </color>
+
+    <color name="navtext">#FF13ABB4</color>
+    <color name="bottomnavcolor">#2213ABB4 </color>
+
+    <!-- Add _Agenda (Type) Colors -->
+    <color name="add_agenda_col">@color/green_100 </color>
+    <color name="add_task_col"> @color/yellow_200</color>
+    <color name="add_note_col"> @color/blue_100  </color>
+
+    <!-- Edit _Agenda Dialog Colors -->
+    <color name="page_header_bg">@color/base</color>
+    <color name="page_header_textColor">@color/foreground</color>
+
+    <!-- Edit _Alarm Dialog Colors -->
+    <color name="editAlarm_header_bg">@color/yellow_100</color>
+    <color name="editAlarm_textColor">@color/yellow_900</color>
+
+    <!-- DatePicker Colors -->
+    <color name="transparent_white">#10FBFAFA</color>
+    <color name="transparent_black">#102F2E31</color>
+
+    <!-- Importance Colors -->
+    <color name="pr_unimportant">   @color/violet_500</color>
+    <color name="pr_routine">       @color/grey_500  </color>
+    <color name="pr_standard">      @color/blue_500  </color>
+    <color name="pr_todo">          @color/blue_300  </color>
+    <color name="pr_special">       @color/green_700 </color>
+    <color name="pr_semi_important">@color/yellow_700</color>
+    <color name="pr_important">     @color/red_500   </color>
+
+    <!--
+    <color name="sc_unimportant">   @color/violet_300</color>
+    <color name="sc_routine">       @color/grey_300  </color>
+    <color name="sc_standard">      @color/blue_300  </color>
+    <color name="sc_todo">          @color/blue_200  </color>
+    <color name="sc_special">       @color/green_500 </color>
+    <color name="sc_semi_important">@color/yellow_500</color>
+    <color name="sc_important">     @color/red_200   </color>-->
+
+    <color name="sc_unimportant">   @color/violet_200</color>
+    <color name="sc_routine">       @color/grey_100  </color>
+    <color name="sc_standard">      @color/blue_200  </color>
+    <color name="sc_todo">          @color/blue_100  </color>
+    <color name="sc_special">       @color/green_200 </color>
+    <color name="sc_semi_important">@color/yellow_200</color>
+    <color name="sc_important">     @color/red_100   </color>
+
+    <color name="background">       @color/base      </color>
+    <color name="foredarker">       @color/grey_700  </color>
+    <color name="foreground">       @color/theme     </color>
+    <color name="textcolour">       @color/black     </color>
+    <color name="red_bg">           @color/red_300   </color>
+    <color name="blue_bg">          #FF608DA2        </color>
+
+    <color name="swipeblack">       @color/grey_700  </color>
+    <color name="swipedark">        @color/grey_600  </color>
+    <color name="swipelight">       @color/grey_500  </color>
+
+    <color name="mask">            @color/grey_900_50</color>
+    <color name="deadline_col">     @color/red_900_90</color>
+    <color name="deadline_mask">    @color/red_900_50</color>
+</resources>

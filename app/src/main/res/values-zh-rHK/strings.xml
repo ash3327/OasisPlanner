@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- APP NAME -->
+    <string name="app_name">靈 ‧ 泉</string>
+
+    <string name="title_home">我的日程</string>
+    <string name="title_dashboard">我的規劃</string>
+    <string name="title_eventarranger">我的活動</string>
+    <string name="title_projects">我的征程</string>
+    <string name="title_memos">靈感之泉</string>
+    <string name="title_analytics">歷史報告</string>
+    <string name="title_settings">更多設定</string>
+
+    <string name="tag_home">主頁</string>
+    <string name="tag_dashboard">月曆</string>
+    <string name="tag_eventarranger">排程</string>
+    <string name="tag_project">規劃</string>
+    <string name="tag_memos">筆記</string>
+    <string name="tag_analytics">報表</string>
+    <string name="tag_settings">設定</string>
+
+    <string name="tag_header_browse">我的日程</string>
+
+    <!-- TIPS -->
+    <string name="tips_no_agendas">現在還沒有活動哦！\n加上你新的行程吧！</string>
+
+    <!-- IMPORTANCE LEVEL -->
+    <string name="unimportant">可拖延</string>
+    <string name="standard">一般</string>
+    <string name="semiimportant">重要</string>
+    <string name="important">緊急</string>
+
+    <!-- AGENDA TYPES -->
+    <string name="notif">提醒</string>
+    <string name="activities">活動</string>
+    <string name="plan">規劃</string>
+    <string name="todo">待辦</string>
+
+    <!-- FRAGMENTS -->
+        <!-- NOTIFICATIONS -->
+            <!-- TITLE -->
+            <string name="agendas">最近事項</string>
+            <!-- BUTTONS -->
+            <string name="add_ent">新增活動</string>
+            <string name="add_ent_quick">筆記板</string>
+
+    <!-- NEW AGENDAS -->
+        <string name="new_agenda">新增日程</string>
+        <string name="new_task">新增計劃</string>
+        <string name="new_note">新增筆記</string>
+
+    <!-- Bars -->
+    <string name="bar_notif">通知</string>
+    <string name="bar_task">任務</string>
+
+    <!-- Edit _Agenda Dialog / Page -->
+        <!-- PAGE OVERHEAD TITLE -->
+        <string name="page_overhead_new_agenda">新增日程</string>
+        <string name="page_overhead_edit_agenda">修改日程</string>
+        <!-- PAGE BUTTON CONTENTS -->
+        <string name="page_confirm">確定</string>
+        <string name="page_cancel">取消</string>
+        <!-- DOCUMENT TAGS -->
+        <string name="doc_tag">筆記</string>
+        <string name="event_tag">計劃</string>
+        <!-- NOT FOUND LABELS -->
+        <string name="doc_not_found">(沒有描述)</string>
+        <!-- OnConfirm -->
+        <string name="page_no_title_warning">日程的標題不能為空！</string>
+
+    <!-- Edit _Alarm Dialog -->
+    <string name="page_overhead_edit_alarm">修改通知</string>
+    <string name="edit_alarm_type">通知類型：</string>
+    <string name="edit_alarm_importance">重要程度：</string>
+        <!-- Tab Bar -->
+        <string name="edit_alarm_tab_infos">詳情</string>
+        <string name="edit_alarm_tab_dates">日期</string>
+        <string name="edit_alarm_tab_times">時間</string>
+        <!-- Type Spinner -->
+        <string name="type_spinner_title">通知類型：</string>
+        <string name="importance_spinner_title">重要程度：</string>
+        <string name="tab_date_title">通知日期：</string>
+        <string name="tab_time_title">通知時間：</string>
+        <string name="tab_info_title">通知内容：</string>
+
+    <!-- NULLITIES -->
+    <string name="no_title">[標題]</string>
+    <string name="no_desc">[描述]</string>
+
+    <!-- WEEKDAYS -->
+    <string-array name="weekdays">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+
+</resources>

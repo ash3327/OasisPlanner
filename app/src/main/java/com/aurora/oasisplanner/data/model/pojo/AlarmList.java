@@ -1,0 +1,67 @@
+package com.aurora.oasisplanner.data.model.pojo;
+
+import android.text.SpannableStringBuilder;
+
+import androidx.room.Embedded;
+import androidx.room.Ignore;
+import androidx.room.Relation;
+
+import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.model.entities._AlarmList;
+import com.aurora.oasisplanner.data.tags.AlarmType;
+import com.aurora.oasisplanner.data.tags.Importance;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class AlarmList {
+    @Embedded
+    public _AlarmList alarmList;
+
+    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    public List<_Alarm> alarms = new ArrayList<>();
+
+    @Ignore
+    public boolean visible = true;
+    @Ignore
+    public SpannableStringBuilder contents;
+
+    public AlarmList(){}
+
+    @Ignore
+    public AlarmList(AlarmType type, Importance importance) {
+        this.alarmList = new _AlarmList(type, importance);
+    }
+
+    @Ignore
+    public AlarmList putDates(LocalTime time, LocalDate... dates) {
+        for (_Alarm alarm : this.alarms)
+            alarm.visible = false;
+        this.alarmList.time = time;
+        this.alarmList.dates = Arrays.stream(dates).collect(Collectors.toList());
+        this.alarms.addAll(Arrays.stream(dates).map((d)->new _Alarm().setDateTime(d, alarmList.time)).collect(Collectors.toList()));
+        return this;
+    }
+
+    @Ignore
+    public static AlarmList empty() {
+        return new AlarmList(
+                AlarmType.notif,
+                Importance.regular
+            ).putDates(LocalTime.now(), LocalDate.now());
+    }
+
+    public AlarmList setI(int i) {
+        this.alarmList.i = i;
+        return this;
+    }
+
+    @Ignore
+    public String toString() {
+        return "\n\t\t\t\t [ AlarmList : "+alarmList.id+" :  \n\t\t\t\t\t"+alarmList.type+","+alarmList.importance+" \n\t\t\t\t\t"+alarms.toString()+"\n\t\t\t\t ]";
+    }
+}

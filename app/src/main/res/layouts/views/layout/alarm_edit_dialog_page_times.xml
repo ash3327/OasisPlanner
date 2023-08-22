@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class="AlarmEditTimesBinding"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <!--ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="42.5dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="bottom">
+            <TextView
+                android:id="@+id/times_selected_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="12:58"
+                android:textSize="@dimen/boxtitle_textsize"/>
+        </ScrollView-->
+        <TimePicker
+            android:id="@+id/picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:headerBackground="@android:color/transparent"
+            android:numbersSelectorColor="@color/yellow_700"
+            android:numbersTextColor="@color/black"
+            android:headerTimeTextAppearance="@color/black"
+            />
+    </LinearLayout>
+</layout>

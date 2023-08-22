@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- DATA CLASS -->
+    <data class="ItemAlarmBinding"/>
+
+    <!-- CLICKING AREA -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar">
+        <LinearLayout
+            android:id="@+id/tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/transparent"
+            android:paddingVertical="@dimen/doc_vmargin"
+            android:gravity="center_vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/collapsed_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardCornerRadius="5dp"
+                android:background="@color/red_100"
+                app:strokeColor="@color/red_bg"
+                app:strokeWidth="2dp"
+
+                android:layout_marginEnd="5dp">
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_trashcan"
+                    app:tint="@color/red_bg"
+                    android:layout_gravity="center"/>
+            </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_height="@dimen/medium_icon_height"
+                android:layout_width="@dimen/medium_icon_height"
+                android:src="@drawable/ic_agenda_calendar"
+                android:layout_gravity="center" />
+            <LinearLayout
+                android:layout_width="@dimen/medium_icon_height"
+                android:layout_height="@dimen/medium_icon_height"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/importance_label"
+                    android:layout_height="10dp"
+                    android:layout_width="10dp"
+                    android:src="@drawable/ic_circle"
+                    android:foregroundTint="@color/yellow_700"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/bar_description_text"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alarmcontent_fullwidth"
+                android:gravity="center_vertical"
+
+                android:paddingHorizontal="@dimen/doc_margin"
+                android:theme="@style/BarContentTheme"
+                android:text='5月23日 12:00' />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

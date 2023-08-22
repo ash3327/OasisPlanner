@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style for Home Card -->
+    <style name="home_card_day_style">
+        <item name="android:textSize">@dimen/home_card_day_tsize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/base</item>
+        <item name="android:letterSpacing">0.15</item>
+    </style>
+    <style name="home_card_month_style">
+        <item name="android:textSize">@dimen/home_card_month_tsize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/base</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+</resources>

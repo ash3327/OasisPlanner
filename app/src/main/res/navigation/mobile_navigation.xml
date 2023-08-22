@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.aurora.oasisplanner.fragments.HomeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.aurora.oasisplanner.fragments.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/navigation_eventarranger"
+        android:name="com.aurora.oasisplanner.fragments.EventArrangerFragment"
+        android:label="@string/title_eventarranger"
+        tools:layout="@layout/fragment_notifications">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="oasis://oasis.com/notificationfragment" />
+        <argument
+            android:name="itemId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_project"
+        android:name="com.aurora.oasisplanner.fragments.ProjectsFragment"
+        android:label="@string/title_projects"
+        tools:layout="@layout/fragment_project" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.aurora.oasisplanner.fragments.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_memos"
+        android:name="com.aurora.oasisplanner.fragments.MemosFragment"
+        android:label="@string/title_memos"
+        tools:layout="@layout/fragment_memos" />
+
+    <fragment
+        android:id="@+id/navigation_analytics"
+        android:name="com.aurora.oasisplanner.fragments.AnalyticsFragment"
+        android:label="@string/title_analytics"
+        tools:layout="@layout/fragment_analytics" />
+
+    <dialog
+        android:id="@+id/agendaEditDialog"
+        android:name="com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog"
+        android:label="AgendaEditDialog">
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="oasis://oasis.com/editalarmdialog" />
+        <argument
+            android:name="agendaId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </dialog>
+
+</navigation>

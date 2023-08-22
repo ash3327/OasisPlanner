@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- DATA CLASS -->
+    <data class="MultiDatePickerBinding"/>
+
+    <!-- CLICKING AREA -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp">
+            <ImageView
+                android:id="@+id/left"
+                android:layout_width="@dimen/giant_icon_height"
+                android:layout_height="@dimen/giant_icon_height"
+                android:src="@drawable/ic_arrow_left"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                android:layout_margin="10dp"
+                app:tint="@color/black" />
+            <TextView
+                android:id="@+id/month_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='2023年7月'
+                android:textSize="@dimen/edit_alarm_pickerHeaderSize"
+                android:textStyle="bold"
+                android:letterSpacing=".1"
+                android:textColor="@color/black"
+                android:layout_margin="10dp"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <ImageView
+                android:id="@+id/right"
+                android:layout_width="@dimen/giant_icon_height"
+                android:layout_height="@dimen/giant_icon_height"
+                android:src="@drawable/ic_arrow_right"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                android:layout_margin="10dp"
+                app:tint="@color/black" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <GridView
+            android:id="@+id/month_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="@dimen/giant_icon_bound_height"
+            android:numColumns="7"/>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class="ChooseTypeBinding">
+        <import type="android.view.View"/>
+        <variable
+            name="dialog"
+            type="com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog"/>
+    </data>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="1200dp">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/cross"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/red_400"
+                app:tint="@color/white"
+                android:src="@drawable/ic_symb_plus"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationX="@dimen/type_add_crossX"
+                android:translationY="@dimen/type_add_crossY"
+                android:translationZ="1dp"/>
+            <LinearLayout
+                android:id="@+id/add_agenda"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationX="@dimen/type_add_agenda_endX"
+                android:translationY="@dimen/type_add_agenda_endY">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_type_agenda"
+
+                    android:backgroundTint="@color/add_agenda_col"
+                    android:onClick="@{()->dialog.execute(0)}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_agenda"
+                    android:theme="@style/TypeTextTheme"
+
+                    android:textColor="@color/add_agenda_col"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/add_task"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationX="@dimen/type_add_task_endX"
+                android:translationY="@dimen/type_add_task_endY">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_type_task"
+
+                    android:backgroundTint="@color/add_task_col"
+                    android:onClick="@{()->dialog.execute(1)}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_task"
+                    android:theme="@style/TypeTextTheme"
+
+                    android:textColor="@color/add_task_col"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/add_note"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationX="@dimen/type_add_note_endX"
+                android:translationY="@dimen/type_add_note_endY">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_type_note"
+
+                    android:backgroundTint="@color/add_note_col"
+                    android:onClick="@{()->dialog.execute(2)}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_note"
+                    android:theme="@style/TypeTextTheme"
+
+                    android:textColor="@color/add_note_col"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

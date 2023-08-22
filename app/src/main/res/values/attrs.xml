@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MultiDatePicker">
+        <attr name="baseColor" format="color"/>
+        <attr name="invalidColor" format="color"/>
+        <attr name="regularBgColor" format="color"/>
+        <attr name="regularTextColor" format="color"/>
+        <attr name="diffMonthBgColor" format="color"/>
+        <attr name="diffMonthTextColor" format="color"/>
+        <attr name="weekDayBgColor" format="color"/>
+        <attr name="weekDayTextColor" format="color"/>
+        <attr name="highlightedBgColor" format="color"/>
+        <attr name="highlightedTextColor" format="color"/>
+        <attr name="subHighlightedBgColor" format="color"/>
+        <attr name="subHighlightedTextColor" format="color"/>
+        <attr name="diffMonthSubHighlightedBgColor" format="color"/>
+        <attr name="diffMonthSubHighlightedTextColor" format="color"/>
+        <attr name="padding" format="dimension"/>
+        <attr name="rowPadding" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="TabSelector">
+        <attr name="bgColor" format="color"/>
+    </declare-styleable>
+</resources>

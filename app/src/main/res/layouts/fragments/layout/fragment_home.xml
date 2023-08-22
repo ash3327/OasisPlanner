@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data class="HomeBinding">
+        <import type="com.aurora.oasisplanner.util.styling.DateTimesFormatter"/>
+        <variable
+            name="date"
+            type="java.time.LocalDate" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.HomeFragment"
+
+        android:id="@+id/home">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/oasis_preview"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="235dp"
+            app:contentPaddingLeft="25dp"
+            app:contentPaddingRight="25dp"
+            app:contentPaddingTop="20dp"
+            app:contentPaddingBottom="20dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upcoming Tasks"
+                    android:textStyle="bold"
+                    android:letterSpacing=".1"
+                    android:theme="@style/HomeTitleTheme"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recommendations for you"
+                    android:letterSpacing=".1"
+                    android:theme="@style/HomeSubtitleTheme"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommendation_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/home_recommendation_listitem_height"
+                    android:paddingStart="20dp"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/_home_recommendations_displist" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your Schedule"
+                    android:textStyle="bold"
+                    android:letterSpacing=".1"
+                    android:theme="@style/HomeTitleTheme"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next Event"
+                    android:letterSpacing=".1"
+                    android:theme="@style/HomeSubtitleTheme"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_card_height"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/home_card_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/date_card"
+                android:backgroundTint="@color/theme">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias=".3">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintVertical_bias=".3"
+
+                        android:theme="@style/home_card_day_style"
+                        android:text="@{DateTimesFormatter.getDay(date), default=22}"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintVertical_bias=".8"
+
+                        android:theme="@style/home_card_month_style"
+                        android:text='@{DateTimesFormatter.getYMW(date), default="2023,03 星期三"}'/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

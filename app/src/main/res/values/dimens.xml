@@ -1,0 +1,140 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="design_fab_image_size" tools:override="true">32dp</dimen>
+    <dimen name="portrait_top_height">60dp</dimen>
+
+    <!-- Add agenda -->
+    <dimen name="plus_icon_size">28dp</dimen>
+    <dimen name="plus_icon_padding">10dp</dimen>
+    <dimen name="type_text_size">13sp</dimen>
+    <dimen name="type_text_padding_top">5dp</dimen>
+
+    <dimen name="type_text_startX">-3dp</dimen>
+    <dimen name="type_text_startY">2dp</dimen>
+
+    <dimen name="type_add_crossX">-6dp</dimen>
+    <dimen name="type_add_crossY">-14dp</dimen>
+    <dimen name="type_add_agenda_endX">-103dp</dimen>
+    <dimen name="type_add_agenda_endY">-2dp</dimen>
+    <dimen name="type_add_task_endX">-83dp</dimen>
+    <dimen name="type_add_task_endY">-82dp</dimen>
+    <dimen name="type_add_note_endX">-3dp</dimen>
+    <dimen name="type_add_note_endY">-102dp</dimen>
+
+    <!-- Navigation box width / heights -->
+    <dimen name="portrait_action_bar_height">60dp</dimen>
+    <dimen name="portrait_bottom_navigation_bar_height">55dp</dimen>
+    <dimen name="landscape_navigation_rail_width">70dp</dimen>
+    <dimen name="nav_textsize">15sp</dimen>
+
+    <!-- Width and heights for the main view in each fragments in different orientation -->
+    <dimen name="portrait_notification_scrollview_height">400dp</dimen>
+    <dimen name="landscape_notification_scrollview_height">250dp</dimen>
+    <dimen name="landscape_notification_scrollview_padding_horizontal">50dp</dimen>
+    <dimen name="landscape_notification_scrollview_padding_right">200dp</dimen>
+
+    <!-- Text Dimensions -->
+    <dimen name="fragment_title_textsize">20sp</dimen>
+    <dimen name="title_textsize">25sp</dimen>
+    <dimen name="fragment_tips_textsize">20sp</dimen>
+
+    <!-- Home Titles Dimensions -->
+    <dimen name="home_title_textsize">20sp</dimen>
+    <dimen name="home_subtitle_textsize">12sp</dimen>
+    <dimen name="home_titles_spacing">10dp</dimen>
+    <dimen name="home_titles_smallspacing">3dp</dimen>
+    <dimen name="home_recommendation_listitem_height">90dp</dimen>
+    <dimen name="home_recommendation_listitem_width">130dp</dimen>
+
+    <!-- Home Fragment Dimensions -->
+        <!-- Card Dimensions -->
+        <dimen name="home_card_height">     150dp</dimen>
+        <dimen name="home_card_width">      200dp</dimen>
+        <dimen name="home_card_day_tsize">  70sp</dimen>
+        <dimen name="home_card_month_tsize">15sp</dimen>
+
+    <!-- Dividers for RecyclerViews -->
+    <dimen name="paddingItemDecorationDefault">5dp</dimen>
+    <dimen name="paddingBoxesDecorationDefault">8dp</dimen>
+    <dimen name="paddingItemDecorationEdge">16dp</dimen>
+
+    <!-- Box Dimensions -->
+        <!-- Shared Dimensions -->
+        <dimen name="bar_vmargin">0dp</dimen>
+        <dimen name="box_margin">7dp</dimen>
+        <dimen name="boximg_topmargin">10dp</dimen>
+        <dimen name="boximg_bottommargin">5dp</dimen>
+        <dimen name="box_vmargin">7dp</dimen>
+        <dimen name="box_hmargin">15dp</dimen>
+        <dimen name="bar_padding">1dp</dimen>
+        <dimen name="gap_padding">3dp</dimen>
+        <dimen name="boxtitle_textsize">14sp</dimen>
+        <dimen name="boxcontent_textsize">13sp</dimen>
+        <dimen name="card_radius">20dp</dimen>
+        <dimen name="card_doc_radius">10dp</dimen>
+        <!-- Dimensions for Date Bar -->
+        <dimen name="bar_hpadding_top">10dp</dimen>
+        <dimen name="bar_vpadding_top">6dp</dimen>
+        <dimen name="bar_type_icon_size">35dp</dimen>
+        <dimen name="bar_icon_padding">11dp</dimen>
+        <!-- Contracted Form Dimensions -->
+        <dimen name="bar_height">35dp</dimen>
+        <dimen name="bar_width">1dp</dimen>
+        <dimen name="bar_padding_b4">15dp</dimen>
+        <dimen name="bar_padding_aftr">20dp</dimen>
+        <dimen name="bar_vpadding">7dp</dimen>
+        <!-- Expanded Form Dimensions -->
+        <dimen name="box_height">40dp</dimen>
+        <dimen name="box_width">10dp</dimen>
+        <dimen name="box_padding_b4">10dp</dimen>
+        <dimen name="box_padding_mid">5dp</dimen>
+        <dimen name="box_padding_aftr">20dp</dimen>
+        <dimen name="box_padding">47.5dp</dimen>
+        <dimen name="box_fullwidth">350dp</dimen>
+        <dimen name="barcontent_fullwidth">220dp</dimen>
+        <dimen name="alarmcontent_fullwidth">160dp</dimen>
+
+    <!-- Page Dimensions -->
+        <dimen name="page_bottom_height">50dp</dimen>
+        <dimen name="page_hmargin">20dp</dimen>
+        <dimen name="page_vmargin">50dp</dimen>
+        <dimen name="page_icon_padding">6dp</dimen>
+        <dimen name="page_gap_height">10dp</dimen>
+        <dimen name="page_gap_unfocused_height">6dp</dimen>
+
+    <!-- Edit _Alarm Dimensions -->
+    <dimen name="edit_alarm_pickerHeaderSize">15sp</dimen>
+    <dimen name="edit_alarm_textSize">14sp</dimen>
+    <dimen name="edit_alarm_titleSize">16sp</dimen>
+
+    <!-- Add & Edit Agendas (Page) -->
+    <dimen name="doc_margin">8dp</dimen>
+    <dimen name="doc_vmargin">2dp</dimen>
+
+    <!-- Icon Dimensions -->
+    <dimen name="icon_txt_size">12dp</dimen>
+    <dimen name="icon_height">15dp</dimen>
+    <dimen name="medium_small_icon_height">20dp</dimen>
+    <dimen name="medium_small_icon_height_plus_padding">40dp</dimen>
+    <dimen name="medium_icon_height">25dp</dimen>
+    <dimen name="medium_icon_bound_height">35dp</dimen>
+    <dimen name="big_icon_height">30dp</dimen>
+    <dimen name="big_icon_bound_height">40dp</dimen>
+    <dimen name="giant_icon_height">30dp</dimen>
+    <dimen name="giant_icon_bound_height">40dp</dimen>
+    <dimen name="icon_margin">15dp</dimen>
+
+    <!-- Shape Dimensions -->
+    <dimen name="shp_circle_diameter">20dp</dimen>
+
+    <!-- Datepicker Dimensions -->
+    <dimen name="datepicker_title_height">93dp</dimen>
+    <dimen name="datepicker_content_height">338dp</dimen>
+    <dimen name="datepicker_text_size">34sp</dimen>
+    <dimen name="datepicker_content_text_size">13sp</dimen>
+    <dimen name="datepicker_left_margin">22.5dp</dimen>
+    <dimen name="datepicker_bottom_margin">5dp</dimen>
+    <dimen name="datepicker_year_text_size">15sp</dimen>
+</resources>
