@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 
 import androidx.core.app.NotificationCompat;
 
@@ -52,6 +53,7 @@ public class AlarmNotificationService {
                         new NotificationCompat.BigTextStyle()
                                 .bigText(alarm.getContents(true))
                 )
+                //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.g_regular))
                 .setContentIntent(pendingIntent)
                 /*.addAction(
                         R.drawable.menuic_sprout,
