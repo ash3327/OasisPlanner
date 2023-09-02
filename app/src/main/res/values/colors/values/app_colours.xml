@@ -31,7 +31,7 @@
     <color name="transparent_black">#102F2E31</color>
 
     <!-- Importance Colors -->
-    <color name="pr_unimportant">   @color/violet_500</color>
+    <color name="pr_unimportant">   @color/grey_500</color>
     <color name="pr_routine">       @color/grey_500  </color>
     <color name="pr_standard">      @color/blue_500  </color>
     <color name="pr_todo">          @color/blue_300  </color>
@@ -48,7 +48,7 @@
     <color name="sc_semi_important">@color/yellow_500</color>
     <color name="sc_important">     @color/red_200   </color>-->
 
-    <color name="sc_unimportant">   @color/violet_200</color>
+    <color name="sc_unimportant">   @color/grey_200  </color>
     <color name="sc_routine">       @color/grey_100  </color>
     <color name="sc_standard">      @color/blue_200  </color>
     <color name="sc_todo">          @color/blue_100  </color>
