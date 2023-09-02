@@ -6,7 +6,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 
 import androidx.core.app.NotificationCompat;
 
@@ -43,6 +50,14 @@ public class AlarmNotificationService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.g_regular_v2);
+        img = img.extractAlpha();
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_IN));
+        Bitmap bitmapResult = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmapResult);
+        canvas.drawBitmap(img, 0, 0, paint);
+
         // delay alarm service
 
         Notification notification = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
@@ -53,7 +68,8 @@ public class AlarmNotificationService {
                         new NotificationCompat.BigTextStyle()
                                 .bigText(alarm.getContents(true))
                 )
-                //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.g_regular))
+                .setCategory(Notification.CATEGORY_ALARM)
+                .setLargeIcon(bitmapResult)
                 .setContentIntent(pendingIntent)
                 /*.addAction(
                         R.drawable.menuic_sprout,
