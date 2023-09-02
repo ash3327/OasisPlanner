@@ -63,7 +63,7 @@ public class AlarmNotificationService {
 
         notificationManager.notify(
                 // same id -> update notification instead
-                1, notification
+                (int) alarm.id, notification
         );
     }
 
