@@ -14,6 +14,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
@@ -59,9 +60,25 @@ public class AlarmNotificationService {
         Canvas canvas = new Canvas(bitmapResult);
         canvas.drawBitmap(img, 0, 0, paint);
 
+        RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed_view);
+        collapsedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
+        collapsedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
+        collapsedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
+
+        RemoteViews expandedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed_view);
+        expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
+        expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
+        expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
 
         // delay alarm service
 
+        Notification notification = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
+                .setSmallIcon(R.drawable.menuic_sprout)
+                .setCustomContentView(collapsedView)
+                .setCustomBigContentView(expandedView)
+                .build();
+
+        /*
         Notification notification = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
                 .setSmallIcon(R.drawable.menuic_sprout)
                 .setContentTitle(alarm.title)
@@ -74,13 +91,13 @@ public class AlarmNotificationService {
                 .setLargeIcon(bitmapResult)
                 .setContentIntent(pendingIntent)
                 .setShortcutId(SHORTCUT_ID)
-                /*.addAction(
-                        R.drawable.menuic_sprout,
-                        "Edit",
+                //.addAction(
+                //        R.drawable.menuic_sprout,
+                //        "Edit",
 
-                )//*/
+                //)//
                 .setAutoCancel(true)
-                .build();
+                .build();*/
 
         notificationManager.notify(
                 // same id -> update notification instead
