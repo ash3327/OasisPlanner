@@ -35,6 +35,7 @@ public class AlarmNotificationService {
         this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
+    final String SHORTCUT_ID = "OasisShortcutId";
     @SuppressLint("UnspecifiedImmutableFlag")
     public void showNotification(_Alarm alarm) {
 
@@ -58,6 +59,7 @@ public class AlarmNotificationService {
         Canvas canvas = new Canvas(bitmapResult);
         canvas.drawBitmap(img, 0, 0, paint);
 
+
         // delay alarm service
 
         Notification notification = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
@@ -71,6 +73,7 @@ public class AlarmNotificationService {
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setLargeIcon(bitmapResult)
                 .setContentIntent(pendingIntent)
+                .setShortcutId(SHORTCUT_ID)
                 /*.addAction(
                         R.drawable.menuic_sprout,
                         "Edit",
