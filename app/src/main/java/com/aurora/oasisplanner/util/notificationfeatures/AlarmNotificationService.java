@@ -52,7 +52,7 @@ public class AlarmNotificationService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.g_regular_v2);
+        Bitmap img = BitmapFactory.decodeResource(context.getResources(), alarm.importance.getNotifIcon());
         img = img.extractAlpha();
         Paint paint = new Paint();
         paint.setColorFilter(new PorterDuffColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_IN));

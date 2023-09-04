@@ -2,6 +2,8 @@ package com.aurora.oasisplanner.data.tags;
 
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.DrawableRes;
+
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.util.styling.Resources;
 
@@ -29,6 +31,14 @@ public enum Importance {
     }
     public int getTagPr(){
         return importanceLevelIds[getImportance()][Resources.STRING];
+    }
+    @DrawableRes
+    public int getNotifIcon() {
+        if (this.equals(important))
+            return R.drawable.g_important;
+        if (this.equals(iimportant))
+            return R.drawable.g_iimportant;
+        return R.drawable.g_regular_v2;
     }
     public String toString() {
         return Resources.getString(importanceLevelIds[getImportance()][Resources.STRING]);
