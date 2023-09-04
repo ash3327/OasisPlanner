@@ -14,6 +14,7 @@
     <string name="tag_home">主頁</string>
     <string name="tag_dashboard">月曆</string>
     <string name="tag_eventarranger">排程</string>
+    <string name="tag_notification">通知</string>
     <string name="tag_project">規劃</string>
     <string name="tag_memos">筆記</string>
     <string name="tag_analytics">報表</string>

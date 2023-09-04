@@ -13,6 +13,7 @@
     <string name="tag_home">Home</string>
     <string name="tag_dashboard">Calendar</string>
     <string name="tag_eventarranger">Events</string>
+    <string name="tag_notification">Notifications</string>
     <string name="tag_project">Projects</string>
     <string name="tag_memos">Memos</string>
     <string name="tag_analytics">Analytics</string>
