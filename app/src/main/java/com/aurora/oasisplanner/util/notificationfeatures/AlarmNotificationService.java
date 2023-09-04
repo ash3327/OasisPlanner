@@ -74,8 +74,11 @@ public class AlarmNotificationService {
 
         Notification notification = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
                 .setSmallIcon(R.drawable.menuic_sprout)
-                .setCustomContentView(collapsedView)
+                .setContentTitle(alarm.title)
+                .setContentText(alarm.getContents(false))
+                .setCustomContentView(expandedView)//collapsedView)
                 .setCustomBigContentView(expandedView)
+                .setContentIntent(pendingIntent)
                 .build();
 
         /*
