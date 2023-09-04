@@ -3,36 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start|center_vertical"
+    android:background="@color/yellow_300"
     android:orientation="horizontal">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="start|center_vertical"
-        android:layout_marginVertical="10dp">
-        <ImageView
-            android:id="@+id/logo_collapsed"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/g_regular_v2"/>
+        android:background="@drawable/border_gold"
+        android:layout_margin="4dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/text_view_collapsed_1"
-                style="@style/TextAppearance.Compat.Notification.Title"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_margin="6dp">
+            <ImageView
+                android:id="@+id/logo_collapsed"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/g_regular_v2"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Message!"/>
-            <TextView
-                android:id="@+id/text_view_collapsed_2"
-                style="@style/TextAppearance.Compat.Notification.Info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Message!"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/text_view_collapsed_1"
+                    style="@style/TextAppearance.Compat.Notification.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Message!"/>
+                <TextView
+                    android:id="@+id/text_view_collapsed_2"
+                    style="@style/TextAppearance.Compat.Notification.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Message!"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

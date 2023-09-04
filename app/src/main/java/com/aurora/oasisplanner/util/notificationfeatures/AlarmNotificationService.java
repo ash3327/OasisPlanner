@@ -79,6 +79,7 @@ public class AlarmNotificationService {
                 .setCustomContentView(expandedView)//collapsedView)
                 .setCustomBigContentView(expandedView)
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .build();
 
         /*
