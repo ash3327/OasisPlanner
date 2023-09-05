@@ -28,6 +28,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.tags.Pages;
 import com.aurora.oasisplanner.databinding.MainBinding;
+import com.aurora.oasisplanner.fragments.EventArrangerFragment;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
@@ -174,7 +175,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @IdRes int bottomBarId = page.getNav(), sidebarId = page.getSideNav();
         navBar.setSelectedItemId(bottomBarId);
         navigationView.setCheckedItem(sidebarId);
-        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(sidebarId);
+        if (bottomBarId == Pages.EVENTARRANGER.getNav())
+            EventArrangerFragment.currentPage = page;
+        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(bottomBarId);
         uiChangeWhileNavigatingTo(page.getSideNav());
         activelyNavigating = false;
     }

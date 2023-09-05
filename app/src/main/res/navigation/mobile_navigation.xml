@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.aurora.oasisplanner.fragments.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_calendar" />
-
-    <fragment
         android:id="@+id/navigation_eventarranger"
         android:name="com.aurora.oasisplanner.fragments.EventArrangerFragment"
         android:label="@string/title_eventarranger"

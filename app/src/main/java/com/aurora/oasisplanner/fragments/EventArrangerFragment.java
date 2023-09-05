@@ -16,42 +16,46 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Pages;
-import com.aurora.oasisplanner.databinding.AlarmEditBinding;
-import com.aurora.oasisplanner.databinding.NotificationsBinding;
+import com.aurora.oasisplanner.databinding.ArrangerBinding;
+import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
+import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.databinding.TabSelectorBinding;
 import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
 import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
-import com.aurora.oasisplanner.presentation.widget.tabselector.TabSelector;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.util.Arrays;
 
 public class EventArrangerFragment extends Fragment {
 
+    public static Pages currentPage = Pages.EVENTARRANGER;
     private AlarmsViewModel alarmsViewModel;
+    private ArrangerBinding binding;
     private TabMenu tabMenu;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsBinding binding = NotificationsBinding.inflate(inflater, container, false);
+        binding = ArrangerBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         tabMenu = binding.tabSelector;
         tabMenu.createOptionMenu(
-                1,
+                getId(currentPage),
                 Arrays.asList(
                         new TabMenu.MenuItem(Resources.getString(R.string.tag_dashboard)),
                         new TabMenu.MenuItem(Resources.getString(R.string.tag_notification))
                 ),
                 (i, menu, vbinding)->{
                     switchPageAnimation(i, vbinding);
-                    if (i == 1) return;
                     switchToPage(i);
                 }
         );
 
+        return root;
+    }
+
+    private void initNotifSubfragment(ArrangerNotificationsBinding binding) {
         RecyclerView recyclerView = binding.boxList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -64,8 +68,10 @@ public class EventArrangerFragment extends Fragment {
 
         alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
         alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+    }
 
-        return root;
+    private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
+
     }
 
     private void switchPageAnimation(int i, TabMenuBinding vbinding) {
@@ -81,8 +87,33 @@ public class EventArrangerFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         switch (i) {
-            case 0: activity.navigateTo(Pages.DASHBOARD); break;
-            case 1: activity.navigateTo(Pages.EVENTARRANGER); break;
+            case 0: navigateTo(Pages.DASHBOARD); break;
+            case 1: navigateTo(Pages.EVENTARRANGER); break;
         }
+    }
+
+    private void navigateTo(Pages page) {
+        binding.navHostFragment.removeAllViews();
+        switch (page) {
+            case DASHBOARD:
+                ArrangerCalendarBinding cbinding = ArrangerCalendarBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                initCalendarSubfragment(cbinding);
+                binding.navHostFragment.addView(cbinding.getRoot());
+                break;
+            case EVENTARRANGER:
+                ArrangerNotificationsBinding nbinding = ArrangerNotificationsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                initNotifSubfragment(nbinding);
+                binding.navHostFragment.addView(nbinding.getRoot());
+                break;
+        }
+    }
+    private int getId(Pages page) {
+        switch (page) {
+            case DASHBOARD:
+                return 0;
+            case EVENTARRANGER:
+                return 1;
+        }
+        return -1;
     }
 }
