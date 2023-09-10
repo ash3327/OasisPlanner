@@ -22,9 +22,11 @@ import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
 import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
 import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
+import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
 import com.aurora.oasisplanner.util.styling.Resources;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class EventArrangerFragment extends Fragment {
@@ -71,7 +73,11 @@ public class EventArrangerFragment extends Fragment {
     }
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
-
+        MultiDatePicker picker = binding.picker;
+        picker.minDateAllowed = LocalDate.now();
+        LocalDate date = LocalDate.now();
+        picker.setMonth(date.getYear(), date.getMonthValue());
+        picker.refresh();
     }
 
     private void switchPageAnimation(int i, TabMenuBinding vbinding) {
