@@ -19,4 +19,18 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
         return root;
     }
+
+    public static Pages currentPage = Pages.SETTINGS;
+    @Override
+    public void onResume() {
+        super.onResume();
+        uiChangeWhenNavigating();
+    }
+
+    private void uiChangeWhenNavigating() {
+        // ensuring consistent ui when the "go back to last page" button is clicked.
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
+        activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
+    }
 }

@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.fragments;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class EventArrangerFragment extends Fragment {
                 (i, menu, vbinding)->{
                     switchPageAnimation(i, vbinding);
                     switchToPage(i);
+                    uiChangeWhenNavigating();
                 }
         );
 
@@ -102,11 +104,13 @@ public class EventArrangerFragment extends Fragment {
         binding.navHostFragment.removeAllViews();
         switch (page) {
             case DASHBOARD:
+                currentPage = Pages.DASHBOARD;
                 ArrangerCalendarBinding cbinding = ArrangerCalendarBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initCalendarSubfragment(cbinding);
                 binding.navHostFragment.addView(cbinding.getRoot());
                 break;
             case EVENTARRANGER:
+                currentPage = Pages.EVENTARRANGER;
                 ArrangerNotificationsBinding nbinding = ArrangerNotificationsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initNotifSubfragment(nbinding);
                 binding.navHostFragment.addView(nbinding.getRoot());
@@ -121,5 +125,18 @@ public class EventArrangerFragment extends Fragment {
                 return 1;
         }
         return -1;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        uiChangeWhenNavigating();
+    }
+
+    private void uiChangeWhenNavigating() {
+        // ensuring consistent ui when the "go back to last page" button is clicked.
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
+        activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
     }
 }

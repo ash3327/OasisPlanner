@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -30,13 +29,19 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    public static Pages currentPage = Pages.HOME;
     @Override
     public void onResume() {
         binding.setDate(LocalDate.now());
         super.onResume();
 
+        uiChangeWhenNavigating();
+    }
+
+    private void uiChangeWhenNavigating() {
         // ensuring consistent ui when the "go back to last page" button is clicked.
         MainActivity activity = (MainActivity) requireActivity();
-        activity.uiChangeWhileNavigatingTo(Pages.HOME.getSideNav());
+        activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
+        activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
     }
 }

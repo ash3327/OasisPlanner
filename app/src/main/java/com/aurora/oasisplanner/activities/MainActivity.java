@@ -173,9 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void navigateTo(Pages page) {
         if (activelyNavigating) return;
         activelyNavigating = true;
-        @IdRes int bottomBarId = page.getNav(), sidebarId = page.getSideNav();
-        navBar.setSelectedItemId(bottomBarId);
-        navigationView.setCheckedItem(sidebarId);
+        @IdRes int bottomBarId = page.getNav();
         if (bottomBarId == Pages.EVENTARRANGER.getNav())
             EventArrangerFragment.currentPage = page;
         if (bottomBarId == Pages.PROJECTS.getNav())
@@ -187,8 +185,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void navigateTo(@IdRes int itemId) {
         if (activelyNavigating) return;
         activelyNavigating = true;
-        navBar.setSelectedItemId(itemId);
-        navigationView.setCheckedItem(itemId);
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(itemId);
         uiChangeWhileNavigatingTo(itemId);
         activelyNavigating = false;
@@ -197,6 +193,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean isHome = itemId == Pages.HOME.getSideNav();
         toolbar.setBackgroundColor(isHome ? Color.TRANSPARENT : Color.WHITE);
         binding.container.setBackgroundColor(isHome ? Color.WHITE : Resources.getColor(R.color.background));
+    }
+    public void navBarChangeWhileNavigatingTo(@IdRes int bottomBarId, @IdRes int sidebarId) {
+        navBar.setSelectedItemId(bottomBarId);
+        navigationView.setCheckedItem(sidebarId);
     }
 
     public NavController getNavController() {

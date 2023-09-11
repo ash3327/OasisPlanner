@@ -51,6 +51,7 @@ public class ProjectsFragment extends Fragment {
                 (i, menu, vbinding)->{
                     switchPageAnimation(i, vbinding);
                     switchToPage(i);
+                    uiChangeWhenNavigating();
                 }
         );
 
@@ -87,11 +88,13 @@ public class ProjectsFragment extends Fragment {
         binding.navHostFragment.removeAllViews();
         switch (page) {
             case PROJECTS:
+                currentPage = Pages.PROJECTS;
                 SubfragmentProjectBinding cbinding = SubfragmentProjectBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initProjectSubfragment(cbinding);
                 binding.navHostFragment.addView(cbinding.getRoot());
                 break;
             case ANALYTICS:
+                currentPage = Pages.ANALYTICS;
                 SubfragmentAnalyticsBinding nbinding = SubfragmentAnalyticsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initAnalyticsSubfragment(nbinding);
                 binding.navHostFragment.addView(nbinding.getRoot());
@@ -106,5 +109,18 @@ public class ProjectsFragment extends Fragment {
                 return 1;
         }
         return -1;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        uiChangeWhenNavigating();
+    }
+
+    private void uiChangeWhenNavigating() {
+        // ensuring consistent ui when the "go back to last page" button is clicked.
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
+        activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
     }
 }
