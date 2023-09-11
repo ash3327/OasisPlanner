@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         binding.setDate(LocalDate.now());
+
         return binding.getRoot();
     }
 
@@ -33,5 +34,9 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         binding.setDate(LocalDate.now());
         super.onResume();
+
+        // ensuring consistent ui when the "go back to last page" button is clicked.
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.uiChangeWhileNavigatingTo(Pages.HOME.getSideNav());
     }
 }
