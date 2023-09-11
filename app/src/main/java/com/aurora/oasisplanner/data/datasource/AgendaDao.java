@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import com.aurora.oasisplanner.data.model.entities._Period;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -40,6 +41,26 @@ public interface AgendaDao {
 
     @Query("DELETE FROM _Alarm")
     void deleteAllAlarms();
+
+    // INFO: PERIODS
+
+    @Query("SELECT * FROM _Period WHERE toDate >= :fromDate ORDER BY fromDate ASC")
+    LiveData<List<_Period>> getPeriodsAfter(LocalDateTime fromDate);
+
+    @Query("SELECT * FROM _Period WHERE id = :id")
+    _Period getPeriodById(int id);
+
+    @Query("SELECT * FROM _Period")
+    List<_Period> getPeriods();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(_Period period);
+
+    @Delete
+    void delete(_Period period);
+
+    @Query("DELETE FROM _Period")
+    void deleteAllPeriods();
 
     // INFO: AGENDAS
 
