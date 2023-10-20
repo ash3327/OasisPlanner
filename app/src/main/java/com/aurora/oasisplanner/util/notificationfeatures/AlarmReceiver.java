@@ -25,6 +25,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         AlarmNotificationService service = new AlarmNotificationService(context);
         service.showNotification(alarm);
+        if (MainActivity.main != null)
+            MainActivity.main.navigateTo(MainActivity.page);
     }
 
     public void wakeDevice(Context context) {

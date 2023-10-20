@@ -9,21 +9,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.tags.Pages;
-import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
-import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
+import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.FragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentAnalyticsBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
-import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
 import com.aurora.oasisplanner.util.styling.Resources;
 
@@ -31,7 +24,7 @@ import java.util.Arrays;
 
 public class ProjectsFragment extends Fragment {
 
-    public static Pages currentPage = Pages.PROJECTS;
+    public static Page currentPage = Page.PROJECTS;
     private FragmentProjectBinding binding;
     private TabMenu tabMenu;
 
@@ -79,29 +72,31 @@ public class ProjectsFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         switch (i) {
-            case 0: navigateTo(Pages.PROJECTS); break;
-            case 1: navigateTo(Pages.ANALYTICS); break;
+            case 0: navigateTo(Page.PROJECTS); break;
+            case 1: navigateTo(Page.ANALYTICS); break;
         }
     }
 
-    private void navigateTo(Pages page) {
+    private void navigateTo(Page page) {
         binding.navHostFragment.removeAllViews();
         switch (page) {
             case PROJECTS:
-                currentPage = Pages.PROJECTS;
+                MainActivity.page = Page.PROJECTS;
+                currentPage = Page.PROJECTS;
                 SubfragmentProjectBinding cbinding = SubfragmentProjectBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initProjectSubfragment(cbinding);
                 binding.navHostFragment.addView(cbinding.getRoot());
                 break;
             case ANALYTICS:
-                currentPage = Pages.ANALYTICS;
+                MainActivity.page = Page.ANALYTICS;
+                currentPage = Page.ANALYTICS;
                 SubfragmentAnalyticsBinding nbinding = SubfragmentAnalyticsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initAnalyticsSubfragment(nbinding);
                 binding.navHostFragment.addView(nbinding.getRoot());
                 break;
         }
     }
-    private int getId(Pages page) {
+    private int getId(Page page) {
         switch (page) {
             case PROJECTS:
                 return 0;

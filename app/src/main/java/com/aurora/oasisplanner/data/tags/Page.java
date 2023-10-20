@@ -5,7 +5,7 @@ import androidx.annotation.IdRes;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.util.styling.Resources;
 
-public enum Pages {
+public enum Page {
     HOME, DASHBOARD, EVENTARRANGER, PROJECTS, SETTINGS, MEMOS, ANALYTICS;
 
     @IdRes

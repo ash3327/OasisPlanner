@@ -26,7 +26,7 @@ import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
-import com.aurora.oasisplanner.data.tags.Pages;
+import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.MainBinding;
 import com.aurora.oasisplanner.fragments.EventArrangerFragment;
 import com.aurora.oasisplanner.fragments.ProjectsFragment;
@@ -40,6 +40,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static MainActivity main;
+    public static Page page;
     private static BottomNavigationView navBar;
     private static NavigationView navigationView;
     private PowerManager.WakeLock partialWakeLock;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDatabase();
         setupUI();
-        navigateTo(Pages.HOME);
+        navigateTo(Page.HOME);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String notificationMode = extras.getString(NotificationModule.NOTIFICATION_MODE);
 
             if (NotificationMode.AGENDA.equals(NotificationMode.valueOf(notificationMode))) {
-                navigateTo(Pages.EVENTARRANGER);
+                navigateTo(Page.EVENTARRANGER);
 
                 long agendaId = extras.getLong(NotificationModule.NOTIFICATION_CONTENT);
                 AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(agendaId);
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupActionBarWithNavController(
                 this, navController,
                 new AppBarConfiguration.Builder(
-                        Pages.sideNavList
+                        Page.sideNavList
                 ).build());
         BottomNavigationView bar = findViewById(R.id.nav_view_portrait);
         bar.setOnItemSelectedListener((menuItem) -> {
@@ -170,13 +171,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private boolean activelyNavigating = false;
-    public void navigateTo(Pages page) {
+    public void navigateTo(Page page) {
         if (activelyNavigating) return;
         activelyNavigating = true;
         @IdRes int bottomBarId = page.getNav();
-        if (bottomBarId == Pages.EVENTARRANGER.getNav())
+        if (bottomBarId == Page.EVENTARRANGER.getNav())
             EventArrangerFragment.currentPage = page;
-        if (bottomBarId == Pages.PROJECTS.getNav())
+        if (bottomBarId == Page.PROJECTS.getNav())
             ProjectsFragment.currentPage = page;
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(bottomBarId);
         uiChangeWhileNavigatingTo(page.getSideNav());
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         activelyNavigating = false;
     }
     public void uiChangeWhileNavigatingTo(@IdRes int itemId) {
-        boolean isHome = itemId == Pages.HOME.getSideNav();
+        boolean isHome = itemId == Page.HOME.getSideNav();
         toolbar.setBackgroundColor(isHome ? Color.TRANSPARENT : Color.WHITE);
         binding.container.setBackgroundColor(isHome ? Color.WHITE : Resources.getColor(R.color.background));
     }
@@ -208,13 +209,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch(item.getItemId()) {
-            case R.id.navigation_home: navigateTo(Pages.HOME); break;
-            case R.id.navigation_dashboard: navigateTo(Pages.DASHBOARD); break;
-            case R.id.navigation_project: navigateTo(Pages.PROJECTS); break;
-            case R.id.navigation_eventarranger: navigateTo(Pages.EVENTARRANGER); break;
-            case R.id.navigation_memos: navigateTo(Pages.MEMOS); break;
-            case R.id.navigation_analytics: navigateTo(Pages.ANALYTICS); break;
-            case R.id.navigation_settings: navigateTo(Pages.SETTINGS); break;
+            case R.id.navigation_home: navigateTo(Page.HOME); break;
+            case R.id.navigation_dashboard: navigateTo(Page.DASHBOARD); break;
+            case R.id.navigation_project: navigateTo(Page.PROJECTS); break;
+            case R.id.navigation_eventarranger: navigateTo(Page.EVENTARRANGER); break;
+            case R.id.navigation_memos: navigateTo(Page.MEMOS); break;
+            case R.id.navigation_analytics: navigateTo(Page.ANALYTICS); break;
+            case R.id.navigation_settings: navigateTo(Page.SETTINGS); break;
         }
 
         mDrawerLayout.closeDrawers();

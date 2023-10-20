@@ -3,7 +3,6 @@ package com.aurora.oasisplanner.fragments;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.tags.Pages;
+import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.ArrangerBinding;
 import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
 import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
@@ -32,7 +31,7 @@ import java.util.Arrays;
 
 public class EventArrangerFragment extends Fragment {
 
-    public static Pages currentPage = Pages.EVENTARRANGER;
+    public static Page currentPage = Page.EVENTARRANGER;
     private AlarmsViewModel alarmsViewModel;
     private ArrangerBinding binding;
     private TabMenu tabMenu;
@@ -95,29 +94,31 @@ public class EventArrangerFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         switch (i) {
-            case 0: navigateTo(Pages.DASHBOARD); break;
-            case 1: navigateTo(Pages.EVENTARRANGER); break;
+            case 0: navigateTo(Page.DASHBOARD); break;
+            case 1: navigateTo(Page.EVENTARRANGER); break;
         }
     }
 
-    private void navigateTo(Pages page) {
+    private void navigateTo(Page page) {
         binding.navHostFragment.removeAllViews();
         switch (page) {
             case DASHBOARD:
-                currentPage = Pages.DASHBOARD;
+                MainActivity.page = Page.DASHBOARD;
+                currentPage = Page.DASHBOARD;
                 ArrangerCalendarBinding cbinding = ArrangerCalendarBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initCalendarSubfragment(cbinding);
                 binding.navHostFragment.addView(cbinding.getRoot());
                 break;
             case EVENTARRANGER:
-                currentPage = Pages.EVENTARRANGER;
+                MainActivity.page = Page.EVENTARRANGER;
+                currentPage = Page.EVENTARRANGER;
                 ArrangerNotificationsBinding nbinding = ArrangerNotificationsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
                 initNotifSubfragment(nbinding);
                 binding.navHostFragment.addView(nbinding.getRoot());
                 break;
         }
     }
-    private int getId(Pages page) {
+    private int getId(Page page) {
         switch (page) {
             case DASHBOARD:
                 return 0;

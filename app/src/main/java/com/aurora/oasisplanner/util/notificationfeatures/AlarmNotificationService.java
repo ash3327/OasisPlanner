@@ -22,6 +22,7 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
+import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 
 public class AlarmNotificationService {
 
@@ -62,11 +63,13 @@ public class AlarmNotificationService {
 
         RemoteViews collapsedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed_view);
         collapsedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
+        collapsedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         collapsedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         collapsedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
 
         RemoteViews expandedView = new RemoteViews(context.getPackageName(), R.layout.notification_collapsed_view);
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
+        expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
 
