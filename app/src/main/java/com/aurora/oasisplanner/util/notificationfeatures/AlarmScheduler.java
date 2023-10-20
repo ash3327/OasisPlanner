@@ -5,6 +5,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.provider.Settings;
 
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 
@@ -19,6 +21,14 @@ public class AlarmScheduler {
     public AlarmScheduler(Context context) {
         this.context = context;
         this.alarmManager = context.getSystemService(AlarmManager.class);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                context.startActivity(intent);
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
