@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.util.notificationfeatures;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -23,8 +24,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         wakeDevice(context);
 
-        AlarmNotificationService service = new AlarmNotificationService(context);
-        service.showNotification(alarm);
+        Intent serviceIntent = new Intent(context, AlarmNotificationService.class);
+        serviceIntent.putExtra("ALARM", alarm.packContents());
+        context.startService(serviceIntent);
+
         if (MainActivity.main != null)
             MainActivity.main.navigateTo(MainActivity.page);
     }

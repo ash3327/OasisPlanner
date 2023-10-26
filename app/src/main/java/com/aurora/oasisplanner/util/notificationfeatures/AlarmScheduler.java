@@ -24,9 +24,11 @@ public class AlarmScheduler {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
-                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                context.startActivity(intent);
+            if (alarmManager != null) {
+                if (!alarmManager.canScheduleExactAlarms()) {
+                    Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                    context.startActivity(intent);
+                }
             }
         }
     }

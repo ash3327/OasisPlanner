@@ -5,7 +5,9 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".activities.OasisApp"
@@ -46,6 +48,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <receiver android:name=".util.notificationfeatures.AlarmReceiver"/>
+        <service android:name=".util.notificationfeatures.AlarmNotificationService" />
     </application>
 
 </manifest>
