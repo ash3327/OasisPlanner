@@ -6,9 +6,9 @@ import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Group;
+import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.tags.AgendaType;
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,14 +18,14 @@ public class Agenda {
     @Embedded
     public _Agenda agenda;
 
-    @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Group.class)
-    public List<Group> groups = new ArrayList<>();
+    @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Activity.class)
+    public List<Activity> activities = new ArrayList<>();
 
     @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
-    public List<Group> invisGroups = new ArrayList<>();
+    public List<Activity> invisActivities = new ArrayList<>();
     @Ignore
     public List<_Doc> invisDocs = new ArrayList<>();
 
@@ -39,12 +39,12 @@ public class Agenda {
     @Ignore
     public Agenda putItems(Object... objs) {
         for (Object obj : objs) {
-            if (obj instanceof Group) {
-                agenda.types.add(new GroupType(GroupType.Type.group, groups.size()));
-                groups.add((Group) obj);
+            if (obj instanceof Activity) {
+                agenda.types.add(new ActivityType(ActivityType.Type.activity, activities.size()));
+                activities.add((Activity) obj);
             }
             if (obj instanceof _Doc) {
-                agenda.types.add(new GroupType(GroupType.Type.doc, docs.size()));
+                agenda.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add((_Doc) obj);
             }
         }
@@ -55,26 +55,26 @@ public class Agenda {
         return new Agenda(
                 AgendaType.agenda,
                 ""
-        ).putItems(Group.empty());
+        ).putItems(Activity.empty());
     }
 
     @Ignore
     public List[] getObjList(boolean sort) {
         List<Object> list = new ArrayList<>();
-        List<GroupType.Type> types = new ArrayList<>();
+        List<ActivityType.Type> types = new ArrayList<>();
 
         if (sort) {
-            groups.sort(Comparator.comparingInt(a -> a.group.i));
+            activities.sort(Comparator.comparingInt(a -> a.activity.i));
             docs.sort(Comparator.comparingInt(a -> a.i));
         }
 
-        for (GroupType gt : agenda.types) {
+        for (ActivityType gt : agenda.types) {
             boolean visible = true;
             Object obj = null;
             switch (gt.type) {
-                case group:
-                    obj = groups.get(gt.i);
-                    visible = ((Group) obj).visible;
+                case activity:
+                    obj = activities.get(gt.i);
+                    visible = ((Activity) obj).visible;
                     break;
                 case doc:
                     obj = docs.get(gt.i);
@@ -86,8 +86,8 @@ public class Agenda {
                 types.add(gt.type);
             }
         }
-        for (Group gp : groups)
-            if (!gp.visible) invisGroups.add(gp);
+        for (Activity gp : activities)
+            if (!gp.visible) invisActivities.add(gp);
         for (_Doc doc : docs)
             if (!doc.visible) invisDocs.add(doc);
 
@@ -98,18 +98,18 @@ public class Agenda {
     public void update() {
         List<Object> list = getObjList(false)[0];
 
-        groups = new ArrayList<>();
+        activities = new ArrayList<>();
         docs = new ArrayList<>();
         agenda.types = new ArrayList<>();
 
         int i = 0;
         for (Object obj : list) {
-            if (obj instanceof Group) {
-                agenda.types.add(new GroupType(GroupType.Type.group, groups.size()));
-                groups.add(((Group) obj).setI(i));
+            if (obj instanceof Activity) {
+                agenda.types.add(new ActivityType(ActivityType.Type.activity, activities.size()));
+                activities.add(((Activity) obj).setI(i));
             }
             if (obj instanceof _Doc) {
-                agenda.types.add(new GroupType(GroupType.Type.doc, docs.size()));
+                agenda.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add(((_Doc) obj).setI(i));
             }
             i++;
@@ -118,6 +118,6 @@ public class Agenda {
 
     @Ignore
     public String toString() {
-        return "\n [ Agenda : "+agenda.id+" : "+agenda.title+" : "+getObjList(false)[0]+"\n delete gps: "+invisGroups+"\n delete docs: "+invisDocs+"\n ]";
+        return "\n [ Agenda : "+agenda.id+" : "+agenda.title+" : "+getObjList(false)[0]+"\n delete gps: "+ invisActivities +"\n delete docs: "+invisDocs+"\n ]";
     }
 }

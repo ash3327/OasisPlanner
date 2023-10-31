@@ -4,7 +4,7 @@ import android.text.SpannableStringBuilder;
 
 import androidx.room.TypeConverter;
 
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.LocalDate;
@@ -65,11 +65,11 @@ public class Converters {
     }
 
     @TypeConverter
-    public List<GroupType> typeListFromString(String val) {
-        return Arrays.stream(val.split(Styles.SEP)).map(GroupType::valueOf).collect(Collectors.toList());
+    public List<ActivityType> typeListFromString(String val) {
+        return Arrays.stream(val.split(Styles.SEP)).map(ActivityType::valueOf).collect(Collectors.toList());
     }
     @TypeConverter
-    public String typeListToString(List<GroupType> val) {
-        return val.stream().map(GroupType::toString).reduce("",(a, b)->a+Styles.SEP+b).replaceFirst(Styles.SEP, "");
+    public String typeListToString(List<ActivityType> val) {
+        return val.stream().map(ActivityType::toString).reduce("",(a, b)->a+Styles.SEP+b).replaceFirst(Styles.SEP, "");
     }
 }

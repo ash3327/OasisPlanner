@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.RenameTable;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.AutoMigrationSpec;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -17,11 +19,11 @@ import com.aurora.oasisplanner.data.model.entities._Periods;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.model.pojo.Group;
+import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Group;
+import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.tags.AgendaType;
 import com.aurora.oasisplanner.data.tags.AlarmType;
@@ -34,12 +36,12 @@ import java.time.LocalTime;
 
 @Database(
         entities = {
-                _Alarm.class, _Agenda.class, _Group.class, _AlarmList.class, _Doc.class,
+                _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
                 _Period.class, _Periods.class
         },
-        version = 5,
+        version = 6,
         autoMigrations = {
-                @AutoMigration(from=4, to=5)
+                @AutoMigration(from=5, to=6, spec=AppDatabase.Migration5to6.class)
         }
 )
 @TypeConverters({Converters.class})
@@ -91,7 +93,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             "Agenda 1"
                     ).putItems(
                             new _Doc("Doc 1"),
-                            new Group(null).putItems(
+                            new Activity(null).putItems(
                                     new _Doc(Styles.toStyled("Subdoc 1")),
                                     new AlarmList(
                                             AlarmType.notif, Importance.important
@@ -101,7 +103,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     )
                             ),
                             new _Doc("Doc 2"),
-                            new Group(null).putItems(
+                            new Activity(null).putItems(
                                     new _Doc("Subdoc 2"),
                                     new AlarmList(
                                             AlarmType.notif, Importance.regular
@@ -119,7 +121,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             "Agenda 2"
                     ).putItems(
                             new _Doc("Doc 3\ncontains next line"),
-                            new Group(null).putItems(
+                            new Activity(null).putItems(
                                     new _Doc("Subdoc 3"),
                                     new AlarmList(
                                             AlarmType.notif, Importance.regular
@@ -141,4 +143,7 @@ public abstract class AppDatabase extends RoomDatabase {
             return null;
         }
     }
+
+    @RenameTable(fromTableName = "_Group", toTableName = "_Activity")
+    public static class Migration5to6 implements AutoMigrationSpec {}
 }

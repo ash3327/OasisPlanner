@@ -6,16 +6,16 @@ import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities._AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Group;
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.model.entities._Activity;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Group {
+public class Activity {
     @Embedded
-    public _Group group;
+    public _Activity activity;
 
     @Relation(parentColumn = "id", entityColumn = "groupId", entity = _AlarmList.class)
     public List<AlarmList> alarmList = new ArrayList<>();
@@ -31,23 +31,23 @@ public class Group {
     @Ignore
     public boolean visible = true;
 
-    public Group(){}
+    public Activity(){}
 
     /** Please always use this constructor. */
     @Ignore
-    public Group(Object obj) {
-        this.group = new _Group();
+    public Activity(Object obj) {
+        this.activity = new _Activity();
     }
 
     @Ignore
-    public Group putItems(Object... objs) {
+    public Activity putItems(Object... objs) {
         for (Object obj : objs) {
             if (obj instanceof AlarmList) {
-                group.types.add(new GroupType(GroupType.Type.group, alarmList.size()));
+                activity.types.add(new ActivityType(ActivityType.Type.activity, alarmList.size()));
                 alarmList.add((AlarmList) obj);
             }
             if (obj instanceof _Doc) {
-                group.types.add(new GroupType(GroupType.Type.doc, docs.size()));
+                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add((_Doc) obj);
             }
         }
@@ -55,8 +55,8 @@ public class Group {
     }
 
     @Ignore
-    public static Group empty() {
-        return new Group(null).putItems(
+    public static Activity empty() {
+        return new Activity(null).putItems(
                 _Doc.empty()
         );
     }
@@ -64,18 +64,18 @@ public class Group {
     @Ignore
     public List[] getObjList(boolean sort) {
         List<Object> list = new ArrayList<>();
-        List<GroupType.Type> types = new ArrayList<>();
+        List<ActivityType.Type> types = new ArrayList<>();
 
         if (sort) {
             alarmList.sort(Comparator.comparingInt(a -> a.alarmList.i));
             docs.sort(Comparator.comparingInt(a -> a.i));
         }
 
-        for (GroupType gt : group.types) {
+        for (ActivityType gt : activity.types) {
             boolean visible = true;
             Object obj = null;
             switch (gt.type) {
-                case group:
+                case activity:
                     obj = alarmList.get(gt.i);
                     visible = ((AlarmList) obj).visible;
                     break;
@@ -103,29 +103,29 @@ public class Group {
 
         alarmList = new ArrayList<>();
         docs = new ArrayList<>();
-        group.types = new ArrayList<>();
+        activity.types = new ArrayList<>();
 
         int i = 0;
         for (Object obj : list) {
             if (obj instanceof AlarmList) {
-                group.types.add(new GroupType(GroupType.Type.group, alarmList.size()));
+                activity.types.add(new ActivityType(ActivityType.Type.activity, alarmList.size()));
                 alarmList.add(((AlarmList) obj).setI(i));
             }
             if (obj instanceof _Doc) {
-                group.types.add(new GroupType(GroupType.Type.doc, docs.size()));
+                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add(((_Doc) obj).setI(i));
             }
             i++;
         }
     }
 
-    public Group setI(int i) {
-        this.group.i = i;
+    public Activity setI(int i) {
+        this.activity.i = i;
         return this;
     }
 
     @Ignore
     public String toString() {
-        return "\n\t [ Group : "+group.id+" : "+getObjList(false)[0]+"\n\t delete gps: "+invisGroups+"\n\t delete docs: "+invisDocs+"\n\t ]";
+        return "\n\t [ Activity : "+activity.id+" : "+getObjList(false)[0]+"\n\t delete gps: "+invisGroups+"\n\t delete docs: "+invisDocs+"\n\t ]";
     }
 }

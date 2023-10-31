@@ -4,23 +4,23 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity()
-public class _Group {
+public class _Activity {
     @PrimaryKey(autoGenerate = true)
     public long id;
     public long agendaId;
-    public List<GroupType> types = new ArrayList<>();
+    public List<ActivityType> types = new ArrayList<>();
     public int i = -1;
 
-    public _Group(){}
+    public _Activity(){}
 
     @Ignore
-    public _Group(_Agenda agenda) {
+    public _Activity(_Agenda agenda) {
         agendaId = agenda.id;
     }
 }
