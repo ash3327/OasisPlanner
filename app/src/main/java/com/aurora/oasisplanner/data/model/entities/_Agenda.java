@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.tags.AgendaType;
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class _Agenda {
     public long id;
     public String title;
     public AgendaType type;
-    public List<GroupType> types = new ArrayList<>();
+    public List<ActivityType> types = new ArrayList<>();
 
     public _Agenda(){}
 

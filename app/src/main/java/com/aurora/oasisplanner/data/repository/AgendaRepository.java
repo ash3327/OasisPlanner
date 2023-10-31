@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -12,7 +11,7 @@ import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.entities._Period;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.model.pojo.Group;
+import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.Period;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -115,7 +114,7 @@ public class AgendaRepository {
 
         for (_Doc doc : agenda.invisDocs)
             agendaDao.delete(doc);
-        for (Group gp : agenda.invisGroups)
+        for (Activity gp : agenda.invisActivities)
             delete(gp, agendaDao, alarmScheduler);
 
         long id = agendaDao.insert(agenda.agenda);
@@ -126,38 +125,38 @@ public class AgendaRepository {
         }
         String title = agenda.agenda.title;
         SpannableStringBuilder content = _Doc.getFirst(agenda.docs, "");
-        for (Group gp : agenda.groups) {
-            gp.group.agendaId = id;
+        for (Activity gp : agenda.activities) {
+            gp.activity.agendaId = id;
             insert(gp, title, content, agendaDao, alarmScheduler);
         }
         return id;
     }
 
     private static long insert(
-            Group group,
+            Activity activity,
             String title,
             SpannableStringBuilder agendaDescr,
             AgendaDao agendaDao,
             AlarmScheduler alarmScheduler
     ) {
 
-        group.update();
+        activity.update();
 
-        for (_Doc doc : group.invisDocs)
+        for (_Doc doc : activity.invisDocs)
             agendaDao.delete(doc);
-        for (AlarmList gp : group.invisGroups)
+        for (AlarmList gp : activity.invisGroups)
             delete(gp, agendaDao, alarmScheduler);
 
-        long id = agendaDao.insert(group.group);
-        group.group.id = id;
-        for (_Doc doc : group.docs) {
+        long id = agendaDao.insert(activity.activity);
+        activity.activity.id = id;
+        for (_Doc doc : activity.docs) {
             doc.setGroupId(id);
             agendaDao.insert(doc);
         }
-        SpannableStringBuilder alarmDescr = _Doc.getFirst(group.docs, "(no content)");
-        for (AlarmList alarmList : group.alarmList) {
+        SpannableStringBuilder alarmDescr = _Doc.getFirst(activity.docs, "(no content)");
+        for (AlarmList alarmList : activity.alarmList) {
             alarmList.alarmList.groupId = id;
-            alarmList.alarmList.agendaId = group.group.agendaId;
+            alarmList.alarmList.agendaId = activity.activity.agendaId;
             insert(alarmList, title, agendaDescr, alarmDescr, agendaDao, alarmScheduler);
         }
         return id;
@@ -194,17 +193,17 @@ public class AgendaRepository {
 
     private static void delete(Agenda agenda, AgendaDao agendaDao, AlarmScheduler alarmScheduler) {
         agendaDao.delete(agenda.agenda);
-        for (Group gp : agenda.groups)
+        for (Activity gp : agenda.activities)
             delete(gp, agendaDao, alarmScheduler);
         for (_Doc doc : agenda.docs)
             agendaDao.delete(doc);
     }
 
-    private static void delete(Group group, AgendaDao agendaDao, AlarmScheduler alarmScheduler) {
-        agendaDao.delete(group.group);
-        for (AlarmList alarmList : group.alarmList)
+    private static void delete(Activity activity, AgendaDao agendaDao, AlarmScheduler alarmScheduler) {
+        agendaDao.delete(activity.activity);
+        for (AlarmList alarmList : activity.alarmList)
             delete(alarmList, agendaDao, alarmScheduler);
-        for (_Doc doc : group.docs)
+        for (_Doc doc : activity.docs)
             agendaDao.delete(doc);
     }
 

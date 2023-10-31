@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.model.entities._Period;
 import com.aurora.oasisplanner.data.model.entities._Periods;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
@@ -15,7 +16,6 @@ import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Group;
 import com.aurora.oasisplanner.data.model.pojo.Period;
 
 import java.time.LocalDateTime;
@@ -89,20 +89,20 @@ public interface AgendaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Agenda agenda);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Group group);
+    long insert(_Activity activity);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_AlarmList alarmList);
 
     @Delete
     void delete(_Agenda agenda);
     @Delete
-    void delete(_Group group);
+    void delete(_Activity activity);
     @Delete
     void delete(_AlarmList alarmList);
 
     @Query("DELETE FROM _agenda")
     void deleteAllAgendas();
-    @Query("DELETE FROM _group")
+    @Query("DELETE FROM _Activity")
     void deleteAllGroups();
     @Query("DELETE FROM _alarmlist")
     void deleteAllAlarmLists();

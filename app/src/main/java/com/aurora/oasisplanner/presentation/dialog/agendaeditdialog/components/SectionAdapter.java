@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.Group;
+import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
@@ -43,7 +43,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     private Agenda agenda;
     public List<Object> sections = new ArrayList<>();
-    public List<GroupType.Type> types = new ArrayList<>();
+    public List<ActivityType.Type> types = new ArrayList<>();
 
     @Override
     public int getItemViewType(int position) {
@@ -56,7 +56,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         long numClasses = 3;
         if (item instanceof GapData)
             return ((GapData) item).i * numClasses;
-        if (item instanceof Group)
+        if (item instanceof Activity)
             return Styles.hashInt(item) * numClasses + 1;
         if (item instanceof _Doc)
             return Styles.hashInt(item) * numClasses + 2;
@@ -68,11 +68,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public AlarmGroupsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewDataBinding binding = null;
         LayoutInflater li = LayoutInflater.from(parent.getContext());
-        switch (GroupType.Type.values()[viewType]) {
+        switch (ActivityType.Type.values()[viewType]) {
             case gap:
                 binding = SectionGapBinding.inflate(li, parent, false);
                 break;
-            case group:
+            case activity:
                 binding = SectionBinding.inflate(li, parent, false);
                 break;
             case doc:
@@ -98,19 +98,19 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
         List<Object> list = new ArrayList<>();
-        List<GroupType.Type> types = new ArrayList<>();
+        List<ActivityType.Type> types = new ArrayList<>();
 
         int i = 0;
         List[] objlist = agenda.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(new GapData(i));
-            types.add(GroupType.Type.gap);
+            types.add(ActivityType.Type.gap);
             list.add(obj);
-            types.add((GroupType.Type) objlist[1].get(i));
+            types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
         list.add(new GapData(i));
-        types.add(GroupType.Type.gap);
+        types.add(ActivityType.Type.gap);
 
         this.sections = list;
         this.types = types;
@@ -118,8 +118,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
 
     public void remove(Object obj, int i) {
-        if (obj instanceof Group)
-            ((Group) obj).visible = false;
+        if (obj instanceof Activity)
+            ((Activity) obj).visible = false;
         if (obj instanceof _Doc)
             ((_Doc) obj).visible = false;
         agenda.agenda.types.remove(i);
@@ -128,16 +128,16 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(GroupType.Type type, int i) {
+    public void insert(ActivityType.Type type, int i) {
         switch (type) {
-            case group:
-                Group gp = Group.empty();
-                agenda.agenda.types.add(i, new GroupType(type, agenda.groups.size()));
-                agenda.groups.add(gp);
+            case activity:
+                Activity gp = Activity.empty();
+                agenda.agenda.types.add(i, new ActivityType(type, agenda.activities.size()));
+                agenda.activities.add(gp);
                 break;
             case doc:
                 _Doc doc = _Doc.empty();
-                agenda.agenda.types.add(i, new GroupType(type, agenda.docs.size()));
+                agenda.agenda.types.add(i, new ActivityType(type, agenda.docs.size()));
                 agenda.docs.add(doc);
                 break;
         }
@@ -159,8 +159,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         public boolean bind(int i, Object sect) {
             if (sect instanceof GapData)
                 return bindGap(i, (GapData) sect);
-            if (sect instanceof Group)
-                return bindGroup(i, (Group) sect);
+            if (sect instanceof Activity)
+                return bindGroup(i, (Activity) sect);
             if (sect instanceof _Doc)
                 return bindDoc(i, (_Doc) sect);
             return false;
@@ -177,20 +177,20 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnAddGroup.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                             adapter.insert(GroupType.Type.group, gap.i);
+                             adapter.insert(ActivityType.Type.activity, gap.i);
                     }
             );
             binding.btnAddDoc.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                            adapter.insert(GroupType.Type.doc, gap.i);
+                            adapter.insert(ActivityType.Type.doc, gap.i);
                     }
             );
 
             return true;
         }
 
-        public boolean bindGroup(int i, Group gp) {
+        public boolean bindGroup(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
 
             binding.bar.setOnClickListener(

@@ -14,10 +14,10 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.model.pojo.Group;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.tags.GroupType;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
@@ -45,9 +45,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         id = new Id(-1, ID_KEY_ITEMS);
     }
 
-    private Group group;
+    private Activity activity;
     public List<Object> sections = new ArrayList<>();
-    public List<GroupType.Type> types = new ArrayList<>();
+    public List<ActivityType.Type> types = new ArrayList<>();
 
     public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid) {
         this.onSaveAlarmListener = onSaveAlarmListener;
@@ -83,11 +83,11 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public AlarmGroupsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewDataBinding binding = null;
         LayoutInflater li = LayoutInflater.from(parent.getContext());
-        switch (GroupType.Type.values()[viewType]) {
+        switch (ActivityType.Type.values()[viewType]) {
             case gap:
                 binding = ItemGapBinding.inflate(li, parent, false);
                 break;
-            case group:
+            case activity:
                 binding = ItemAlarmBinding.inflate(li, parent, false);
                 break;
             case doc:
@@ -99,7 +99,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AlarmGroupsHolder holder, int position) {
-        holder.bind(position, sections.get(position), group);
+        holder.bind(position, sections.get(position), activity);
     }
 
     @Override
@@ -110,22 +110,22 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(Activity activity) {
+        this.activity = activity;
         List<Object> list = new ArrayList<>();
-        List<GroupType.Type> types = new ArrayList<>();
+        List<ActivityType.Type> types = new ArrayList<>();
 
         int i = 0;
-        List[] objlist = group.getObjList(true);
+        List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(new GapData(i));
-            types.add(GroupType.Type.gap);
+            types.add(ActivityType.Type.gap);
             list.add(obj);
-            types.add((GroupType.Type) objlist[1].get(i));
+            types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
         list.add(new GapData(i));
-        types.add(GroupType.Type.gap);
+        types.add(ActivityType.Type.gap);
 
         this.sections = list;
         this.types = types;
@@ -134,37 +134,37 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     }
 
     public void remove(Object obj, int i) {
-        GroupType type = group.group.types.get(i);
+        ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
-        if (obj instanceof AlarmList && type.type == GroupType.Type.group && group.alarmList.get(type.i).equals(obj))
+        if (obj instanceof AlarmList && type.type == ActivityType.Type.activity && activity.alarmList.get(type.i).equals(obj))
             ((AlarmList) obj).visible = false;
-        else if (obj instanceof _Doc && type.type == GroupType.Type.doc && group.docs.get(type.i).equals(obj))
+        else if (obj instanceof _Doc && type.type == ActivityType.Type.doc && activity.docs.get(type.i).equals(obj))
             ((_Doc) obj).visible = false;
         else valid = false;
         if (valid) {
-            group.group.types.remove(i);
-            group.update();
-            setGroup(group);
+            activity.activity.types.remove(i);
+            activity.update();
+            setGroup(activity);
         }
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(GroupType.Type type, int i) {
+    public void insert(ActivityType.Type type, int i) {
         switch (type) {
-            case group:
+            case activity:
                 AlarmList gp = AlarmList.empty();
-                group.group.types.add(i, new GroupType(type, group.alarmList.size()));
-                group.alarmList.add(gp);
+                activity.activity.types.add(i, new ActivityType(type, activity.alarmList.size()));
+                activity.alarmList.add(gp);
                 break;
             case doc:
                 _Doc doc = _Doc.empty();
-                group.group.types.add(i, new GroupType(type, group.docs.size()));
-                group.docs.add(doc);
+                activity.activity.types.add(i, new ActivityType(type, activity.docs.size()));
+                activity.docs.add(doc);
                 break;
         }
         id.setId(i * 2 + 1);
-        group.update();
-        setGroup(group);
+        activity.update();
+        setGroup(activity);
     }
 
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {
@@ -182,7 +182,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             this.len = len;
         }
 
-        public boolean bind(int i, Object sect, Group gp) {
+        public boolean bind(int i, Object sect, Activity gp) {
             this.item = sect;
             aSwitch.setState(false);
             if (sect instanceof GapData)
@@ -208,20 +208,20 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             binding.btnAddDoc.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                            adapter.insert(GroupType.Type.doc, gap.i);
+                            adapter.insert(ActivityType.Type.doc, gap.i);
                     }
             );
             binding.btnAddGroup.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                            adapter.insert(GroupType.Type.group, gap.i);
+                            adapter.insert(ActivityType.Type.activity, gap.i);
                     }
             );
 
             return true;
         }
 
-        public boolean bindAlarms(int i, AlarmList gp, Group grp) {
+        public boolean bindAlarms(int i, AlarmList gp, Activity grp) {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
             aSwitch.observe((state)-> {
