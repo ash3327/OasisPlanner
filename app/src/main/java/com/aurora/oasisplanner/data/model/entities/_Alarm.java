@@ -12,6 +12,7 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +25,7 @@ public class _Alarm {
     public SpannableStringBuilder agendaDescr;
     public SpannableStringBuilder alarmDescr;
     public LocalDateTime datetime;
+    public Duration duration;
     public LocalDate date;
     public AlarmType type;
     public Importance importance;

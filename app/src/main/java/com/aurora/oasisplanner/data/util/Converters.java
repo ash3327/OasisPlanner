@@ -7,6 +7,7 @@ import androidx.room.TypeConverter;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,6 +18,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Converters {
+    @TypeConverter
+    public Duration durationFromLong(Long value) {
+        return value == null ? null : Duration.ofSeconds(value);
+    }
+    @TypeConverter
+    public Long durationToLong(Duration duration) {
+        return duration == null ? null : duration.getSeconds();
+    }
+
     @TypeConverter
     public LocalDateTime datetimeFromTimestamp(Long val) {
         return LocalDateTime.ofEpochSecond(val, 0, ZoneOffset.UTC);
