@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -99,6 +100,7 @@ public class AlarmNotificationService extends Service {
 
         // delay alarm service
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)
+                .setColor(Color.argb(0, 0, 0, 0))
                 .setSmallIcon(R.drawable.menuic_sprout)
                 .setContentTitle(alarm.title)
                 .setContentText(alarm.getContents(false))

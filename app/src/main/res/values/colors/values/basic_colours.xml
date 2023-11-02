@@ -13,6 +13,7 @@
     <color name="grey_800">#FF383838</color>
     <color name="grey_900">#FF2B2B2B</color>
     <color name="grey_900_50">#EE2B2B2B</color>
+    <color name="grey_900_25">#882B2B2B</color>
 
     <color name="red_100">#FFFCBBDD</color>
     <color name="red_200">#FFFC86BB</color>

@@ -70,4 +70,9 @@
     <color name="mask">            @color/grey_900_50</color>
     <color name="deadline_col">     @color/red_900_90</color>
     <color name="deadline_mask">    @color/red_900_50</color>
+
+    <!-- Notification Colors -->
+    <color name="notif_dark_alpha">@color/grey_900_50</color>
+    <color name="notif_light_alpha">@color/white     </color>
+    <color name="notif_edge_color"> @color/yellow_500</color>
 </resources>
