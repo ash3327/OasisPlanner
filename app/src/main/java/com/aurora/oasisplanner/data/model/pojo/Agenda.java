@@ -25,7 +25,7 @@ public class Agenda {
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
-    public List<Activity> invisActivities = new ArrayList<>();
+    public List<Activity> invisGroups = new ArrayList<>();
     @Ignore
     public List<_Doc> invisDocs = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class Agenda {
             }
         }
         for (Activity gp : activities)
-            if (!gp.visible) invisActivities.add(gp);
+            if (!gp.visible) invisGroups.add(gp);
         for (_Doc doc : docs)
             if (!doc.visible) invisDocs.add(doc);
 
@@ -118,6 +118,6 @@ public class Agenda {
 
     @Ignore
     public String toString() {
-        return "\n [ Agenda : "+agenda.id+" : "+agenda.title+" : "+getObjList(false)[0]+"\n delete gps: "+ invisActivities +"\n delete docs: "+invisDocs+"\n ]";
+        return "\n [ Agenda : "+agenda.id+" : "+agenda.title+" : "+getObjList(false)[0]+"\n delete gps: "+ invisGroups +"\n delete docs: "+invisDocs+"\n ]";
     }
 }

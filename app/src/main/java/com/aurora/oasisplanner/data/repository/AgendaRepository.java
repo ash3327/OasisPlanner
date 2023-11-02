@@ -114,7 +114,7 @@ public class AgendaRepository {
 
         for (_Doc doc : agenda.invisDocs)
             agendaDao.delete(doc);
-        for (Activity gp : agenda.invisActivities)
+        for (Activity gp : agenda.invisGroups)
             delete(gp, agendaDao, alarmScheduler);
 
         long id = agendaDao.insert(agenda.agenda);
