@@ -61,8 +61,7 @@ public class AlarmNotificationService extends Service {
     final String SHORTCUT_ID = "OasisShortcutId";
     @SuppressLint("UnspecifiedImmutableFlag")
     public void showNotification(_Alarm alarm) {
-        if (MainActivity.main == null)
-            Resources.context = this;
+        Resources.context = this;
 
         Intent activityIntent = new Intent(this, MainActivity.class);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, NotificationMode.AGENDA.name());
@@ -101,7 +100,7 @@ public class AlarmNotificationService extends Service {
         // delay alarm service
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)
                 .setColor(Color.argb(0, 0, 0, 0))
-                .setSmallIcon(R.drawable.menuic_sprout)
+                .setSmallIcon(R.drawable.ic_agenda_calendar)
                 .setContentTitle(alarm.title)
                 .setContentText(alarm.getContents(false))
                 .setCustomContentView(expandedView)//collapsedView)
@@ -135,6 +134,8 @@ public class AlarmNotificationService extends Service {
                 // same id -> update notification instead
                 (int) alarm.id, notification
         );
+
+        Resources.context = MainActivity.main;
     }
 
 }
