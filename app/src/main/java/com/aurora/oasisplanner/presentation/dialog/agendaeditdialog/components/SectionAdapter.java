@@ -160,7 +160,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             if (sect instanceof GapData)
                 return bindGap(i, (GapData) sect);
             if (sect instanceof Activity)
-                return bindGroup(i, (Activity) sect);
+                return bindActivity(i, (Activity) sect);
             if (sect instanceof _Doc)
                 return bindDoc(i, (_Doc) sect);
             return false;
@@ -190,7 +190,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             return true;
         }
 
-        public boolean bindGroup(int i, Activity gp) {
+        public boolean bindActivity(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
 
             binding.bar.setOnClickListener(
