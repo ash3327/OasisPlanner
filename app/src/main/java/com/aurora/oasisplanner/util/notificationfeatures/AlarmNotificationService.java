@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -60,8 +61,7 @@ public class AlarmNotificationService extends Service {
     final String SHORTCUT_ID = "OasisShortcutId";
     @SuppressLint("UnspecifiedImmutableFlag")
     public void showNotification(_Alarm alarm) {
-        if (MainActivity.main == null)
-            Resources.context = this;
+        Resources.context = this;
 
         Intent activityIntent = new Intent(this, MainActivity.class);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, NotificationMode.AGENDA.name());
@@ -99,7 +99,8 @@ public class AlarmNotificationService extends Service {
 
         // delay alarm service
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)
-                .setSmallIcon(R.drawable.menuic_sprout)
+                .setColor(Color.argb(0, 0, 0, 0))
+                .setSmallIcon(R.drawable.ic_agenda_calendar)
                 .setContentTitle(alarm.title)
                 .setContentText(alarm.getContents(false))
                 .setCustomContentView(expandedView)//collapsedView)
@@ -133,6 +134,8 @@ public class AlarmNotificationService extends Service {
                 // same id -> update notification instead
                 (int) alarm.id, notification
         );
+
+        Resources.context = MainActivity.main;
     }
 
 }

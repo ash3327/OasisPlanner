@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/appic_sprout2.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_app_logo_sprout.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_launcher_foreground.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_note.xml" value="0.1" />
@@ -70,6 +72,9 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/nav_view_item_bgview.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/nav_view_item_bgview_a.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/nav_view_item_textcolor.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/notifstyle_border_gold.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/notifstyle_border_light.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/notifstyle_noborder_dark.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/radio_unchecked.xml" value="0.1505" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_circle.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_square.xml" value="0.1" />
@@ -78,6 +83,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/tab_back_menu_tabs.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/tab_back_select.xml" value="0.1165" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/tab_back_tabs.xml" value="0.1165" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/tab_icons/drawable/appic_sprout.xml" value="0.10666666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/tab_icons/drawable/ic_calendar.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/tab_icons/drawable/ic_dashboard.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/tab_icons/drawable/ic_dollarsign.xml" value="0.1" />
