@@ -33,8 +33,7 @@
     <!-- Importance Colors -->
     <color name="pr_unimportant">   @color/grey_500</color>
     <color name="pr_routine">       @color/grey_500  </color>
-    <color name="pr_standard">      @color/blue_500  </color>
-    <color name="pr_todo">          @color/blue_300  </color>
+    <color name="pr_standard">      @color/blue_400  </color>
     <color name="pr_special">       @color/green_700 </color>
     <color name="pr_semi_important">@color/yellow_700</color>
     <color name="pr_important">     @color/red_500   </color>

@@ -202,14 +202,23 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setOnClickListener(
                     (v)->adapter.remove(gp, i/2)
             );
-            binding.btnDelete.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
+            int visibility = id.equals(i) ? View.VISIBLE : View.GONE;
+            binding.btnDelete.setVisibility(visibility);
+            binding.sectionItems.setVisibility(visibility);
 
             Drawable icon = gp.activity.getType().getDrawable();
             icon.setColorFilter(
-                    gp.activity.getImportance().getColorSc(),
+                    gp.activity.getImportance().getColorPr(),
                     PorterDuff.Mode.SRC_IN
             );
             binding.docIcon.setImageDrawable(icon);
+
+            Drawable bg = binding.sectionCard.getBackground();
+            bg.setColorFilter(
+                    gp.activity.getImportance().getColorPr(),
+                    PorterDuff.Mode.SRC_IN
+            );//*/
+            binding.sectionCard.setBackground(bg);
 
             RecyclerView recyclerView = binding.sectionItems;
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));

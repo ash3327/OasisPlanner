@@ -66,7 +66,7 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
 
         RecyclerView recyclerView = binding.pageSections;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
