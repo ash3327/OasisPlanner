@@ -11,10 +11,13 @@ import java.util.List;
 
 @Entity()
 public class _Activity {
+    public enum Type {event, task}
+
     @PrimaryKey(autoGenerate = true)
     public long id;
     public long agendaId;
     public List<ActivityType> types = new ArrayList<>();
+    public Type type = Type.event;
     public int i = -1;
 
     public _Activity(){}
