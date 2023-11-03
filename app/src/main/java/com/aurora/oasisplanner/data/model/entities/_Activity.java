@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.entities;
 
 import android.graphics.drawable.Drawable;
+import android.text.SpannableStringBuilder;
 
 import androidx.annotation.DrawableRes;
 import androidx.room.ColumnInfo;
@@ -39,7 +40,7 @@ public class _Activity {
     public Type type;
     public Importance importance;
     @ColumnInfo(defaultValue = "")
-    public String descr;
+    public SpannableStringBuilder descr;
     public int i = -1;
 
     public _Activity(){}

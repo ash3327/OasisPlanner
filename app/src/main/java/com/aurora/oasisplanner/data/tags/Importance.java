@@ -40,6 +40,9 @@ public enum Importance {
             return R.drawable.g_iimportant;
         return R.drawable.g_regular_v2;
     }
+    public static Importance max(Importance a, Importance b) {
+        return (a.ordinal() > b.ordinal()) ? a : b;
+    }
     public String toString() {
         return Resources.getString(importanceLevelIds[getImportance()][Resources.STRING]);
     }

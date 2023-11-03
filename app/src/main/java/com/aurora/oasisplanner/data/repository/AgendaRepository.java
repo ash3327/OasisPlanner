@@ -13,6 +13,7 @@ import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.Period;
+import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.time.LocalDateTime;
@@ -147,13 +148,20 @@ public class AgendaRepository {
         for (AlarmList gp : activity.invisGroups)
             delete(gp, agendaDao, alarmScheduler);
 
+        SpannableStringBuilder alarmDescr = _Doc.getFirst(activity.docs, "(no content)");
+        activity.activity.descr = alarmDescr;
+
+        Importance activityImp = Importance.unimportant;
+        for (AlarmList alarmList : activity.alarmList)
+            activityImp = Importance.max(activityImp, alarmList.alarmList.importance);
+        activity.activity.importance = activityImp;
+
         long id = agendaDao.insert(activity.activity);
         activity.activity.id = id;
         for (_Doc doc : activity.docs) {
             doc.setGroupId(id);
             agendaDao.insert(doc);
         }
-        SpannableStringBuilder alarmDescr = _Doc.getFirst(activity.docs, "(no content)");
         for (AlarmList alarmList : activity.alarmList) {
             alarmList.alarmList.groupId = id;
             alarmList.alarmList.agendaId = activity.activity.agendaId;
