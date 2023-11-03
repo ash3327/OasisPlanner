@@ -38,6 +38,8 @@ public class _Activity {
     public List<ActivityType> types = new ArrayList<>();
     public Type type;
     public Importance importance;
+    @ColumnInfo(defaultValue = "")
+    public String descr;
     public int i = -1;
 
     public _Activity(){}
