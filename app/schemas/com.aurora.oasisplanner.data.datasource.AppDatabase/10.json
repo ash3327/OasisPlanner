@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 8,
-    "identityHash": "7e8dcc49f0decd6c94ebcb74317500fe",
+    "version": 10,
+    "identityHash": "afd618fd8b5903e2bdf1a34e0ac0e61c",
     "entities": [
       {
         "tableName": "_Alarm",
@@ -124,7 +124,7 @@
       },
       {
         "tableName": "_Activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `agendaId` INTEGER NOT NULL, `types` TEXT, `type` TEXT DEFAULT NULL, `importance` TEXT DEFAULT NULL, `i` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `agendaId` INTEGER NOT NULL, `types` TEXT, `type` TEXT, `importance` TEXT, `i` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -148,15 +148,13 @@
             "fieldPath": "type",
             "columnName": "type",
             "affinity": "TEXT",
-            "notNull": false,
-            "defaultValue": "NULL"
+            "notNull": false
           },
           {
             "fieldPath": "importance",
             "columnName": "importance",
             "affinity": "TEXT",
-            "notNull": false,
-            "defaultValue": "NULL"
+            "notNull": false
           },
           {
             "fieldPath": "i",
@@ -367,7 +365,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e8dcc49f0decd6c94ebcb74317500fe')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'afd618fd8b5903e2bdf1a34e0ac0e61c')"
     ]
   }
 }

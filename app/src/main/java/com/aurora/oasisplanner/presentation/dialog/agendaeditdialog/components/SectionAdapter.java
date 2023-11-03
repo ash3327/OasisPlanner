@@ -1,6 +1,8 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -22,6 +24,7 @@ import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
+import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.util.ArrayList;
@@ -200,6 +203,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (v)->adapter.remove(gp, i/2)
             );
             binding.btnDelete.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
+
+            Drawable icon = gp.activity.getType().getDrawable();
+            icon.setColorFilter(
+                    gp.activity.getImportance().getColorSc(),
+                    PorterDuff.Mode.SRC_IN
+            );
+            binding.docIcon.setImageDrawable(icon);
 
             RecyclerView recyclerView = binding.sectionItems;
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
