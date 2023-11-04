@@ -202,7 +202,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setOnClickListener(
                     (v)->adapter.remove(gp, i/2)
             );
-            int visibility = id.equals(i) ? View.VISIBLE : View.GONE;
+            boolean expanded = id.equals(i);
+            int visibility = expanded ? View.VISIBLE : View.GONE;
             binding.btnDelete.setVisibility(visibility);
             binding.sectionItems.setVisibility(visibility);
 
@@ -221,6 +222,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.sectionCard.setBackground(bg);
 
             binding.docTag.setText(gp.activity.descr);
+            binding.docTag.setFocusable(expanded);
+            binding.docTag.setOnClickListener(
+                    (v)->{
+                        boolean _expanded = id.equals(i);
+                        if (!_expanded)
+                            id.setId(i);
+                        v.setFocusable(_expanded);
+                    }
+            );
 
             RecyclerView recyclerView = binding.sectionItems;
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));

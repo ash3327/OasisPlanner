@@ -50,14 +50,20 @@
                 app:layout_constraintStart_toEndOf="@id/section_card"
                 app:layout_constraintTop_toTopOf="parent"
                 android:orientation="vertical">
-                <TextView
+                <EditText
                     android:id="@+id/doc_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     android:text="@string/event_tag"
                     android:textColor="@color/grey_700"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:theme="@style/EditTextTheme"
+                    android:textSize="@dimen/boxtitle_textsize"
+
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:background="@null"/>
             </LinearLayout>
 
             <ImageView
