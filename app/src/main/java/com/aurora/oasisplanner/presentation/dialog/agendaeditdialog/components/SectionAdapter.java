@@ -16,6 +16,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Doc;
@@ -221,9 +222,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             );//*/
             binding.sectionCard.setBackground(bg);
 
-            binding.docTag.setText(gp.activity.descr);
-            binding.docTag.setFocusable(expanded);
-            binding.docTag.setOnClickListener(
+            EditText docText = binding.docTag;
+            associate(docText, gp.activity);
+            docText.setFocusable(expanded);
+            docText.setOnClickListener(
                     (v)->{
                         boolean _expanded = id.equals(i);
                         if (!_expanded)
@@ -231,6 +233,25 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                         v.setFocusable(_expanded);
                     }
             );
+            TextWatcher textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    docText.clearComposingText();
+                    gp.activity.descr = new SpannableStringBuilder(docText.getText());
+                }
+            };
+            docText.setTag(textWatcher);
+            docText.addTextChangedListener(textWatcher);
 
             RecyclerView recyclerView = binding.sectionItems;
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
@@ -244,6 +265,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             return true;
         }
+        public void associate(EditText editText, _Activity activity) {
+            //prevents triggering at the initial change in text (initialization)
+            Object tag = editText.getTag();
+            if (tag instanceof TextWatcher)
+                editText.removeTextChangedListener((TextWatcher) tag);
+
+            editText.setText(activity.descr);
+        }
+
         public boolean bindDoc(int i, _Doc doc) {
             SectionDocBinding binding = (SectionDocBinding) vbinding;
 

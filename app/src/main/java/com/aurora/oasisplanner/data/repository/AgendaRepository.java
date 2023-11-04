@@ -148,9 +148,8 @@ public class AgendaRepository {
         for (AlarmList gp : activity.invisGroups)
             delete(gp, agendaDao, alarmScheduler);
 
-        // TODO: Agenda Description = First Alarm Description (Temporarily)
-        SpannableStringBuilder alarmDescr = _Doc.getFirst(activity.docs, "(no content)");
-        activity.activity.descr = alarmDescr;
+        SpannableStringBuilder alarmDescr = activity.activity.descr;//_Doc.getFirst(activity.docs, "(no content)");
+        //activity.activity.descr = alarmDescr;//*/
 
         // TODO: Agenda Importance = Max (Alarm Importance, temporarily)
         Importance activityImp = Importance.unimportant;
