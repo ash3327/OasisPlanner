@@ -220,6 +220,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             );//*/
             binding.sectionCard.setBackground(bg);
 
+            binding.docTag.setText(gp.activity.descr);
+
             RecyclerView recyclerView = binding.sectionItems;
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
             recyclerView.setHasFixedSize(true);
