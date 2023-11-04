@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo;
 
+import static com.aurora.oasisplanner.data.tags.ActivityType.Type.doc;
+
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -31,9 +33,10 @@ public class Activity {
     @Ignore
     public boolean visible = true;
 
+    /** This constructor is not for programmer access. Please use Activity(null) instead. */
     public Activity(){}
 
-    /** Please always use this constructor. */
+    /** Please always use this constructor with content NULL. */
     @Ignore
     public Activity(Object obj) {
         this.activity = new _Activity();
@@ -47,7 +50,7 @@ public class Activity {
                 alarmList.add((AlarmList) obj);
             }
             if (obj instanceof _Doc) {
-                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
+                //activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add((_Doc) obj);
             }
         }
@@ -84,7 +87,7 @@ public class Activity {
                     visible = ((_Doc) obj).visible;
                     break;
             }
-            if (visible && obj != null) {
+            if (visible && obj != null && gt.type != doc) {
                 list.add(obj);
                 types.add(gt.type);
             }
@@ -112,7 +115,7 @@ public class Activity {
                 alarmList.add(((AlarmList) obj).setI(i));
             }
             if (obj instanceof _Doc) {
-                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
+                activity.types.add(new ActivityType(doc, docs.size()));
                 docs.add(((_Doc) obj).setI(i));
             }
             i++;

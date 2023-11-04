@@ -205,12 +205,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             binding.expandedTab.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
             binding.collapsedTab.setVisibility(id.equals(i) ? View.GONE : View.VISIBLE);
             binding.veryCollapsedTab.setVisibility(parentId.equals(pid) || gap.i == 0 || gap.i == len ? View.GONE : View.VISIBLE);
-            binding.btnAddDoc.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.doc, gap.i);
-                    }
-            );
             binding.btnAddGroup.setOnClickListener(
                     (v)->{
                         if (id.equals(i))

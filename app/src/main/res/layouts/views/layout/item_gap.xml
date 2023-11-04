@@ -56,25 +56,6 @@
                                 android:layout_marginVertical="2dp"
                                 android:layout_marginHorizontal="7dp">
                                 <LinearLayout
-                                    android:id="@+id/btn_add_doc"
-                                    android:layout_width="75dp"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:background="@color/add_note_col">
-                                    <ImageView
-                                        android:layout_width="@dimen/medium_icon_height"
-                                        android:layout_height="@dimen/medium_icon_height"
-                                        android:src="@drawable/ic_add_note"
-                                        app:tint="@color/grey_700" />
-                                </LinearLayout>
-                            </androidx.cardview.widget.CardView>
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardCornerRadius="@dimen/card_radius"
-                                android:layout_marginVertical="2dp"
-                                android:layout_marginHorizontal="7dp">
-                                <LinearLayout
                                     android:id="@+id/btn_add_group"
                                     android:layout_width="75dp"
                                     android:layout_height="wrap_content"
