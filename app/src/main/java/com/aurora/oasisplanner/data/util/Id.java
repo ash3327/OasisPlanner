@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.data.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +20,14 @@ public class Id {
         idMap.put(key, this);
     }
     public int getId(){ return id; }
+
+    /** returns if the id is changed. */
+    public boolean setId(int id, String logTo) {
+        if (logTo != null)
+            Log.d(logTo, this.id + " -> " + id);
+        return setId(id);
+    }
+    /** returns if the id is changed. */
     public boolean setId(int id) {
         boolean changed = this.id != id;
         if (changed)

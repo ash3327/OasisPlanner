@@ -61,6 +61,7 @@
                     android:theme="@style/EditTextTheme"
                     android:textSize="@dimen/boxtitle_textsize"
 
+                    android:focusableInTouchMode="true"
                     android:inputType="text"
                     android:maxLines="1"
                     android:background="@null"/>

@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -224,15 +226,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             EditText docText = binding.docTag;
             associate(docText, gp.activity);
-            docText.setFocusable(expanded);
+            docText.setFocusableInTouchMode(true);
+            docText.setFocusable(id.equals(i));
             docText.setOnClickListener(
                     (v)->{
-                        boolean _expanded = id.equals(i);
-                        if (!_expanded)
-                            id.setId(i);
-                        v.setFocusable(_expanded);
+                        docText.setFocusable(true);
+                        id.setId(i);
                     }
-            );
+            );//*/
+
             TextWatcher textWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
