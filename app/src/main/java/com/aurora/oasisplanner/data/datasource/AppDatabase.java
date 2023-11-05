@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.DeleteColumn;
+import androidx.room.DeleteTable;
 import androidx.room.RenameTable;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -15,8 +16,6 @@ import androidx.room.migration.AutoMigrationSpec;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities._Period;
-import com.aurora.oasisplanner.data.model.entities._Periods;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -37,17 +36,17 @@ import java.time.LocalTime;
 
 @Database(
         entities = {
-                _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
-                _Period.class, _Periods.class
+                _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class
         },
-        version = 11,
+        version = 12,
         autoMigrations = {
                 @AutoMigration(from=5, to=6, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=6, to=7),
                 @AutoMigration(from=7, to=8),
                 @AutoMigration(from=8, to=9, spec=AppDatabase.Migration8to9.class),
                 @AutoMigration(from=9, to=10),
-                @AutoMigration(from=10, to=11)
+                @AutoMigration(from=10, to=11),
+                @AutoMigration(from=11, to=12, spec=AppDatabase.Migration11to12.class)
         }
 )
 @TypeConverters({Converters.class})
@@ -155,4 +154,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     @DeleteColumn(tableName = "_Activity", columnName = "importance")
     public static class Migration8to9 implements AutoMigrationSpec {}
+
+    @DeleteTable(tableName = "_Period")
+    @DeleteTable(tableName = "_Periods")
+    public static class Migration11to12 implements AutoMigrationSpec {}
 }

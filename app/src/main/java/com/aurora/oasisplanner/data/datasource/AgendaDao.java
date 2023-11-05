@@ -9,14 +9,11 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.model.entities._Activity;
-import com.aurora.oasisplanner.data.model.entities._Period;
-import com.aurora.oasisplanner.data.model.entities._Periods;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.pojo.Period;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,38 +40,6 @@ public interface AgendaDao {
 
     @Query("DELETE FROM _Alarm")
     void deleteAllAlarms();
-
-    // INFO: PERIODS
-
-    @Transaction
-    @Query("SELECT * FROM _periods")
-    LiveData<List<Period>> getPeriods();
-
-    @Transaction
-    @Query("SELECT * FROM _periods WHERE toDate >= :fromDate ORDER BY fromDate ASC")
-    LiveData<List<Period>> getPeriodsAfter(LocalDateTime fromDate);
-
-    @Transaction
-    @Query("SELECT * FROM _periods WHERE id = :id")
-    Period getPeriodById(long id);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Period period);
-
-    @Delete
-    void delete(_Period period);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Periods period);
-
-    @Delete
-    void delete(_Periods period);
-
-    @Query("DELETE FROM _Period")
-    void deleteAllPeriod();
-
-    @Query("DELETE FROM _Periods")
-    void deleteAllPeriods();
 
     // INFO: AGENDAS
 

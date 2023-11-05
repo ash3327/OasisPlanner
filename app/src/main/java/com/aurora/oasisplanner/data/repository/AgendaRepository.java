@@ -3,21 +3,14 @@ package com.aurora.oasisplanner.data.repository;
 import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 
-import androidx.lifecycle.LiveData;
-
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Period;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.pojo.Period;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class AgendaRepository {
     private AgendaDao agendaDao;
@@ -232,88 +225,5 @@ public class AgendaRepository {
             for (_Alarm alarm : agendaDao.getAlarms())
                 alarmScheduler.cancel(alarm);
         agendaDao.deleteAllAlarms();
-    }
-
-    // INFO: Period
-
-    public LiveData<List<Period>> getPeriodsAfter(LocalDateTime time) {
-        try {
-            return new GetPeriodsAsyncTask(agendaDao).execute(time).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Period Not Found Exception: "+e.getMessage());
-        }
-    }
-
-    private static class GetPeriodsAsyncTask extends AsyncTask<LocalDateTime, Void, LiveData<List<Period>>> {
-        private AgendaDao agendaDao;
-
-        private GetPeriodsAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
-        }
-
-        @Override
-        protected LiveData<List<Period>> doInBackground(LocalDateTime... times) {
-            return agendaDao.getPeriodsAfter(times[0]);
-        }
-    }
-
-    // insert & delete
-
-    public void insert(Period period) {
-        new InsertPeriodAsyncTask(agendaDao).execute(period);
-    }
-
-    public void delete(Period period) {
-        new DeletePeriodAsyncTask(agendaDao).execute(period);
-    }
-
-    private static class InsertPeriodAsyncTask extends AsyncTask<Period, Void, Void> {
-        private AgendaDao agendaDao;
-
-        private InsertPeriodAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
-        }
-
-        @Override
-        protected Void doInBackground(Period... periods) {
-            insert(periods[0], agendaDao);
-            return null;
-        }
-    }
-    private static class DeletePeriodAsyncTask extends AsyncTask<Period, Void, Void> {
-        private AgendaDao agendaDao;
-
-        private DeletePeriodAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
-        }
-
-        @Override
-        protected Void doInBackground(Period... periods) {
-            delete(periods[0], agendaDao);
-            return null;
-        }
-    }
-
-    private static long insert(Period period, AgendaDao agendaDao) {
-        // convert to object list without invisible
-        // convert back
-
-        long id = agendaDao.insert(period.period);
-        period.period.id = id;
-        for (_Period p : period.periods) {
-            p.parentPeriodId = id;
-            if (!p.visible)
-                agendaDao.delete(p);
-            else agendaDao.insert(p);
-        }
-
-        return id;
-    }
-
-    private static void delete(Period period, AgendaDao agendaDao) {
-        agendaDao.delete(period.period);
-        for (_Period p : period.periods)
-            agendaDao.delete(p);
     }
 }
