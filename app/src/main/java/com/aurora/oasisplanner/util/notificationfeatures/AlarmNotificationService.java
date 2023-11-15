@@ -135,7 +135,8 @@ public class AlarmNotificationService extends Service {
                 (int) alarm.id, notification
         );
 
-        Resources.context = MainActivity.main;
+        if (MainActivity.main != null)
+            Resources.context = MainActivity.main;
     }
 
 }
