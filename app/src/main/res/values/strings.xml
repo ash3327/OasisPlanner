@@ -50,8 +50,9 @@
             <string name="new_note">New Note</string>
 
     <!-- Bars -->
-    <string name="bar_notif">notif</string>
+    <string name="bar_notif">Notif</string>
     <string name="bar_task">Task</string>
+    <string name="bar_event">Event</string>
 
     <!-- Edit _Agenda Dialog / Page -->
         <!-- PAGE OVERHEAD TITLE -->

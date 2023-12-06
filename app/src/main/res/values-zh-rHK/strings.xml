@@ -53,6 +53,7 @@
     <!-- Bars -->
     <string name="bar_notif">通知</string>
     <string name="bar_task">任務</string>
+    <string name="bar_event">活動</string>
 
     <!-- Edit _Agenda Dialog / Page -->
         <!-- PAGE OVERHEAD TITLE -->

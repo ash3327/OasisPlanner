@@ -210,7 +210,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                     (v)-> AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(alarm.agendaId)
             );
             binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.datetime.toLocalTime()));
-            binding.boxBottomtag.setText(Resources.getString(R.string.bar_notif));
+            binding.boxBottomtag.setText(Resources.getString(R.string.bar_event));
             binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
             binding.bar.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(alarm.title);
