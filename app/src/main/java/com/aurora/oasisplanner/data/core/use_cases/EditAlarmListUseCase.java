@@ -25,7 +25,7 @@ public class EditAlarmListUseCase {
 
     public void invoke(AlarmList alarmList, Activity grp, AlarmEditDialog.OnSaveListener onSaveListener) {
         this.alarmList = alarmList;
-        alarmList.contents = _Doc.getFirst(grp.docs, "(no content)");
+        alarmList.contents = grp.activity.descr;//_Doc.getFirst(, "(no content)");
 
         if (fragmentManager == null)
             throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
