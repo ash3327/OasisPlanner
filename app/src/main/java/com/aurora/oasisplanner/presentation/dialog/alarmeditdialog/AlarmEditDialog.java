@@ -175,6 +175,12 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 datePicker.minDateAllowed = LocalDate.now();
                 
                 LocalDate date = selectedDates.get(0);
+                for (LocalDate d : selectedDates) {
+                    if (!datePicker.minDateAllowed.isAfter(d)) {
+                        date = d;
+                        break;
+                    }
+                }
                 datePicker.setMonth(date.getYear(), date.getMonthValue());
                 datePicker.refresh();
 

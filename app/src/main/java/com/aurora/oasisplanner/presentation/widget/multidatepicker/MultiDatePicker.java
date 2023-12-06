@@ -223,10 +223,18 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
                     *       the X and Y velocities are 0.
                     * */
                     if (!inEditState) {
-                        if (lastXVel > THRESHOLD && Math.abs(lastXVel) > Math.abs(lastYVel))
-                            leftSwipe();
-                        else if (lastXVel < -THRESHOLD && Math.abs(lastXVel) > Math.abs(lastYVel))
-                            rightSwipe();
+                        if (Math.abs(lastXVel) > Math.abs(lastYVel)) {
+                            if (lastXVel > THRESHOLD)
+                                leftSwipe();
+                            else if (lastXVel < -THRESHOLD)
+                                rightSwipe();
+                        } else {
+                            if (lastYVel > THRESHOLD)
+                                leftSwipe();
+                            else if (lastYVel < -THRESHOLD)
+                                rightSwipe();
+                        }
+
                         mVelocityTracker.clear();
                         lastXVel = 0; lastYVel = 0;
                     }
@@ -294,6 +302,7 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     }
 
     public void setMonth(int year, int month) {
+        //toValidMonth(year, month)
         this.focusedMoment = LocalDate.now().withYear(year).withMonth(month);
         this.month = month;
         this.year = year;
@@ -417,6 +426,17 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     private boolean isInvalid(LocalDate theDay) {
         return (minDateAllowed != null && theDay.isBefore(minDateAllowed))
                 ||  (maxDateAllowed != null && theDay.isAfter(maxDateAllowed));
+    }
+
+    private LocalDate toValidMonth(int year, int month){
+        LocalDate original = LocalDate.now().withYear(year).withMonth(month);
+        LocalDate firstDayInMonth = original.withDayOfMonth(1);
+        LocalDate lastDayInMonth = firstDayInMonth.plusMonths(1).minusDays(1);
+        if (minDateAllowed != null && lastDayInMonth.isBefore(minDateAllowed))
+            return minDateAllowed;
+        if (maxDateAllowed != null && firstDayInMonth.isAfter(maxDateAllowed))
+            return maxDateAllowed;
+        return original;
     }
 
     private void setAdapter(ArrayAdapter<CalendarDayView> adapter) {
