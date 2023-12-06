@@ -17,4 +17,9 @@
         <string name="home_date_formats">E;M _;uuuu,_</string>
         <string name="bar_date_formats">d日;E, M月_;_</string>
         <string name="month_formats">;M月;uuuu年_</string>
+        <string name="year_week_formats">E;$ • _;uuuu年_</string>
+
+    <!-- SHORT ENTITIES -->
+    <string name="first_half_year">上半</string>
+    <string name="second_half_year">下半</string>
 </resources>

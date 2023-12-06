@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -26,7 +26,11 @@ import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -35,12 +39,14 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     private LocalDate now = LocalDate.now();
     private LocalDate focusedMoment;
     private int dowOfMonthStart, numDaysInPrevMonth, numDaysInThisMonth, month, year;
-    private ArrayAdapter<CalendarDayView> adapter;
+    private ArrayAdapter<CalendarDayView> monthAdapter, weekAdapter;
     private boolean editState = true, inEditState = false;
     private boolean prevMonthInvalid, nextMonthInvalid;
     private VelocityTracker mVelocityTracker = null;
     private float lastXVel = 0, lastYVel = 0;
     private String[] weekDayName;
+    private int dayOfWeek = 1;
+    private boolean inWeekMode = false;
     {
         if (!isInEditMode())
             weekDayName = Resources.getStringArr(R.array.weekdays);
@@ -81,6 +87,7 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     private void init(Context context, AttributeSet attrs) {
         binding = MultiDatePickerBinding.inflate(LayoutInflater.from(context), this, true);
 
+        dayOfWeek = now.getDayOfWeek().getValue();
         setMonth(now.getYear(), now.getMonthValue());
         selected.add(focusedMoment);
         if (isInEditMode())
@@ -116,12 +123,14 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
 
         setBaseColor(baseColor);
         binding.monthTitle.setOnClickListener((v)->{
+            dayOfWeek = now.getDayOfWeek().getValue();
+            setInWeekMode(false);
             setMonth(now.getYear(), now.getMonthValue());
             refresh();
         });
 
         // Create an adapter for the GridView
-        adapter = new ArrayAdapter<CalendarDayView>(getContext(), 0) {
+        monthAdapter = new ArrayAdapter<CalendarDayView>(getContext(), 0) {
             @SuppressLint("ClickableViewAccessibility")
             @NonNull
             @Override
@@ -180,6 +189,11 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
                         view.setEnabled(true);
                     } else
                         view.setEnabled(false);
+                } else {
+                    view.setOnClickListener(
+                            (e) -> weekLabelClicked(day[1])
+                    );
+                    view.setEnabled(true);
                 }
 
                 view.setTheBackgroundColor(bgColor);
@@ -204,14 +218,111 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
             }
         };
 
+        weekAdapter = new ArrayAdapter<CalendarDayView>(getContext(), 0) {
+            @SuppressLint("ClickableViewAccessibility")
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                CalendarDayView view;
+                if (convertView == null) {
+                    view = new CalendarDayView(getContext());
+                    view.setLayoutParams(new GridView.LayoutParams(
+                            GridView.LayoutParams.MATCH_PARENT,
+                            GridView.LayoutParams.WRAP_CONTENT));
+                } else {
+                    view = (CalendarDayView) convertView;
+                }
+                int[] day = getDay(position);
+
+                if (day[0] == WEEKLABEL)
+                    view.setText(
+                            (Month.values()[day[1]].getDisplayName(TextStyle.SHORT, Locale.getDefault()).toUpperCase(Locale.ROOT)+"")
+                    );
+                else view.setDay(day[1]);
+
+                int bgColor = diffMonthBgColor, textColor = diffMonthTextColor;
+                switch (day[0]) {
+                    case REGULAR:
+                        textColor = regularTextColor; break;
+                    case HIGHLIGHTED:
+                        textColor = highlightedTextColor; break;
+                    case SUBHIGHLIGHTED:
+                        textColor = subHighlightedTextColor; break;
+                    case WEEKLABEL:
+                        bgColor = weekDayBgColor; textColor = weekDayTextColor;
+                        break;
+                }
+
+                boolean hasFront = true, hasEnd = true;
+                if (day[0] != WEEKLABEL) {
+                    LocalDate date = LocalDate.of(day[3], day[2], day[1]);
+                    if (day[0] != REGULAR) {
+                        if (!inWeekMode) {
+                            hasFront = selected.contains(date.minusDays(1));
+                            hasEnd = selected.contains(date.plusDays(1));
+                        } else {
+                            hasFront = hasEnd = false;
+                        }
+                    }
+                    if (day[0] >= REGULAR) { // days in this month
+                        bgColor = regularBgColor;
+                        view.setOnClickListener(
+                                (e) -> setDate(date, true)
+                        );
+                        view.setOnLongClickListener(
+                                (e) -> {
+                                    inEditState = true;
+                                    setDate(date, false);
+                                    return true;
+                                }
+                        );
+                        view.setEnabled(true);
+                    } else {
+                        view.setEnabled(false);
+                    }
+                } else {
+                    int mo = day[1]+1;
+                    if (year < minDateAllowed.getYear() || (year == minDateAllowed.getYear() && mo < minDateAllowed.getMonthValue()))
+                        view.setEnabled(false);
+                    else {
+                        view.setOnClickListener(
+                                (e) -> monthLabelClicked(mo)
+                        );
+                        view.setEnabled(true);
+                    }
+                }
+
+                view.setTheBackgroundColor(bgColor);
+                view.setBackground(
+                        day[0] >= SUBHIGHLIGHTED ?
+                                subHighlightedBgColor :
+                                day[0] == DIFFMONTH_SUBHIGLIGHTED ?
+                                        diffMonthSubHighlightedBgColor :
+                                        0,
+                        hasFront,
+                        hasEnd
+                );
+                if (day[0] == HIGHLIGHTED)
+                    view.setForeground(highlightedBgColor);
+                else view.setForeground(Color.TRANSPARENT);
+
+                view.setTextColor(textColor);
+                view.setTextSize(day[0] == WEEKLABEL ? 10 : 12);
+                view.setPadding((int)cellPadding, (int)rowPadding);
+
+                return view;
+            }
+        };
+
         // Populate the adapter with the days of the month
-        adapter.clear();
+        monthAdapter.clear();
+        weekAdapter.clear();
         for (int i = 1; i <= 7*7; i++) {
-            adapter.add(new CalendarDayView(getContext()));
+            monthAdapter.add(new CalendarDayView(getContext()));
+            weekAdapter.add(new CalendarDayView(getContext()));
         }
 
-        setAdapter(adapter);
-
+        setAdapter(inWeekMode ? weekAdapter : monthAdapter);
 
         binding.monthGrid.setOnTouchListener((v, event)->{
             int action = event.getActionMasked();
@@ -248,8 +359,8 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
                             int[] day = getDay(position);
                             if (day[0] >= 0) {
                                 LocalDate pressedDate = LocalDate.of(
-                                        focusedMoment.getYear(),
-                                        focusedMoment.getMonthValue(),
+                                        day[3],
+                                        day[2],
                                         day[1]
                                 );
                                 setDate(pressedDate,
@@ -286,8 +397,29 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
         refresh();
     }
 
+    public void weekLabelClicked(int dow) {
+        Log.d("test3", dow+"");
+        dayOfWeek = dow;
+        setInWeekMode(true);
+        setMonth(year, month);
+    }
+    public void monthLabelClicked(int mo) {
+        Log.d("test3", mo+":"+year);
+        setInWeekMode(false);
+        setMonth(year, mo);
+    }
+
+    public void setInWeekMode(boolean weekMode) {
+        inWeekMode = weekMode;
+        setAdapter(inWeekMode ? weekAdapter : monthAdapter);
+        refresh();
+    }
+
     public void refresh() {
-        adapter.notifyDataSetChanged();
+        if (!inWeekMode)
+            monthAdapter.notifyDataSetChanged();
+        else
+            weekAdapter.notifyDataSetChanged();
     }
 
     private float getXVel() {
@@ -304,20 +436,41 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     public void setMonth(int year, int month) {
         //toValidMonth(year, month)
         this.focusedMoment = LocalDate.now().withYear(year).withMonth(month);
+        if (inWeekMode) {
+            focusedMoment = focusedMoment.with(TemporalAdjusters.firstDayOfMonth()).with(ChronoField.DAY_OF_WEEK, dayOfWeek);
+            if (focusedMoment.getMonthValue() != month) focusedMoment = focusedMoment.plusWeeks(1);
+        }
         this.month = month;
         this.year = year;
         this.dowOfMonthStart = focusedMoment.with(TemporalAdjusters.firstDayOfMonth()).getDayOfWeek().getValue();
         this.numDaysInPrevMonth = focusedMoment.with(TemporalAdjusters.firstDayOfMonth()).minusDays(1).getDayOfMonth();
         this.numDaysInThisMonth = focusedMoment.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
-        setMonthText(
-                isInEditMode() ?
-                        String.format(
-                                Locale.getDefault(),
-                                "%1$tY年%1$tm月",
-                                focusedMoment
-                        ).replace("年0","年")
-                        : DateTimesFormatter.getYM(focusedMoment)
-        );
+
+        if (!inWeekMode) {
+            setMonthText(
+                    isInEditMode() ?
+                            String.format(
+                                    Locale.getDefault(),
+                                    "%1$tY年%1$tm月",
+                                    focusedMoment
+                            ).replace("年0","年")
+                            : DateTimesFormatter.getYM(focusedMoment)
+            );
+        } else {
+            setMonthText(
+                    isInEditMode() ?
+                            String.format(
+                                    Locale.getDefault(),
+                                    "%1$tY年"+(month>6?"下半年":"上半年")+" • %1$tA",
+                                    focusedMoment
+                            )
+                            : DateTimesFormatter.getYW(focusedMoment)
+                            .replace("$",
+                                    month>6?
+                                    Resources.getString(R.string.second_half_year):
+                                    Resources.getString(R.string.first_half_year))
+            );
+        }
 
         prevMonthInvalid = isInvalid(focusedMoment.withDayOfMonth(1).minusDays(1));
         binding.left.setColorFilter(prevMonthInvalid ? invalidColor : baseColor);
@@ -367,55 +520,91 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
      *      0 : this month
      *      1 : next month */
     private int[] getDay(int position) {
-        if (position < 7)
-            return new int[]{WEEKLABEL, (position+6) % 7 + 1};
+        LocalDate theDay;
+        boolean isInvalid;
+        if (!inWeekMode) {
+            if (position < 7)
+                return new int[]{WEEKLABEL, (position + 6) % 7 + 1};
 
-        position -= 7;
-        int day = position-dowOfMonthStart+1;
-        int month = focusedMoment.getMonthValue(), year = focusedMoment.getYear();
-        int flag = day <= 0 ? PREVMONTH : day <= numDaysInThisMonth ? REGULAR : NEXTMONTH;
+            position -= 7;
+            int day = position-dowOfMonthStart+1;
+            int month = focusedMoment.getMonthValue(), year = focusedMoment.getYear();
+            int flag = day <= 0 ? PREVMONTH : day <= numDaysInThisMonth ? REGULAR : NEXTMONTH;
 
-        if (flag == 0) {
-            LocalDate theDay = LocalDate.of(focusedMoment.getYear(),focusedMoment.getMonth(),day);
+            if (flag == 0) {
+                theDay = LocalDate.of(focusedMoment.getYear(),focusedMoment.getMonth(),day);
 
-            boolean isInvalid = isInvalid(theDay);
+                isInvalid = isInvalid(theDay);
 
-            if (selected.contains(theDay)) {
-                if (isInvalid)
+                if (selected.contains(theDay)) {
+                    if (isInvalid)
+                        flag = DIFFMONTH_SUBHIGLIGHTED;
+                    else if (day == focusedMoment.getDayOfMonth())
+                        flag = HIGHLIGHTED;
+                    else
+                        flag = SUBHIGHLIGHTED;
+                } else if (isInvalid)
+                    flag = DIFFMONTH_REGULAR;
+            }
+            else {
+                theDay = LocalDate.of(focusedMoment.getYear(),focusedMoment.getMonth(),1).plusDays(day-1);
+                day = theDay.getDayOfMonth();
+                month = theDay.getMonthValue();
+                year = theDay.getYear();
+                if (selected.contains(theDay))
                     flag = DIFFMONTH_SUBHIGLIGHTED;
-                else if (day == focusedMoment.getDayOfMonth())
-                    flag = HIGHLIGHTED;
                 else
-                    flag = SUBHIGHLIGHTED;
-            } else if (isInvalid)
-                flag = DIFFMONTH_REGULAR;
+                    flag = DIFFMONTH_REGULAR;
+            }
+            return new int[]{flag, day, month, year};
         }
         else {
-            LocalDate theDay = LocalDate.of(focusedMoment.getYear(),focusedMoment.getMonth(),1).plusDays(day-1);
-            day = theDay.getDayOfMonth();
-            month = theDay.getMonthValue();
-            year = theDay.getYear();
-            if (selected.contains(theDay))
-                flag = DIFFMONTH_SUBHIGLIGHTED;
-            else
-                flag = DIFFMONTH_REGULAR;
+            int MONTH = position%7+((month>6 ? 5 : 0)), YEAR = focusedMoment.getYear();
+            if (position < 7)
+                return new int[]{WEEKLABEL, MONTH};
+
+            position -= 7;
+            theDay = LocalDate.of(YEAR,Month.of(MONTH+1),1);
+            LocalDate d = theDay.with(ChronoField.DAY_OF_WEEK, dayOfWeek);
+            theDay = d.isBefore(theDay) ? d.plusWeeks(1) : d;
+            theDay = theDay.plusWeeks(position/7);
+            int day = theDay.getDayOfMonth();
+            int month = theDay.getMonthValue(), year = theDay.getYear();
+            int flag = (month>MONTH+1 || year>YEAR) ? NEXTMONTH : REGULAR;
+
+            isInvalid = isInvalid(theDay);
+            if (flag == 0) {
+                if (selected.contains(theDay)) {
+                    if (isInvalid)
+                        flag = DIFFMONTH_SUBHIGLIGHTED;
+                    else
+                        flag = HIGHLIGHTED;
+                } else if (isInvalid)
+                    flag = DIFFMONTH_REGULAR;
+            }
+            else {
+                if (selected.contains(theDay))
+                    flag = DIFFMONTH_SUBHIGLIGHTED;
+                else
+                    flag = DIFFMONTH_REGULAR;
+            }
+            return new int[]{flag, day, month, year};
         }
-        return new int[]{flag, day, month, year};
     }
 
     public void leftSwipe() {
         if (prevMonthInvalid)
             return;
-        if (month != 1) setMonth(year, month-1);
-        else setMonth(year-1, 12);
+        LocalDate prevMonth = focusedMoment.minusMonths(inWeekMode ? 6 : 1);
+        setMonth(prevMonth.getYear(), prevMonth.getMonthValue());
         refresh();
     }
 
     public void rightSwipe() {
         if (nextMonthInvalid)
             return;
-        if (month != 12) setMonth(year, month+1);
-        else setMonth(year+1, 1);
+        LocalDate nextMonth = focusedMoment.plusMonths(inWeekMode ? 6 : 1);
+        setMonth(nextMonth.getYear(), nextMonth.getMonthValue());
         refresh();
     }
 

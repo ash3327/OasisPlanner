@@ -17,4 +17,9 @@
         <string name="home_date_formats">E;MMM _;uuuu,_</string>
         <string name="bar_date_formats">d;E, _ MMM;_</string>
         <string name="month_formats">;MMM;_ uuuu</string>
+        <string name="year_week_formats">E;_ $;_ uuuu</string>
+
+    <!-- SHORT ENTITIES -->
+    <string name="first_half_year">First Half</string>
+    <string name="second_half_year">Second Half</string>
 </resources>

@@ -34,7 +34,8 @@ public class DateTimesFormatter {
             partialDateFormats = formattersOf(R.string.partial_date_formats),
             homeDateFormats    = formattersOf(R.string.home_date_formats),
             barDateFormats     = formattersOf(R.string.bar_date_formats),
-            monthFormats       = formattersOf(R.string.month_formats);
+            monthFormats       = formattersOf(R.string.month_formats),
+            yearWeekFormats    = formattersOf(R.string.year_week_formats);
     public static ZoneOffset zoneOffset = ZoneOffset.ofHours(+8);
     private static final String SEP = ", "; private static final int SEPL = SEP.length();
     private static final String XML_SEP = ";";
@@ -165,6 +166,9 @@ public class DateTimesFormatter {
     }
     public static String getYM(LocalDate date){
         return toDate(Collections.singletonList(date), true, monthFormats);
+    }
+    public static String getYW(LocalDate date){
+        return toDate(Collections.singletonList(date), true, yearWeekFormats);
     }
     public static String getWEEK(LocalDate date) { return weekFormat.format(date); }
     public static String getWeekRange(LocalDate date) {
