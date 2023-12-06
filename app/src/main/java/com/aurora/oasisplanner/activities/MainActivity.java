@@ -91,19 +91,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /** setting up the database */
     private void setupDatabase() {
         // INFO: setup database and usecases
-        AppDatabase db = AppModule.provideAppDatabase(getApplication());
-        AlarmScheduler alarmScheduler = new AlarmScheduler(getApplicationContext());
-        AgendaRepository agendaRepository = AppModule.provideAgendaRepository(db, alarmScheduler);
-        AppModule.provideAgendaUseCases(agendaRepository)
+        AppModule.retrieveAgendaUseCases()
                 .editAgendaUseCase
                 .setFragmentManager(getSupportFragmentManager());
-        AppModule.provideAgendaUseCases(agendaRepository)
+        AppModule.retrieveAgendaUseCases()
                 .editAlarmListUseCase
                 .setFragmentManager(getSupportFragmentManager());
-
-        // INFO: setup alarms
-        AlarmRepository alarmRepository = AppModule.provideAlarmRepository(db);
-        alarmRepository.schedule(alarmScheduler, this);
     }
 
     void setupToolbar() {

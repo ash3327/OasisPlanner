@@ -16,6 +16,7 @@ import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class AlarmRepository {
     private AgendaDao agendaDao;
@@ -27,7 +28,7 @@ public class AlarmRepository {
     }
 
     private boolean firstTime = true;
-    public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs) {
+    public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs, CountDownLatch latch) {
         firstTime = true;
         alarms.observe(obs, (_alarms)->{
             if (!firstTime) return;
@@ -38,6 +39,8 @@ public class AlarmRepository {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            latch.countDown();
+            //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
         });
     }
 
