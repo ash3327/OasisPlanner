@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // INFO: setup alarms
         AlarmRepository alarmRepository = AppModule.provideAlarmRepository(db);
-        alarmRepository.schedule(alarmScheduler);
+        alarmRepository.schedule(alarmScheduler, this);
     }
 
     void setupToolbar() {

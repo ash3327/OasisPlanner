@@ -1,9 +1,15 @@
 package com.aurora.oasisplanner.data.repository;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
@@ -20,13 +26,19 @@ public class AlarmRepository {
         this.alarms = agendaDao.getAlarmsAfter(LocalDateTime.now());
     }
 
-    public void schedule(AlarmScheduler alarmScheduler) {
-        try {
-            for (_Alarm alarm : alarms.getValue())
+    private boolean firstTime = true;
+    public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs) {
+        firstTime = true;
+        alarms.observe(obs, (_alarms)->{
+            if (!firstTime) return;
+            firstTime = false;
+            try {
+                for (_Alarm alarm : _alarms)
                     alarmScheduler.schedule(alarm);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void insert(_Alarm alarm) {
