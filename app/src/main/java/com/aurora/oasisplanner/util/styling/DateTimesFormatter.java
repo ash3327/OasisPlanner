@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.util.styling;
 
+import android.util.Log;
+
 import com.aurora.oasisplanner.R;
 
 import java.time.DayOfWeek;
@@ -98,10 +100,12 @@ public class DateTimesFormatter {
             LocalDate year = null, month = null;
             for (LocalDate d : ds) {
                 if (year == null || d == null || year.getYear() != d.getYear()) {
-                    if (year != null)
+                    if (year != null) {
+                        curM.append(SEP).append(monthFormat.format(month).replace("_", daysConcat(days, dayFormat)));
                         curY.append(SEP).append(
-                                ((year.getYear()==getYear() && !fullDate) ?
+                                ((year.getYear() == getYear() && !fullDate) ?
                                         "_" : yearFormat.format(year)).replace("_", sepSubstr(curM)));
+                    }
                     curM = new StringBuilder(); year = d; month = null;
                 }
                 if (month == null || d == null || month.getMonth() != d.getMonth()) {
