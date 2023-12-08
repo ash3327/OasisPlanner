@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
         );
 
         associateTitle(binding.pageTitle);
+        binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
 
         RecyclerView recyclerView = binding.pageSections;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
