@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,14 @@ public class _AlarmList {
     @Ignore
     public String getDateTime() {
         return DateTimesFormatter.getDateTime(dates, time);
+    }
+
+    @Ignore
+    public String getNextDateTime() {
+        for (LocalDate date : dates)
+            if (!date.isBefore(LocalDate.now()))
+                return DateTimesFormatter.getDateTime(Collections.singletonList(date), time);
+        return "(no future events)";
     }
 
     @Ignore

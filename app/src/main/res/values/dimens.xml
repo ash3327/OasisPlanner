@@ -8,6 +8,7 @@
     <!-- Add agenda -->
     <dimen name="plus_icon_size">28dp</dimen>
     <dimen name="plus_icon_padding">10dp</dimen>
+    <dimen name="tiny_text_size">10sp</dimen>
     <dimen name="type_text_size">13sp</dimen>
     <dimen name="type_text_padding_top">5dp</dimen>
 
@@ -110,6 +111,7 @@
     <dimen name="edit_alarm_titleSize">16sp</dimen>
 
     <!-- Add & Edit Agendas (Page) -->
+    <dimen name="tiny_doc_margin">4dp</dimen>
     <dimen name="doc_margin">8dp</dimen>
     <dimen name="doc_vmargin">2dp</dimen>
 

@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +20,12 @@ import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Doc;
+import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
-import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.util.ArrayList;
@@ -207,8 +205,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             );
             boolean expanded = id.equals(i);
             int visibility = expanded ? View.VISIBLE : View.GONE;
+            int antiVisibility = !expanded ? View.VISIBLE : View.GONE;
             binding.btnDelete.setVisibility(visibility);
             binding.sectionItems.setVisibility(visibility);
+            binding.sectionDetails.setVisibility(antiVisibility);
+            AlarmList gpl = gp.alarmList.get(0);
+            binding.sectdI1.setImageDrawable(gpl.alarmList.type.getDrawable());
+            //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
+            binding.sectdT1.setText(gpl.alarmList.getNextDateTime());
 
             Drawable icon = gp.activity.getType().getDrawable();
             icon.setColorFilter(
