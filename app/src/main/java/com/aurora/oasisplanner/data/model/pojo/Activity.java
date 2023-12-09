@@ -2,6 +2,8 @@ package com.aurora.oasisplanner.data.model.pojo;
 
 import static com.aurora.oasisplanner.data.tags.ActivityType.Type.doc;
 
+import android.util.Log;
+
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -10,6 +12,7 @@ import com.aurora.oasisplanner.data.model.entities._AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionItemAdapter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,7 +53,7 @@ public class Activity {
                 alarmList.add((AlarmList) obj);
             }
             if (obj instanceof _Doc) {
-                //activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
+                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add((_Doc) obj);
             }
         }
@@ -83,11 +86,12 @@ public class Activity {
                     visible = ((AlarmList) obj).visible;
                     break;
                 case doc:
+                case loc:
                     obj = docs.get(gt.i);
                     visible = ((_Doc) obj).visible;
                     break;
             }
-            if (visible && obj != null && gt.type != doc) {
+            if (visible && obj != null) {// && gt.type != doc) {
                 list.add(obj);
                 types.add(gt.type);
             }
@@ -106,20 +110,26 @@ public class Activity {
 
         alarmList = new ArrayList<>();
         docs = new ArrayList<>();
-        activity.types = new ArrayList<>();
+        ArrayList<ActivityType> types = new ArrayList<>();
 
         int i = 0;
         for (Object obj : list) {
             if (obj instanceof AlarmList) {
-                activity.types.add(new ActivityType(ActivityType.Type.activity, alarmList.size()));
+                types.add(new ActivityType(ActivityType.Type.activity, alarmList.size()));
                 alarmList.add(((AlarmList) obj).setI(i));
             }
             if (obj instanceof _Doc) {
-                activity.types.add(new ActivityType(doc, docs.size()));
+                _Doc doc = (_Doc) obj;
+                if (activity.types.get(i).type == ActivityType.Type.loc)
+                    types.add(new ActivityType(ActivityType.Type.loc, docs.size()));
+                else
+                    types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
                 docs.add(((_Doc) obj).setI(i));
             }
             i++;
         }
+        activity.types.clear();
+        activity.types.addAll(types);
     }
 
     public Activity setI(int i) {

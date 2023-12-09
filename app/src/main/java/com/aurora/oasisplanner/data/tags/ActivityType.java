@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class ActivityType {
     public enum Type {
-        gap, activity, doc
+        gap, activity, doc, loc
     };
 
     private static String SEP = "$$";

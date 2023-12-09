@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:padding="2dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:gravity="center_vertical"
                         android:background="@color/grey_75">
                         <ImageView
@@ -54,10 +54,10 @@
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="@dimen/card_radius"
                                 android:layout_marginVertical="2dp"
-                                android:layout_marginHorizontal="7dp">
+                                android:layout_marginHorizontal="@dimen/item_gap_item_hmargin">
                                 <LinearLayout
                                     android:id="@+id/btn_add_group"
-                                    android:layout_width="75dp"
+                                    android:layout_width="@dimen/item_gap_item_width"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:background="@color/add_task_col">
@@ -65,6 +65,44 @@
                                         android:layout_width="@dimen/medium_icon_height"
                                         android:layout_height="@dimen/medium_icon_height"
                                         android:src="@drawable/ic_agenda_notification"
+                                        app:tint="@color/grey_700" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="@dimen/card_radius"
+                                android:layout_marginVertical="2dp"
+                                android:layout_marginHorizontal="@dimen/item_gap_item_hmargin">
+                                <LinearLayout
+                                    android:id="@+id/btn_add_loc"
+                                    android:layout_width="@dimen/item_gap_item_width"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:background="@color/add_loc_col">
+                                    <ImageView
+                                        android:layout_width="@dimen/medium_icon_height"
+                                        android:layout_height="@dimen/medium_icon_height"
+                                        android:src="@drawable/ic_add_location"
+                                        app:tint="@color/grey_700" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="@dimen/card_radius"
+                                android:layout_marginVertical="2dp"
+                                android:layout_marginHorizontal="@dimen/item_gap_item_hmargin">
+                                <LinearLayout
+                                    android:id="@+id/btn_add_doc"
+                                    android:layout_width="@dimen/item_gap_item_width"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:background="@color/add_note_col">
+                                    <ImageView
+                                        android:layout_width="@dimen/medium_icon_height"
+                                        android:layout_height="@dimen/medium_icon_height"
+                                        android:src="@drawable/ic_add_note"
                                         app:tint="@color/grey_700" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>

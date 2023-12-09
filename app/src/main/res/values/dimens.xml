@@ -129,6 +129,10 @@
     <dimen name="giant_icon_bound_height">40dp</dimen>
     <dimen name="icon_margin">15dp</dimen>
 
+    <!-- Gap Dimensions -->
+    <dimen name="item_gap_item_width">60dp</dimen>
+    <dimen name="item_gap_item_hmargin">3dp</dimen>
+
     <!-- Shape Dimensions -->
     <dimen name="shp_circle_diameter">20dp</dimen>
 

@@ -18,6 +18,9 @@ public class _Doc {
     public int i = -1;
 
     @Ignore
+    public static String locPrefix = "loc::";
+
+    @Ignore
     public boolean visible = true;
 
     public _Doc() {}
@@ -60,6 +63,6 @@ public class _Doc {
 
     @Ignore
     public String toString() {
-        return " [_Doc : "+id+" : "+contents.toString()+"] ";
+        return " [_Doc : "+id+" : "+contents+"] ";
     }
 }

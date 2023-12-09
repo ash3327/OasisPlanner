@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.databinding.ItemDocBinding;
 import com.aurora.oasisplanner.databinding.ItemGapBinding;
+import com.aurora.oasisplanner.databinding.ItemLocBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
@@ -93,6 +95,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             case doc:
                 binding = ItemDocBinding.inflate(li, parent, false);
                 break;
+            case loc:
+                binding = ItemLocBinding.inflate(li, parent, false);
+                break;
         }
         return new AlarmGroupsHolder(binding, this, len);
     }
@@ -140,6 +145,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             ((AlarmList) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.doc && activity.docs.get(type.i).equals(obj))
             ((_Doc) obj).visible = false;
+        else if (obj instanceof _Doc && type.type == ActivityType.Type.loc && activity.docs.get(type.i).equals(obj))
+            ((_Doc) obj).visible = false;
         else valid = false;
         if (valid) {
             activity.activity.types.remove(i);
@@ -161,7 +168,13 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 activity.activity.types.add(i, new ActivityType(type, activity.docs.size()));
                 activity.docs.add(doc);
                 break;
+            case loc:
+                _Doc loc = _Doc.empty();
+                activity.activity.types.add(i, new ActivityType(ActivityType.Type.loc, activity.docs.size()));
+                activity.docs.add(loc);
+                break;
         }
+
         id.setId(i * 2 + 1);
         activity.update();
         setGroup(activity);
@@ -189,8 +202,12 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 return bindGap(i, (GapData) sect);
             if (sect instanceof AlarmList)
                 return bindAlarms(i, (AlarmList) sect, gp);
-            if (sect instanceof _Doc)
-                return bindDoc(i, (_Doc) sect);
+            if (sect instanceof _Doc) {
+                _Doc doc = (_Doc) sect;
+                if (getItemViewType() == ActivityType.Type.loc.ordinal())
+                    return bindLoc(i, doc);
+                return bindDoc(i, doc);
+            }
             return false;
         }
 
@@ -209,6 +226,18 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                     (v)->{
                         if (id.equals(i))
                             adapter.insert(ActivityType.Type.activity, gap.i);
+                    }
+            );
+            binding.btnAddDoc.setOnClickListener(
+                    (v)->{
+                        if (id.equals(i))
+                            adapter.insert(ActivityType.Type.doc, gap.i);
+                    }
+            );
+            binding.btnAddLoc.setOnClickListener(
+                    (v)->{
+                        if (id.equals(i))
+                            adapter.insert(ActivityType.Type.loc, gap.i);
                     }
             );
 
@@ -279,6 +308,88 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
         public boolean bindDoc(int i, _Doc doc) {
             ItemDocBinding binding = (ItemDocBinding) vbinding;
+
+            aSwitch.observe((state)-> {
+                binding.bar.setBackgroundColor(
+                        id.equals(i) && parentId.equals(pid) && state ?
+                                Resources.getColor(R.color.red_100) : 0
+                );
+                binding.card.setVisibility(id.equals(i) && parentId.equals(pid) && state ? View.VISIBLE : View.GONE);
+                binding.docContentEdittext.setFocusable(parentId.equals(pid) && !state);
+            }, true);
+
+            binding.bar.setOnClickListener(
+                    (v)->{
+                        if (id.equals(i) && parentId.equals(pid)) {
+                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
+                                adapter.remove(doc, i/2);
+                        } else {
+                            parentId.setId(pid);
+                            id.setId(i);
+                            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
+                                aSwitch.setState(false);
+                        }
+                    }
+            );
+            binding.docContentEdittext.setOnClickListener(
+                    (v)->{
+                        if (id.equals(i) && parentId.equals(pid)) {
+                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
+                                adapter.remove(doc, i/2);
+                        } else {
+                            parentId.setId(pid);
+                            id.setId(i);
+                        }
+                    }
+            );
+            binding.bar.setOnLongClickListener(
+                    (v)->{
+                        if (!(parentId.setId(pid) & id.setId(i)))
+                            aSwitch.setState(true);
+                        clicked = Instant.now();
+                        return false;
+                    }
+            );
+            binding.docContentEdittext.setOnLongClickListener(
+                    (v)->{
+                        parentId.setId(pid);
+                        id.setId(i);
+                        aSwitch.setState(true);
+                        clicked = Instant.now();
+                        return false;
+                    }
+            );
+
+            EditText editText;
+            associate(editText = binding.docContentEdittext, doc);
+
+            TextWatcher textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    editText.clearComposingText();
+                    doc.contents = new SpannableStringBuilder(editText.getText());
+                    //types.set(i/2, ActivityType.Type.loc);
+                    //notifyItemChanged(i);
+                }
+            };
+            editText.setTag(textWatcher);
+            editText.addTextChangedListener(textWatcher);
+
+            return true;
+        }
+
+        public boolean bindLoc(int i, _Doc doc) {
+            ItemLocBinding binding = (ItemLocBinding) vbinding;
 
             aSwitch.observe((state)-> {
                 binding.bar.setBackgroundColor(
