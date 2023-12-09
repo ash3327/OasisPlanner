@@ -112,7 +112,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         setAgenda(agenda, -2);
     }
     @SuppressLint("NotifyDataSetChanged")
-    public void setAgenda(Agenda agenda, long activityLId) {
+    public int setAgenda(Agenda agenda, long activityLId) {
         this.agenda = agenda;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
@@ -134,12 +134,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         list.add(new GapData(i));
         types.add(ActivityType.Type.gap);
 
+        int expandId = activityPId == -1 ? -1 : activityPId * 2 + 1;
         if (activityLId != -2)
-            id.setId(activityPId == -1 ? -1 : activityPId * 2 + 1);
+            id.setId(expandId);
 
         this.sections = list;
         this.types = types;
         notifyDataSetChanged();
+
+        return expandId;
     }
 
     public void remove(Object obj, int i) {
@@ -147,6 +150,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             ((Activity) obj).visible = false;
         if (obj instanceof _Doc)
             ((_Doc) obj).visible = false;
+        toAddSection.setId(0);
+        id.setId(-1);
         agenda.agenda.types.remove(i);
         agenda.update();
         setAgenda(agenda);
@@ -167,9 +172,9 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 break;
         }
         toAddSection.setId(0);
-        id.setId(i * 2 + 1);
         agenda.update();
         setAgenda(agenda);
+        id.setId(i * 2 + 1);
     }
 
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {

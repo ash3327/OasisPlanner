@@ -1,11 +1,14 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
@@ -74,12 +78,21 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
 
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
-        adapter.setAgenda(agenda, activityLId);
+        int expandId = adapter.setAgenda(agenda, activityLId);
         adapter.setBinaryLabel(
                 binding.pageYellowLabel,
                 binding.pageYellowLabelText,
                 binding.pageYellowLabelIcon
         );
+        recyclerView.post(()->{
+            Context rContext = recyclerView.getContext();
+            RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(rContext);
+            View v = recyclerView.getChildAt(expandId), v1 = recyclerView.getChildAt(1);
+            smoothScroller.setTargetPosition(v == null ? 0 : v.getTop() - (v1 == null ? 0 : v1.getTop()));
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            if (layoutManager != null)
+                layoutManager.startSmoothScroll(smoothScroller);
+        });
     }
 
     public void associateTitle(EditText editText) {
