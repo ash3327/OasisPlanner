@@ -384,7 +384,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     public void setBinaryLabel(ViewGroup vg, TextView tv, ImageView imgv) {
         id.observe((oi, i)->{
-            boolean collapsed = i == -1;
+            boolean collapsed = i == -1 && toAddSection.equals(0);
             vg.setOnClickListener(collapsed ? this::addNewSection : this::refreshCollapsed);
             tv.setText(collapsed ?
                     Resources.getString(R.string.yellow_bar_text_newevent) :
@@ -396,6 +396,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
 
     public void refreshCollapsed(View v) {
+        toAddSection.setId(0);
         id.setId(-1);
     }
     public void addNewSection(View v) {
