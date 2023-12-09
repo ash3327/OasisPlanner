@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.IdRes;
@@ -22,15 +23,11 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.datasource.AppDatabase;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.MainBinding;
 import com.aurora.oasisplanner.fragments.EventArrangerFragment;
 import com.aurora.oasisplanner.fragments.ProjectsFragment;
-import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.Resources;
@@ -81,7 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigateTo(Page.EVENTARRANGER);
 
                 long agendaId = extras.getLong(NotificationModule.NOTIFICATION_CONTENT);
-                AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(agendaId);
+                long activityLId = extras.getLong(NotificationModule.NOTIFICATION_ACTIVITY);
+                AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(agendaId, activityLId);
             }
 
             intent.removeExtra(NotificationModule.NOTIFICATION_MODE);

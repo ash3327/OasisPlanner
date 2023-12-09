@@ -101,7 +101,7 @@ public class ChooseTypeDialog {
         hideMenu();
         switch (i) {
             case 0:
-                AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(-1);
+                AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(-1, -1);
                 break;
         }
     }

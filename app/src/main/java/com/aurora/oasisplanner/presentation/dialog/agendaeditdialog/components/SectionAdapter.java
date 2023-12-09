@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,23 +99,35 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
-    @SuppressLint("NotifyDataSetChanged")
+
     public void setAgenda(Agenda agenda) {
+        setAgenda(agenda, -2);
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void setAgenda(Agenda agenda, long activityLId) {
         this.agenda = agenda;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0;
+        int i = 0, activityPId = -1;
         List[] objlist = agenda.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(new GapData(i));
             types.add(ActivityType.Type.gap);
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
+            if (obj instanceof Activity
+                    && ((Activity) obj).alarmList.size() > 0
+                    && ((Activity) obj).alarmList.get(0).alarmList.groupId == activityLId) {
+                activityPId = i;
+            }
             i++;
         }
         list.add(new GapData(i));
         types.add(ActivityType.Type.gap);
+
+        if (activityLId != -2)
+            id.setId(activityPId == -1 ? -1 : activityPId * 2 + 1);
 
         this.sections = list;
         this.types = types;
@@ -209,10 +222,17 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setVisibility(visibility);
             binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);
-            AlarmList gpl = gp.alarmList.get(0);
-            binding.sectdI1.setImageDrawable(gpl.alarmList.type.getDrawable());
-            //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
-            binding.sectdT1.setText(gpl.alarmList.getNextDateTime());
+            if (gp.alarmList.size() > 0) {
+                AlarmList gpl = gp.alarmList.get(0);
+                binding.sectdI1.setImageDrawable(gpl.alarmList.type.getDrawable());
+                //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
+                binding.sectdT1.setText(gpl.alarmList.getNextDateTime());
+            } else {
+                binding.sectdI1.setVisibility(View.GONE);
+                binding.sectdT1.setVisibility(View.GONE);
+            }
+            binding.sectdI2.setVisibility(View.GONE);
+            binding.sectdT2.setVisibility(View.GONE);
 
             Drawable icon = gp.activity.getType().getDrawable();
             icon.setColorFilter(

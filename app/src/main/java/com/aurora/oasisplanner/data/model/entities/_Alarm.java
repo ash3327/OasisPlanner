@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.data.model.entities;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -31,6 +32,8 @@ public class _Alarm {
     public Importance importance;
     public long agendaId = -1;
     public long alarmListId;
+    @ColumnInfo(defaultValue = "-1")
+    public long activityId;
 
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
@@ -99,6 +102,7 @@ public class _Alarm {
         extras.putString("importance", importance.name());
         extras.putLong("agendaId", agendaId);
         extras.putLong("alarmListId", alarmListId);
+        extras.putLong("activityId", activityId);
 
         return extras;
     }
@@ -119,6 +123,7 @@ public class _Alarm {
         alarm.importance = Importance.valueOf(extras.getString("importance"));
         alarm.agendaId = extras.getLong("agendaId");
         alarm.alarmListId = extras.getLong("alarmListId");
+        alarm.activityId = extras.getLong("activityId");
 
         return alarm;
     }

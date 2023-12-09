@@ -158,7 +158,7 @@ public class AgendaRepository {
         for (AlarmList alarmList : activity.alarmList) {
             alarmList.alarmList.groupId = id;
             alarmList.alarmList.agendaId = activity.activity.agendaId;
-            insert(alarmList, title, agendaDescr, alarmDescr, agendaDao, alarmScheduler);
+            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmScheduler);
         }
         return id;
     }
@@ -168,6 +168,7 @@ public class AgendaRepository {
             String title,
             SpannableStringBuilder agendaDescr,
             SpannableStringBuilder alarmDescr,
+            long actvId,
             AgendaDao agendaDao,
             AlarmScheduler alarmScheduler
     ) {
@@ -177,6 +178,7 @@ public class AgendaRepository {
         for (_Alarm alarm : alarmList.alarms) {
             if (alarm.visible) {
                 alarm.alarmListId = id;
+                alarm.activityId = actvId;
                 alarm.agendaId = alarmList.alarmList.agendaId;
                 alarm.setAgendaData(title, agendaDescr, alarmDescr);
                 alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);

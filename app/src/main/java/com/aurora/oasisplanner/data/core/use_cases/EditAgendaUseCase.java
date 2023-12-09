@@ -21,12 +21,13 @@ public class EditAgendaUseCase {
     }
 
     /** -1 indicates a new agenda. */
-    public void invoke(long agendaId) {
+    public void invoke(long agendaId, long activityLId) {
         if (fragmentManager == null)
             throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
         AgendaEditDialog dialog = new AgendaEditDialog();
         Bundle bundle = new Bundle();
         bundle.putLong(AgendaEditDialog.EXTRA_AGENDA_ID, agendaId);
+        bundle.putLong(AgendaEditDialog.EXTRA_ACTIVL_ID, activityLId);
         dialog.setArguments(bundle);
         dialog.show(fragmentManager, "myDialog");
     }

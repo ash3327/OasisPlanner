@@ -1,5 +1,4 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,9 +24,11 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.S
 
 public class AgendaEditDialog extends AppCompatDialogFragment {
     public static final String EXTRA_AGENDA_ID = "agendaId";
+    public static final String EXTRA_ACTIVL_ID = "activityLId";
 
     private Agenda agenda;
     private AlertDialog dialog;
+    private long activityLId;
 
     @NonNull
     @Override
@@ -35,6 +36,7 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
         assert getArguments() != null;
 
         long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
+        activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
         if (agendaId != -1)
             agenda = AppModule.retrieveAgendaUseCases().getAgendaUseCase.invoke(agendaId);
         else
@@ -72,7 +74,7 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
 
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
-        adapter.setAgenda(agenda);
+        adapter.setAgenda(agenda, activityLId);
     }
 
     public void associateTitle(EditText editText) {

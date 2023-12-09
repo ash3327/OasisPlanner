@@ -398,13 +398,11 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     }
 
     public void weekLabelClicked(int dow) {
-        Log.d("test3", dow+"");
         dayOfWeek = dow;
         setInWeekMode(true);
         setMonth(year, month);
     }
     public void monthLabelClicked(int mo) {
-        Log.d("test3", mo+":"+year);
         setInWeekMode(false);
         setMonth(year, mo);
     }
