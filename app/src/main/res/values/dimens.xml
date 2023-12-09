@@ -99,6 +99,7 @@
 
     <!-- Page Dimensions -->
         <dimen name="page_bottom_height">50dp</dimen>
+        <dimen name="page_bottom_height_2">90dp</dimen>
         <dimen name="page_hmargin">20dp</dimen>
         <dimen name="page_vmargin">50dp</dimen>
         <dimen name="page_icon_padding">6dp</dimen>

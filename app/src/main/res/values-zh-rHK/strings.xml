@@ -67,6 +67,10 @@
         <string name="event_tag">計劃</string>
         <!-- NOT FOUND LABELS -->
         <string name="doc_not_found">(沒有描述)</string>
+        <string name="section_title_not_found">(項目標題)</string>
+        <!-- YELLOW BAR -->
+        <string name="yellow_bar_text_collapse">全部項目</string>
+        <string name="yellow_bar_text_newevent">新增項目</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">日程的標題不能為空！</string>
 

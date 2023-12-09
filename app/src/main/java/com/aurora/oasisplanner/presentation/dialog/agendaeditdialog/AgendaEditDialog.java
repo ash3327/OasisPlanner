@@ -75,6 +75,11 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setAgenda(agenda, activityLId);
+        adapter.setBinaryLabel(
+                binding.pageYellowLabel,
+                binding.pageYellowLabelText,
+                binding.pageYellowLabelIcon
+        );
     }
 
     public void associateTitle(EditText editText) {

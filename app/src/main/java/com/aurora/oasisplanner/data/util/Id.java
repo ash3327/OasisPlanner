@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Id {
     private int id, defaultId;
     private ArrayList<IdObj> action = new ArrayList<>();
+    private ArrayList<IdObj> lastActions = new ArrayList<>();
     public int key;
     public static HashMap<Integer, Id> idMap = new HashMap<>();
     public Id(int id, int key) {
@@ -52,7 +53,6 @@ public class Id {
         if (act)
             action.run(id, id);
     }
-
     public interface IdObj{
         void run(int oldId, int newId);
     }

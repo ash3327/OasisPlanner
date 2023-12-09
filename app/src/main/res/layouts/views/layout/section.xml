@@ -65,6 +65,7 @@
                     android:textStyle="bold"
                     android:theme="@style/EditTextTheme"
                     android:textSize="@dimen/boxtitle_textsize"
+                    android:hint="@string/section_title_not_found"
 
                     android:focusableInTouchMode="true"
                     android:inputType="text"

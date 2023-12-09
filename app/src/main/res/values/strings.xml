@@ -66,6 +66,10 @@
         <string name="event_tag">Event</string>
         <!-- NOT FOUND LABELS -->
         <string name="doc_not_found">(There is no description)</string>
+        <string name="section_title_not_found">(Event Title)</string>
+        <!-- YELLOW BAR -->
+        <string name="yellow_bar_text_collapse">Collapse</string>
+        <string name="yellow_bar_text_newevent">New Event</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">The title of the agenda cannot be empty!</string>
 

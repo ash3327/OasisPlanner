@@ -11,12 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
@@ -27,15 +32,18 @@ import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
+import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
 
-    private static final int ID_KEY_SECTIONS = 2;
+    private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id id;
+    private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
 
     {
         setHasStableIds(true);
@@ -158,6 +166,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 agenda.docs.add(doc);
                 break;
         }
+        toAddSection.setId(0);
         id.setId(i * 2 + 1);
         agenda.update();
         setAgenda(agenda);
@@ -186,15 +195,18 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         public boolean bindGap(int i, GapData gap) {
             SectionGapBinding binding = (SectionGapBinding) vbinding;
 
+            toAddSection.observe((ov, v)->{
+                binding.bar.setVisibility(v == 1 ? View.VISIBLE : View.GONE);
+            }, true);
             binding.expandedTab.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
             binding.collapsedTab.setVisibility(id.equals(i) ? View.GONE : View.VISIBLE);
             binding.tab.setOnClickListener(
-                    (v)->id.setId(i)
+                    (v)-> id.setId(i)
             );
             binding.btnAddGroup.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                             adapter.insert(ActivityType.Type.activity, gap.i);
+                            adapter.insert(ActivityType.Type.activity, gap.i);
                     }
             );
             binding.btnAddDoc.setOnClickListener(
@@ -211,7 +223,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             SectionBinding binding = (SectionBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)->id.setId(i)
+                    (v)->{
+                        toAddSection.setId(0);
+                        id.setId(i);
+                    }
             );
             binding.btnDelete.setOnClickListener(
                     (v)->adapter.remove(gp, i/2)
@@ -255,6 +270,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             docText.setOnClickListener(
                     (v)->{
                         docText.setFocusable(true);
+                        toAddSection.setId(0);
                         id.setId(i);
                     }
             );//*/
@@ -305,8 +321,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (!id.equals(i))
+                        if (!id.equals(i)) {
+                            toAddSection.setId(0);
                             id.setId(i);
+                        }
                     }
             );
             binding.btnDelete.setOnClickListener(
@@ -315,8 +333,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
             binding.docContentEdittext.setOnClickListener(
                     (v)->{
-                        if (!id.equals(i))
+                        if (!id.equals(i)) {
+                            toAddSection.setId(0);
                             id.setId(i);
+                        }
                     }
             );
             binding.docContentEdittext.setFocusable(id.equals(i));
@@ -356,6 +376,27 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             editText.setText(doc.contents);
         }
     }
+
+    public void setBinaryLabel(ViewGroup vg, TextView tv, ImageView imgv) {
+        id.observe((oi, i)->{
+            boolean collapsed = i == -1;
+            vg.setOnClickListener(collapsed ? this::addNewSection : this::refreshCollapsed);
+            tv.setText(collapsed ?
+                    Resources.getString(R.string.yellow_bar_text_newevent) :
+                    Resources.getString(R.string.yellow_bar_text_collapse));
+            imgv.setImageDrawable(collapsed ?
+                    Resources.getDrawable(R.drawable.ic_symb_plus) :
+                    Resources.getDrawable(R.drawable.ic_contract));
+        }, true);
+    }
+
+    public void refreshCollapsed(View v) {
+        id.setId(-1);
+    }
+    public void addNewSection(View v) {
+        toAddSection.setId(1);
+    }
+
 
     public static class GapData {
         public int i;
