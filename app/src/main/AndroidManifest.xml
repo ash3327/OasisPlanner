@@ -20,7 +20,7 @@
         android:theme="@style/Theme.OasisPlanner"
         tools:targetApi="33">
         <activity
-            android:name=".activities.SplashActivty"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

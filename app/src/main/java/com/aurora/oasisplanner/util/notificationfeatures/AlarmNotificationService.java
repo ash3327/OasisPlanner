@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
@@ -61,7 +62,7 @@ public class AlarmNotificationService extends Service {
     public void showNotification(_Alarm alarm) {
         Resources.context = this;
 
-        Intent activityIntent = new Intent(this, MainActivity.class);
+        Intent activityIntent = new Intent(this, MainActivity.main == null ? SplashActivity.class : MainActivity.class);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, NotificationMode.AGENDA.name());
 
         activityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, alarm.agendaId);
