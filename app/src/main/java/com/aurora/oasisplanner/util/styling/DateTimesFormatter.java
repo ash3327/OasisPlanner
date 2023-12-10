@@ -51,6 +51,7 @@ public class DateTimesFormatter {
         }
     }
     public static String getDateTime(LocalDateTime dt) {
+        if (dt == null) return "(no future events)";
         return getDateTime(Collections.singletonList(dt.toLocalDate()), dt.toLocalTime());
     }
     public static String getDateTime(List<LocalDate> dates, LocalTime time) {

@@ -5,5 +5,5 @@ public class NotificationModule {
     public enum NotificationMode {AGENDA}
 
     public static final String NOTIFICATION_CONTENT = "notif_content";
-    public static final String NOTIFICATION_ACTIVITY = "notif_content";
+    public static final String NOTIFICATION_ACTIVITY = "notif_activity";
 }

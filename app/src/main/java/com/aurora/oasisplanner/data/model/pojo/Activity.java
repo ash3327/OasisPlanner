@@ -90,8 +90,8 @@ public class Activity {
         AlarmList aL = alarmList.get(0);
         LocalDateTime dt = aL.alarmList.getNextDateTime();
         for (AlarmList al : alarmList) {
-            LocalDateTime aldt = al.alarmList.getNextDateTime();;
-            if (aldt != null && aldt.isBefore(dt)) {
+            LocalDateTime aldt = al.alarmList.getNextDateTime();
+            if (aldt != null && (dt == null || aldt.isBefore(dt))) {
                 aL = al;
                 dt = aldt;
             }

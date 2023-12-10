@@ -92,6 +92,7 @@ public class Converters {
     @TypeConverter
     public Map<String,String> bundleFromString(String str) {
         try {
+            if (str == null) str = "";
             JSONObject jsonObject = new JSONObject(str);
             Map<String,String> map = new HashMap<>();
             Iterator<String> keys = jsonObject.keys();
@@ -107,6 +108,7 @@ public class Converters {
     }
     @TypeConverter
     public String bundleToString(Map<String,String> map) {
+        if (map == null) map = new HashMap<>();
         return new JSONObject(map).toString();
     }
 }

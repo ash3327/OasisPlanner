@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -62,6 +63,7 @@ public class AlarmNotificationService extends Service {
 
         Intent activityIntent = new Intent(this, MainActivity.class);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, NotificationMode.AGENDA.name());
+
         activityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, alarm.agendaId);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_ACTIVITY, alarm.activityId);
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);

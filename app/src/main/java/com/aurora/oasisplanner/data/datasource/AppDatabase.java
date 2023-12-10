@@ -41,7 +41,7 @@ import java.time.LocalTime;
                 _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
                 _SubPeriod.class, _SelectedDates.class
         },
-        version = 16,
+        version = 17,
         autoMigrations = {
                 @AutoMigration(from=5, to=6, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=6, to=7),
@@ -54,7 +54,7 @@ import java.time.LocalTime;
                 @AutoMigration(from=13, to=14),
                 @AutoMigration(from=14, to=15),
                 @AutoMigration(from=15, to=16),
-                //@AutoMigration(from=16, to=17),
+                @AutoMigration(from=16, to=17),
         }
 )
 @TypeConverters({Converters.class})
