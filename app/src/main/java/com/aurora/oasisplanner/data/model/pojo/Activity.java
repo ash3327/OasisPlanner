@@ -68,6 +68,11 @@ public class Activity {
     }
 
     @Ignore
+    public _Doc getLoc() {
+        return null;
+    }
+
+    @Ignore
     public List[] getObjList(boolean sort) {
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();

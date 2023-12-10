@@ -6,9 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -79,20 +78,27 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
         int expandId = adapter.setAgenda(agenda, activityLId);
+        adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
         adapter.setBinaryLabel(
                 binding.pageYellowLabel,
                 binding.pageYellowLabelText,
                 binding.pageYellowLabelIcon
         );
-        recyclerView.post(()->{
-            Context rContext = recyclerView.getContext();
-            RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(rContext);
-            View v = recyclerView.getChildAt(expandId), v1 = recyclerView.getChildAt(1);
-            smoothScroller.setTargetPosition(v == null ? 0 : v.getTop() - (v1 == null ? 0 : v1.getTop()));
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-            if (layoutManager != null)
-                layoutManager.startSmoothScroll(smoothScroller);
-        });
+        recyclerView.post(()-> scrollTo(expandId, recyclerView));
+    }
+
+    public void scrollTo(int pos, RecyclerView recyclerView) {
+        Context rContext = recyclerView.getContext();
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(rContext){
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(pos > 0 ? pos-1 : 0);
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager != null)
+            layoutManager.startSmoothScroll(smoothScroller);
     }
 
     public void associateTitle(EditText editText) {

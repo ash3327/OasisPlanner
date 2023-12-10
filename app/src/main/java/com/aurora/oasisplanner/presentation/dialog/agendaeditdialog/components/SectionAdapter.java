@@ -44,6 +44,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id id;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
+    private Id.IdObj scrollFunc = (oi, i)->{};
 
     {
         setHasStableIds(true);
@@ -177,6 +178,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         id.setId(i * 2 + 1);
     }
 
+    public void setScrollToFunc(Id.IdObj scrollFunc) {
+        this.scrollFunc = scrollFunc;
+    }
+
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding vbinding;
         private SectionAdapter adapter;
@@ -230,6 +235,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.bar.setOnClickListener(
                     (v)->{
                         toAddSection.setId(0);
+                        scrollFunc.run(i, i);
                         id.setId(i);
                     }
             );
@@ -251,6 +257,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 binding.sectdI1.setVisibility(View.GONE);
                 binding.sectdT1.setVisibility(View.GONE);
             }
+            //TODO
             binding.sectdI2.setVisibility(View.GONE);
             binding.sectdT2.setVisibility(View.GONE);
 
@@ -276,6 +283,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (v)->{
                         docText.setFocusable(true);
                         toAddSection.setId(0);
+                        scrollFunc.run(i, i);
                         id.setId(i);
                     }
             );//*/
