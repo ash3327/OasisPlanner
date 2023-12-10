@@ -14,6 +14,7 @@ import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionItemAdapter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -70,6 +71,20 @@ public class Activity {
     @Ignore
     public _Doc getLoc() {
         return null;
+    }
+    /** Returns Object[3]: {alarmList: AlarmList, firstDateTime: LocalDateTime}*/
+    @Ignore
+    public Object[] getFirstAlarmList() {
+        AlarmList aL = alarmList.get(0);
+        LocalDateTime dt = aL.alarmList.getNextDateTime();
+        for (AlarmList al : alarmList) {
+            LocalDateTime aldt = al.alarmList.getNextDateTime();;
+            if (aldt.isBefore(dt)) {
+                aL = al;
+                dt = aldt;
+            }
+        }
+        return new Object[]{aL, dt};
     }
 
     @Ignore

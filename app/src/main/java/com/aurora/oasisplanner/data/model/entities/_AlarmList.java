@@ -9,6 +9,7 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,11 +52,13 @@ public class _AlarmList {
     }
 
     @Ignore
-    public String getNextDateTime() {
-        for (LocalDate date : dates)
-            if (!date.isBefore(LocalDate.now()))
-                return DateTimesFormatter.getDateTime(Collections.singletonList(date), time);
-        return "(no future events)";
+    public LocalDateTime getNextDateTime() {
+        for (LocalDate date : dates) {
+            LocalDateTime dt = date.atTime(time);
+            if (!dt.isBefore(LocalDateTime.now()))
+                return dt;
+        }
+        return null;
     }
 
     @Ignore

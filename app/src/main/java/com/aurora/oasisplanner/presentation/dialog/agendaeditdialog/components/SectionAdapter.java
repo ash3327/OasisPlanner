@@ -32,9 +32,13 @@ import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
+import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -249,10 +253,12 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);
             if (gp.alarmList.size() > 0) {
-                AlarmList gpl = gp.alarmList.get(0);
-                binding.sectdI1.setImageDrawable(gpl.alarmList.type.getDrawable());
+                Object[] gpl = gp.getFirstAlarmList();
+                AlarmList gpl_alarmL = (AlarmList)gpl[0];
+                LocalDateTime gpl_dt = (LocalDateTime)gpl[1];
+                binding.sectdI1.setImageDrawable(gpl_alarmL.alarmList.type.getDrawable());
                 //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
-                binding.sectdT1.setText(gpl.alarmList.getNextDateTime());
+                binding.sectdT1.setText(DateTimesFormatter.getDateTime(gpl_dt));
             } else {
                 binding.sectdI1.setVisibility(View.GONE);
                 binding.sectdT1.setVisibility(View.GONE);

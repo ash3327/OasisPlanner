@@ -6,6 +6,7 @@ import com.aurora.oasisplanner.R;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +49,9 @@ public class DateTimesFormatter {
         } catch (Exception e) {
             return "#DATE#ERROR#";
         }
+    }
+    public static String getDateTime(LocalDateTime dt) {
+        return getDateTime(Collections.singletonList(dt.toLocalDate()), dt.toLocalTime());
     }
     public static String getDateTime(List<LocalDate> dates, LocalTime time) {
         try {
