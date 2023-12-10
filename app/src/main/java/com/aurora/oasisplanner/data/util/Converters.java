@@ -7,6 +7,9 @@ import androidx.room.TypeConverter;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +17,10 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Converters {
@@ -81,5 +87,26 @@ public class Converters {
     @TypeConverter
     public String typeListToString(List<ActivityType> val) {
         return val.stream().map(ActivityType::toString).reduce("",(a, b)->a+Styles.SEP+b).replaceFirst(Styles.SEP, "");
+    }
+
+    @TypeConverter
+    public Map<String,String> bundleFromString(String str) {
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Map<String,String> map = new HashMap<>();
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String val = jsonObject.getString(key);
+                map.put(key,val);
+            }
+            return map;
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+    @TypeConverter
+    public String bundleToString(Map<String,String> map) {
+        return new JSONObject(map).toString();
     }
 }

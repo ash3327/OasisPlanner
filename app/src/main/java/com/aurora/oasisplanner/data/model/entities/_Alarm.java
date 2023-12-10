@@ -13,10 +13,13 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class _Alarm {
@@ -34,6 +37,7 @@ public class _Alarm {
     public long alarmListId;
     @ColumnInfo(defaultValue = "-1")
     public long activityId;
+    //public Map<String,String> args = new HashMap<>();
 
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
@@ -103,6 +107,7 @@ public class _Alarm {
         extras.putLong("agendaId", agendaId);
         extras.putLong("alarmListId", alarmListId);
         extras.putLong("activityId", activityId);
+        //extras.putSerializable("args", (Serializable) args);
 
         return extras;
     }
@@ -124,6 +129,7 @@ public class _Alarm {
         alarm.agendaId = extras.getLong("agendaId");
         alarm.alarmListId = extras.getLong("alarmListId");
         alarm.activityId = extras.getLong("activityId");
+        //alarm.args = (Map<String,String>) extras.getSerializable("args");
 
         return alarm;
     }
