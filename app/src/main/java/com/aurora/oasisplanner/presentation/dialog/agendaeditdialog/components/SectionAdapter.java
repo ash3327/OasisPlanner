@@ -252,9 +252,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setVisibility(visibility);
             binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);
+            AlarmList gpl_alarmL = null;
             if (gp.alarmList.size() > 0) {
                 Object[] gpl = gp.getFirstAlarmList();
-                AlarmList gpl_alarmL = (AlarmList)gpl[0];
+                gpl_alarmL = (AlarmList)gpl[0];
                 LocalDateTime gpl_dt = (LocalDateTime)gpl[1];
                 binding.sectdI1.setImageDrawable(gpl_alarmL.alarmList.type.getDrawable());
                 //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
@@ -263,9 +264,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 binding.sectdI1.setVisibility(View.GONE);
                 binding.sectdT1.setVisibility(View.GONE);
             }
-            //TODO
-            binding.sectdI2.setVisibility(View.GONE);
-            binding.sectdT2.setVisibility(View.GONE);
+            _Doc loc = gp.getLoc(gpl_alarmL);
+            if (loc != null) {
+                binding.sectdI2.setImageResource(R.drawable.ic_location);
+                binding.sectdT2.setText(loc.contents);
+            } else {
+                binding.sectdI2.setVisibility(View.GONE);
+                binding.sectdT2.setVisibility(View.GONE);
+            }
 
             Drawable icon = gp.activity.getType().getDrawable();
             icon.setColorFilter(

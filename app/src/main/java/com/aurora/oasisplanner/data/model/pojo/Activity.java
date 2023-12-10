@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo;
 
 import static com.aurora.oasisplanner.data.tags.ActivityType.Type.doc;
+import static com.aurora.oasisplanner.data.tags.ActivityType.Type.loc;
 
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Activity {
     @Embedded
@@ -69,8 +71,18 @@ public class Activity {
     }
 
     @Ignore
-    public _Doc getLoc() {
-        return null;
+    public _Doc getLoc(AlarmList aL) {
+        _Doc out = null;
+        List[] objList = getObjList(false);
+        int i = 0;
+        for (Object obj : objList[0]) {
+            if (obj instanceof _Doc && objList[1].get(i) == loc)
+                out = (_Doc) obj;
+            if (Objects.equals(obj, aL))
+                break;
+            i++;
+        }
+        return out;
     }
     /** Returns Object[3]: {alarmList: AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
@@ -87,6 +99,7 @@ public class Activity {
         return new Object[]{aL, dt};
     }
 
+    /** output format: List[2]: {objlist: List<Object>, types: List<ActivityType.Type>}*/
     @Ignore
     public List[] getObjList(boolean sort) {
         List<Object> list = new ArrayList<>();
