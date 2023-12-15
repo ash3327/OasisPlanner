@@ -1,11 +1,14 @@
 package com.aurora.oasisplanner.data.model.entities;
 
+import android.text.SpannableStringBuilder;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 
 import java.time.LocalDate;
@@ -14,7 +17,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
@@ -30,6 +35,7 @@ public class _AlarmList {
     public long groupId;
     public long agendaId;
     public int i = -1;
+    public Map<String,String> args = new HashMap<>();
 
     public _AlarmList(){}
 
@@ -59,6 +65,19 @@ public class _AlarmList {
                 return dt;
         }
         return null;
+    }
+
+    @Ignore
+    public SpannableStringBuilder getArgs(String key) {
+        if (args == null || !args.containsKey(key))
+            return null;
+        return new Converters().spannableFromString(args.get(key));
+    }
+
+    @Ignore
+    public void putArgs(String key, SpannableStringBuilder sb) {
+        if (args == null) args = new HashMap<>();
+        args.put(key, new Converters().spannableToString(sb));
     }
 
     @Ignore
