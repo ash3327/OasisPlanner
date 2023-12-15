@@ -53,10 +53,12 @@ public class Converters {
 
     @TypeConverter
     public SpannableStringBuilder spannableFromString(String val) {
+        if (val == null) return null;
         return Styles.toStyled(val);
     }
     @TypeConverter
     public String spannableToString(SpannableStringBuilder val) {
+        if (val == null) return null;
         return Styles.toHtml(val);
     }
 

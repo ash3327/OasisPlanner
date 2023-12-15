@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="start|center_vertical"
     android:background="@color/notif_edge_color"
     android:orientation="horizontal">
@@ -27,7 +28,8 @@
                 android:layout_height="36dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="12dp"
-                android:src="@drawable/g_regular_v2"/>
+                android:src="@drawable/g_regular_v2"
+                app:tint="@color/blue_500"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,7 +37,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
                     <TextView
                         android:id="@+id/text_view_collapsed_1"
                         style="@style/TextAppearance.Compat.Notification.Title"
@@ -50,6 +53,21 @@
                         android:textColor="@color/grey_300"
                         android:layout_marginStart="15dp"
                         android:text="02:34"/>
+                    <!-- Location -->
+                    <ImageView
+                        android:id="@+id/notif_loc_icon"
+                        android:layout_width="@dimen/icon_height"
+                        android:layout_height="@dimen/icon_height"
+                        android:src="@drawable/ic_location"
+                        android:layout_marginStart="15dp"
+                        />
+                    <TextView
+                        android:id="@+id/notif_loc_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey_300"
+                        android:layout_marginStart="5dp"
+                        android:text="MMW LT03"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/text_view_collapsed_2"

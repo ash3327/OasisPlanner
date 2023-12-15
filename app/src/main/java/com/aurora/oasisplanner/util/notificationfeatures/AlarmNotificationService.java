@@ -15,7 +15,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.IBinder;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -86,17 +88,25 @@ public class AlarmNotificationService extends Service {
         Canvas canvas = new Canvas(bitmapResult);
         canvas.drawBitmap(img, 0, 0, paint);
 
+        /*
         RemoteViews collapsedView = new RemoteViews(this.getPackageName(), R.layout.notification_collapsed_view);
         collapsedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
         collapsedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         collapsedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         collapsedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
-
+        //*/
         RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.notification_collapsed_view);
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
         expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
+        SpannableStringBuilder locText = alarm.getArgs(_Alarm.LOC);
+        if (locText == null) {
+            expandedView.setViewVisibility(R.id.notif_loc_text, View.INVISIBLE);
+            expandedView.setViewVisibility(R.id.notif_loc_icon, View.INVISIBLE);
+        } else {
+            expandedView.setTextViewText(R.id.notif_loc_text, locText);
+        }
 
         // delay alarm service
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)

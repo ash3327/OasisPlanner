@@ -10,7 +10,11 @@ import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgendaRepository {
     private AgendaDao agendaDao;
@@ -158,7 +162,12 @@ public class AgendaRepository {
         for (AlarmList alarmList : activity.alarmList) {
             alarmList.alarmList.groupId = id;
             alarmList.alarmList.agendaId = activity.activity.agendaId;
-            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmScheduler);
+            //
+            Map<String, String> alarmArgs = new HashMap<>();
+            Converters converter = new Converters();
+            _Doc loc = activity.getLoc(alarmList);
+            alarmArgs.put(_Alarm.LOC, converter.spannableToString(loc == null ? null : loc.contents));
+            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmScheduler, alarmArgs);
         }
         return id;
     }
@@ -170,7 +179,8 @@ public class AgendaRepository {
             SpannableStringBuilder alarmDescr,
             long actvId,
             AgendaDao agendaDao,
-            AlarmScheduler alarmScheduler
+            AlarmScheduler alarmScheduler,
+            Map<String, String> alarmArgs
     ) {
 
         long id = agendaDao.insert(alarmList.alarmList);
@@ -182,6 +192,7 @@ public class AgendaRepository {
                 alarm.agendaId = alarmList.alarmList.agendaId;
                 alarm.setAgendaData(title, agendaDescr, alarmDescr);
                 alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);
+                alarm.args.putAll(alarmArgs);
                 alarm.id = agendaDao.insert(alarm);
                 if (alarmScheduler != null)
                     alarmScheduler.schedule(alarm);

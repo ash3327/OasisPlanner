@@ -39,6 +39,9 @@ public class _Alarm {
     public long activityId;
     public Map<String,String> args = new HashMap<>();
 
+    @Ignore
+    public static final String LOC = "AlarmLoc";
+
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
         setAlarmData(AlarmType.notif, Importance.regular);
@@ -88,6 +91,13 @@ public class _Alarm {
                                 .append("\n\n")
                                 .append(agendaDescr)
                 : Styles.truncate(alarmDescr, 12);
+    }
+
+    @Ignore
+    public SpannableStringBuilder getArgs(String key) {
+        if (args == null || !args.containsKey(key))
+            return null;
+        return new Converters().spannableFromString(args.get(key));
     }
 
     @Ignore
