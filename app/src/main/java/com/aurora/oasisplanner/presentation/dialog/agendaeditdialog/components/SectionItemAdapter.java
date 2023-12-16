@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
@@ -152,6 +153,17 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         try {
             for (AlarmList aL : checkedList)
                 remove(aL, aL.alarmList.i);
+            tSwitch.setState(false);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void editTagOfChecked() {
+        // TODO
+        // create dialog to ask for change
+        // picked loc -> confirm: do following:
+        try {
+            for (AlarmList aL : checkedList)
+                aL.alarmList.putArgs(_Alarm.LOC, null);
             tSwitch.setState(false);
         } catch (Exception e) {e.printStackTrace();}
     }

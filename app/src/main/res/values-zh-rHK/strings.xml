@@ -32,6 +32,9 @@
     <string name="important">緊急</string>
 
     <!-- AGENDA TYPES -->
+    <string name="type_agenda">日程</string>
+
+    <!-- ACTIVITY TYPES -->
     <string name="notif">提醒</string>
     <string name="activities">活動</string>
     <string name="plan">規劃</string>

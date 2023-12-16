@@ -31,6 +31,9 @@
     <string name="important">urgent</string>
 
     <!-- AGENDA TYPES -->
+    <string name="type_agenda">AGENDA</string>
+
+    <!-- ACTIVITY TYPES -->
     <string name="notif">reminders</string>
     <string name="activities">activities</string>
     <string name="plan">plan</string>
