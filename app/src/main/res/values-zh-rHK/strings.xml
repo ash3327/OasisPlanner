@@ -40,6 +40,9 @@
     <string name="plan">規劃</string>
     <string name="todo">待辦</string>
 
+    <!-- TAG TYPES -->
+    <string name="tag_loc">地點</string>
+
     <!-- FRAGMENTS -->
         <!-- NOTIFICATIONS -->
             <!-- TITLE -->
@@ -62,6 +65,7 @@
         <!-- PAGE OVERHEAD TITLE -->
         <string name="page_overhead_new_agenda">新增日程</string>
         <string name="page_overhead_edit_agenda">修改日程</string>
+        <string name="page_overhead_edit_tag">修改標簽</string>
         <!-- PAGE BUTTON CONTENTS -->
         <string name="page_confirm">確定</string>
         <string name="page_cancel">取消</string>

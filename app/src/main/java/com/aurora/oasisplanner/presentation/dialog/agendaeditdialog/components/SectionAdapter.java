@@ -432,8 +432,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         lbl.vg.setOnClickListener(
                 collapsed ?
                     this::addNewSection :
-                        //delete ?
-                        //    removeChecked :
+                        checkListIsOn ?
+                            editTagofChecked :
                             this::refreshCollapsed);
         lbl.tv.setText(collapsed ?
                 Resources.getString(R.string.yellow_bar_text_newevent) :

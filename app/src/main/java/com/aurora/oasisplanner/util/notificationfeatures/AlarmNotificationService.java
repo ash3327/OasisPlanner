@@ -26,6 +26,7 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
@@ -100,7 +101,7 @@ public class AlarmNotificationService extends Service {
         expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
-        SpannableStringBuilder locText = alarm.getArgs(_Alarm.LOC);
+        SpannableStringBuilder locText = alarm.getArgs(TagType.LOC.name());
         if (locText == null) {
             expandedView.setViewVisibility(R.id.notif_loc_text, View.INVISIBLE);
             expandedView.setViewVisibility(R.id.notif_loc_icon, View.INVISIBLE);

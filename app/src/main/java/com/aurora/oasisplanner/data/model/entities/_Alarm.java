@@ -39,9 +39,6 @@ public class _Alarm {
     public long activityId;
     public Map<String,String> args = new HashMap<>();
 
-    @Ignore
-    public static final String LOC = "AlarmLoc";
-
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
         setAlarmData(AlarmType.notif, Importance.regular);

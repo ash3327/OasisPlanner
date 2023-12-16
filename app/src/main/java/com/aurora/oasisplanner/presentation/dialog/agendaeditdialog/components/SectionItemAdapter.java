@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCase;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
@@ -161,11 +162,14 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         // TODO
         // create dialog to ask for change
         // picked loc -> confirm: do following:
-        try {
+        AppModule.retrieveAgendaUseCases().editAlarmListUseCase.invokeDialogForTagType(
+                checkedList
+        );
+        /*try {
             for (AlarmList aL : checkedList)
                 aL.alarmList.putArgs(_Alarm.LOC, null);
             tSwitch.setState(false);
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {e.printStackTrace();}//*/
     }
 
     public boolean checkListIsEmpty(boolean v) {

@@ -10,6 +10,7 @@ import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -166,7 +167,7 @@ public class AgendaRepository {
             Map<String, String> alarmArgs = new HashMap<>();
             Converters converter = new Converters();
             _Doc loc = activity.getLoc(alarmList);
-            alarmArgs.put(_Alarm.LOC, converter.spannableToString(loc == null ? null : loc.contents));
+            alarmArgs.put(TagType.LOC.name(), converter.spannableToString(loc == null ? null : loc.contents));
             insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmScheduler, alarmArgs);
         }
         return id;
