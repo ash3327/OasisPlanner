@@ -29,6 +29,7 @@ import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.util.Id;
+import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
@@ -324,9 +325,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
             recyclerView.setHasFixedSize(true);
 
+            Switch tSwitch = new Switch(false);
+            tSwitch.observe((state)-> binding.sectionEditOptions.setVisibility(state ? View.VISIBLE : id.equals(i) ? View.INVISIBLE : View.GONE), true);
             final SectionItemAdapter adapter = new SectionItemAdapter(
-                    (alarmList)-> notifyItemChanged(i), recyclerView, id, i
+                    (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
             );
+            binding.sectionDelete.setOnClickListener((v)->{
+                adapter.removeChecked();
+            });
             recyclerView.setAdapter(adapter);
             adapter.setGroup(gp);
 

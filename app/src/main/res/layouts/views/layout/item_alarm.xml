@@ -8,18 +8,20 @@
 
     <!-- CLICKING AREA -->
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bar">
+        android:id="@+id/bar"
+        android:gravity="center_vertical">
         <LinearLayout
             android:id="@+id/tab"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@android:color/transparent"
             android:paddingVertical="@dimen/doc_vmargin"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_weight="1">
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/collapsed_tab"
                 android:layout_width="wrap_content"
@@ -66,5 +68,12 @@
                 android:theme="@style/BarContentTheme"
                 android:text='5月23日 12:00' />
         </LinearLayout>
+        <CheckBox
+            android:id="@+id/item_alarm_checkbox"
+            android:layout_width="@dimen/big_icon_height"
+            android:layout_height="@dimen/big_icon_height"
+            app:buttonTint="@color/black"
+            android:checked="false"
+            />
     </LinearLayout>
 </layout>

@@ -32,7 +32,9 @@ import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
 
@@ -51,10 +53,19 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public List<Object> sections = new ArrayList<>();
     public List<ActivityType.Type> types = new ArrayList<>();
 
-    public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid) {
+    private Switch tSwitch;
+    private Set<AlarmList> checkedList;
+
+    public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
         this.parentId = parentId;
         this.pid = pid;
+        this.tSwitch = tSwitch;
+        checkedList = new HashSet<>();
+        id.setId(-1);
+        tSwitch.observe((state)->{
+            if (!state) checkedList.clear();
+        }, true);
         id.observe((oldId, newId)->{
             if(oldId >= 0) notifyItemChanged(oldId);
             if((oldId < 0 || newId % 2 == 0) && newId >= 0) notifyItemChanged(newId);
@@ -99,7 +110,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 binding = ItemLocBinding.inflate(li, parent, false);
                 break;
         }
-        return new AlarmGroupsHolder(binding, this, len);
+        return new AlarmGroupsHolder(binding, this, len, tSwitch, checkedList);
     }
 
     @Override
@@ -138,7 +149,15 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         notifyDataSetChanged();
     }
 
+    public void removeChecked() {
+        try {
+            for (AlarmList aL : checkedList)
+                remove(aL, aL.alarmList.i);
+        } catch (Exception e) {}
+    }
+
     public void remove(Object obj, int i) {
+        if (i == -1) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
         if (obj instanceof AlarmList && type.type == ActivityType.Type.activity && activity.alarmList.get(type.i).equals(obj))
@@ -183,21 +202,25 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding vbinding;
         private SectionItemAdapter adapter;
-        private Switch aSwitch = new Switch(false);
+        /** aSwtich = true shows the checkboxes. */
+        private Switch aSwitch;
+        private Set<AlarmList> checkedList;
         private Instant clicked = Instant.now();
         private Object item;
         private int len;
 
-        public AlarmGroupsHolder(ViewDataBinding binding, SectionItemAdapter adapter, int len) {
+        public AlarmGroupsHolder(ViewDataBinding binding, SectionItemAdapter adapter, int len,
+                                 Switch tSwitch, Set<AlarmList> checkedList) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
             this.len = len;
+            this.aSwitch = tSwitch;
+            this.checkedList = checkedList;
         }
 
         public boolean bind(int i, Object sect, Activity gp) {
             this.item = sect;
-            aSwitch.setState(false);
             if (sect instanceof GapData)
                 return bindGap(i, (GapData) sect);
             if (sect instanceof AlarmList)
@@ -248,11 +271,21 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
             aSwitch.observe((state)-> {
+                /*/
                 binding.tab.setBackgroundColor(
                         id.equals(i) && parentId.equals(pid) && state ?
                                 Resources.getColor(R.color.red_100) : 0
                 );
                 binding.collapsedTab.setVisibility(id.equals(i) && parentId.equals(pid) && state ? View.VISIBLE : View.GONE);
+                //*/
+                binding.itemAlarmCheckbox.setChecked(checkedList.contains(gp));
+                binding.itemAlarmCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
+                binding.itemAlarmCheckbox.setOnCheckedChangeListener((v,checked)->{
+                    try {
+                        if (checked) checkedList.add(gp);
+                        else checkedList.remove(gp);
+                    } catch (Exception e){}
+                });
             }, true);
 
             binding.bar.setOnClickListener(
@@ -284,8 +317,11 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.bar.setOnLongClickListener(
                     (v)->{
-                        if (!(parentId.setId(pid) & id.setId(i)))
+                        if (!(parentId.setId(pid) & id.setId(i))) {
                             aSwitch.setState(true);
+                            checkedList.add(gp);
+                            binding.itemAlarmCheckbox.setChecked(true); //TODO
+                        }
                         clicked = Instant.now();
                         return false;
                     }

@@ -1,10 +1,14 @@
 package com.aurora.oasisplanner.data.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Switch {
     private boolean state = false;
-    private StateObj action;
+    private List<StateObj> actions;
     public Switch(boolean initState) {
         this.state = initState;
+        this.actions = new ArrayList<>();
     }
     public boolean getState(){
         return state;
@@ -12,8 +16,9 @@ public class Switch {
     public boolean setState(boolean state) {
         boolean changed = this.state != state;
         this.state = state;
-        if (changed && action != null)
-            action.run(state);
+        if (changed && actions != null)
+            for (StateObj action : actions)
+                action.run(state);
         return changed;
     }
     public boolean toggleState() {
@@ -21,7 +26,8 @@ public class Switch {
         return true;
     }
     public void observe(StateObj action, boolean act) {
-        this.action = action;
+        if (actions == null) actions = new ArrayList<>();
+        this.actions.add(action);
         if (act) action.run(getState());
     }
 

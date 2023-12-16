@@ -65,9 +65,7 @@ public class Activity {
 
     @Ignore
     public static Activity empty() {
-        return new Activity(null).putItems(
-                _Doc.empty()
-        );
+        return new Activity(null);
     }
 
     @Ignore
