@@ -71,6 +71,7 @@
         <!-- YELLOW BAR -->
         <string name="yellow_bar_text_collapse">全部項目</string>
         <string name="yellow_bar_text_newevent">新增項目</string>
+        <string name="yellow_bar_text_delete">刪除項目</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">日程的標題不能為空！</string>
 

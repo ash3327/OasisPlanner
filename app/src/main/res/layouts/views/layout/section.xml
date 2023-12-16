@@ -146,21 +146,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center_vertical">
-                    <LinearLayout
-                        android:id="@+id/section_edit_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:background="@color/yellow_200"
-                        android:gravity="end">
-                        <ImageView
-                            android:id="@+id/section_delete"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_trashcan"/>
-                    </LinearLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

@@ -153,6 +153,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         try {
             for (AlarmList aL : checkedList)
                 remove(aL, aL.alarmList.i);
+            tSwitch.setState(false);
         } catch (Exception e) {}
     }
 
@@ -320,7 +321,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                         if (!(parentId.setId(pid) & id.setId(i))) {
                             aSwitch.setState(true);
                             checkedList.add(gp);
-                            binding.itemAlarmCheckbox.setChecked(true); //TODO
+                            binding.itemAlarmCheckbox.setChecked(true);
                         }
                         clicked = Instant.now();
                         return false;

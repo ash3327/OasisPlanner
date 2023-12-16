@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bar"
-            app:cardCornerRadius="@dimen/card_radius"
+            app:cardCornerRadius="@dimen/card_doc_radius"
             android:layout_marginVertical="@dimen/page_vmargin"
             android:layout_marginHorizontal="@dimen/page_hmargin">
 
@@ -58,7 +58,7 @@
                     </LinearLayout>
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="140dp"
+                        android:layout_height="@dimen/page_banner_height"
 
                         android:layout_marginBottom="@dimen/box_vmargin">
                         <androidx.constraintlayout.widget.ConstraintLayout

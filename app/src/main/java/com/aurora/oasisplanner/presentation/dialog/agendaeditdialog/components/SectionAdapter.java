@@ -50,6 +50,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     private Id id;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
+    private Label label;
 
     {
         setHasStableIds(true);
@@ -236,12 +237,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
         public boolean bindActivity(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
+            Switch tSwitch = new Switch(false);
 
             binding.bar.setOnClickListener(
                     (v)->{
                         toAddSection.setId(0);
                         scrollFunc.run(i, i);
                         id.setId(i);
+                        tSwitch.setState(false);
                     }
             );
             binding.btnDelete.setOnClickListener(
@@ -325,14 +328,12 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
             recyclerView.setHasFixedSize(true);
 
-            Switch tSwitch = new Switch(false);
-            tSwitch.observe((state)-> binding.sectionEditOptions.setVisibility(state ? View.VISIBLE : id.equals(i) ? View.INVISIBLE : View.GONE), true);
             final SectionItemAdapter adapter = new SectionItemAdapter(
                     (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
             );
-            binding.sectionDelete.setOnClickListener((v)->{
-                adapter.removeChecked();
-            });
+            tSwitch.observe((state)-> {
+                updateLabel(label, false, state, (v)->adapter.removeChecked());
+            }, true);
             recyclerView.setAdapter(adapter);
             adapter.setGroup(gp);
 
@@ -408,17 +409,33 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         }
     }
 
-    public void setBinaryLabel(ViewGroup vg, TextView tv, ImageView imgv) {
+    /** This must be executed before setAgenda. */
+    public void setBinaryLabel(Label lbl) {
+        this.label = lbl;
         id.observe((oi, i)->{
             boolean collapsed = i == -1 && toAddSection.equals(0);
-            vg.setOnClickListener(collapsed ? this::addNewSection : this::refreshCollapsed);
-            tv.setText(collapsed ?
-                    Resources.getString(R.string.yellow_bar_text_newevent) :
-                    Resources.getString(R.string.yellow_bar_text_collapse));
-            imgv.setImageDrawable(collapsed ?
-                    Resources.getDrawable(R.drawable.ic_symb_plus) :
-                    Resources.getDrawable(R.drawable.ic_contract));
+            updateLabel(this.label, collapsed, false, null);
         }, true);
+    }
+
+    private void updateLabel(Label lbl, boolean collapsed, boolean delete, View.OnClickListener removeChecked) {
+        if (lbl == null) return;
+        lbl.vg.setOnClickListener(
+                collapsed ?
+                    this::addNewSection :
+                        delete ?
+                            removeChecked :
+                            this::refreshCollapsed);
+        lbl.tv.setText(collapsed ?
+                Resources.getString(R.string.yellow_bar_text_newevent) :
+                    delete ?
+                        Resources.getString(R.string.yellow_bar_text_delete):
+                        Resources.getString(R.string.yellow_bar_text_collapse));
+        lbl.imgv.setImageDrawable(collapsed ?
+                Resources.getDrawable(R.drawable.ic_symb_plus) :
+                    delete ?
+                        Resources.getDrawable(R.drawable.ic_trashcan) :
+                        Resources.getDrawable(R.drawable.ic_contract));
     }
 
     public void refreshCollapsed(View v) {
@@ -435,6 +452,18 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
         public GapData(int i) {
             this.i = i;
+        }
+    }
+
+    public static class Label {
+        ViewGroup vg;
+        TextView tv;
+        ImageView imgv;
+
+        public Label(ViewGroup vg, TextView tv, ImageView imgv) {
+            this.vg = vg;
+            this.tv = tv;
+            this.imgv = imgv;
         }
     }
 }

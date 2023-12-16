@@ -70,6 +70,7 @@
         <!-- YELLOW BAR -->
         <string name="yellow_bar_text_collapse">Collapse</string>
         <string name="yellow_bar_text_newevent">New Event</string>
+        <string name="yellow_bar_text_delete">Delete Item</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">The title of the agenda cannot be empty!</string>
 

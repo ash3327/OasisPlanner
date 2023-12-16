@@ -78,13 +78,15 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
 
         final SectionAdapter adapter = new SectionAdapter();
         recyclerView.setAdapter(adapter);
-        int expandId = adapter.setAgenda(agenda, activityLId);
         adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
         adapter.setBinaryLabel(
-                binding.pageYellowLabel,
-                binding.pageYellowLabelText,
-                binding.pageYellowLabelIcon
+                new SectionAdapter.Label(
+                        binding.pageYellowLabel,
+                        binding.pageYellowLabelText,
+                        binding.pageYellowLabelIcon
+                )
         );
+        int expandId = adapter.setAgenda(agenda, activityLId);
         recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }
 
