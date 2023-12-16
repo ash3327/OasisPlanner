@@ -129,30 +129,34 @@
                         tools:itemCount="1"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/page_yellow_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="12.5dp"
-                    android:layout_marginBottom="60dp"
-
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:gravity="center"
-                    android:background="@color/yellow_200"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:id="@+id/page_yellow_label_icon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="60dp">
+                    <LinearLayout
+                        android:id="@+id/page_yellow_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_symb_plus"
-                        android:layout_marginEnd="5dp"/>
-                    <TextView
-                        android:id="@+id/page_yellow_label_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="New Event"/>
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="12.5dp"
+
+                        android:gravity="center"
+                        android:background="@color/yellow_200"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/page_yellow_label_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_symb_plus"
+                            android:layout_marginEnd="5dp"/>
+                        <TextView
+                            android:id="@+id/page_yellow_label_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="New Event"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

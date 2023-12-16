@@ -332,7 +332,9 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
             );
             tSwitch.observe((state)-> {
-                updateLabel(label, false, state, (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked());
+                if (!id.equals(-1))
+                    updateLabel(label, false, state,
+                            (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked());
             }, true);
             recyclerView.setAdapter(adapter);
             adapter.setGroup(gp);
@@ -421,6 +423,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     private void updateLabel(Label lbl, boolean collapsed, boolean delete,
                              View.OnClickListener removeChecked, View.OnClickListener editTagofChecked) {
         if (lbl == null) return;
+        Log.d("test3", "Collapsed: "+collapsed+"; Delete: "+delete+"; "+removeChecked);
         lbl.vg.setOnClickListener(
                 collapsed ?
                     this::addNewSection :
@@ -444,6 +447,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         id.setId(-1);
     }
     public void addNewSection(View v) {
+        Log.d("test3", "Add New Section");
         toAddSection.setId(1);
     }
 
