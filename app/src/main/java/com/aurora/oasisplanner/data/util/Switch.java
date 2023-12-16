@@ -14,9 +14,12 @@ public class Switch {
         return state;
     }
     public boolean setState(boolean state) {
+        return setState(state, false);
+    }
+    public boolean setState(boolean state, boolean forceRefresh) {
         boolean changed = this.state != state;
         this.state = state;
-        if (changed && actions != null)
+        if ((changed || forceRefresh) && actions != null)
             for (StateObj action : actions)
                 action.run(state);
         return changed;

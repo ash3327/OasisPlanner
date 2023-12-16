@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +38,10 @@ import java.util.Set;
 public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
 
     private static final int ID_KEY_ITEMS = 3;
-    private Id id, parentId;
-    private int pid;
+    private final Id id, parentId;
+    private final int pid;
     private int len;
-    private AlarmEditDialog.OnSaveListener onSaveAlarmListener;
+    private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
 
     {
         setHasStableIds(true);
@@ -53,8 +52,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public List<Object> sections = new ArrayList<>();
     public List<ActivityType.Type> types = new ArrayList<>();
 
-    private Switch tSwitch;
-    private Set<AlarmList> checkedList;
+    private final Switch tSwitch;
+    private final Set<AlarmList> checkedList;
 
     public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
@@ -154,7 +153,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             for (AlarmList aL : checkedList)
                 remove(aL, aL.alarmList.i);
             tSwitch.setState(false);
-        } catch (Exception e) {}
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     public void remove(Object obj, int i) {
@@ -201,14 +200,14 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     }
 
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {
-        private ViewDataBinding vbinding;
-        private SectionItemAdapter adapter;
+        private final ViewDataBinding vbinding;
+        private final SectionItemAdapter adapter;
         /** aSwtich = true shows the checkboxes. */
-        private Switch aSwitch;
-        private Set<AlarmList> checkedList;
+        private final Switch aSwitch;
+        private final Set<AlarmList> checkedList;
         private Instant clicked = Instant.now();
         private Object item;
-        private int len;
+        private final int len;
 
         public AlarmGroupsHolder(ViewDataBinding binding, SectionItemAdapter adapter, int len,
                                  Switch tSwitch, Set<AlarmList> checkedList) {
@@ -285,7 +284,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                     try {
                         if (checked) checkedList.add(gp);
                         else checkedList.remove(gp);
-                    } catch (Exception e){}
+                    } catch (Exception e){e.printStackTrace();}
                 });
             }, true);
 
@@ -295,7 +294,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                             if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
                                 return;
                             if (aSwitch.getState())
-                                adapter.remove(gp, i/2);
+                                checkToggle(gp);
                             else {
                                 AppModule.retrieveAgendaUseCases().editAlarmListUseCase
                                         .invoke(
@@ -303,7 +302,10 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                                                 onSaveAlarmListener
                                         );
                             }
-                        } else {
+                        }
+                        else if (aSwitch.getState())
+                            checkToggle(gp);
+                        else {
                             parentId.setId(pid);
                             if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
                                 aSwitch.setState(false);
@@ -331,6 +333,13 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             alarmRefreshUi();
 
             return true;
+        }
+        public void checkToggle(AlarmList gp) {
+            if (checkedList.contains(gp))
+                checkedList.remove(gp);
+            else
+                checkedList.add(gp);
+            aSwitch.setState(true, true);
         }
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;

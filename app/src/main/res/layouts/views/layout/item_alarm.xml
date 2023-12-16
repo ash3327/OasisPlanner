@@ -66,7 +66,8 @@
 
                 android:paddingHorizontal="@dimen/doc_margin"
                 android:theme="@style/BarContentTheme"
-                android:text='5月23日 12:00' />
+                android:textSize="10sp"
+                android:text="5月23日 12:00" />
         </LinearLayout>
         <CheckBox
             android:id="@+id/item_alarm_checkbox"
