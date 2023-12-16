@@ -168,6 +168,10 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    public boolean checkListIsEmpty(boolean v) {
+        return checkedList.isEmpty();
+    }
+
     public void remove(Object obj, int i) {
         if (i == -1) return;
         ActivityType type = activity.activity.types.get(i);
@@ -333,8 +337,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             binding.bar.setOnLongClickListener(
                     (v)->{
                         if (!(parentId.setId(pid) & id.setId(i))) {
-                            aSwitch.setState(true);
                             checkedList.add(gp);
+                            aSwitch.setState(true);
                             binding.itemAlarmCheckbox.setChecked(true);
                         }
                         clicked = Instant.now();

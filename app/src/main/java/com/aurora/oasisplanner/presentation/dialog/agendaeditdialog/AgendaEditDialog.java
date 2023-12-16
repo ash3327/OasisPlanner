@@ -84,6 +84,11 @@ public class AgendaEditDialog extends AppCompatDialogFragment {
                         binding.pageYellowLabel,
                         binding.pageYellowLabelText,
                         binding.pageYellowLabelIcon
+                ),
+                new SectionAdapter.Label(
+                        binding.pageYellowLabel2,
+                        binding.pageYellowLabel2Text,
+                        binding.pageYellowLabel2Icon
                 )
         );
         int expandId = adapter.setAgenda(agenda, activityLId);

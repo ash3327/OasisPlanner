@@ -43,6 +43,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
 
@@ -50,7 +51,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     private Id id;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
-    private Label label;
+    private Label label, label2;
 
     {
         setHasStableIds(true);
@@ -332,9 +333,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
             );
             tSwitch.observe((state)-> {
-                if (!id.equals(-1))
-                    updateLabel(label, false, state,
-                            (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked());
+                if (!(id.equals(-1) && toAddSection.equals(0)))
+                    updateLabel(label, label2, false, state,
+                            (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked(),
+                            adapter::checkListIsEmpty);
             }, true);
             recyclerView.setAdapter(adapter);
             adapter.setGroup(gp);
@@ -412,34 +414,54 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
 
     /** This must be executed before setAgenda. */
-    public void setBinaryLabel(Label lbl) {
+    public void setBinaryLabel(Label lbl, Label lbl2) {
         this.label = lbl;
+        this.label2 = lbl2;
         id.observe((oi, i)->{
             boolean collapsed = i == -1 && toAddSection.equals(0);
-            updateLabel(this.label, collapsed, false, null, null);
+            updateLabel(this.label, this.label2, collapsed, false,
+                    null, null, null);
         }, true);
     }
 
-    private void updateLabel(Label lbl, boolean collapsed, boolean delete,
-                             View.OnClickListener removeChecked, View.OnClickListener editTagofChecked) {
+    private void updateLabel(Label lbl, Label lbl2, boolean collapsed, boolean checkListIsOn,
+                             View.OnClickListener removeChecked, View.OnClickListener editTagofChecked,
+                             Function<Boolean, Boolean> checkListIsEmpty) {
+        if (checkListIsEmpty == null) checkListIsEmpty = (v)->false;
         if (lbl == null) return;
-        Log.d("test3", "Collapsed: "+collapsed+"; Delete: "+delete+"; "+removeChecked);
         lbl.vg.setOnClickListener(
                 collapsed ?
                     this::addNewSection :
-                        delete ?
-                            removeChecked :
+                        //delete ?
+                        //    removeChecked :
                             this::refreshCollapsed);
         lbl.tv.setText(collapsed ?
                 Resources.getString(R.string.yellow_bar_text_newevent) :
-                    delete ?
-                        Resources.getString(R.string.yellow_bar_text_delete):
+                    checkListIsOn ?
+                        Resources.getString(R.string.yellow_bar_text_tag):
                         Resources.getString(R.string.yellow_bar_text_collapse));
-        lbl.imgv.setImageDrawable(collapsed ?
-                Resources.getDrawable(R.drawable.ic_symb_plus) :
-                    delete ?
-                        Resources.getDrawable(R.drawable.ic_trashcan) :
-                        Resources.getDrawable(R.drawable.ic_contract));
+        lbl.imgv.setImageResource(collapsed ?
+                R.drawable.ic_symb_plus :
+                    checkListIsOn ?
+                        R.drawable.ic_edit_label :
+                        R.drawable.ic_contract);
+
+        if (lbl2 == null) return;
+        boolean listEmpty = checkListIsEmpty.apply(true);
+        lbl2.tv.setText(Resources.getString(
+                listEmpty ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_delete
+        ));
+        lbl2.imgv.setImageResource(listEmpty ? R.drawable.ic_contract : R.drawable.ic_trashcan);
+        if (!collapsed) {
+            if (checkListIsOn) {
+                lbl2.vg.setVisibility(View.VISIBLE);
+                lbl2.vg.setOnClickListener(removeChecked);
+            } else {
+                lbl2.vg.setVisibility(View.GONE);
+            }
+        } else {
+            lbl2.vg.setVisibility(View.GONE);
+        }
     }
 
     public void refreshCollapsed(View v) {
@@ -447,7 +469,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         id.setId(-1);
     }
     public void addNewSection(View v) {
-        Log.d("test3", "Add New Section");
         toAddSection.setId(1);
     }
 
