@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -304,10 +305,10 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                     try {
                         if (checked) checkedList.add(gp);
                         else checkedList.remove(gp);
-                        aSwitch.setState(!checkedList.isEmpty(), true);
+                        aSwitch.setState(!checkedList.isEmpty());
                     } catch (Exception e){e.printStackTrace();}
                 });
-            }, true);
+            }, true, gp.alarmList.id);
 
             binding.bar.setOnClickListener(
                     (v)->{
@@ -328,8 +329,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                             checkToggle(gp);
                         else {
                             parentId.setId(pid);
-                            if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
+                            if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500) {
                                 aSwitch.setState(false);
+                            }
 
                             AppModule.retrieveAgendaUseCases().editAlarmListUseCase
                                     .invoke(
@@ -341,13 +343,11 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.bar.setOnLongClickListener(
                     (v)->{
-                        if (!(parentId.setId(pid) & id.setId(i))) {
-                            checkedList.add(gp);
-                            aSwitch.setState(true);
-                            binding.itemAlarmCheckbox.setChecked(true);
-                        }
+                        id.setId(i);
+                        checkToggle(gp);
+
                         clicked = Instant.now();
-                        return false;
+                        return true;
                     }
             );
 
@@ -356,8 +356,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             return true;
         }
         public void checkToggle(AlarmList gp) {
-            boolean checked = checkedList.contains(gp);
-            if (checked)
+            if (checkedList.contains(gp))
                 checkedList.remove(gp);
             else
                 checkedList.add(gp);
