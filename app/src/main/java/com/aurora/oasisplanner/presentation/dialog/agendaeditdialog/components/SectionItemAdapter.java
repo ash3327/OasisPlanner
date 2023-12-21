@@ -304,6 +304,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                     try {
                         if (checked) checkedList.add(gp);
                         else checkedList.remove(gp);
+                        aSwitch.setState(true, true);
                     } catch (Exception e){e.printStackTrace();}
                 });
             }, true);
