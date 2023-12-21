@@ -36,7 +36,7 @@ public class EditAlarmListUseCase {
         AlarmEditDialog dialog = new AlarmEditDialog();
         dialog.setOnSaveListener(onSaveListener);
 
-        dialog.show(fragmentManager, "myDialog");
+        dialog.show(fragmentManager, "dialogAlarmEdit");
     }
 
     public void invokeDialogForTagType(Set<AlarmList> checkedList) {
@@ -48,7 +48,7 @@ public class EditAlarmListUseCase {
         //    list.put
         //args.putBundle(TagEditDialog.EXTRA_ALARM_LISTS, checkedList);
         dialog.setArguments(args);
-        dialog.show(fragmentManager, "myDialog");
+        dialog.show(fragmentManager, "dialogTagType");
     }
 
     public AlarmList retrieveAlarms() {

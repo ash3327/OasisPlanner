@@ -73,7 +73,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         this.selectedTime = alarmList.alarmList.time;
         this.contents = alarmList.contents;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         AlarmEditBinding binding = AlarmEditBinding.inflate(getLayoutInflater());
         onBind(binding);
@@ -159,16 +159,19 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                             tilImp.setStartIconDrawable(importance.getSimpleDrawable());
                         });
 
-                alarmEditInfosBinding.infoText.setText(contents);
-                alarmEditInfosBinding.dateText.setText(DateTimesFormatter.toDate(selectedDates));
-                alarmEditInfosBinding.timeText.setText(DateTimesFormatter.toTime(selectedTime));
-                alarmEditInfosBinding.dateField.setOnClickListener(
+                alarmEditInfosBinding.aedInfosDescTv.setText(contents);
+                alarmEditInfosBinding.aedInfosDatesTv.setText(DateTimesFormatter.toDate(selectedDates));
+                alarmEditInfosBinding.aedInfosTimesTv.setText(DateTimesFormatter.toTime(selectedTime));
+                alarmEditInfosBinding.aedInfosDatesTil.setOnClickListener(
                         (v)->tabSelector.onClick(1)
                 );
-                alarmEditInfosBinding.dateText.setOnClickListener(
+                alarmEditInfosBinding.aedInfosDatesTv.setOnClickListener(
                         (v)->tabSelector.onClick(1)
                 );
-                alarmEditInfosBinding.timeField.setOnClickListener(
+                alarmEditInfosBinding.aedInfosTimesTil.setOnClickListener(
+                        (v)->tabSelector.onClick(2)
+                );
+                alarmEditInfosBinding.aedInfosTimesTv.setOnClickListener(
                         (v)->tabSelector.onClick(2)
                 );
 
