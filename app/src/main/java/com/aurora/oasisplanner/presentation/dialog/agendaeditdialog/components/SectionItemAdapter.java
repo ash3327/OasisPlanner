@@ -304,7 +304,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                     try {
                         if (checked) checkedList.add(gp);
                         else checkedList.remove(gp);
-                        aSwitch.setState(true, true);
+                        aSwitch.setState(!checkedList.isEmpty(), true);
                     } catch (Exception e){e.printStackTrace();}
                 });
             }, true);
@@ -356,11 +356,12 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             return true;
         }
         public void checkToggle(AlarmList gp) {
-            if (checkedList.contains(gp))
+            boolean checked = checkedList.contains(gp);
+            if (checked)
                 checkedList.remove(gp);
             else
                 checkedList.add(gp);
-            aSwitch.setState(true, true);
+            aSwitch.setState(!checkedList.isEmpty(), true);
         }
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
