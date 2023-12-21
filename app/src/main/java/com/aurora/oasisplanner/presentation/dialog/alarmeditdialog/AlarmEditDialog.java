@@ -4,13 +4,15 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -35,6 +37,7 @@ import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabSelector;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -132,25 +135,29 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                         li,
                         Arrays.asList(AlarmType.values())
                 );
-                Spinner spinnerType = alarmEditInfosBinding.spinnerType;
+                AutoCompleteTextView spinnerType = alarmEditInfosBinding.aedInfosAlarmTypeTv;
+                TextInputLayout til = alarmEditInfosBinding.aedInfosAlarmTypeTil;
                 spinnerType.setAdapter(adapter);
-                spinnerType.setSelection(type.getType());
-                OnItemSelectedListener.setOnItemSelectedListener(
-                        spinnerType,
-                        (adapterView, view, pos, id)-> type = AlarmType.values()[pos]
-                );
+                setOnItemSelectListener(spinnerType, til,
+                        type.toString(), type.getSimpleDrawable(),
+                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                            type = AlarmType.values()[position];
+                            til.setStartIconDrawable(type.getSimpleDrawable());
+                        });
 
-                ImportanceAdapter adapter2 = new ImportanceAdapter(
+                ImportanceAdapter adapterImp = new ImportanceAdapter(
                         li,
                         Arrays.asList(Importance.values())
                 );
-                Spinner spinnerImportance = alarmEditInfosBinding.spinnerImportance;
-                spinnerImportance.setAdapter(adapter2);
-                spinnerImportance.setSelection(importance.getImportance());
-                OnItemSelectedListener.setOnItemSelectedListener(
-                        spinnerImportance,
-                        (adapterView, view, pos, id)-> importance = Importance.values()[pos]
-                );
+                AutoCompleteTextView spinnerImp = alarmEditInfosBinding.aedInfosImpTypeTv;
+                TextInputLayout tilImp = alarmEditInfosBinding.aedInfosImpTypeTil;
+                spinnerImp.setAdapter(adapterImp);
+                setOnItemSelectListener(spinnerImp, tilImp,
+                        importance.toString(), importance.getSimpleDrawable(),
+                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                            importance = Importance.values()[position];
+                            tilImp.setStartIconDrawable(importance.getSimpleDrawable());
+                        });
 
                 alarmEditInfosBinding.infoText.setText(contents);
                 alarmEditInfosBinding.dateText.setText(DateTimesFormatter.toDate(selectedDates));
@@ -210,6 +217,14 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         }
     }
 
+    public void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
+                                        String text, Drawable drawable,
+                                        AdapterView.OnItemClickListener listener) {
+        spinner.setText(text);
+        til.setStartIconDrawable(drawable);
+        spinner.setOnItemClickListener(listener);
+    }
+
     private OnSaveListener onSaveListener;
     public void setOnSaveListener(OnSaveListener onSaveListener) {
         this.onSaveListener = onSaveListener;
@@ -235,11 +250,12 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
             onSaveListener.save(alarmList);
     }
 
-    public static class AlarmTypeAdapter extends BaseAdapter {
+    public static class AlarmTypeAdapter extends ArrayAdapter<AlarmType> {
         private LayoutInflater li;
         private List<AlarmType> typeList;
 
         public AlarmTypeAdapter(LayoutInflater li, List<AlarmType> typeList) {
+            super(li.getContext(), R.layout.type_spinner_element);
             this.li = li;
             this.typeList = typeList;
         }
@@ -250,7 +266,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         }
 
         @Override
-        public Object getItem(int position) {
+        public AlarmType getItem(int position) {
             return typeList.get(position);
         }
 
@@ -269,11 +285,12 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         }
     }
 
-    public static class ImportanceAdapter extends BaseAdapter {
+    public static class ImportanceAdapter extends ArrayAdapter<Importance> {
         private LayoutInflater li;
         private List<Importance> typeList;
 
         public ImportanceAdapter(LayoutInflater li, List<Importance> typeList) {
+            super(li.getContext(), R.layout.type_spinner_element);
             this.li = li;
             this.typeList = typeList;
         }
@@ -284,7 +301,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         }
 
         @Override
-        public Object getItem(int position) {
+        public Importance getItem(int position) {
             return typeList.get(position);
         }
 

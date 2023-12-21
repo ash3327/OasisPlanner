@@ -85,15 +85,16 @@
 
     <!-- Edit _Alarm Dialog -->
     <string name="page_overhead_edit_alarm">修改通知</string>
-    <string name="edit_alarm_type">通知類型：</string>
-    <string name="edit_alarm_importance">重要程度：</string>
+    <string name="edit_alarm_type">通知類型</string>
+    <string name="edit_alarm_importance">重要程度</string>
+
         <!-- Tab Bar -->
         <string name="edit_alarm_tab_infos">詳情</string>
         <string name="edit_alarm_tab_dates">日期</string>
         <string name="edit_alarm_tab_times">時間</string>
         <!-- Type Spinner -->
-        <string name="type_spinner_title">通知類型：</string>
-        <string name="importance_spinner_title">重要程度：</string>
+        <string name="type_spinner_title">通知類型</string>
+        <string name="importance_spinner_title">重要程度</string>
         <string name="tab_date_title">通知日期：</string>
         <string name="tab_time_title">通知時間：</string>
         <string name="tab_info_title">通知内容：</string>

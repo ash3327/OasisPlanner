@@ -84,15 +84,15 @@
 
     <!-- Edit _Alarm Dialog -->
     <string name="page_overhead_edit_alarm">Edit Alarms</string>
-    <string name="edit_alarm_type">Alarm Type: </string>
-    <string name="edit_alarm_importance">Importance Level: </string>
+    <string name="edit_alarm_type">Alarm Type</string>
+    <string name="edit_alarm_importance">Importance Level</string>
         <!-- Tab Bar -->
         <string name="edit_alarm_tab_infos">Infos</string>
         <string name="edit_alarm_tab_dates">Dates</string>
         <string name="edit_alarm_tab_times">Times</string>
         <!-- Type Spinner -->
-        <string name="type_spinner_title">Alarm Type: </string>
-        <string name="importance_spinner_title">Importance: </string>
+        <string name="type_spinner_title">Alarm Type</string>
+        <string name="importance_spinner_title">Importance</string>
         <string name="tab_date_title">Notif Date: </string>
         <string name="tab_time_title">Notif Time: </string>
         <string name="tab_info_title">Descriptions: </string>
