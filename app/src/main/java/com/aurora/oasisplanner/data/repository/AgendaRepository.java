@@ -194,8 +194,9 @@ public class AgendaRepository {
                 alarm.agendaId = alarmList.alarmList.agendaId;
                 alarm.setAgendaData(title, agendaDescr, alarmDescr);
                 alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);
-                alarm.args.putAll(alarmArgs);
-                alarm.args.putAll(alarmList.alarmList.args);
+                if (alarmArgs != null)
+                    alarm.getArgs().putAll(alarmArgs);
+                alarm.getArgs().putAll(alarmList.alarmList.getArgs());
                 alarm.id = agendaDao.insert(alarm);
                 if (alarmScheduler != null)
                     alarmScheduler.schedule(alarm);

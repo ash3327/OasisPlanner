@@ -125,6 +125,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public void saveTags() {
         TextInputEditText tiet = vbinding.tagContentTv;
         SpannableStringBuilder ssb = new SpannableStringBuilder(tiet.getText());
+        ssb.clearSpans();
         assert checkedList != null;
         for (AlarmList checked : checkedList)
             checked.alarmList.putArgs(type.name(), ssb);

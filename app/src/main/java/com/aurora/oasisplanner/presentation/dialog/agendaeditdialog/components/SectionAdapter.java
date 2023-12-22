@@ -28,6 +28,7 @@ import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.SectionBinding;
@@ -269,10 +270,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 binding.sectdI1.setVisibility(View.GONE);
                 binding.sectdT1.setVisibility(View.GONE);
             }
-            _Doc loc = gp.getLoc(gpl_alarmL);
-            if (loc != null) {
-                binding.sectdI2.setImageResource(R.drawable.ic_location);
-                binding.sectdT2.setText(loc.contents);
+            SpannableStringBuilder ssb = gpl_alarmL.alarmList.getArg(TagType.LOC.name());
+            if (ssb != null) {
+                binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
+                binding.sectdT2.setText(ssb);
             } else {
                 binding.sectdI2.setVisibility(View.GONE);
                 binding.sectdT2.setVisibility(View.GONE);

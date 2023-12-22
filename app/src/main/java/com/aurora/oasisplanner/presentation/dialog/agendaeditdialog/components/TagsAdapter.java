@@ -44,6 +44,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -93,6 +94,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
 
     @SuppressLint("NotifyDataSetChanged")
     public void setTags(Map<String, String> map) {
+        if (map == null) map = new HashMap<>();
         Set<Map.Entry<String,String>> entrySet = map.entrySet();
         entrySet.removeIf((e)->!TagType.contains(e.getKey()));
         this.entries = new ArrayList<>(entrySet);

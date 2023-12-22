@@ -370,7 +370,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
-                adapter.setTags(gp.alarmList.args);
+                adapter.setTags(gp.alarmList.getArgs());
             }
         }
 

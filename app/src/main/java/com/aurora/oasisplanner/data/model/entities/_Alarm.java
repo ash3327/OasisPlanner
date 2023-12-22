@@ -91,10 +91,23 @@ public class _Alarm {
     }
 
     @Ignore
-    public SpannableStringBuilder getArgs(String key) {
+    public SpannableStringBuilder getArg(String key) {
         if (args == null || !args.containsKey(key))
             return null;
         return new Converters().spannableFromString(args.get(key));
+    }
+
+    @Ignore
+    public Map<String, String> getArgs() {
+        if (args == null)
+            args = new HashMap<>();
+        return args;
+    }
+
+    @Ignore
+    public void putArgs(String key, SpannableStringBuilder sb) {
+        if (args == null) args = new HashMap<>();
+        args.put(key, new Converters().spannableToString(sb));
     }
 
     @Ignore

@@ -73,7 +73,8 @@
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="@dimen/card_radius"
                                 android:layout_marginVertical="2dp"
-                                android:layout_marginHorizontal="@dimen/item_gap_item_hmargin">
+                                android:layout_marginHorizontal="@dimen/item_gap_item_hmargin"
+                                android:visibility="gone">
                                 <LinearLayout
                                     android:id="@+id/btn_add_loc"
                                     android:layout_width="@dimen/item_gap_item_width"
