@@ -39,8 +39,9 @@ public class EditAlarmListUseCase {
         dialog.show(fragmentManager, "dialogAlarmEdit");
     }
 
-    public void invokeDialogForTagType(Set<AlarmList> checkedList) {
+    public void invokeDialogForTagType(Set<AlarmList> checkedList, Runnable updateUi) {
         TagEditDialog dialog = new TagEditDialog();
+        dialog.setUpdateUiFunction(updateUi);
         dialog.setSelectedList(checkedList);
         dialog.show(fragmentManager, "dialogTagType");
     }

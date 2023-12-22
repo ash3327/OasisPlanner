@@ -124,7 +124,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_memos.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_monetary.xml" value="0.1" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_notifications.xml" value="0.22" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_notifications.xml" value="0.21568627450980393" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_notifications_landscape.xml" value="0.1414324569356301" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_notifications_portrait.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/fragments/layout/fragment_project.xml" value="0.16666666666666666" />
@@ -156,11 +156,12 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/choose_type.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/drawer_header.xml" value="0.22" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item.xml" value="0.10587431693989072" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_alarm.xml" value="0.16666666666666666" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_alarm.xml" value="0.4722222222222222" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_doc.xml" value="0.1710114702815433" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_edit_tag_dialog.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_gap.xml" value="0.14666666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_loc.xml" value="0.16666666666666666" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_tag_content_view.xml" value="0.6666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/m_tab_layout.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/month_bar.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/multi_date_picker.xml" value="0.14666666666666667" />

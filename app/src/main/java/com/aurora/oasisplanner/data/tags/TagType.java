@@ -5,6 +5,9 @@ import android.graphics.drawable.Drawable;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.util.styling.Resources;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum TagType {
     LOC;
 
@@ -12,6 +15,15 @@ public enum TagType {
     public static int[][] typeIds = {
             {R.drawable.ic_location,    R.string.tag_loc},
             };
+
+    public static boolean contains(String key) {
+        try {
+            valueOf(key);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public int getType() {
         return this.ordinal();

@@ -4,30 +4,32 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCase;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.databinding.ItemDocBinding;
 import com.aurora.oasisplanner.databinding.ItemGapBinding;
 import com.aurora.oasisplanner.databinding.ItemLocBinding;
+import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
@@ -36,7 +38,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
 
@@ -160,17 +164,15 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     }
 
     public void editTagOfChecked() {
-        // TODO
-        // create dialog to ask for change
-        // picked loc -> confirm: do following:
         AppModule.retrieveAgendaUseCases().editAlarmListUseCase.invokeDialogForTagType(
-                checkedList
+                checkedList, this::updateUi
         );
-        /*try {
-            for (AlarmList aL : checkedList)
-                aL.alarmList.putArgs(_Alarm.LOC, null);
-            tSwitch.setState(false);
-        } catch (Exception e) {e.printStackTrace();}//*/
+    }
+
+    public void updateUi() {
+        checkedList.clear();
+        tSwitch.setState(false, true);
+        notifyDataSetChanged();
     }
 
     public boolean checkListIsEmpty(boolean v) {
@@ -292,13 +294,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
             aSwitch.observe((state)-> {
-                /*/
-                binding.tab.setBackgroundColor(
-                        id.equals(i) && parentId.equals(pid) && state ?
-                                Resources.getColor(R.color.red_100) : 0
-                );
-                binding.collapsedTab.setVisibility(id.equals(i) && parentId.equals(pid) && state ? View.VISIBLE : View.GONE);
-                //*/
                 binding.itemAlarmCheckbox.setChecked(checkedList.contains(gp));
                 binding.itemAlarmCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
                 binding.itemAlarmCheckbox.setOnCheckedChangeListener((v,checked)->{
@@ -370,6 +365,12 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 binding.icon.setImageDrawable(gp.alarmList.type.getDrawable());
                 binding.importanceLabel.setColorFilter(gp.alarmList.importance.getColorPr());
                 binding.barDescriptionText.setText(gp.alarmList.getDateTime());
+                RecyclerView recyclerView = binding.itemAlarmRecyclerView;
+                TagsAdapter adapter = new TagsAdapter();
+                recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
+                recyclerView.setAdapter(adapter);
+                recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
+                adapter.setTags(gp.alarmList.args);
             }
         }
 

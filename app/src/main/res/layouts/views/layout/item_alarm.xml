@@ -58,16 +58,27 @@
                     android:foregroundTint="@color/yellow_700"
                     android:layout_gravity="center" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/bar_description_text"
+            <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="@dimen/alarmcontent_fullwidth"
-                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/bar_description_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
 
-                android:paddingHorizontal="@dimen/doc_margin"
-                android:theme="@style/BarContentTheme"
-                android:textSize="@dimen/small_textsize"
-                android:text="5月23日 12:00" />
+                    android:paddingHorizontal="@dimen/doc_margin"
+                    android:theme="@style/BarContentTheme"
+                    android:textSize="@dimen/small_textsize"
+                    android:text="5月23日 12:00" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/item_alarm_recycler_view"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/item_tag_content_view"
+                    tools:itemCount="1" />
+            </LinearLayout>
         </LinearLayout>
         <CheckBox
             android:id="@+id/item_alarm_checkbox"

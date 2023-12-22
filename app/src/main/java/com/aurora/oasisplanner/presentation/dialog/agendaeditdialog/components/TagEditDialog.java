@@ -47,6 +47,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public TagType type = TagType.LOC;
     private ItemEditTagBinding vbinding;
     private Set<AlarmList> checkedList;
+    private Runnable updateUiFunction = ()->{};
 
     @NonNull
     @Override
@@ -127,10 +128,15 @@ public class TagEditDialog extends AppCompatDialogFragment {
         assert checkedList != null;
         for (AlarmList checked : checkedList)
             checked.alarmList.putArgs(type.name(), ssb);
+        updateUiFunction.run();
     }
 
     public void setSelectedList(Set<AlarmList> checkedList) {
         this.checkedList = checkedList;
+    }
+
+    public void setUpdateUiFunction(Runnable updateUiFunction) {
+        this.updateUiFunction = updateUiFunction;
     }
 
     public static class SpinAdapter extends ArrayAdapter<TagType> {
