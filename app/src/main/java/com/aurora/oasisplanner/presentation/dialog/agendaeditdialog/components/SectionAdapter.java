@@ -270,8 +270,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 binding.sectdI1.setVisibility(View.GONE);
                 binding.sectdT1.setVisibility(View.GONE);
             }
-            SpannableStringBuilder ssb = gpl_alarmL.alarmList.getArg(TagType.LOC.name());
-            if (ssb != null) {
+            SpannableStringBuilder ssb = null;
+            if (gpl_alarmL != null)
+                ssb = gpl_alarmL.alarmList.getArg(TagType.LOC.name());
+            if (gpl_alarmL != null && ssb != null) {
                 binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
                 binding.sectdT2.setText(ssb);
             } else {
@@ -337,7 +339,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 if (!(id.equals(-1) && toAddSection.equals(0)))
                     updateLabel(label, label2, false, state,
                             (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked(),
-                            adapter::checkListIsEmpty);
+                            adapter::checkListIsEmpty, adapter.bSwitch);
             }, true);
             recyclerView.setAdapter(adapter);
             adapter.setGroup(gp);
@@ -421,13 +423,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         id.observe((oi, i)->{
             boolean collapsed = i == -1 && toAddSection.equals(0);
             updateLabel(this.label, this.label2, collapsed, false,
-                    null, null, null);
+                    null, null, null, null);
         }, true);
     }
 
     private void updateLabel(Label lbl, Label lbl2, boolean collapsed, boolean checkListIsOn,
                              View.OnClickListener removeChecked, View.OnClickListener editTagofChecked,
-                             Function<Boolean, Boolean> checkListIsEmpty) {
+                             Function<Boolean, Boolean> checkListIsEmpty, Switch bSwitch) {
         if (checkListIsEmpty == null) checkListIsEmpty = (v)->false;
         if (lbl == null) return;
         lbl.vg.setOnClickListener(
@@ -449,14 +451,27 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
         if (lbl2 == null) return;
         boolean listEmpty = checkListIsEmpty.apply(true);
-        lbl2.tv.setText(Resources.getString(
-                listEmpty ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_delete
-        ));
-        lbl2.imgv.setImageResource(listEmpty ? R.drawable.ic_contract : R.drawable.ic_trashcan);
         if (!collapsed) {
             if (checkListIsOn) {
                 lbl2.vg.setVisibility(View.VISIBLE);
+                lbl2.tv.setText(Resources.getString(
+                        listEmpty ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_delete
+                ));
+                lbl2.imgv.setImageResource(listEmpty ? R.drawable.ic_contract : R.drawable.ic_trashcan);
                 lbl2.vg.setOnClickListener(removeChecked);
+            } else if (bSwitch != null) {
+                lbl2.tv.setText(Resources.getString(
+                         bSwitch.getState() ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_newevent
+                ));
+                lbl2.imgv.setImageResource(bSwitch.getState() ? R.drawable.ic_contract : R.drawable.ic_symb_plus);
+                lbl2.vg.setVisibility(View.VISIBLE);
+                lbl2.vg.setOnClickListener((v)->{
+                    boolean state = bSwitch.toggleState();
+                    lbl2.tv.setText(Resources.getString(
+                            state ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_newevent
+                    ));
+                    lbl2.imgv.setImageResource(state ? R.drawable.ic_contract : R.drawable.ic_symb_plus);
+                });
             } else {
                 lbl2.vg.setVisibility(View.GONE);
             }

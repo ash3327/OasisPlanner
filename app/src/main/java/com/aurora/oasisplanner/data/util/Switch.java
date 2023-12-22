@@ -31,8 +31,8 @@ public class Switch {
         return changed;
     }
     public boolean toggleState() {
-        this.state = !state;
-        return true;
+        setState(!state, true);
+        return state;
     }
     public void observe(StateObj action, boolean act) {
         if (actions == null) actions = new ArrayList<>();

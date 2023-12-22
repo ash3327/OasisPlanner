@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     private final int pid;
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
+    public Switch bSwitch = new Switch(false);
 
     {
         setHasStableIds(true);
@@ -260,6 +262,10 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         public boolean bindGap(int i, GapData gap) {
             ItemGapBinding binding = (ItemGapBinding) vbinding;
 
+            bSwitch.observe((state)->{
+                binding.bar.setVisibility(state ? View.VISIBLE : View.GONE);
+                binding.bar.requestLayout();
+            }, true);
             binding.bar.setOnClickListener(
                     (v)->id.setId(parentId.setId(pid) ? -1 : i)
             );
