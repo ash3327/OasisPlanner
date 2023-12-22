@@ -41,13 +41,7 @@ public class EditAlarmListUseCase {
 
     public void invokeDialogForTagType(Set<AlarmList> checkedList) {
         TagEditDialog dialog = new TagEditDialog();
-        Bundle args = new Bundle();
-        Bundle list = new Bundle();
-        //TODO: Passing checklist into the dialog.
-        //for (AlarmList aL : checkedList)
-        //    list.put
-        //args.putBundle(TagEditDialog.EXTRA_ALARM_LISTS, checkedList);
-        dialog.setArguments(args);
+        dialog.setSelectedList(checkedList);
         dialog.show(fragmentManager, "dialogTagType");
     }
 

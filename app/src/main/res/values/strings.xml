@@ -96,6 +96,8 @@
         <string name="tab_date_title">Notif Date: </string>
         <string name="tab_time_title">Notif Time: </string>
         <string name="tab_info_title">Descriptions: </string>
+        <string name="tab_tag_title">Tags: </string>
+        <string name="tab_tag_content_title">Set Tag Value To: </string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>

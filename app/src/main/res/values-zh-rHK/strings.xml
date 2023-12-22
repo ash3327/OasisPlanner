@@ -98,6 +98,8 @@
         <string name="tab_date_title">通知日期：</string>
         <string name="tab_time_title">通知時間：</string>
         <string name="tab_info_title">通知内容：</string>
+        <string name="tab_tag_title">標簽：</string>
+        <string name="tab_tag_content_title">標簽内容：</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>

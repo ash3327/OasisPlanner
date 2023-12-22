@@ -5,13 +5,17 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,26 +28,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.ItemEditTagBinding;
 import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
+import java.util.Set;
 
 public class TagEditDialog extends AppCompatDialogFragment {
     public static final String EXTRA_ALARM_LISTS = "alarmLists";
 
     private AlertDialog dialog;
+    public TagType type = TagType.LOC;
+    private ItemEditTagBinding vbinding;
+    private Set<AlarmList> checkedList;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //assert getArguments() != null;
-
-        //Bundle alarmLists = getArguments().getBundle(EXTRA_ALARM_LISTS);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         ItemEditTagBinding binding = ItemEditTagBinding.inflate(getLayoutInflater());
@@ -58,16 +65,38 @@ public class TagEditDialog extends AppCompatDialogFragment {
     }
 
     public void onBind(ItemEditTagBinding binding) {
-        binding.header.setText(R.string.page_overhead_edit_tag);
+        vbinding = binding;
+        vbinding.header.setText(R.string.page_overhead_edit_tag);
         //binding.header.setText(agenda.agenda.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
-        binding.confirmBtn.setOnClickListener(
+        vbinding.confirmBtn.setOnClickListener(
                 (v)->onConfirm()
         );
-        binding.cancelButton.setOnClickListener(
+        vbinding.cancelButton.setOnClickListener(
                 (v)->onCancel()
         );
         SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.values());
-        binding.itemEditTagDiagSpinner.setAdapter(spinAdapter);
+        AutoCompleteTextView spinnerType = vbinding.tagTypeTv;
+        TextInputLayout til = vbinding.tagTypeTil;
+        spinnerType.setAdapter(spinAdapter);
+        setOnItemSelectListener(spinnerType, til,
+                type.toString(), type.getDrawable(),
+                (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                    type = TagType.values()[position];
+                    changeUiToInputType(type);
+                });
+    }
+
+    public void changeUiToInputType(TagType type) {
+        vbinding.tagTypeTil.setStartIconDrawable(type.getDrawable());
+        //TODO later
+    }
+
+    private void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
+                                        String text, Drawable drawable,
+                                        AdapterView.OnItemClickListener listener) {
+        spinner.setText(text);
+        til.setStartIconDrawable(drawable);
+        spinner.setOnItemClickListener(listener);
     }
 
     public void scrollTo(int pos, RecyclerView recyclerView) {
@@ -84,28 +113,6 @@ public class TagEditDialog extends AppCompatDialogFragment {
             layoutManager.startSmoothScroll(smoothScroller);
     }
 
-    public void associateTitle(EditText editText) {
-        //editText.setText(agenda.agenda.title);
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //agenda.agenda.title = editText.getText().toString();
-            }
-        };
-        editText.setTag(textWatcher);
-        editText.addTextChangedListener(textWatcher);
-    }
-
     public void onConfirm() {
         saveTags();
         dialog.dismiss();
@@ -115,14 +122,23 @@ public class TagEditDialog extends AppCompatDialogFragment {
     }
 
     public void saveTags() {
-        // TODO: Edit Tags
+        TextInputEditText tiet = vbinding.tagContentTv;
+        SpannableStringBuilder ssb = new SpannableStringBuilder(tiet.getText());
+        assert checkedList != null;
+        for (AlarmList checked : checkedList)
+            checked.alarmList.putArgs(type.name(), ssb);
     }
 
-    public static class SpinAdapter extends BaseAdapter {
+    public void setSelectedList(Set<AlarmList> checkedList) {
+        this.checkedList = checkedList;
+    }
+
+    public static class SpinAdapter extends ArrayAdapter<TagType> {
         private LayoutInflater li;
         private TagType[] vals;
 
         public SpinAdapter(LayoutInflater li, @NonNull TagType[] typeList) {
+            super(li.getContext(), R.layout.tagtype_spinner_element);
             this.li      = li;
             this.vals    = typeList;
         }
