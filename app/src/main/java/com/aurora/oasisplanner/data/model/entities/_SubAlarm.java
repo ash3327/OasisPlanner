@@ -23,15 +23,17 @@ public class _SubAlarm extends _Alarm {
         for (_Alarm alarm : alarmList.alarms) {
             if (alarm.visible)
                 list.addAll(generateSubAlarms(alarm,
-                        alarmList.alarmList.getArg(TagType.ALARM.name()).toString()));
+                        alarmList.alarmList.getArg(TagType.ALARM.name())));
         }
         return list;
     }
 
     @Ignore
-    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, String subAlarmArg) {
+    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, SpannableStringBuilder subAlarmArg) {
         ArrayList<_SubAlarm> list = new ArrayList<>();
-        NotifType notifType = new NotifType(subAlarmArg);
+        if (subAlarmArg == null)
+            return list;
+        NotifType notifType = new NotifType(subAlarmArg.toString());
         _SubAlarm subAlarm = new _SubAlarm();
         LocalDateTime ldt = notifType.translate(alarm.datetime);
         subAlarm.setDateTime(ldt);
