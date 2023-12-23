@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //getSupportActionBar().hide();
 
-        latch = new CountDownLatch(2);
+        latch = new CountDownLatch(3);
 
         setupDatabase();
 

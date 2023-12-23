@@ -31,7 +31,7 @@ public class AlarmRepository {
         this.subalarms = agendaDao.getSubAlarmsAfter(LocalDateTime.now());
     }
 
-    private boolean firstTime = true;
+    private boolean firstTime = true, firstTimeSubAlarm = true;
     public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs, CountDownLatch latch) {
         firstTime = true;
         alarms.observe(obs, (_alarms)->{
@@ -47,8 +47,8 @@ public class AlarmRepository {
             //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
         });
         subalarms.observe(obs, (_subalarms)->{
-            if (!firstTime) return;
-            firstTime = false;
+            if (!firstTimeSubAlarm) return;
+            firstTimeSubAlarm = false;
             try {
                 for (_SubAlarm alarm : _subalarms)
                     alarmScheduler.schedule(alarm);
