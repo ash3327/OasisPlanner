@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.model.entities._Activity;
+import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -20,6 +21,26 @@ import java.util.List;
 
 @Dao
 public interface AgendaDao {
+
+    // INFO: SUBALARMS
+
+    @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
+    LiveData<List<_SubAlarm>> getSubAlarmsAfter(LocalDateTime fromDate);
+
+    @Query("SELECT * FROM _SubAlarm WHERE id = :id")
+    _Alarm getSubAlarmById(int id);
+
+    @Query("SELECT * FROM _SubAlarm")
+    List<_SubAlarm> getSubAlarms();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(_SubAlarm alarm);
+
+    @Delete
+    void delete(_SubAlarm alarm);
+
+    @Query("DELETE FROM _SubAlarm")
+    void deleteAllSubAlarms();
 
     // INFO: ALARMS
 

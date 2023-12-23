@@ -8,6 +8,7 @@ import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._AlarmList;
+import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 
@@ -25,6 +26,9 @@ public class AlarmList {
     @Relation(parentColumn = "id", entityColumn = "alarmListId")
     public List<_Alarm> alarms = new ArrayList<>();
 
+    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    public List<_SubAlarm> subalarms = new ArrayList<>();
+
     @Ignore
     public boolean visible = true;
     @Ignore
@@ -41,9 +45,12 @@ public class AlarmList {
     public AlarmList putDates(LocalTime time, LocalDate... dates) {
         for (_Alarm alarm : this.alarms)
             alarm.visible = false;
+        for (_SubAlarm subAlarm : this.subalarms)
+            subAlarm.visible = false;
         this.alarmList.time = time;
         this.alarmList.dates = Arrays.stream(dates).collect(Collectors.toList());
         this.alarms.addAll(Arrays.stream(dates).map((d)->new _Alarm().setDateTime(d, alarmList.time)).collect(Collectors.toList()));
+        this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
         return this;
     }
 

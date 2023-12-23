@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder;
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._Doc;
+import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
@@ -184,10 +185,28 @@ public class AgendaRepository {
             Map<String, String> alarmArgs
     ) {
 
-        //alarmList.alarmList.args
         long id = agendaDao.insert(alarmList.alarmList);
         alarmList.alarmList.id = id;
         for (_Alarm alarm : alarmList.alarms) {
+            if (alarm.visible) {
+                alarm.alarmListId = id;
+                alarm.activityId = actvId;
+                alarm.agendaId = alarmList.alarmList.agendaId;
+                alarm.setAgendaData(title, agendaDescr, alarmDescr);
+                alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);
+                if (alarmArgs != null)
+                    alarm.getArgs().putAll(alarmArgs);
+                alarm.getArgs().putAll(alarmList.alarmList.getArgs());
+                alarm.id = agendaDao.insert(alarm);
+                if (alarmScheduler != null)
+                    alarmScheduler.schedule(alarm);
+            } else {
+                if (alarmScheduler != null)
+                    alarmScheduler.cancel(alarm);
+                agendaDao.delete(alarm);
+            }
+        }
+        for (_SubAlarm alarm : alarmList.subalarms) {
             if (alarm.visible) {
                 alarm.alarmListId = id;
                 alarm.activityId = actvId;
@@ -232,15 +251,23 @@ public class AgendaRepository {
                 alarmScheduler.cancel(alarm);
             agendaDao.delete(alarm);
         }
+        for (_SubAlarm alarm : alarmList.subalarms) {
+            if (alarmScheduler != null)
+                alarmScheduler.cancel(alarm);
+            agendaDao.delete(alarm);
+        }
     }
 
     private static void deleteAll(AgendaDao agendaDao, AlarmScheduler alarmScheduler) {
         agendaDao.deleteAllAgendas();
         agendaDao.deleteAllGroups();
         agendaDao.deleteAllAlarmLists();
-        if (alarmScheduler != null)
+        if (alarmScheduler != null) {
             for (_Alarm alarm : agendaDao.getAlarms())
                 alarmScheduler.cancel(alarm);
+            for (_SubAlarm alarm : agendaDao.getSubAlarms())
+                alarmScheduler.cancel(alarm);
+        }
         agendaDao.deleteAllAlarms();
     }
 }

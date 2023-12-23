@@ -65,6 +65,11 @@ public class _Alarm {
         this.datetime = date.atTime(time);
         return this;
     }
+    public _Alarm setDateTime(LocalDateTime ldt) {
+        this.date = ldt.toLocalDate();
+        this.datetime = ldt;
+        return this;
+    }
 
     public static class InvalidAlarmException extends RuntimeException {
         public InvalidAlarmException(String message) {

@@ -43,6 +43,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -287,6 +289,15 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 default:
                     return true;
             }
+        }
+
+        private static final TemporalUnit[] units = new TemporalUnit[]{
+                ChronoUnit.MINUTES, ChronoUnit.HOURS, ChronoUnit.DAYS,
+                ChronoUnit.WEEKS, ChronoUnit.MONTHS
+        };
+
+        public TemporalUnit getTemporalUnit() {
+            return units[ordinal()];
         }
     };
 }

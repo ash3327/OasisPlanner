@@ -12,8 +12,10 @@ import androidx.lifecycle.LiveData;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -21,10 +23,12 @@ import java.util.concurrent.CountDownLatch;
 public class AlarmRepository {
     private AgendaDao agendaDao;
     private LiveData<List<_Alarm>> alarms;
+    private LiveData<List<_SubAlarm>> subalarms;
 
     public AlarmRepository(AgendaDao agendaDao) {
         this.agendaDao = agendaDao;
         this.alarms = agendaDao.getAlarmsAfter(LocalDateTime.now());
+        this.subalarms = agendaDao.getSubAlarmsAfter(LocalDateTime.now());
     }
 
     private boolean firstTime = true;
@@ -35,6 +39,18 @@ public class AlarmRepository {
             firstTime = false;
             try {
                 for (_Alarm alarm : _alarms)
+                    alarmScheduler.schedule(alarm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch.countDown();
+            //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
+        });
+        subalarms.observe(obs, (_subalarms)->{
+            if (!firstTime) return;
+            firstTime = false;
+            try {
+                for (_SubAlarm alarm : _subalarms)
                     alarmScheduler.schedule(alarm);
             } catch (Exception e) {
                 e.printStackTrace();

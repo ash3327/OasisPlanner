@@ -17,6 +17,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities._SelectedDates;
+import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.model.entities._SubPeriod;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
@@ -39,14 +40,15 @@ import java.time.LocalTime;
 @Database(
         entities = {
                 _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
-                _SubPeriod.class, _SelectedDates.class
+                _SubPeriod.class, _SelectedDates.class, _SubAlarm.class
         },
-        version = 18,
+        version = 19,
         autoMigrations = {
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=8, to=11, spec=AppDatabase.Migration8to9.class),
                 @AutoMigration(from=11, to=17, spec=AppDatabase.Migration11to12.class),
                 @AutoMigration(from=17, to=18),
+                @AutoMigration(from=18, to=19),
         }
 )
 @TypeConverters({Converters.class})

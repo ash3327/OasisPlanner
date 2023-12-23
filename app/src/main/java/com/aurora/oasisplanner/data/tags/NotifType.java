@@ -4,6 +4,8 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
 import com.aurora.oasisplanner.util.styling.Resources;
 
+import java.time.LocalDateTime;
+
 public class NotifType {
     int val;
     TagEditDialog.DateType dateType;
@@ -32,6 +34,13 @@ public class NotifType {
             this.hour = Integer.parseInt(res[2]);
             this.minute = Integer.parseInt(res[3]);
         } else hasTime = false;
+    }
+
+    public LocalDateTime translate(LocalDateTime ldt) {
+        if (hasTime)
+            ldt = ldt.withHour(hour).withMinute(minute).withSecond(0);
+        ldt = ldt.minus(val, dateType.getTemporalUnit());
+        return ldt;
     }
 
     public String toString() {
