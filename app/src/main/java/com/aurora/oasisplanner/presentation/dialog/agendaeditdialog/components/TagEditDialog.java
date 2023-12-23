@@ -32,6 +32,7 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
+import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.ItemEditTagBinding;
@@ -58,6 +59,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
     private ItemEditTagBinding vbinding;
     private Set<AlarmList> checkedList;
     private Runnable updateUiFunction = ()->{};
+    private int idx = 0;
 
     @NonNull
     @Override
@@ -89,8 +91,10 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagTypeTv.setInputType(InputType.TYPE_NULL);
         vbinding.tagDateTv.setInputType(InputType.TYPE_CLASS_NUMBER);
         vbinding.tagDateTypeTv.setInputType(InputType.TYPE_NULL);
+        vbinding.tagChoiceTv.setInputType(InputType.TYPE_NULL);
         vbinding.tagTypeTv.setKeyListener(null);
         vbinding.tagDateTypeTv.setKeyListener(null);
+        vbinding.tagChoiceTv.setKeyListener(null);
 
         SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.values());
         AutoCompleteTextView spinnerType = vbinding.tagTypeTv;
@@ -132,6 +136,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
 
         vbinding.tagContentBox.setVisibility(View.GONE);
         vbinding.tagDatetimeBox.setVisibility(View.GONE);
+        vbinding.tagChoiceBox.setVisibility(View.GONE);
         switch(type) {
             case LOC:
                 vbinding.tagContentBox.setVisibility(View.VISIBLE);
@@ -139,9 +144,42 @@ public class TagEditDialog extends AppCompatDialogFragment {
             case ALARM:
                 vbinding.tagDatetimeBox.setVisibility(View.VISIBLE);
                 break;
+            case IMPORTANCE:
+            case ALARMTYPE:
+                vbinding.tagChoiceBox.setVisibility(View.VISIBLE);
+                break;
+        }
+        switch(type) {
+            case IMPORTANCE:
+                AutoCompleteTextView spinnerImportance = vbinding.tagChoiceTv;
+                TextInputLayout importanceTil = vbinding.tagChoiceTil;
+                ArrayAdapter<Importance> importanceAdapter = new ArrayAdapter<Importance>(requireContext(), R.layout.datetype_spinner_element);
+                setOnItemSelectListener(spinnerImportance, importanceTil,
+                        Importance.values()[idx].toString(), null,
+                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                            idx = position;
+                        },
+                        (v)->Importance.values()[idx].ordinal());
+                importanceAdapter.addAll(Importance.values());
+                spinnerImportance.setAdapter(importanceAdapter);
+                break;
+            case ALARMTYPE:
+                AutoCompleteTextView spinnerAlarmType = vbinding.tagChoiceTv;
+                TextInputLayout alarmTypeTil = vbinding.tagChoiceTil;
+                ArrayAdapter<AlarmType> alarmTypeAdapter = new ArrayAdapter<AlarmType>(requireContext(), R.layout.datetype_spinner_element);
+                setOnItemSelectListener(spinnerAlarmType, alarmTypeTil,
+                        AlarmType.values()[idx].toString(), null,
+                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                            idx = position;
+                        },
+                        (v)->AlarmType.values()[idx].ordinal());
+                alarmTypeAdapter.addAll(AlarmType.values());
+                spinnerAlarmType.setAdapter(alarmTypeAdapter);
+                break;
         }
         vbinding.tagContentBox.requestLayout();
         vbinding.tagDatetimeBox.requestLayout();
+        vbinding.tagChoiceBox.requestLayout();
     }
 
     private void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
@@ -192,7 +230,6 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 }
                 break;
             case ALARM:
-                //TODO
                 TextInputEditText tietD = vbinding.tagDateTv;
                 AutoCompleteTextView tietDT = vbinding.tagDateTypeTv;
                 int val;
@@ -209,11 +246,23 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 else
                     notifType = new NotifType(val, dt);
                 ssb = new SpannableStringBuilder(notifType.toString());
+                break;
+            case IMPORTANCE:
+            case ALARMTYPE:
+                break;
         }
 
         assert checkedList != null;
-        for (AlarmList checked : checkedList)
-            checked.alarmList.putArgs(type.name(), ssb);
+        if (type == TagType.IMPORTANCE) {
+            for (AlarmList checked : checkedList)
+                checked.alarmList.importance = Importance.values()[idx];
+        } else if (type == TagType.ALARMTYPE) {
+            for (AlarmList checked : checkedList)
+                checked.alarmList.type = AlarmType.values()[idx];
+        } else {
+            for (AlarmList checked : checkedList)
+                checked.alarmList.putArgs(type.name(), ssb);
+        }
         return true;
     }
 
