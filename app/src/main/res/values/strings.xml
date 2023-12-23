@@ -99,8 +99,12 @@
         <string name="tab_info_title">Descriptions: </string>
         <string name="tab_tag_title">Tags: </string>
         <string name="tab_tag_content_title">Set Tag Value To: </string>
-        <string name="tab_tag_date_title">Schedule Alarm At: </string>
+        <string name="tab_tag_date_title">Alarm At: </string>
         <string name="tab_tag_time_title">With Time: </string>
+        <!-- OnConfirm -->
+        <string name="tab_no_content_warning">The content of this field cannot be empty!</string>
+        <!-- Others -->
+        <string name="before">Before</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>
@@ -115,6 +119,15 @@
         <item>Thu</item>
         <item>Fri</item>
         <item>Sat</item>
+    </string-array>
+
+    <!-- DATE TYPES -->
+    <string-array name="date_types">
+        <item>Minutes Before</item>
+        <item>Hours Before</item>
+        <item>Days Before</item>
+        <item>Weeks Before</item>
+        <item>Months Before</item>
     </string-array>
 
 </resources>

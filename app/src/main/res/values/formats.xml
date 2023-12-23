@@ -22,4 +22,8 @@
     <!-- SHORT ENTITIES -->
     <string name="first_half_year">First Half</string>
     <string name="second_half_year">Second Half</string>
+
+    <!-- TAG TIME FORMAT -->
+    <string name="tag_time_full">%1$d %2$s at %3$d:%4$d</string>
+    <string name="tag_time_half">%1$d %2$s</string>
 </resources>

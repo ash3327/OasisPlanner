@@ -28,11 +28,13 @@ import com.aurora.oasisplanner.data.model.pojo.Activity;
 import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemTagContentBinding;
+import com.aurora.oasisplanner.databinding.ItemTagNotifBinding;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
@@ -74,6 +76,9 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
             case LOC:
                 binding = ItemTagContentBinding.inflate(li, parent, false);
                 break;
+            case ALARM:
+                binding = ItemTagNotifBinding.inflate(li, parent, false);
+                break;
         }
         return new TagHolder(binding);
     }
@@ -112,15 +117,26 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
         public boolean bind(int i, TagType key, String val) {
             switch (key) {
                 case LOC:
-                    bindTv(i, key, val);
+                    return bindTv(i, key, val);
+                case ALARM:
+                    return bindNotif(i, key, val);
             }
             return false;
         }
 
         public boolean bindTv(int i, TagType key, String val) {
             ItemTagContentBinding binding = (ItemTagContentBinding) vbinding;
-            binding.itemTagIcon.setImageDrawable(key.getDrawable());
+            binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
             binding.itemTagText.setText(new Converters().spannableFromString(val));
+            return true;
+        }
+
+        public boolean bindNotif(int i, TagType key, String val) {
+            val = new Converters().spannableFromString(val).toString();
+
+            ItemTagNotifBinding binding = (ItemTagNotifBinding) vbinding;
+            binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
+            binding.itemTagText.setText(new NotifType(val).getDescription());
             return true;
         }
     }

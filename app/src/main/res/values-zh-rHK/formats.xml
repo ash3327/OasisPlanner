@@ -22,4 +22,8 @@
     <!-- SHORT ENTITIES -->
     <string name="first_half_year">上半</string>
     <string name="second_half_year">下半</string>
+
+    <!-- TAG TIME FORMAT -->
+    <string name="tag_time_full">%1$d%2$s的%3$02d:%4$02d</string>
+    <string name="tag_time_half">%1$d%2$s</string>
 </resources>

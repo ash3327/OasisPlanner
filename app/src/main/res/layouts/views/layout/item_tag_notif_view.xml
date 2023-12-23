@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <!-- DATA CLASS -->
+    <data class="ItemTagNotifBinding"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/item_tag_icon"
+            android:layout_width="@dimen/icon_height"
+            android:layout_height="@dimen/icon_height"
+            android:src="@drawable/menuic_notification"
+            />
+        <TextView
+            android:id="@+id/item_tag_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_300"
+            android:layout_marginStart="5dp"
+            android:text="MMW LT03"/>
+    </LinearLayout>
+</layout>

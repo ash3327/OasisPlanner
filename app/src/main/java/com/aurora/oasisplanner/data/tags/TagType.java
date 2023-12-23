@@ -13,8 +13,8 @@ public enum TagType {
 
     /** [DRAWABLE ICON, STRING BELOW, COLOR PRIMARY, COLOR SECONDARY] */
     public static int[][] typeIds = {
-            {R.drawable.ic_location,    R.string.tag_loc},
-            {R.drawable.ic_agenda_notification,    R.string.tag_subalarm},
+            {R.drawable.ic_location,    R.string.tag_loc, R.drawable.ic_location},
+            {R.drawable.ic_agenda_notification,    R.string.tag_subalarm, R.drawable.menuic_notification},
             };
 
     public static boolean contains(String key) {
@@ -32,6 +32,10 @@ public enum TagType {
 
     public Drawable getDrawable() {
         return Resources.getDrawable(typeIds[getType()][0]);
+    }
+
+    public Drawable getSmallDrawable() {
+        return Resources.getDrawable(typeIds[getType()][2]);
     }
 
     public String toString() {

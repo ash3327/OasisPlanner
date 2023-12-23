@@ -101,8 +101,12 @@
         <string name="tab_info_title">通知内容：</string>
         <string name="tab_tag_title">標簽：</string>
         <string name="tab_tag_content_title">標簽内容：</string>
-        <string name="tab_tag_date_title">設置提醒：</string>
+        <string name="tab_tag_date_title">提醒：</string>
         <string name="tab_tag_time_title">時間：</string>
+        <!-- OnConfirm -->
+        <string name="tab_no_content_warning">此項目不能為空！</string>
+        <!-- Others -->
+        <string name="before">前</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>
@@ -117,6 +121,15 @@
         <item>四</item>
         <item>五</item>
         <item>六</item>
+    </string-array>
+
+    <!-- DATE TYPES -->
+    <string-array name="date_types">
+        <item>分鐘前</item>
+        <item>小時前</item>
+        <item>日前</item>
+        <item>週前</item>
+        <item>個月前</item>
     </string-array>
 
 </resources>
