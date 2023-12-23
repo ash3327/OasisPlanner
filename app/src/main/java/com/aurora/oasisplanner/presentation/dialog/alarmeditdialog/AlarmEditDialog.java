@@ -140,7 +140,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 spinnerType.setAdapter(adapter);
                 setOnItemSelectListener(spinnerType, til,
                         type.toString(), type.getSimpleDrawable(),
-                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                        (adapterView, view, position, id) -> {
                             type = AlarmType.values()[position];
                             til.setStartIconDrawable(type.getSimpleDrawable());
                         });
@@ -154,7 +154,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 spinnerImp.setAdapter(adapterImp);
                 setOnItemSelectListener(spinnerImp, tilImp,
                         importance.toString(), importance.getSimpleDrawable(),
-                        (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
+                        (adapterView, view, position, id) -> {
                             importance = Importance.values()[position];
                             tilImp.setStartIconDrawable(importance.getSimpleDrawable());
                         });

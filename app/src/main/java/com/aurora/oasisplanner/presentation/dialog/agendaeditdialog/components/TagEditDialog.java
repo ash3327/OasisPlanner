@@ -87,6 +87,9 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.cancelButton.setOnClickListener(
                 (v)->onCancel()
         );
+        vbinding.deleteButton.setOnClickListener(
+                (v)->onDelete()
+        );
 
         vbinding.tagTypeTv.setInputType(InputType.TYPE_NULL);
         vbinding.tagDateTv.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -137,6 +140,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagContentBox.setVisibility(View.GONE);
         vbinding.tagDatetimeBox.setVisibility(View.GONE);
         vbinding.tagChoiceBox.setVisibility(View.GONE);
+        vbinding.deleteButton.setVisibility(View.VISIBLE);
         switch(type) {
             case LOC:
                 vbinding.tagContentBox.setVisibility(View.VISIBLE);
@@ -146,6 +150,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 break;
             case IMPORTANCE:
             case ALARMTYPE:
+                vbinding.deleteButton.setVisibility(View.GONE);
                 vbinding.tagChoiceBox.setVisibility(View.VISIBLE);
                 break;
         }
@@ -216,6 +221,12 @@ public class TagEditDialog extends AppCompatDialogFragment {
         updateUiFunction.run();
         dialog.dismiss();
     }
+    public void onDelete() {
+        if (deleteTags()) {
+            updateUiFunction.run();
+            dialog.dismiss();
+        }
+    }
 
     public boolean saveTags() {
         SpannableStringBuilder ssb = null;
@@ -264,6 +275,16 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 checked.alarmList.putArgs(type.name(), ssb);
         }
         return true;
+    }
+
+    public boolean deleteTags() {
+        assert checkedList != null;
+        if (type != TagType.IMPORTANCE && type != TagType.ALARMTYPE) {
+            for (AlarmList checked : checkedList)
+                checked.alarmList.removeKey(type.name());
+            return true;
+        }
+        return false;
     }
 
     public void setSelectedList(Set<AlarmList> checkedList) {

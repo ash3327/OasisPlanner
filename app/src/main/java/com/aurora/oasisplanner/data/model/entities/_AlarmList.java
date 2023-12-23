@@ -86,6 +86,11 @@ public class _AlarmList {
         if (args == null) args = new HashMap<>();
         args.put(key, new Converters().spannableToString(sb));
     }
+    @Ignore
+    public void removeKey(String key) {
+        if (args == null) args = new HashMap<>();
+        args.remove(key);
+    }
 
     @Ignore
     public String toString() {

@@ -80,6 +80,7 @@
         <string name="yellow_bar_text_newevent">New Event</string>
         <string name="yellow_bar_text_delete">Delete Item</string>
         <string name="yellow_bar_text_tag">Edit Tags</string>
+        <string name="yellow_bar_tag_delete">Delete Tag</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">The title of the agenda cannot be empty!</string>
 
