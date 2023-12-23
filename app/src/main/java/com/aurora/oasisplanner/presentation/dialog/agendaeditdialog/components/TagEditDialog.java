@@ -89,7 +89,19 @@ public class TagEditDialog extends AppCompatDialogFragment {
 
     public void changeUiToInputType(TagType type) {
         vbinding.tagTypeTil.setStartIconDrawable(type.getDrawable());
-        //TODO later
+        //TODO
+        vbinding.tagContentBox.setVisibility(View.GONE);
+        vbinding.tagDatetimeBox.setVisibility(View.GONE);
+        switch(type) {
+            case LOC:
+                vbinding.tagContentBox.setVisibility(View.VISIBLE);
+                break;
+            case ALARM:
+                vbinding.tagDatetimeBox.setVisibility(View.VISIBLE);
+                break;
+        }
+        vbinding.tagContentBox.requestLayout();
+        vbinding.tagDatetimeBox.requestLayout();
     }
 
     private void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
@@ -98,6 +110,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         spinner.setText(text);
         til.setStartIconDrawable(drawable);
         spinner.setOnItemClickListener(listener);
+        listener.onItemClick(null, spinner.getRootView(), type.getType(), 0);
     }
 
     public void scrollTo(int pos, RecyclerView recyclerView) {
@@ -119,6 +132,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         dialog.dismiss();
     }
     public void onCancel() {
+        updateUiFunction.run();
         dialog.dismiss();
     }
 

@@ -42,6 +42,7 @@
 
     <!-- TAG TYPES -->
     <string name="tag_loc">地點</string>
+    <string name="tag_subalarm">鬧鐘通知</string>
 
     <!-- FRAGMENTS -->
         <!-- NOTIFICATIONS -->
@@ -100,6 +101,8 @@
         <string name="tab_info_title">通知内容：</string>
         <string name="tab_tag_title">標簽：</string>
         <string name="tab_tag_content_title">標簽内容：</string>
+        <string name="tab_tag_date_title">設置提醒：</string>
+        <string name="tab_tag_time_title">時間：</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>

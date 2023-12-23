@@ -9,11 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum TagType {
-    LOC;
+    LOC, ALARM;
 
     /** [DRAWABLE ICON, STRING BELOW, COLOR PRIMARY, COLOR SECONDARY] */
     public static int[][] typeIds = {
             {R.drawable.ic_location,    R.string.tag_loc},
+            {R.drawable.ic_agenda_notification,    R.string.tag_subalarm},
             };
 
     public static boolean contains(String key) {

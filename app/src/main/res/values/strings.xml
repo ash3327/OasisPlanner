@@ -41,6 +41,7 @@
 
     <!-- TAG TYPES -->
     <string name="tag_loc">Location</string>
+    <string name="tag_subalarm">Alarm Notifications</string>
 
     <!-- FRAGMENTS -->
         <!-- NOTIFICATIONS -->
@@ -98,6 +99,8 @@
         <string name="tab_info_title">Descriptions: </string>
         <string name="tab_tag_title">Tags: </string>
         <string name="tab_tag_content_title">Set Tag Value To: </string>
+        <string name="tab_tag_date_title">Schedule Alarm At: </string>
+        <string name="tab_tag_time_title">With Time: </string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>
