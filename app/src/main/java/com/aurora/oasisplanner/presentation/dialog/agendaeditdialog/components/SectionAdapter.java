@@ -336,7 +336,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
             );
             tSwitch.observe((state)-> {
-                if (!(id.equals(-1) && toAddSection.equals(0)))
+                if (!(id.equals(-1) && toAddSection.equals(0)) && id.equals(i))
                     updateLabel(label, label2, false, state,
                             (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked(),
                             adapter::checkListIsEmpty, adapter.bSwitch);
