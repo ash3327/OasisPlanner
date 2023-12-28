@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases;
+package com.aurora.oasisplanner.data.core.use_cases.agenda_usecases;
 
 import android.content.res.Resources;
 import android.os.Bundle;

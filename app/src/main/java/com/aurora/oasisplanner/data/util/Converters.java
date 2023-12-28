@@ -90,6 +90,15 @@ public class Converters {
     public String typeListToString(List<ActivityType> val) {
         return val.stream().map(ActivityType::toString).reduce("",(a, b)->a+Styles.SEP+b).replaceFirst(Styles.SEP, "");
     }
+    @TypeConverter
+    public List<String> tagListFromString(String val) {
+        return Arrays.stream(val.split(Styles.SEP)).collect(Collectors.toList());
+    }
+    @TypeConverter
+    public String tagListToString(List<String> val) {
+        if (val == null) val = new ArrayList<>();
+        return val.stream().reduce("",(a, b)->a+Styles.SEP+b).replaceFirst(Styles.SEP, "");
+    }
 
     @TypeConverter
     public Map<String,String> bundleFromString(String str) {

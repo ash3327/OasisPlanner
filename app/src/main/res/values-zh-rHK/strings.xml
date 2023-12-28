@@ -33,6 +33,7 @@
 
     <!-- AGENDA TYPES -->
     <string name="type_agenda">日程</string>
+    <string name="type_memo">備忘</string>
 
     <!-- ACTIVITY TYPES -->
     <string name="notif">提醒</string>
@@ -108,6 +109,9 @@
         <string name="tab_no_content_warning">此項目不能為空！</string>
         <!-- Others -->
         <string name="before">前</string>
+
+    <!-- Edit _Memo Dialog -->
+    <string name="memo_content_title">備忘内容：</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>

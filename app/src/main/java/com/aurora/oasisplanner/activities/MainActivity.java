@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AppModule.retrieveAgendaUseCases()
                 .editAlarmListUseCase
                 .setFragmentManager(getSupportFragmentManager());
+        AppModule.retrieveMemoUseCases()
+                .editMemoUseCase
+                .setFragmentManager(getSupportFragmentManager());
     }
 
     void setupToolbar() {

@@ -103,6 +103,9 @@ public class ChooseTypeDialog {
             case 0:
                 AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(-1, -1);
                 break;
+            case 2:
+                AppModule.retrieveMemoUseCases().editMemoUseCase.invoke(-1);
+                break;
         }
     }
 }

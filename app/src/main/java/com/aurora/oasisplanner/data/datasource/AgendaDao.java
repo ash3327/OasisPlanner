@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.model.entities._Activity;
+import com.aurora.oasisplanner.data.model.entities._Memo;
 import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
@@ -99,4 +100,21 @@ public interface AgendaDao {
     long insert(_Doc doc);
     @Delete
     void delete(_Doc doc);
+    
+    // INFO: Memos
+
+    @Query("SELECT * FROM _Memo WHERE id = :id")
+    _Memo getMemoById(long id);
+
+    @Query("SELECT * FROM _Memo")
+    LiveData<List<_Memo>> getMemos();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(_Memo Memo);
+
+    @Delete
+    void delete(_Memo Memo);
+
+    @Query("DELETE FROM _Memo")
+    void deleteAllMemos();
 }

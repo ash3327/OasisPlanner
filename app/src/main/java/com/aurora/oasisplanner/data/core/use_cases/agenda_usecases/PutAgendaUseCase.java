@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases;
+package com.aurora.oasisplanner.data.core.use_cases.agenda_usecases;
 
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;

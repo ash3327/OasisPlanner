@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases;
+package com.aurora.oasisplanner.data.core.use_cases.agenda_usecases;
 
 public class AgendaUseCases {
     public GetAgendaUseCase getAgendaUseCase;

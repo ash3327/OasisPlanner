@@ -32,6 +32,7 @@
 
     <!-- AGENDA TYPES -->
     <string name="type_agenda">AGENDA</string>
+    <string name="type_memo">MEMO</string>
 
     <!-- ACTIVITY TYPES -->
     <string name="notif">reminders</string>
@@ -106,6 +107,9 @@
         <string name="tab_no_content_warning">The content of this field cannot be empty!</string>
         <!-- Others -->
         <string name="before">Before</string>
+
+    <!-- Edit _Memo Dialog -->
+    <string name="memo_content_title">Content of Your Memo: </string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>
