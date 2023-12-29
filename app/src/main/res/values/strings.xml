@@ -114,6 +114,8 @@
     <string name="memo_content_title">Content of Your Memo: </string>
     <string name="memo_tag_title">Tags: </string>
     <string name="memo_search">Searching For: </string>
+    <string name="memo_delete">Delete Memo</string>
+    <string name="memo_delete_confirm">Are you sure you want to delete this memo?</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>

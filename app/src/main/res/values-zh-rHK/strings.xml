@@ -116,6 +116,8 @@
     <string name="memo_content_title">備忘内容：</string>
     <string name="memo_tag_title">標簽：</string>
     <string name="memo_search">搜索内容：</string>
+    <string name="memo_delete">刪除備忘</string>
+    <string name="memo_delete_confirm">您確定要刪除此備忘嗎？</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>

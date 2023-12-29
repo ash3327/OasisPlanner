@@ -2,6 +2,7 @@ package com.aurora.oasisplanner.presentation.dialog.memoeditdialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -78,6 +80,8 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         String tagText = Objects.requireNonNull(memo.getTags()).stream()
                 .reduce("", (a, b)->a.isEmpty()?b:a+TagInputEditText.SEP+b)+TagInputEditText.SEP;
         binding.tagTagsTv.setText(tagText);
+        binding.deleteButton.setVisibility(memo.id == -1 ? View.GONE : View.VISIBLE);
+        binding.deleteButton.setOnClickListener((v)->onDelete());
 
         /**
         RecyclerView recyclerView = binding.pageSections;
@@ -152,6 +156,17 @@ public class MemoEditDialog extends AppCompatDialogFragment {
     public void onCancel() {
         dialog.dismiss();
     }
+    public void onDelete() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.memo_delete)
+                .setMessage(R.string.memo_delete_confirm)
+                .setIcon(R.drawable.ic_symb_cross)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    deleteMemo();
+                    this.dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+    }
 
     public boolean saveMemo() {
         TextInputEditText tiet = vbinding.tagContentTv;
@@ -166,6 +181,12 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         memo.tags = Arrays.asList(Objects.requireNonNull(tagtiet.getText()).toString().split(TagInputEditText.SEP));
         AppModule.retrieveMemoUseCases()
                 .putMemoUseCase.invoke(memo);
+        return true;
+    }
+
+    public boolean deleteMemo() {
+        AppModule.retrieveMemoUseCases()
+                .deleteMemoUseCase.invoke(memo);
         return true;
     }
 }

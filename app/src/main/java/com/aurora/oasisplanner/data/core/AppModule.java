@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.data.core;
 import android.app.Application;
 import android.content.res.Resources;
 
+import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.DeleteMemoUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.EditMemoUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.GetMemoUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.MemoUseCases;
@@ -59,7 +60,8 @@ public class AppModule {
         return memoUseCases = new MemoUseCases(
                 new GetMemoUseCase(repository),
                 new EditMemoUseCase(repository),
-                new PutMemoUseCase(repository)
+                new PutMemoUseCase(repository),
+                new DeleteMemoUseCase(repository)
         );
     }
 

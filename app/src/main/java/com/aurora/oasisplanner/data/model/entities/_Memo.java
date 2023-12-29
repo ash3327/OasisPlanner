@@ -29,6 +29,7 @@ public class _Memo {
 
     @Ignore
     public _Memo(CharSequence title, CharSequence contents) {
+        id = -1;
         this.title = new SpannableStringBuilder(title);
         this.contents = new SpannableStringBuilder(contents);
     }
