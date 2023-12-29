@@ -75,7 +75,7 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
         binding.tagContentTv.setText(memo.contents);
-        String tagText = Objects.requireNonNull(memo.tags).stream()
+        String tagText = Objects.requireNonNull(memo.getTags()).stream()
                 .reduce("", (a, b)->a.isEmpty()?b:a+TagInputEditText.SEP+b)+TagInputEditText.SEP;
         binding.tagTagsTv.setText(tagText);
 

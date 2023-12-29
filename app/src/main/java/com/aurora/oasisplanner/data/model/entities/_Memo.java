@@ -53,6 +53,13 @@ public class _Memo {
     }
 
     @Ignore
+    public List<String> getTags() {
+        if (this.tags == null)
+            this.tags = new ArrayList<>();
+        return this.tags;
+    }
+
+    @Ignore
     public String toString() {
         return " [_Memo : "+id+" : "+title+","+contents+"] ";
     }
