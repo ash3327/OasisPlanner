@@ -23,6 +23,7 @@
 
     <!-- TIPS -->
     <string name="tips_no_agendas">There is no calendar entry yet. \n Add new routine now.</string>
+    <string name="tips_no_memos">There is no memo notes yet. \n Add new memo notes now.</string>
 
     <!-- IMPORTANCE LEVEL -->
     <string name="unimportant">unimportant</string>

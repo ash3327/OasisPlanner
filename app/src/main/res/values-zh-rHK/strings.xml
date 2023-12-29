@@ -24,6 +24,7 @@
 
     <!-- TIPS -->
     <string name="tips_no_agendas">現在還沒有活動哦！\n加上你新的行程吧！</string>
+    <string name="tips_no_memos">現在還沒有備忘哦！\n加上新的備忘記錄你的奇思妙想吧！</string>
 
     <!-- IMPORTANCE LEVEL -->
     <string name="unimportant">可拖延</string>
