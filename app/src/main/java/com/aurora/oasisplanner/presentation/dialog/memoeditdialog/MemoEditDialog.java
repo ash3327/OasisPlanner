@@ -24,7 +24,11 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities._Memo;
 import com.aurora.oasisplanner.databinding.MemoPageBinding;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class MemoEditDialog extends AppCompatDialogFragment {
     public static final String EXTRA_MEMO_ID = "memoId";
@@ -71,6 +75,9 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
         binding.tagContentTv.setText(memo.contents);
+        String tagText = Objects.requireNonNull(memo.tags).stream()
+                .reduce("", (a, b)->a.isEmpty()?b:a+TagInputEditText.SEP+b)+TagInputEditText.SEP;
+        binding.tagTagsTv.setText(tagText);
 
         /**
         RecyclerView recyclerView = binding.pageSections;
@@ -148,6 +155,7 @@ public class MemoEditDialog extends AppCompatDialogFragment {
 
     public boolean saveMemo() {
         TextInputEditText tiet = vbinding.tagContentTv;
+        TagInputEditText tagtiet = vbinding.tagTagsTv;
         SpannableStringBuilder ssb = new SpannableStringBuilder(tiet.getText());
         ssb.clearSpans();
         if (ssb.length() == 0) {
@@ -155,6 +163,7 @@ public class MemoEditDialog extends AppCompatDialogFragment {
             return false;
         }
         memo.contents = ssb;
+        memo.tags = Arrays.asList(Objects.requireNonNull(tagtiet.getText()).toString().split(TagInputEditText.SEP));
         AppModule.retrieveMemoUseCases()
                 .putMemoUseCase.invoke(memo);
         return true;

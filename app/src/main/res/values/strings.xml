@@ -111,6 +111,7 @@
 
     <!-- Edit _Memo Dialog -->
     <string name="memo_content_title">Content of Your Memo: </string>
+    <string name="memo_tag_title">Tags: </string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>
