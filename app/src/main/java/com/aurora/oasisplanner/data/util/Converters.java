@@ -1,7 +1,9 @@
 package com.aurora.oasisplanner.data.util;
 
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 
+import androidx.room.Ignore;
 import androidx.room.TypeConverter;
 
 import com.aurora.oasisplanner.data.tags.ActivityType;
@@ -58,6 +60,11 @@ public class Converters {
     }
     @TypeConverter
     public String spannableToString(SpannableStringBuilder val) {
+        if (val == null) return null;
+        return Styles.toHtml(val);
+    }
+    @Ignore
+    public String spannableToString(String val) {
         if (val == null) return null;
         return Styles.toHtml(val);
     }

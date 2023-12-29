@@ -21,6 +21,9 @@ public class Styles {
     public static String toHtml(SpannableStringBuilder styledString) {
         return Html.toHtml(styledString, Html.FROM_HTML_MODE_COMPACT);
     }
+    public static String toHtml(String pureString) {
+        return Html.escapeHtml(pureString);
+    }
 
     /*public static CharSequence toHtml(String styledString){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

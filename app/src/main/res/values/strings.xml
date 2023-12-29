@@ -24,6 +24,7 @@
     <!-- TIPS -->
     <string name="tips_no_agendas">There is no calendar entry yet. \n Add new routine now.</string>
     <string name="tips_no_memos">There is no memo notes yet. \n Add new memo notes now.</string>
+    <string name="tips_memo_not_found">No results containing all your search terms were found. </string>
 
     <!-- IMPORTANCE LEVEL -->
     <string name="unimportant">unimportant</string>
@@ -112,6 +113,7 @@
     <!-- Edit _Memo Dialog -->
     <string name="memo_content_title">Content of Your Memo: </string>
     <string name="memo_tag_title">Tags: </string>
+    <string name="memo_search">Searching For: </string>
 
     <!-- NULLITIES -->
     <string name="no_title">[TITLE]</string>

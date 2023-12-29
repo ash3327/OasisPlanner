@@ -23,8 +23,9 @@
     <string name="tag_header_browse">我的日程</string>
 
     <!-- TIPS -->
-    <string name="tips_no_agendas">現在還沒有活動哦！\n加上你新的行程吧！</string>
-    <string name="tips_no_memos">現在還沒有備忘哦！\n加上新的備忘記錄你的奇思妙想吧！</string>
+    <string name="tips_no_agendas">現在還沒有活動哦！\n加上您新的行程吧！</string>
+    <string name="tips_no_memos">現在還沒有備忘哦！\n加上新的備忘記錄您的奇思妙想吧！</string>
+    <string name="tips_memo_not_found">未找到包含您所有搜尋字詞的結果。</string>
 
     <!-- IMPORTANCE LEVEL -->
     <string name="unimportant">可拖延</string>
@@ -114,6 +115,7 @@
     <!-- Edit _Memo Dialog -->
     <string name="memo_content_title">備忘内容：</string>
     <string name="memo_tag_title">標簽：</string>
+    <string name="memo_search">搜索内容：</string>
 
     <!-- NULLITIES -->
     <string name="no_title">[標題]</string>

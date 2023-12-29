@@ -1,25 +1,23 @@
 package com.aurora.oasisplanner.data.repository;
 
 import android.os.AsyncTask;
+import android.text.SpannableStringBuilder;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Memo;
-import com.aurora.oasisplanner.data.model.pojo.Agenda;
+import com.aurora.oasisplanner.data.util.Converters;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class MemoRepository {
-    private AgendaDao AgendaDao;
-    private LiveData<List<_Memo>> Memos;
+    private AgendaDao agendaDao;
+    private LiveData<List<_Memo>> memos;
 
-    public MemoRepository(AgendaDao AgendaDao) {
-        this.AgendaDao = AgendaDao;
-        this.Memos = AgendaDao.getMemos();
+    public MemoRepository(AgendaDao agendaDao) {
+        this.agendaDao = agendaDao;
+        this.memos = agendaDao.getMemos();
     }
 
     private boolean firstTime = true, firstTimeSubMemo = true;
@@ -53,31 +51,39 @@ public class MemoRepository {
     }**/
 
     public void insert(_Memo Memo) {
-        new InsertMemoAsyncTask(AgendaDao).execute(Memo);
+        new InsertMemoAsyncTask(agendaDao).execute(Memo);
     }
 
     public _Memo getMemoFromId(long id) {
         try {
-            return new MemoRepository.GetMemoAsyncTask(AgendaDao).execute(id).get();
+            return new MemoRepository.GetMemoAsyncTask(agendaDao).execute(id).get();
         } catch (Exception e) {
             throw new RuntimeException("Memo Not Found Exception: "+id);
         }
     }
 
     public void update(_Memo Memo) {
-        new UpdateMemoAsyncTask(AgendaDao).execute(Memo);
+        new UpdateMemoAsyncTask(agendaDao).execute(Memo);
     }
 
     public void delete(_Memo Memo) {
-        new DeleteMemoAsyncTask(AgendaDao).execute(Memo);
+        new DeleteMemoAsyncTask(agendaDao).execute(Memo);
     }
 
     public void deleteAllMemos() {
-        new DeleteAllMemosAsyncTask(AgendaDao).execute();
+        new DeleteAllMemosAsyncTask(agendaDao).execute();
     }
 
     public LiveData<List<_Memo>> getMemos() {
-        return Memos;
+        return memos;
+    }
+
+    public LiveData<List<_Memo>> requestMemos(String searchEntry) {
+        return memos = agendaDao.getMemos(searchEntry, new Converters().spannableToString(searchEntry));
+    }
+
+    public LiveData<List<_Memo>> requestMemos() {
+        return memos = agendaDao.getMemos();
     }
 
     private static class InsertMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {

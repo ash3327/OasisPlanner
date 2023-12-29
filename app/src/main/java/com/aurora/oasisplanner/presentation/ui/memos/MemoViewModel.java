@@ -24,6 +24,10 @@ public class MemoViewModel extends AndroidViewModel {
         memos = repository.getMemos();
     }
 
+    public void refreshMemos(String searchEntry) {
+        memos = repository.requestMemos(searchEntry);
+    }
+
     public void insert(_Memo memo) {
         repository.insert(memo);
     }

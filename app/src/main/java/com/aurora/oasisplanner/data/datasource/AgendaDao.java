@@ -109,6 +109,10 @@ public interface AgendaDao {
     @Query("SELECT * FROM _Memo")
     LiveData<List<_Memo>> getMemos();
 
+    @Query("SELECT * FROM _Memo WHERE tags LIKE '%' || :searchEntry || '%' " +
+            "OR title LIKE '%' || :htmlSearchEntry || '%' OR contents LIKE '%' || :htmlSearchEntry || '%'")
+    LiveData<List<_Memo>> getMemos(String searchEntry, String htmlSearchEntry);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Memo Memo);
 
