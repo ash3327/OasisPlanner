@@ -13,6 +13,7 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._SubAlarm;
+import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.time.LocalDate;
@@ -78,6 +79,10 @@ public class AlarmRepository {
 
     public LiveData<List<_Alarm>> getAlarms() {
         return alarms;
+    }
+
+    public LiveData<List<_Alarm>> requestAlarms(String searchEntry) {
+        return alarms = agendaDao.getAlarmsAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
     }
 
     private static class InsertAlarmAsyncTask extends AsyncTask<_Alarm, Void, Void> {

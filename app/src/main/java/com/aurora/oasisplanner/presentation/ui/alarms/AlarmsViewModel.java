@@ -26,6 +26,10 @@ public class AlarmsViewModel extends AndroidViewModel {
         alarms = repository.getAlarms();
     }
 
+    public void refreshAlarms(String searchEntry) {
+        alarms = repository.requestAlarms(searchEntry);
+    }
+
     public void insert(_Alarm alarm) {
         repository.insert(alarm);
     }

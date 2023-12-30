@@ -48,6 +48,12 @@ public interface AgendaDao {
     @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
     LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate);
 
+    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
+            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
+            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%') " +
+            "ORDER BY datetime ASC")
+    LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
+
     @Query("SELECT * FROM _Alarm WHERE id = :id")
     _Alarm getAlarmById(int id);
 

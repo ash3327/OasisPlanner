@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.fragments;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,14 @@ import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
 import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
 import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
+import com.aurora.oasisplanner.presentation.ui.memos.components.MemosAdapter;
 import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class EventArrangerFragment extends Fragment {
 
@@ -35,6 +38,7 @@ public class EventArrangerFragment extends Fragment {
     private AlarmsViewModel alarmsViewModel;
     private ArrangerBinding binding;
     private TabMenu tabMenu;
+    private String searchEntry;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +75,21 @@ public class EventArrangerFragment extends Fragment {
 
         alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
         alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+
+        binding.tagSearchTv.setOnKeyListener(
+                (v, keyCode, event)->{
+                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        refreshSearchResults(adapter, binding);
+                    }
+                    return false;
+                }
+        );
+        binding.tagSearchTil.setEndIconOnClickListener(
+                (v)->{
+                    binding.tagSearchTv.setText("");
+                    refreshSearchResults(adapter, binding);
+                }
+        );
     }
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
@@ -126,6 +145,14 @@ public class EventArrangerFragment extends Fragment {
                 return 1;
         }
         return -1;
+    }
+
+    private void refreshSearchResults(AlarmsAdapter adapter, ArrangerNotificationsBinding nbinding) {
+        String str = Objects.requireNonNull(nbinding.tagSearchTv.getText()).toString();
+        alarmsViewModel.refreshAlarms(str);
+        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+        searchEntry = str;
+        nbinding.textHome.setText(searchEntry.isEmpty() ? R.string.tips_no_agendas : R.string.tips_memo_not_found);
     }
 
     @Override
