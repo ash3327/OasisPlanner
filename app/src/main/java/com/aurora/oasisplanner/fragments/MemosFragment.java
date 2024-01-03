@@ -28,7 +28,6 @@ public class MemosFragment extends Fragment {
 
     private MemoFragmentBinding binding;
     private MemoViewModel memosViewModel;
-    private TextWatcher textWatcher;
     private String searchEntry = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,6 +56,7 @@ public class MemosFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         memosViewModel = new ViewModelProvider(this).get(MemoViewModel.class);
+        memosViewModel.refreshMemos(searchEntry==null ? "" : searchEntry);
         memosViewModel.getMemos().observe(getViewLifecycleOwner(), adapter::setMemos);
 
         binding.tagSearchTv.setOnKeyListener(

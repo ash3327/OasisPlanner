@@ -74,6 +74,7 @@ public class EventArrangerFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
+        alarmsViewModel.refreshAlarms(searchEntry==null ? "" : searchEntry);
         alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
 
         binding.tagSearchTv.setOnKeyListener(

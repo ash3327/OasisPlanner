@@ -22,31 +22,31 @@ public class MemoRepository {
 
     private boolean firstTime = true, firstTimeSubMemo = true;
     /**
-    public void schedule(MemoScheduler MemoScheduler, LifecycleOwner obs, CountDownLatch latch) {
+    public void schedule(Memoscheduler Memoscheduler, LifecycleOwner obs, CountDownLatch latch) {
         firstTime = true;
-        Memos.observe(obs, (_Memos)->{
+        memos.observe(obs, (_Memos)->{
             if (!firstTime) return;
             firstTime = false;
             try {
                 for (_Memo Memo : _Memos)
-                    MemoScheduler.schedule(Memo);
+                    Memoscheduler.schedule(Memo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             latch.countDown();
-            //Log.d("test3", "SCHEDULED MemoS: "+_Memos);
+            //Log.d("test3", "SCHEDULED memos: "+_Memos);
         });
         subMemos.observe(obs, (_subMemos)->{
             if (!firstTimeSubMemo) return;
             firstTimeSubMemo = false;
             try {
                 for (_SubMemo Memo : _subMemos)
-                    MemoScheduler.schedule(Memo);
+                    Memoscheduler.schedule(Memo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             latch.countDown();
-            //Log.d("test3", "SCHEDULED MemoS: "+_Memos);
+            //Log.d("test3", "SCHEDULED memos: "+_Memos);
         });
     }**/
 
@@ -87,28 +87,28 @@ public class MemoRepository {
     }
 
     private static class InsertMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao AgendaDao;
+        private AgendaDao agendaDao;
 
-        private InsertMemoAsyncTask(AgendaDao AgendaDao) {
-            this.AgendaDao = AgendaDao;
+        private InsertMemoAsyncTask(AgendaDao agendaDao) {
+            this.agendaDao = agendaDao;
         }
 
         @Override
-        protected Void doInBackground(_Memo... Memos) {
-            AgendaDao.insert(Memos[0]);
+        protected Void doInBackground(_Memo... memos) {
+            agendaDao.insert(memos[0]);
             return null;
         }
     }
     private static class UpdateMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao AgendaDao;
+        private AgendaDao agendaDao;
 
-        private UpdateMemoAsyncTask(AgendaDao AgendaDao) {
-            this.AgendaDao = AgendaDao;
+        private UpdateMemoAsyncTask(AgendaDao agendaDao) {
+            this.agendaDao = agendaDao;
         }
 
         @Override
-        protected Void doInBackground(_Memo... Memos) {
-            AgendaDao.insert(Memos[0]);
+        protected Void doInBackground(_Memo... memos) {
+            agendaDao.insert(memos[0]);
             return null;
         }
     }
@@ -125,28 +125,28 @@ public class MemoRepository {
         }
     }
     private static class DeleteMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao AgendaDao;
+        private AgendaDao agendaDao;
 
-        private DeleteMemoAsyncTask(AgendaDao AgendaDao) {
-            this.AgendaDao = AgendaDao;
+        private DeleteMemoAsyncTask(AgendaDao agendaDao) {
+            this.agendaDao = agendaDao;
         }
 
         @Override
-        protected Void doInBackground(_Memo... Memos) {
-            AgendaDao.delete(Memos[0]);
+        protected Void doInBackground(_Memo... memos) {
+            agendaDao.delete(memos[0]);
             return null;
         }
     }
     private static class DeleteAllMemosAsyncTask extends AsyncTask<Void, Void, Void> {
-        private AgendaDao AgendaDao;
+        private AgendaDao agendaDao;
 
-        private DeleteAllMemosAsyncTask(AgendaDao AgendaDao) {
-            this.AgendaDao = AgendaDao;
+        private DeleteAllMemosAsyncTask(AgendaDao agendaDao) {
+            this.agendaDao = agendaDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            AgendaDao.deleteAllMemos();
+            agendaDao.deleteAllMemos();
             return null;
         }
     }
