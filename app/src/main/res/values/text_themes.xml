@@ -80,4 +80,8 @@
         <item name="android:layout_rowWeight">1</item>
         <item name="android:layout_columnWeight">1</item>
     </style>
+    <style name="ChipText" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/golos_family</item>
+    </style>
 </resources>

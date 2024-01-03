@@ -103,6 +103,18 @@
                                     android:theme="@style/BarContentTheme"
                                     android:text='description'/>
                             </LinearLayout>
+                            <HorizontalScrollView
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent">
+                                <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+                                    android:id="@+id/box_memo_tags"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:inputType="none"
+                                    android:background="@null"
+                                    android:textSize="11sp"
+                                    app:editable="false"/>
+                            </HorizontalScrollView>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>

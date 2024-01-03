@@ -7,11 +7,13 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.util.Converters;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class _Memo {
@@ -57,6 +59,12 @@ public class _Memo {
         if (this.tags == null)
             this.tags = new ArrayList<>();
         return this.tags;
+    }
+
+    @Ignore
+    public String getTagsString() {
+        return Objects.requireNonNull(getTags()).stream()
+                .reduce("", (a, b)->a.isEmpty()?b:a+ TagInputEditText.SEP+b)+TagInputEditText.SEP;
     }
 
     @Ignore

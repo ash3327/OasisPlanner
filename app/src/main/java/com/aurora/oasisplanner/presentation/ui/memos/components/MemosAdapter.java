@@ -2,6 +2,7 @@ package com.aurora.oasisplanner.presentation.ui.memos.components;
 
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -21,6 +22,7 @@ import com.aurora.oasisplanner.databinding.BoxTaskBinding;
 import com.aurora.oasisplanner.databinding.DayLabelBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 
@@ -133,6 +135,8 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
             //binding.triangle.getBackground().setColorFilter(, PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(memo.title);
             binding.barDescriptionText.setText(memo.contents);
+            binding.boxMemoTags.setInputType(InputType.TYPE_NULL);
+            binding.boxMemoTags.setText(memo.getTagsString());  
 
             return true;
         }

@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.presentation.widget.taginputeidittext;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,9 +30,19 @@ public class TagInputEditText extends TextInputEditText {
     TextWatcher textWatcher;
     String lastString = null;
     public static final String SEP = " ";
+    public boolean editable = true;
 
     public TagInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.TagInputEditText,
+                0, 0);
+        try {
+            editable = a.getBoolean(R.styleable.TagInputEditText_editable, true);
+        } finally {
+            a.recycle();
+        }
         init();
     }
 
@@ -103,6 +114,7 @@ public class TagInputEditText extends TextInputEditText {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.tags_token_layout, layout, false);
 
         Chip chip = view.findViewById(R.id.chip);
+        chip.setCloseIconVisible(editable);
         chip.setText(text);
         layout.addView(chip);
 
@@ -135,6 +147,7 @@ public class TagInputEditText extends TextInputEditText {
 
         @Override
         public void onClick(@NonNull View widget) {
+            if (!editable) return;
             String s = Objects.requireNonNull(getText()).toString();
             String s1 = s.substring(0, startIdx);
             String s2 = s.substring(Math.min(endIdx+1, s.length()-1));
