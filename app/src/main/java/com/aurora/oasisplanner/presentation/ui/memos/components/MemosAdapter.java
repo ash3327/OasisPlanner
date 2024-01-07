@@ -1,12 +1,19 @@
 package com.aurora.oasisplanner.presentation.ui.memos.components;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.text.InputType;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +28,7 @@ import com.aurora.oasisplanner.databinding.BoxMemoBinding;
 import com.aurora.oasisplanner.databinding.BoxTaskBinding;
 import com.aurora.oasisplanner.databinding.DayLabelBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
+import com.aurora.oasisplanner.generated.callback.OnClickListener;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
@@ -125,12 +133,13 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
             return bindMemo(i, memo);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         public boolean bindMemo(int i, _Memo memo) {
             BoxMemoBinding binding = (BoxMemoBinding) vbinding;
 
-            binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveMemoUseCases().editMemoUseCase.invoke(memo.id)
-            );
+            View.OnClickListener ocl = (v)-> AppModule.retrieveMemoUseCases().editMemoUseCase.invoke(memo.id);
+
+            binding.bar.setOnClickListener(ocl);
             //if (memo.args.containsKey("importance"))
             //binding.triangle.getBackground().setColorFilter(, PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(memo.title);
@@ -145,4 +154,5 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
     public interface OnChangeListener {
         void run(int size);
     }
+
 }

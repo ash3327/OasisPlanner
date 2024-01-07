@@ -13,8 +13,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +32,7 @@ public class TagInputEditText extends TextInputEditText {
     TextWatcher textWatcher;
     String lastString = null;
     public static final String SEP = " ";
-    public boolean editable = true;
+    public boolean editable;
 
     public TagInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -91,9 +93,10 @@ public class TagInputEditText extends TextInputEditText {
             int startIdx = stringBuilder.length() - s.length();
             int endIdx = stringBuilder.length();
 
-            CLickableSpan span = new CLickableSpan(startIdx, endIdx);
-            stringBuilder.setSpan(span, Math.max(endIdx-2, startIdx), endIdx, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+            if (editable) {
+                ClickableSpan span = new ClickableSpan(startIdx, endIdx);
+                stringBuilder.setSpan(span, Math.max(endIdx - 2, startIdx), endIdx, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             stringBuilder.setSpan(new ImageSpan(bitmapDrawable), startIdx, endIdx, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             if (i < strings.length-1)
@@ -113,10 +116,17 @@ public class TagInputEditText extends TextInputEditText {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.tags_token_layout, layout, false);
 
+        /*
         Chip chip = view.findViewById(R.id.chip);
         chip.setCloseIconVisible(editable);
         chip.setText(text);
         layout.addView(chip);
+        */
+
+        TextView tv = view.findViewById(R.id.tag_tv);
+        tv.setText(text);
+        view.setFocusable(editable);
+        layout.addView(view);
 
         return layout;
     }
@@ -126,20 +136,27 @@ public class TagInputEditText extends TextInputEditText {
         view.measure(spec, spec);
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 
+        /*
         Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight()*3/5, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
         canvas.translate(-view.getScrollX(), -view.getScrollY()-view.getMeasuredHeight()/5f);
         view.draw(canvas);
+        */
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        canvas.translate(-view.getScrollX(), -view.getScrollY());
+        view.draw(canvas);
 
         return new BitmapDrawable(getContext().getResources(), bitmap);
     }
 
-    private class CLickableSpan extends android.text.style.ClickableSpan {
+    private class ClickableSpan extends android.text.style.ClickableSpan {
         int startIdx;
         int endIdx;
 
-        public CLickableSpan(int startIdx, int endIdx) {
+        public ClickableSpan(int startIdx, int endIdx) {
             super();
             this.startIdx = startIdx;
             this.endIdx = endIdx;

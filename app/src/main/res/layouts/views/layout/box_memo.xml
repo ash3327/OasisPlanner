@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="0dp">
-                <LinearLayout
+                <com.aurora.oasisplanner.presentation.ui.memos.components.InterceptLinearLayout
                     android:id="@+id/bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,7 +105,8 @@
                             </LinearLayout>
                             <HorizontalScrollView
                                 android:layout_height="wrap_content"
-                                android:layout_width="match_parent">
+                                android:layout_width="match_parent"
+                                android:id="@+id/box_memo_tags_scroll">
                                 <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
                                     android:id="@+id/box_memo_tags"
                                     android:layout_height="wrap_content"
@@ -117,7 +118,7 @@
                             </HorizontalScrollView>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                </com.aurora.oasisplanner.presentation.ui.memos.components.InterceptLinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>
