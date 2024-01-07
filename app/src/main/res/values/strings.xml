@@ -45,6 +45,7 @@
     <!-- TAG TYPES -->
     <string name="tag_loc">Location</string>
     <string name="tag_subalarm">Alarm Notifications</string>
+    <string name="tag_tags">Tags</string>
 
     <!-- FRAGMENTS -->
         <!-- NOTIFICATIONS -->

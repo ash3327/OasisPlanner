@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- DATA CLASS -->
+    <data class="ItemTagTagsBinding"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/item_tag_icon"
+            android:layout_width="@dimen/icon_height"
+            android:layout_height="@dimen/icon_height"
+            android:src="@drawable/ic_tag"
+            app:tint="@color/grey" />
+        <HorizontalScrollView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/box_memo_tags_scroll">
+            <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+                android:id="@+id/box_memo_tags"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:inputType="none"
+                android:background="@null"
+                android:textSize="11sp"
+                app:editable="false"/>
+        </HorizontalScrollView>
+    </LinearLayout>
+</layout>

@@ -34,6 +34,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class TagInputEditText extends TextInputEditText {
@@ -81,6 +83,21 @@ public class TagInputEditText extends TextInputEditText {
         addTextChangedListener(textWatcher);
     }
 
+    public static String format(String str) {
+        String[] strings = str.trim().replaceAll("\\s+"," ").split(SEP);
+
+        HashSet<String> set = new HashSet<>(Arrays.asList(strings));
+        return set.stream().reduce(SEP, (a,b)->a+SEP+b).trim()+SEP;
+    }
+    public static SpannableStringBuilder combine(
+            SpannableStringBuilder a, SpannableStringBuilder b
+    ) {
+        if (a == null) a = new SpannableStringBuilder();
+        if (b == null) b = new SpannableStringBuilder();
+        String c = a+SEP+b;
+        return new SpannableStringBuilder(format(c));
+    }
+
     private void format() {
         int selection = getSelectionStart();
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
@@ -100,7 +117,7 @@ public class TagInputEditText extends TextInputEditText {
             int endIdx = stringBuilder.length();
 
             View tokenView = createTokenView(s);
-            stringBuilder = setTokenView(tokenView, startIdx, endIdx, stringBuilder);
+            setTokenView(tokenView, startIdx, endIdx, stringBuilder);
 
             if (editable) {
                 ClickableSpan span = new ClickableSpan(startIdx, endIdx, tokenView);
@@ -232,14 +249,14 @@ public class TagInputEditText extends TextInputEditText {
         }
     }
 
-    public void removeText(int startIdx, int endIdx) {
+    private void removeText(int startIdx, int endIdx) {
         String s = Objects.requireNonNull(getText()).toString();
         String s1 = s.substring(0, startIdx);
         String s2 = s.substring(Math.min(endIdx+1, s.length()-1));
         TagInputEditText.this.setText(MessageFormat.format("{0}{1}", s1, s2));
     }
 
-    public void editColorOfTag(View tokenView, int startIdx, int endIdx) {
+    private void editColorOfTag(View tokenView, int startIdx, int endIdx) {
         LinearLayout token = tokenView.findViewById(R.id.tag_chip);
         token.getBackground().setColorFilter(
                 new PorterDuffColorFilter(Resources.getColor(R.color.red_100), PorterDuff.Mode.SRC_ATOP)
@@ -249,7 +266,7 @@ public class TagInputEditText extends TextInputEditText {
         setText(ssb);
     }
 
-    public SpannableStringBuilder setTokenView(View tokenView, int startIdx, int endIdx,
+    private SpannableStringBuilder setTokenView(View tokenView, int startIdx, int endIdx,
                                                SpannableStringBuilder stringBuilder) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) convertViewToDrawable(tokenView);
         bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight());

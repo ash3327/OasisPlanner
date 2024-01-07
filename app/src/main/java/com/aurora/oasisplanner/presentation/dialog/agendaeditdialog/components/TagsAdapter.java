@@ -35,6 +35,7 @@ import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemTagContentBinding;
 import com.aurora.oasisplanner.databinding.ItemTagNotifBinding;
+import com.aurora.oasisplanner.databinding.ItemTagTagsBinding;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
@@ -79,6 +80,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
             case ALARM:
                 binding = ItemTagNotifBinding.inflate(li, parent, false);
                 break;
+            case TAGS:
+                binding = ItemTagTagsBinding.inflate(li, parent, false);
         }
         return new TagHolder(binding);
     }
@@ -120,6 +123,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
                     return bindTv(i, key, val);
                 case ALARM:
                     return bindNotif(i, key, val);
+                case TAGS:
+                    return bindTags(i, key, val);
             }
             return false;
         }
@@ -137,6 +142,13 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
             ItemTagNotifBinding binding = (ItemTagNotifBinding) vbinding;
             binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
             binding.itemTagText.setText(new NotifType(val).getDescription());
+            return true;
+        }
+
+        public boolean bindTags(int i, TagType key, String val) {
+            ItemTagTagsBinding binding = (ItemTagTagsBinding) vbinding;
+            binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
+            binding.boxMemoTags.setText(new Converters().spannableFromString(val).toString());
             return true;
         }
     }

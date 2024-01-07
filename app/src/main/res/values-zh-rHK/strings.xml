@@ -46,6 +46,7 @@
     <!-- TAG TYPES -->
     <string name="tag_loc">地點</string>
     <string name="tag_subalarm">鬧鐘通知</string>
+    <string name="tag_tags">標簽</string>
 
     <!-- FRAGMENTS -->
         <!-- NOTIFICATIONS -->

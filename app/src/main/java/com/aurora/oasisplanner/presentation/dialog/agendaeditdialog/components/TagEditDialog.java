@@ -38,6 +38,7 @@ import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.ItemEditTagBinding;
 import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -132,6 +133,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagTimeMinutePicker.setMaxValue(59);
         vbinding.tagTimeMinutePicker.setFormatter((v)->{return String.format("%02d", v);});
         vbinding.tagTimeMinutePicker.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        vbinding.tagTagsTv.setText("");
     }
 
     public void changeUiToInputType(TagType type) {
@@ -140,6 +142,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagContentBox.setVisibility(View.GONE);
         vbinding.tagDatetimeBox.setVisibility(View.GONE);
         vbinding.tagChoiceBox.setVisibility(View.GONE);
+        vbinding.tagTagsBox.setVisibility(View.GONE);
         vbinding.deleteButton.setVisibility(View.VISIBLE);
         switch(type) {
             case LOC:
@@ -152,6 +155,9 @@ public class TagEditDialog extends AppCompatDialogFragment {
             case ALARMTYPE:
                 vbinding.deleteButton.setVisibility(View.GONE);
                 vbinding.tagChoiceBox.setVisibility(View.VISIBLE);
+                break;
+            case TAGS:
+                vbinding.tagTagsBox.setVisibility(View.VISIBLE);
                 break;
         }
         switch(type) {
@@ -185,6 +191,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagContentBox.requestLayout();
         vbinding.tagDatetimeBox.requestLayout();
         vbinding.tagChoiceBox.requestLayout();
+        vbinding.tagTagsBox.requestLayout();
     }
 
     private void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
@@ -261,19 +268,32 @@ public class TagEditDialog extends AppCompatDialogFragment {
             case IMPORTANCE:
             case ALARMTYPE:
                 break;
+            case TAGS:
+                ssb = new SpannableStringBuilder(vbinding.tagTagsTv.getText());
+                break;
         }
 
         assert checkedList != null;
-        if (type == TagType.IMPORTANCE) {
-            for (AlarmList checked : checkedList)
-                checked.alarmList.importance = Importance.values()[idx];
-        } else if (type == TagType.ALARMTYPE) {
-            for (AlarmList checked : checkedList)
-                checked.alarmList.type = AlarmType.values()[idx];
-        } else {
-            for (AlarmList checked : checkedList)
-                checked.alarmList.putArgs(type.name(), ssb);
+        switch (type) {
+            case IMPORTANCE:
+                for (AlarmList checked : checkedList)
+                    checked.alarmList.importance = Importance.values()[idx];
+                break;
+            case ALARMTYPE:
+                for (AlarmList checked : checkedList)
+                    checked.alarmList.type = AlarmType.values()[idx];
+                break;
+            case TAGS:
+                for (AlarmList checked : checkedList) {
+                    SpannableStringBuilder ssb2 = checked.alarmList.getArg(type.name());
+                    checked.alarmList.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
+                }
+                break;
+            default:
+                for (AlarmList checked : checkedList)
+                    checked.alarmList.putArgs(type.name(), ssb);
         }
+
         return true;
     }
 
