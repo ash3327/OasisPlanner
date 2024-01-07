@@ -34,6 +34,8 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_baseline_add_24.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_bold.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_calendar_wcolor.xml" value="0.115" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_circle_add.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_circle_cross.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_contract.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_cross.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_dashboard.xml" value="0.115" />
@@ -88,7 +90,8 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/radio_unchecked.xml" value="0.1505" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_circle.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_square.xml" value="0.1" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_tag_bg.xml" value="0.124" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_tag.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_tag_bg.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/shp_triangle.xml" value="0.1505" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/tab_back_menu.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/tab_back_menu_tabs.xml" value="0.1" />

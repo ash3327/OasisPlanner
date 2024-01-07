@@ -4,25 +4,24 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/shp_tag_bg"
-    android:backgroundTint="@color/yellow_300"
+    android:backgroundTint="@color/grey_100"
     android:id="@+id/tag_chip"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="horizontal"
+
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="10dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tag_tv"
         android:text="default"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="10dp"
         android:focusable="false"
         />
-
-    <!--com.google.android.material.chip.Chip
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chip"
-        style="@style/Widget.MaterialComponents.Chip.Entry"
-        android:textAppearance="@style/ChipText"
-        app:chipBackgroundColor="@color/yellow_300"
-        android:text="default"/-->
+    <ImageView
+        android:id="@+id/tag_cross"
+        android:layout_width="@dimen/medium_small_icon_height"
+        android:layout_height="@dimen/medium_small_icon_height"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_circle_cross"/>
 </LinearLayout>

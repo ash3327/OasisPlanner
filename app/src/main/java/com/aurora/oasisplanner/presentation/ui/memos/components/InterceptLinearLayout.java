@@ -16,7 +16,6 @@ public class InterceptLinearLayout extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(final MotionEvent me) {
-        Log.d("test3", "intercept: "+MotionEvent.actionToString(me.getAction()));
         if (me.getAction() == MotionEvent.ACTION_UP) {
             performClick();
             return true;
