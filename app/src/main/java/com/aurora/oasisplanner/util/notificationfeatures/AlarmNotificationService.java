@@ -100,8 +100,8 @@ public class AlarmNotificationService extends Service {
         expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
-        SpannableStringBuilder locText = alarm.getArg(TagType.LOC.name());
-        if (locText == null || locText.toString().equals("null")) {
+        SpannableStringBuilder locText = alarm.getLoc();
+        if (locText == null) {
             expandedView.setViewVisibility(R.id.notif_loc_text, View.INVISIBLE);
             expandedView.setViewVisibility(R.id.notif_loc_icon, View.INVISIBLE);
         } else {

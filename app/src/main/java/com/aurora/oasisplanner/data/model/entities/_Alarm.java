@@ -10,7 +10,9 @@ import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.io.Serializable;
@@ -18,8 +20,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class _Alarm {
@@ -157,5 +162,19 @@ public class _Alarm {
         alarm.args = (Map<String,String>) extras.getSerializable("args");
 
         return alarm;
+    }
+
+    // INFO: GET ARGS:
+    public SpannableStringBuilder getLoc() {
+        SpannableStringBuilder out = getArg(TagType.LOC.name());
+        if (out == null || out.toString().isEmpty() || out.toString().equals("null"))
+            return null;
+        return out;
+    }
+
+    @Ignore
+    public String getTagsString() {
+        SpannableStringBuilder ssb = getArg(TagType.TAGS.name());
+        return ssb==null ? null : ssb.toString();
     }
 }

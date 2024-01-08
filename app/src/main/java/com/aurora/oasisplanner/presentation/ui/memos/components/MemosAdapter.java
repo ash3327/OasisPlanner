@@ -144,8 +144,15 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
             //binding.triangle.getBackground().setColorFilter(, PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(memo.title);
             binding.barDescriptionText.setText(memo.contents);
+            String s = memo.getTagsString();
+
             binding.boxMemoTags.setInputType(InputType.TYPE_NULL);
-            binding.boxMemoTags.setText(memo.getTagsString());  
+            if (s == null)
+                binding.boxMemoTagsScroll.setVisibility(View.GONE);
+            else {
+                binding.boxMemoTagsScroll.setVisibility(View.VISIBLE);
+                binding.boxMemoTags.setText(s);
+            }
 
             return true;
         }

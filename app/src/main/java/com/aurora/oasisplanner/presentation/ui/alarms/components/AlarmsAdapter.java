@@ -2,8 +2,13 @@ package com.aurora.oasisplanner.presentation.ui.alarms.components;
 
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
+import android.text.InputType;
+import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
@@ -215,6 +220,21 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             binding.bar.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(alarm.title);
             binding.barDescriptionText.setText(alarm.getContents(false));
+            SpannableStringBuilder loc = alarm.getLoc();
+            if (loc == null)
+                binding.barLocSubBar.setVisibility(View.GONE);
+            else {
+                binding.barLocSubBar.setVisibility(View.VISIBLE);
+                binding.barLocText.setText(loc);
+            }
+            binding.boxEventTags.setInputType(InputType.TYPE_NULL);
+            String s = alarm.getTagsString();
+            if (s == null)
+                binding.boxEventTagsScroll.setVisibility(View.GONE);
+            else {
+                binding.boxEventTagsScroll.setVisibility(View.VISIBLE);
+                binding.boxEventTags.setText(s);
+            }
 
             return true;
         }
