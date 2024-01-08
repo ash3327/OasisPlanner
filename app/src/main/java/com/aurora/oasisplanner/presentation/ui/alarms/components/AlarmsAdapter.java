@@ -233,7 +233,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                 binding.boxEventTagsScroll.setVisibility(View.GONE);
             else {
                 binding.boxEventTagsScroll.setVisibility(View.VISIBLE);
-                binding.boxEventTags.setText(s);
+                binding.boxEventTags.setTags(s);
             }
 
             return true;

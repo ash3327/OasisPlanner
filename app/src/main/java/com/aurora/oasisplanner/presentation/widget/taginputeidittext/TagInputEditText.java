@@ -274,4 +274,9 @@ public class TagInputEditText extends TextInputEditText {
         stringBuilder.setSpan(new ImageSpan(bitmapDrawable), startIdx, endIdx, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return stringBuilder;
     }
+
+    public void setTags(String text) {
+        lastString = null;
+        setText(text);
+    }
 }

@@ -1,41 +1,22 @@
 package com.aurora.oasisplanner.presentation.ui.memos.components;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.PorterDuff;
 import android.text.InputType;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities._Memo;
-import com.aurora.oasisplanner.data.structure.Image;
-import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Id;
-import com.aurora.oasisplanner.databinding.BoxEventBinding;
 import com.aurora.oasisplanner.databinding.BoxMemoBinding;
-import com.aurora.oasisplanner.databinding.BoxTaskBinding;
-import com.aurora.oasisplanner.databinding.DayLabelBinding;
-import com.aurora.oasisplanner.databinding.HeaderImageBinding;
-import com.aurora.oasisplanner.generated.callback.OnClickListener;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
-import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
-import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
-import com.aurora.oasisplanner.util.styling.Resources;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -151,7 +132,7 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
                 binding.boxMemoTagsScroll.setVisibility(View.GONE);
             else {
                 binding.boxMemoTagsScroll.setVisibility(View.VISIBLE);
-                binding.boxMemoTags.setText(s);
+                binding.boxMemoTags.setTags(s);
             }
 
             return true;
