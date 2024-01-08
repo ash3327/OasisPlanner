@@ -53,6 +53,13 @@ public class AlarmList {
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
         return this;
     }
+    @Ignore
+    public AlarmList setSubalarms() {
+        for (_SubAlarm subAlarm : this.subalarms)
+            subAlarm.visible = false;
+        this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
+        return this;
+    }
 
     @Ignore
     public static AlarmList empty() {

@@ -289,6 +289,12 @@ public class TagEditDialog extends AppCompatDialogFragment {
                     checked.alarmList.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
                 }
                 break;
+            case ALARM:
+                for (AlarmList checked : checkedList) {
+                    checked.alarmList.putArgs(type.name(), ssb);
+                    checked.setSubalarms();
+                }
+                break;
             default:
                 for (AlarmList checked : checkedList)
                     checked.alarmList.putArgs(type.name(), ssb);

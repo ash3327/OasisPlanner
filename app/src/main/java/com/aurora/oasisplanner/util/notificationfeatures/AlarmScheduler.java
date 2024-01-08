@@ -42,7 +42,7 @@ public class AlarmScheduler {
         // still checks if alarm needs triggering even in low power mode.
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                alarm.datetime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
+                alarm.datetime.withSecond(0).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
                 PendingIntent.getBroadcast(
                         context,
                         (int) alarm.id,
