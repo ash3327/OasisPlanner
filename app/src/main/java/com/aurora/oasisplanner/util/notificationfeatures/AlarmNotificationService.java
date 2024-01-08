@@ -101,7 +101,7 @@ public class AlarmNotificationService extends Service {
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
         SpannableStringBuilder locText = alarm.getArg(TagType.LOC.name());
-        if (locText == null) {
+        if (locText == null || locText.toString().equals("null")) {
             expandedView.setViewVisibility(R.id.notif_loc_text, View.INVISIBLE);
             expandedView.setViewVisibility(R.id.notif_loc_icon, View.INVISIBLE);
         } else {
