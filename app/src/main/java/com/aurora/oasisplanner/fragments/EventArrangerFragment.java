@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.aurora.oasisplanner.presentation.ui.memos.components.MemosAdapter;
 import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
 import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
 import com.aurora.oasisplanner.util.styling.Resources;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -42,8 +44,8 @@ public class EventArrangerFragment extends Fragment {
     public static Page currentPage = Page.EVENTARRANGER;
     private AlarmsViewModel alarmsViewModel;
     private ArrangerBinding binding;
-    //private TabMenu tabMenu;
     private String searchEntry;
+    private ViewDataBinding subpageBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class EventArrangerFragment extends Fragment {
     }
 
     private void initNotifSubfragment(ArrangerNotificationsBinding binding) {
+        subpageBinding = binding;
         RecyclerView recyclerView = binding.boxList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -130,6 +133,7 @@ public class EventArrangerFragment extends Fragment {
     }
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
+        subpageBinding = binding;
         MultiDatePicker picker = binding.picker;
         picker.minDateAllowed = LocalDate.now();
         LocalDate date = LocalDate.now();
@@ -220,13 +224,17 @@ public class EventArrangerFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.eventArranger_search:
+                assert currentPage.equals(Page.EVENTARRANGER);
+                ArrangerNotificationsBinding nbinding = (ArrangerNotificationsBinding) subpageBinding;
+                TextInputLayout til = nbinding.tagSearchTil;
+                til.setVisibility(til.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 break;
             case R.id.eventArranger_calendar:
-                goToPage(0);//, tabMenu.getBinding());
+                goToPage(0);
                 requireActivity().invalidateOptionsMenu();
                 break;
             case R.id.eventArranger_listView:
-                goToPage(1);//, tabMenu.getBinding());
+                goToPage(1);
                 requireActivity().invalidateOptionsMenu();
                 break;
         }
