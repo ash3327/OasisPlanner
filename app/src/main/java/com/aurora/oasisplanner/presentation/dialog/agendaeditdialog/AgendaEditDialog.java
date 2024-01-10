@@ -10,12 +10,15 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -29,8 +32,10 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionAdapter;
 
@@ -48,6 +53,27 @@ public class AgendaEditDialog extends Fragment {
 
         assert getArguments() != null;
 
+        setHasOptionsMenu(true);
+        MainActivity activity = (MainActivity) requireActivity();
+        MainActivity.bottomBar.setVisibility(View.GONE);
+        activity.setDrawerLocked(true);
+        activity.mDrawerToggle.setDrawerIndicatorEnabled(false);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
+
+        activity.mDrawerToggle.setToolbarNavigationClickListener((v)-> showCancelConfirmDialog());
+
+        activity.getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        showCancelConfirmDialog();
+                    }
+                });
+
         long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
         activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
         if (agendaId != -1)
@@ -58,25 +84,28 @@ public class AgendaEditDialog extends Fragment {
         PageBinding binding = PageBinding.inflate(getLayoutInflater());
         onBind(binding);
 
-        setHasOptionsMenu(true);
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        //Toolbar toolbar = binding.pageToolbar;
-        //activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //toolbar.setNavigationOnClickListener((v)->Log.d("test3", "NavOnClick"));//*/
-
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        MainActivity.bottomBar.setVisibility(View.VISIBLE);
+        MainActivity activity = MainActivity.main;
+        activity.setDrawerLocked(false);
+        activity.mDrawerToggle.setDrawerIndicatorEnabled(true);
+        activity.refreshToolbar();
+        super.onDestroy();
     }
 
     public void onBind(PageBinding binding) {
         //binding.header.setText(agenda.agenda.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
         binding.img.setImageResource(R.drawable.blur_v1);
-        binding.confirmBtn.setOnClickListener(
+        binding.agendaConfirmEdit.setOnClickListener(
                 (v)->onConfirm()
         );
-        binding.cancelButton.setOnClickListener(
+        /*binding.cancelButton.setOnClickListener(
                 (v)->onCancel()
-        );
+        );//*/
 
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
@@ -151,6 +180,23 @@ public class AgendaEditDialog extends Fragment {
     public void onCancel() {
 
     }
+    public void onDiscard() {
+        navigateUp();
+    }
+    public void showCancelConfirmDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.page_overhead_edit_agenda)
+                .setMessage(R.string.save_change)
+                .setPositiveButton(R.string.page_confirm, (dialog, whichButton) -> {
+                    onConfirm();
+                })
+                .setNegativeButton(R.string.page_cancel, (dialog, which) -> {
+                    onCancel();
+                })
+                .setNeutralButton(R.string.discard, ((dialog, which) -> {
+                    onDiscard();
+                })).show();
+    }
 
     public void saveAgenda() {
         AppModule.retrieveAgendaUseCases()
@@ -161,22 +207,22 @@ public class AgendaEditDialog extends Fragment {
         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
     }
 
+    // INFO: Options Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.edit_agenda_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                new AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.page_overhead_edit_agenda)
-                        .setMessage(R.string.save_change)
-                        .setPositiveButton(R.string.page_confirm, (dialog, whichButton) -> {
-                            onConfirm();
-                        })
-                        .setNegativeButton(R.string.page_cancel, (dialog, which) -> {
-                            onCancel();
-                        })
-                        .setNeutralButton(R.string.discard, ((dialog, which) -> {
-                            navigateUp();
-                        })).show();
+                showCancelConfirmDialog();
+                return true;
+            case R.id.editAgenda_discard:
+                onDiscard();
                 return true;
         }
         return super.onOptionsItemSelected(item);

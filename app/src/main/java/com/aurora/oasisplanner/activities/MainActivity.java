@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -38,7 +39,8 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static MainActivity main;
     public static Page page;
-    private static BottomNavigationView navBar;
+    public static BottomNavigationView navBar;
+    public static ViewGroup bottomBar;
     private static NavigationView navigationView;
     private PowerManager.WakeLock partialWakeLock;
     private MainBinding binding;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private CharSequence mTitle;
     Toolbar toolbar;
-    ActionBarDrawerToggle mDrawerToggle;
+    public ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,15 +107,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         refreshToolbar();
     }
-    void refreshToolbar() {
+    public void refreshToolbar() {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     void setupDrawerToggle() {
-        //mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        //mDrawerToggle.syncState();
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new AppBarConfiguration.Builder(
                         Page.sideNavList
                 ).build());
-        BottomNavigationView bar = findViewById(R.id.nav_view_portrait);
+        BottomNavigationView bar = binding.navViewPortrait;
         bar.setOnItemSelectedListener((menuItem) -> {
             if (selectedTabId == menuItem.getItemId())
                 return false;
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bar.setSelectedItemId(selectedTabId);
 
         navBar = bar;
+        bottomBar = binding.mainBottomBar;
     }
 
     private boolean activelyNavigating = false;
@@ -215,5 +218,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.closeDrawers();
 
         return true;
+    }
+
+    public void setDrawerLocked(boolean toLock) {
+        if (toLock)
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        else
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

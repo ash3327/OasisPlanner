@@ -28,6 +28,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_agenda_dashboard.xml" value="0.1165" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_agenda_notification.xml" value="0.1165" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_agenda_todo.xml" value="0.1165" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_arrow_back.xml" value="0.124" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_arrow_left.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_arrow_leftdouble.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_arrow_right.xml" value="0.1" />
@@ -66,6 +67,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_symb_trash.xml" value="0.105" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_tag.xml" value="0.1505" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_task.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_tick.xml" value="0.124" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_time.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_addnote.xml" value="0.105" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_note.xml" value="0.105" />
@@ -188,7 +190,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/nav_view_item_background.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/notification_collapsed_view.xml" value="0.3333333333333333" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/notification_expanded_view.xml" value="0.3333333333333333" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/page.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/page.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/rectbox_task.xml" value="0.3333333333333333" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/section.xml" value="0.2037037037037037" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/section_doc.xml" value="0.16666666666666666" />
@@ -204,6 +206,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/type_spinner_element.xml" value="0.22" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/context_menu.xml" value="0.10666666666666667" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/editAgenda_menu.xml" value="0.1368106028217187" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/eventArranger_menu.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/event_arranger_calendar_menu.xml" value="0.13333333333333333" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/event_arranger_menu.xml" value="0.16666666666666666" />

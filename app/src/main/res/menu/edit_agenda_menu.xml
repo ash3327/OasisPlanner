@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/editAgenda_discard"
+        android:icon="@drawable/ic_symb_cross"
+        android:title="Discard"
+        app:showAsAction="ifRoom"/>
+
+</menu>
