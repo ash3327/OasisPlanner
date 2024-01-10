@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.fragments;
 
+import static android.view.View.VISIBLE;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 import android.graphics.Color;
@@ -228,6 +229,7 @@ public class EventArrangerFragment extends Fragment {
                 ArrangerNotificationsBinding nbinding = (ArrangerNotificationsBinding) subpageBinding;
                 TextInputLayout til = nbinding.tagSearchTil;
                 til.setVisibility(til.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                item.setIcon(til.getVisibility() == VISIBLE ? R.drawable.ic_search_contract : R.drawable.ic_search);
                 break;
             case R.id.eventArranger_calendar:
                 goToPage(0);
