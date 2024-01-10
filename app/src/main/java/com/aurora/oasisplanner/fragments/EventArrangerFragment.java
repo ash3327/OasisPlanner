@@ -54,6 +54,7 @@ public class EventArrangerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = ArrangerBinding.inflate(inflater, container, false);

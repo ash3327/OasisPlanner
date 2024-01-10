@@ -1,10 +1,15 @@
 package com.aurora.oasisplanner.fragments;
 
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -18,9 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
+import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.MemoFragmentBinding;
 import com.aurora.oasisplanner.presentation.ui.memos.MemoViewModel;
 import com.aurora.oasisplanner.presentation.ui.memos.components.MemosAdapter;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -30,6 +37,13 @@ public class MemosFragment extends Fragment {
     private MemoViewModel memosViewModel;
     private String searchEntry = null;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = MemoFragmentBinding.inflate(inflater, container, false);
@@ -95,5 +109,25 @@ public class MemosFragment extends Fragment {
         MainActivity activity = (MainActivity) requireActivity();
         activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
         activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
+    }
+
+    // INFO: Options Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.memos_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.eventArranger_search:
+                TextInputLayout til = binding.tagSearchTil;
+                til.setVisibility(til.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                item.setIcon(til.getVisibility() == VISIBLE ? R.drawable.ic_search_contract : R.drawable.ic_search);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

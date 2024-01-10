@@ -30,7 +30,9 @@
                 android:hint="@string/memo_search"
                 app:startIconDrawable="@drawable/ic_search"
                 app:endIconDrawable="@drawable/ic_symb_cross"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tag_search_tv"
                     android:layout_width="match_parent"
