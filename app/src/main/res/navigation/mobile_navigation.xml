@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.aurora.oasisplanner.fragments.HomeFragment"
-        android:label=""
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
@@ -45,21 +45,17 @@
 
     <fragment
         android:id="@+id/navigation_analytics"
-        android:name="com.aurora.oasisplanner.fragments.AnalyticsFragment"
+        android:name="com.aurora.oasisplanner.fragments.ProjectsFragment"
         android:label="@string/title_analytics"
-        tools:layout="@layout/fragment_analytics" />
+        tools:layout="@layout/fragment_project" />
 
-    <dialog
-        android:id="@+id/agendaEditDialog"
+    <fragment
+        android:id="@+id/navigation_agendaEditDialog"
         android:name="com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog"
-        android:label="AgendaEditDialog">
+        android:label="@string/page_overhead_edit_agenda">
         <deepLink
             android:id="@+id/deepLink2"
             app:uri="oasis://oasis.com/editalarmdialog" />
-        <argument
-            android:name="agendaId"
-            app:argType="integer"
-            android:defaultValue="-1" />
-    </dialog>
+    </fragment>
 
 </navigation>

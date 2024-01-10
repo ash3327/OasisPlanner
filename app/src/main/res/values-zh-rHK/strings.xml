@@ -89,6 +89,11 @@
         <!-- OnConfirm -->
         <string name="page_no_title_warning">日程的標題不能為空！</string>
 
+    <!-- General Save -->
+    <string name="save_change">您有未保存的更改。您是否希望在退出前保存它們？</string>
+    <string name="delete">刪除</string>
+    <string name="discard">丟棄更改</string>
+
     <!-- Edit _Alarm Dialog -->
     <string name="page_overhead_edit_alarm">修改通知</string>
     <string name="edit_alarm_type">通知類型</string>

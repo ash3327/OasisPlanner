@@ -9,53 +9,29 @@
     <!-- CLICKING AREA -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="?attr/actionBarSize">
         <androidx.cardview.widget.CardView
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bar"
-            app:cardCornerRadius="@dimen/card_doc_radius"
-            android:layout_marginVertical="@dimen/page_vmargin"
-            android:layout_marginHorizontal="@dimen/page_hmargin">
+            android:layout_height="match_parent"
+            android:id="@+id/bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/grey_50"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/page_bottom_height_2"
+                    android:paddingBottom="@dimen/page_bottom_height_3"
 
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/bar_type_icon_size"
-                        android:background="@color/page_header_bg"
-                        android:paddingHorizontal="@dimen/bar_hpadding_top">
-                        <ImageView
-                            android:layout_height="@dimen/bar_type_icon_size"
-                            android:layout_width="@dimen/bar_type_icon_size"
-                            android:src="@drawable/ic_type_agenda"
-                            android:padding="@dimen/page_icon_padding"
-                            app:tint="@color/page_header_textColor" />
-                        <TextView
-                            android:id="@+id/header"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:textSize="15sp"
-                            android:gravity="center"
-                            android:text="@string/page_overhead_new_agenda"
-                            android:textStyle="bold"
-                            android:textColor="@color/page_header_textColor"/>
-                    </LinearLayout>
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/page_banner_height"
@@ -134,7 +110,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginBottom="60dp"
                     android:orientation="horizontal">
                     <LinearLayout
                         android:id="@+id/page_yellow_label"
@@ -184,6 +159,7 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/page_bottom_height"
                     android:gravity="end"

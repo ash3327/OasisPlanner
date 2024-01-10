@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     void setupDrawerToggle() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        mDrawerToggle.syncState();
+        //mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        //mDrawerToggle.syncState();
     }
 
     @Override

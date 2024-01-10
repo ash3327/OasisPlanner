@@ -86,21 +86,21 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void navigateTo(Page page) {
-        binding.navHostFragment.removeAllViews();
+        binding.navHostFragmentProject.removeAllViews();
         switch (page) {
             case PROJECTS:
                 MainActivity.page = Page.PROJECTS;
                 currentPage = Page.PROJECTS;
-                SubfragmentProjectBinding cbinding = SubfragmentProjectBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                SubfragmentProjectBinding cbinding = SubfragmentProjectBinding.inflate(getLayoutInflater(), binding.navHostFragmentProject, false);
                 initProjectSubfragment(cbinding);
-                binding.navHostFragment.addView(cbinding.getRoot());
+                binding.navHostFragmentProject.addView(cbinding.getRoot());
                 break;
             case ANALYTICS:
                 MainActivity.page = Page.ANALYTICS;
                 currentPage = Page.ANALYTICS;
-                SubfragmentAnalyticsBinding nbinding = SubfragmentAnalyticsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                SubfragmentAnalyticsBinding nbinding = SubfragmentAnalyticsBinding.inflate(getLayoutInflater(), binding.navHostFragmentProject, false);
                 initAnalyticsSubfragment(nbinding);
-                binding.navHostFragment.addView(nbinding.getRoot());
+                binding.navHostFragmentProject.addView(nbinding.getRoot());
                 break;
         }
     }

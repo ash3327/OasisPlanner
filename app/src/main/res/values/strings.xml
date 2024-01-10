@@ -88,6 +88,11 @@
         <!-- OnConfirm -->
         <string name="page_no_title_warning">The title of the agenda cannot be empty!</string>
 
+    <!-- General Save -->
+    <string name="save_change">You hve unsaved changes. Would you like to save them before exiting?</string>
+    <string name="delete">Delete</string>
+    <string name="discard">Discard</string>
+
     <!-- Edit _Alarm Dialog -->
     <string name="page_overhead_edit_alarm">Edit Alarms</string>
     <string name="edit_alarm_type">Alarm Type</string>

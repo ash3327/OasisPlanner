@@ -151,21 +151,21 @@ public class EventArrangerFragment extends Fragment {
     }
 
     private void navigateTo(Page page) {
-        binding.navHostFragment.removeAllViews();
+        binding.navHostFragmentNotification.removeAllViews();
         switch (page) {
             case DASHBOARD:
                 MainActivity.page = Page.DASHBOARD;
                 currentPage = Page.DASHBOARD;
-                ArrangerCalendarBinding cbinding = ArrangerCalendarBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                ArrangerCalendarBinding cbinding = ArrangerCalendarBinding.inflate(getLayoutInflater(), binding.navHostFragmentNotification, false);
                 initCalendarSubfragment(cbinding);
-                binding.navHostFragment.addView(cbinding.getRoot());
+                binding.navHostFragmentNotification.addView(cbinding.getRoot());
                 break;
             case EVENTARRANGER:
                 MainActivity.page = Page.EVENTARRANGER;
                 currentPage = Page.EVENTARRANGER;
-                ArrangerNotificationsBinding nbinding = ArrangerNotificationsBinding.inflate(getLayoutInflater(), binding.navHostFragment, false);
+                ArrangerNotificationsBinding nbinding = ArrangerNotificationsBinding.inflate(getLayoutInflater(), binding.navHostFragmentNotification, false);
                 initNotifSubfragment(nbinding);
-                binding.navHostFragment.addView(nbinding.getRoot());
+                binding.navHostFragmentNotification.addView(nbinding.getRoot());
                 break;
         }
     }
