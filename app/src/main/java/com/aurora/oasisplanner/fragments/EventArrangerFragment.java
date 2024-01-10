@@ -7,6 +7,9 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,14 +42,21 @@ public class EventArrangerFragment extends Fragment {
     public static Page currentPage = Page.EVENTARRANGER;
     private AlarmsViewModel alarmsViewModel;
     private ArrangerBinding binding;
-    private TabMenu tabMenu;
+    //private TabMenu tabMenu;
     private String searchEntry;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = ArrangerBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        goToPage(getId(currentPage));
+        /*
         tabMenu = binding.tabSelector;
         tabMenu.createOptionMenu(
                 getId(currentPage),
@@ -54,14 +64,16 @@ public class EventArrangerFragment extends Fragment {
                         new TabMenu.MenuItem(Resources.getString(R.string.tag_dashboard)),
                         new TabMenu.MenuItem(Resources.getString(R.string.tag_notification))
                 ),
-                (i, menu, vbinding)->{
-                    switchPageAnimation(i, vbinding);
-                    switchToPage(i);
-                    uiChangeWhenNavigating();
-                }
-        );
+                (i, menu, vbinding)-> goToPage(i, vbinding)
+        );*/
 
         return root;
+    }
+
+    public void goToPage(int i) {//, TabMenuBinding vbinding) {
+        //switchPageAnimation(i, vbinding);
+        switchToPage(i);
+        uiChangeWhenNavigating();
     }
 
     private void initNotifSubfragment(ArrangerNotificationsBinding binding) {
@@ -114,6 +126,7 @@ public class EventArrangerFragment extends Fragment {
                     }
                 }
         );
+
     }
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
@@ -124,16 +137,16 @@ public class EventArrangerFragment extends Fragment {
         picker.refresh();
     }
 
-    private void switchPageAnimation(int i, TabMenuBinding vbinding) {
+    /*private void switchPageAnimation(int i, TabMenuBinding vbinding) {
         String[] colors = new String[]{
                 "#FF0062EE", "#FFEE9337"
         };
         vbinding.selectContent.getBackground().setColorFilter(Color.parseColor(
                 colors[i]
         ), PorterDuff.Mode.SRC_IN);
-    }
+    }*/
 
-    public void switchToPage(int i) {
+    private void switchToPage(int i) {
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         switch (i) {
@@ -190,5 +203,33 @@ public class EventArrangerFragment extends Fragment {
         MainActivity activity = (MainActivity) requireActivity();
         activity.navBarChangeWhileNavigatingTo(currentPage.getNav(), currentPage.getSideNav());
         activity.uiChangeWhileNavigatingTo(currentPage.getSideNav());
+    }
+
+    // INFO: Options Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        menu.clear();
+        if (currentPage == Page.EVENTARRANGER)
+            inflater.inflate(R.menu.event_arranger_menu, menu);
+        else
+            inflater.inflate(R.menu.event_arranger_calendar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.eventArranger_search:
+                break;
+            case R.id.eventArranger_calendar:
+                goToPage(0);//, tabMenu.getBinding());
+                requireActivity().invalidateOptionsMenu();
+                break;
+            case R.id.eventArranger_listView:
+                goToPage(1);//, tabMenu.getBinding());
+                requireActivity().invalidateOptionsMenu();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
