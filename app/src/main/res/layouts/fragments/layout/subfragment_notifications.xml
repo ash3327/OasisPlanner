@@ -48,6 +48,69 @@
                 tools:listitem="@layout/_fragment_notification_displist"
                 tools:itemCount="5"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/notif_frag_change_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif_frag_prevMo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="@color/white"
+                android:shadowRadius="10"
+                android:layout_margin="15dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bottomnavcolor"
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="@color/navtext"
+                    android:padding="10dp"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif_frag_showToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="@color/white"
+                android:shadowRadius="10"
+                android:layout_margin="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bottomnavcolor"
+                    android:text="@string/show_today"
+                    android:textColor="@color/navtext"
+                    android:textStyle="bold"
+                    android:letterSpacing=".15"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="10dp"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif_frag_nextMo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="@color/white"
+                android:shadowRadius="10"
+                android:layout_margin="15dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bottomnavcolor"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/navtext"
+                    android:padding="10dp"/>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_home"

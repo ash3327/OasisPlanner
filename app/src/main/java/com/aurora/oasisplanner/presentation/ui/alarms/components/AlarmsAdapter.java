@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
@@ -30,6 +31,8 @@ import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +131,21 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     @Override
     public void onBindViewHolder(@NonNull AlarmsHolder holder, int position) {
         holder.bind(position, alarms.get(position));
+
+        if (position == getItemCount()-1)
+            holder.itemView.setPadding(
+                    holder.itemView.getPaddingLeft(),
+                    holder.itemView.getPaddingTop(),
+                    holder.itemView.getPaddingRight(),
+                    holder.itemView.getPaddingTop()
+                            +(int)(50*holder.itemView.getContext().getResources().getDisplayMetrics().density));
+        else
+            holder.itemView.setPadding(
+                    holder.itemView.getPaddingLeft(),
+                    holder.itemView.getPaddingTop(),
+                    holder.itemView.getPaddingRight(),
+                    holder.itemView.getPaddingTop());
+
     }
 
     @Override
@@ -166,6 +184,62 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     private OnChangeListener onChangeListener;
     public void setOnChangeListener(OnChangeListener onChangeListener) {
         this.onChangeListener = onChangeListener;
+    }
+
+    public LocalDate getLocalDateOfItem(Object item) {
+        LocalDate ldt = LocalDate.now();
+        if (item instanceof _Alarm)
+            ldt = ((_Alarm) item).datetime.toLocalDate();
+        else if (item instanceof MonthData)
+            ldt = ((MonthData) item).month;
+        else if (item instanceof DayData)
+            ldt = ((DayData) item).day;
+        return ldt;
+    }
+
+    public int getMonthOfItem(Object item) {
+        LocalDate ldt = getLocalDateOfItem(item);
+        return ldt.getMonthValue() + ldt.getYear() * 12;
+    }
+
+    /** output format: year * 12 + month */
+    public int getCurrentMonth(RecyclerView recyclerView) {
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        assert lm != null;
+        int firstVisiblePos = lm.findFirstVisibleItemPosition();
+        Object item = alarms.get(firstVisiblePos);
+        return getMonthOfItem(item);
+    }
+
+    /** input format: year * 12 + month */
+    public int firstItemWithMonth(int mo) {
+        int newPos = -1;
+        for (int i = 0 ; i < alarms.size() ; i++) {
+            if (getMonthOfItem(alarms.get(i)) >= mo) {
+                newPos = i;
+                break;
+            }
+        }
+        return newPos;
+    }
+
+    public void scrollToItem(int item, LinearLayoutManager llm) {
+        if (item == -1)
+            item = alarms.size()-1;
+        llm.scrollToPositionWithOffset(item, 0);
+    }
+
+    public void scrollToPrevMonth(RecyclerView recyclerView) {
+        int mo = getCurrentMonth(recyclerView);
+        LinearLayoutManager llm = (LinearLayoutManager)recyclerView.getLayoutManager();
+        assert llm != null;
+        scrollToItem(firstItemWithMonth(mo-1), llm);
+    }
+    public void scrollToNextMonth(RecyclerView recyclerView) {
+        int mo = getCurrentMonth(recyclerView);
+        LinearLayoutManager llm = (LinearLayoutManager)recyclerView.getLayoutManager();
+        assert llm != null;
+        scrollToItem(firstItemWithMonth(mo+1), llm);
     }
 
     static class AlarmsHolder extends RecyclerView.ViewHolder {

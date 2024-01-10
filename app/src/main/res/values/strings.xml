@@ -142,4 +142,7 @@
         <item>Months Before</item>
     </string-array>
 
+    <!-- FUNCTIONAL BUTTONS -->
+    <string name="show_today">Show Today</string>
+
 </resources>

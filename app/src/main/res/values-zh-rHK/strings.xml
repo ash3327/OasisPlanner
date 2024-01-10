@@ -144,4 +144,7 @@
         <item>個月前</item>
     </string-array>
 
+    <!-- FUNCTIONAL BUTTONS -->
+    <string name="show_today">顯示今天</string>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.fragments;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -89,6 +91,27 @@ public class EventArrangerFragment extends Fragment {
                 (v)->{
                     binding.tagSearchTv.setText("");
                     refreshSearchResults(adapter, binding);
+                }
+        );
+        binding.notifFragShowToday.setOnClickListener(
+                (v)-> binding.boxList.scrollToPosition(0)
+        );
+        binding.notifFragPrevMo.setOnClickListener(
+                (v)-> adapter.scrollToPrevMonth(binding.boxList)
+        );
+        binding.notifFragNextMo.setOnClickListener(
+                (v)-> adapter.scrollToNextMonth(binding.boxList)
+        );
+        binding.boxList.addOnScrollListener(
+                new RecyclerView.OnScrollListener(){
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState){
+                        super.onScrollStateChanged(recyclerView, newState);
+
+                        binding.notifFragChangeScroll.setAlpha(newState != SCROLL_STATE_IDLE ? 1.f : .75f);
+                        binding.notifFragChangeScroll.setVisibility(
+                                recyclerView.computeVerticalScrollOffset() != 0 ?
+                                        View.VISIBLE : View.GONE);
+                    }
                 }
         );
     }
