@@ -60,22 +60,11 @@ public class EventArrangerFragment extends Fragment {
         binding = ArrangerBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         goToPage(getId(currentPage));
-        /*
-        tabMenu = binding.tabSelector;
-        tabMenu.createOptionMenu(
-                getId(currentPage),
-                Arrays.asList(
-                        new TabMenu.MenuItem(Resources.getString(R.string.tag_dashboard)),
-                        new TabMenu.MenuItem(Resources.getString(R.string.tag_notification))
-                ),
-                (i, menu, vbinding)-> goToPage(i, vbinding)
-        );*/
 
         return root;
     }
 
-    public void goToPage(int i) {//, TabMenuBinding vbinding) {
-        //switchPageAnimation(i, vbinding);
+    public void goToPage(int i) {
         switchToPage(i);
         uiChangeWhenNavigating();
     }
