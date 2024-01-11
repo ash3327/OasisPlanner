@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
@@ -127,11 +128,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             types.add(ActivityType.Type.gap);
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
-            if (obj instanceof Activity
-                    && ((Activity) obj).alarmList.size() > 0
-                    && ((Activity) obj).alarmList.get(0).alarmList.activityId == activityLId) {
-                activityPId = i;
+            if (obj instanceof Activity) {
+                List<AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists((Activity) obj);
+                if (alarmLists.size() > 0
+                        && alarmLists.get(0).alarmList.activityId == activityLId) {
+                    activityPId = i;
+                }
             }
+
             i++;
         }
         list.add(new GapData(i));
@@ -165,14 +169,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         switch (type) {
             case activity:
                 Activity gp = Activity.empty();
-                agenda.agenda.types.add(i, new ActivityType(type, agenda.activities.size()));
-                agenda.activities.add(gp);
+                List<Activity> activities = AppModule.retrieveAgendaUseCases().getActivities(agenda);
+                agenda.agenda.types.add(i, new ActivityType(type, activities.size()));
+                activities.add(gp);
                 break;
-            case doc:
+            /*case doc:
                 _Doc doc = _Doc.empty();
                 agenda.agenda.types.add(i, new ActivityType(type, agenda.docs.size()));
                 agenda.docs.add(doc);
-                break;
+                break;*/
         }
         toAddSection.setId(0);
         agenda.update();
@@ -253,7 +258,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);
             AlarmList gpl_alarmL = null;
-            if (gp.alarmList.size() > 0) {
+            List<AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists(gp);
+            if (alarmLists.size() > 0) {
                 Object[] gpl = gp.getFirstAlarmList();
                 gpl_alarmL = (AlarmList)gpl[0];
                 LocalDateTime gpl_dt = (LocalDateTime)gpl[1];

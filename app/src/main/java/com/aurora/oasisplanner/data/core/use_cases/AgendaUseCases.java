@@ -8,9 +8,13 @@ import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
+
+import java.util.List;
 
 public class AgendaUseCases {
     private AgendaRepository repository;
@@ -46,5 +50,13 @@ public class AgendaUseCases {
 
     public void put(Agenda agenda) {
         repository.insert(agenda);
+    }
+
+    public List<Activity> getActivities(Agenda agenda) {
+        return agenda.activities;
+    }
+
+    public List<AlarmList> getAlarmLists(Activity activity) {
+        return activity.alarmLists;
     }
 }

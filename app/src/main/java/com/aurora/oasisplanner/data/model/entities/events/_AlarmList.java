@@ -7,6 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.model.entities.__Entity;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
@@ -90,6 +91,12 @@ public class _AlarmList extends __Entity {
     public void removeKey(String key) {
         if (args == null) args = new HashMap<>();
         args.remove(key);
+    }
+
+    @Ignore
+    public _AlarmList setI(int i) {
+        this.i = i;
+        return this;
     }
 
     @Ignore

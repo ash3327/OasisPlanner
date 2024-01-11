@@ -178,7 +178,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         if (i == -1) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
-        if (obj instanceof AlarmList && type.type == ActivityType.Type.activity && activity.alarmList.get(type.i).equals(obj))
+        if (obj instanceof AlarmList && type.type == ActivityType.Type.activity
+                && AppModule.retrieveAgendaUseCases().getAlarmLists(activity).get(type.i).equals(obj))
             ((AlarmList) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.doc && activity.docs.get(type.i).equals(obj))
             ((_Doc) obj).visible = false;
@@ -197,8 +198,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         switch (type) {
             case activity:
                 AlarmList gp = AlarmList.empty();
-                activity.activity.types.add(i, new ActivityType(type, activity.alarmList.size()));
-                activity.alarmList.add(gp);
+                activity.activity.types.add(i, new ActivityType(type,
+                        AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));
+                AppModule.retrieveAgendaUseCases().getAlarmLists(activity).add(gp);
                 break;
             case doc:
                 _Doc doc = _Doc.empty();
