@@ -21,6 +21,7 @@ import com.aurora.oasisplanner.data.model.entities._Memo;
 import com.aurora.oasisplanner.data.model.entities._SelectedDates;
 import com.aurora.oasisplanner.data.model.entities._SubAlarm;
 import com.aurora.oasisplanner.data.model.entities._SubPeriod;
+import com.aurora.oasisplanner.data.model.entities._Tag;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -42,9 +43,9 @@ import java.time.LocalTime;
 @Database(
         entities = {
                 _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
-                _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class
+                _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class, _Tag.class
         },
-        version = 22,
+        version = 23,
         autoMigrations = {
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=8, to=11, spec=AppDatabase.Migration8to9.class),
@@ -53,7 +54,8 @@ import java.time.LocalTime;
                 @AutoMigration(from=18, to=19),
                 @AutoMigration(from=19, to=20),
                 @AutoMigration(from=20, to=21),
-                @AutoMigration(from=21, to=22, spec=AppDatabase.Migration21to22.class)
+                @AutoMigration(from=21, to=22, spec=AppDatabase.Migration21to22.class),
+                @AutoMigration(from=22, to=23),
         }
 )
 @TypeConverters({Converters.class})
