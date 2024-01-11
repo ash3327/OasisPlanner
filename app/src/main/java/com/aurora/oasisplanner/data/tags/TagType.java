@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum TagType {
-    ALARMTYPE, IMPORTANCE, LOC, ALARM, TAGS;
+    ALARMTYPE, IMPORTANCE, LOC, ALARM, TAGS, DESCR;
 
     /** [DRAWABLE ICON, STRING BELOW, COLOR PRIMARY, COLOR SECONDARY] */
     public static int[][] typeIds = {
@@ -18,6 +18,7 @@ public enum TagType {
             {R.drawable.ic_location,    R.string.tag_loc, R.drawable.ic_location},
             {R.drawable.ic_agenda_notification,    R.string.tag_subalarm, R.drawable.menuic_notification},
             {R.drawable.ic_tag,    R.string.tag_tags, R.drawable.ic_tag},
+            {R.drawable.menuic_memos,    R.string.tag_descr, R.drawable.menuic_memos},
             };
 
     public static boolean contains(String key) {

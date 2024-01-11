@@ -144,8 +144,9 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagChoiceBox.setVisibility(View.GONE);
         vbinding.tagTagsBox.setVisibility(View.GONE);
         vbinding.deleteButton.setVisibility(View.VISIBLE);
-        switch(type) {
+        switch (type) {
             case LOC:
+            case DESCR:
                 vbinding.tagContentBox.setVisibility(View.VISIBLE);
                 break;
             case ALARM:
@@ -160,7 +161,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 vbinding.tagTagsBox.setVisibility(View.VISIBLE);
                 break;
         }
-        switch(type) {
+        switch (type) {
             case IMPORTANCE:
                 AutoCompleteTextView spinnerImportance = vbinding.tagChoiceTv;
                 TextInputLayout importanceTil = vbinding.tagChoiceTil;
@@ -239,6 +240,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
         SpannableStringBuilder ssb = null;
         switch (type) {
             case LOC:
+            case DESCR:
                 TextInputEditText tiet = vbinding.tagContentTv;
                 ssb = new SpannableStringBuilder(tiet.getText());
                 ssb.clearSpans();

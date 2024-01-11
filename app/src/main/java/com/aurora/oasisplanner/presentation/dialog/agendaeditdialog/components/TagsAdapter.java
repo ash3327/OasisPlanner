@@ -75,6 +75,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         switch (TagType.values()[viewType]) {
             case LOC:
+            case DESCR:
                 binding = ItemTagContentBinding.inflate(li, parent, false);
                 break;
             case ALARM:
@@ -120,6 +121,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
         public boolean bind(int i, TagType key, String val) {
             switch (key) {
                 case LOC:
+                case DESCR:
                     return bindTv(i, key, val);
                 case ALARM:
                     return bindNotif(i, key, val);
