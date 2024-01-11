@@ -4,19 +4,19 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.datasource.daos.MemoDao;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.util.Converters;
 
 import java.util.List;
 
 public class MemoRepository {
-    private AgendaDao agendaDao;
+    private MemoDao memoDao;
     private LiveData<List<_Memo>> memos;
 
-    public MemoRepository(AgendaDao agendaDao) {
-        this.agendaDao = agendaDao;
-        this.memos = agendaDao.getMemos();
+    public MemoRepository(MemoDao memoDao) {
+        this.memoDao = memoDao;
+        this.memos = memoDao.getMemos();
     }
 
     private boolean firstTime = true, firstTimeSubMemo = true;
@@ -50,27 +50,27 @@ public class MemoRepository {
     }**/
 
     public void insert(_Memo Memo) {
-        new InsertMemoAsyncTask(agendaDao).execute(Memo);
+        new InsertMemoAsyncTask(memoDao).execute(Memo);
     }
 
     public _Memo getMemoFromId(long id) {
         try {
-            return new MemoRepository.GetMemoAsyncTask(agendaDao).execute(id).get();
+            return new MemoRepository.GetMemoAsyncTask(memoDao).execute(id).get();
         } catch (Exception e) {
             throw new RuntimeException("Memo Not Found Exception: "+id);
         }
     }
 
     public void update(_Memo Memo) {
-        new UpdateMemoAsyncTask(agendaDao).execute(Memo);
+        new UpdateMemoAsyncTask(memoDao).execute(Memo);
     }
 
     public void delete(_Memo Memo) {
-        new DeleteMemoAsyncTask(agendaDao).execute(Memo);
+        new DeleteMemoAsyncTask(memoDao).execute(Memo);
     }
 
     public void deleteAllMemos() {
-        new DeleteAllMemosAsyncTask(agendaDao).execute();
+        new DeleteAllMemosAsyncTask(memoDao).execute();
     }
 
     public LiveData<List<_Memo>> getMemos() {
@@ -78,74 +78,74 @@ public class MemoRepository {
     }
 
     public LiveData<List<_Memo>> requestMemos(String searchEntry) {
-        return memos = agendaDao.getMemos(searchEntry, new Converters().spannableToString(searchEntry));
+        return memos = memoDao.getMemos(searchEntry, new Converters().spannableToString(searchEntry));
     }
 
     public LiveData<List<_Memo>> requestMemos() {
-        return memos = agendaDao.getMemos();
+        return memos = memoDao.getMemos();
     }
 
     private static class InsertMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao agendaDao;
+        private MemoDao memoDao;
 
-        private InsertMemoAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private InsertMemoAsyncTask(MemoDao memoDao) {
+            this.memoDao = memoDao;
         }
 
         @Override
         protected Void doInBackground(_Memo... memos) {
-            agendaDao.insert(memos[0]);
+            memoDao.insert(memos[0]);
             return null;
         }
     }
     private static class UpdateMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao agendaDao;
+        private MemoDao memoDao;
 
-        private UpdateMemoAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private UpdateMemoAsyncTask(MemoDao memoDao) {
+            this.memoDao = memoDao;
         }
 
         @Override
         protected Void doInBackground(_Memo... memos) {
-            agendaDao.insert(memos[0]);
+            memoDao.insert(memos[0]);
             return null;
         }
     }
     private static class GetMemoAsyncTask extends AsyncTask<Long, Void, _Memo> {
-        private AgendaDao agendaDao;
+        private MemoDao memoDao;
 
-        private GetMemoAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private GetMemoAsyncTask(MemoDao memoDao) {
+            this.memoDao = memoDao;
         }
 
         @Override
         protected _Memo doInBackground(Long... MemoIds) {
-            return agendaDao.getMemoById(MemoIds[0]);
+            return memoDao.getMemoById(MemoIds[0]);
         }
     }
     private static class DeleteMemoAsyncTask extends AsyncTask<_Memo, Void, Void> {
-        private AgendaDao agendaDao;
+        private MemoDao memoDao;
 
-        private DeleteMemoAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private DeleteMemoAsyncTask(MemoDao memoDao) {
+            this.memoDao = memoDao;
         }
 
         @Override
         protected Void doInBackground(_Memo... memos) {
-            agendaDao.delete(memos[0]);
+            memoDao.delete(memos[0]);
             return null;
         }
     }
     private static class DeleteAllMemosAsyncTask extends AsyncTask<Void, Void, Void> {
-        private AgendaDao agendaDao;
+        private MemoDao memoDao;
 
-        private DeleteAllMemosAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private DeleteAllMemosAsyncTask(MemoDao memoDao) {
+            this.memoDao = memoDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            agendaDao.deleteAllMemos();
+            memoDao.deleteAllMemos();
             return null;
         }
     }

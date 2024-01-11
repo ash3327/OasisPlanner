@@ -24,60 +24,7 @@ import java.util.List;
 @Dao
 public interface AgendaDao {
 
-    // INFO: SUBALARMS
-
-    @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
-    LiveData<List<_SubAlarm>> getSubAlarmsAfter(LocalDateTime fromDate);
-
-    @Query("SELECT * FROM _SubAlarm WHERE id = :id")
-    _Alarm getSubAlarmById(int id);
-
-    @Query("SELECT * FROM _SubAlarm")
-    List<_SubAlarm> getSubAlarms();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_SubAlarm alarm);
-
-    @Delete
-    void delete(_SubAlarm alarm);
-
-    @Query("DELETE FROM _SubAlarm")
-    void deleteAllSubAlarms();
-
-    // INFO: ALARMS
-
-    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
-    LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate);
-
-    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
-            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
-            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
-            "ORDER BY datetime ASC")
-    LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
-
-    @Query("SELECT * FROM _Alarm WHERE id = :id")
-    _Alarm getAlarmById(int id);
-
-    @Query("SELECT * FROM _Alarm")
-    List<_Alarm> getAlarms();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Alarm alarm);
-
-    @Delete
-    void delete(_Alarm alarm);
-
-    @Query("DELETE FROM _Alarm")
-    void deleteAllAlarms();
-
     // INFO: AGENDAS
-
-    // INFO: GENERAL __ENTITY
-
-
-    // INFO: GENERAL _ENTITY
-
-    // INFO: OLD AGENDAS
 
     @Transaction
     @Query("SELECT * FROM _agenda")
@@ -107,51 +54,4 @@ public interface AgendaDao {
     void deleteAllGroups();
     @Query("DELETE FROM _alarmlist")
     void deleteAllAlarmLists();
-
-    // INFO: Multimedia Elements
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Doc doc);
-    @Delete
-    void delete(_Doc doc);
-    
-    // INFO: Memos
-
-    @Query("SELECT * FROM _Memo WHERE id = :id")
-    _Memo getMemoById(long id);
-
-    @Query("SELECT * FROM _Memo")
-    LiveData<List<_Memo>> getMemos();
-
-    @Query("SELECT * FROM _Memo WHERE tags LIKE '%' || :searchEntry || '%' " +
-            "OR title LIKE '%' || :htmlSearchEntry || '%' OR contents LIKE '%' || :htmlSearchEntry || '%'")
-    LiveData<List<_Memo>> getMemos(String searchEntry, String htmlSearchEntry);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Memo Memo);
-
-    @Delete
-    void delete(_Memo Memo);
-
-    @Query("DELETE FROM _Memo")
-    void deleteAllMemos();
-
-    // INFO: Tags
-    @Query("SELECT * FROM _Tag WHERE name = :name")
-    _Tag getTagByName(String name);
-
-    @Query("SELECT * FROM _Tag")
-    LiveData<List<_Tag>> getTags();
-
-    @Query("SELECT * FROM _Tag WHERE name LIKE '%' || :searchEntry || '%' ")
-    LiveData<List<_Tag>> getTags(String searchEntry);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Tag tag);
-
-    @Delete
-    void delete(_Tag tag);
-
-    @Query("DELETE FROM _Tag")
-    void deleteAllTags();
 }

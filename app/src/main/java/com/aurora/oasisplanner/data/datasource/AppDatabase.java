@@ -16,6 +16,10 @@ import androidx.room.migration.AutoMigrationSpec;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
+import com.aurora.oasisplanner.data.datasource.daos.MemoDao;
+import com.aurora.oasisplanner.data.datasource.daos.MultimediaDao;
+import com.aurora.oasisplanner.data.datasource.daos.TagDao;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.model.entities._others._SelectedDates;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
@@ -54,6 +58,10 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
     public abstract AgendaDao agendaDao();
+    public abstract AlarmDao alarmDao();
+    public abstract MemoDao memoDao();
+    public abstract TagDao tagDao();
+    public abstract MultimediaDao multimediaDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {

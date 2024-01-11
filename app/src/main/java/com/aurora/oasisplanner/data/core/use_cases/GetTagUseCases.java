@@ -5,12 +5,12 @@ import android.graphics.Color;
 import androidx.annotation.ColorInt;
 
 import com.aurora.oasisplanner.data.model.entities.util._Tag;
-import com.aurora.oasisplanner.data.repository.GeneralRepository;
+import com.aurora.oasisplanner.data.repository.TagRepository;
 
 public class GetTagUseCases {
-    private GeneralRepository repository;
+    private TagRepository repository;
 
-    public GetTagUseCases(GeneralRepository repository) {
+    public GetTagUseCases(TagRepository repository) {
         this.repository = repository;
     }
 

@@ -9,17 +9,9 @@ import android.os.Looper;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.datasource.AppDatabase;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
-import com.aurora.oasisplanner.data.repository.AlarmRepository;
-import com.aurora.oasisplanner.data.repository.GeneralRepository;
-import com.aurora.oasisplanner.data.repository.MemoRepository;
-import com.aurora.oasisplanner.data.tags.Page;
-import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
 

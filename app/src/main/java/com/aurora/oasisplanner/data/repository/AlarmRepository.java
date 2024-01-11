@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.util.Converters;
@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class AlarmRepository {
-    private AgendaDao agendaDao;
+    private AlarmDao alarmDao;
     private LiveData<List<_Alarm>> alarms;
     private LiveData<List<_SubAlarm>> subalarms;
 
-    public AlarmRepository(AgendaDao agendaDao) {
-        this.agendaDao = agendaDao;
-        this.alarms = agendaDao.getAlarmsAfter(LocalDateTime.now());
-        this.subalarms = agendaDao.getSubAlarmsAfter(LocalDateTime.now());
+    public AlarmRepository(AlarmDao alarmDao) {
+        this.alarmDao = alarmDao;
+        this.alarms = alarmDao.getAlarmsAfter(LocalDateTime.now());
+        this.subalarms = alarmDao.getSubAlarmsAfter(LocalDateTime.now());
     }
 
     private boolean firstTime = true, firstTimeSubAlarm = true;
@@ -56,19 +56,19 @@ public class AlarmRepository {
     }
 
     public void insert(_Alarm alarm) {
-        new InsertAlarmAsyncTask(agendaDao).execute(alarm);
+        new InsertAlarmAsyncTask(alarmDao).execute(alarm);
     }
 
     public void update(_Alarm alarm) {
-        new UpdateAlarmAsyncTask(agendaDao).execute(alarm);
+        new UpdateAlarmAsyncTask(alarmDao).execute(alarm);
     }
 
     public void delete(_Alarm alarm) {
-        new DeleteAlarmAsyncTask(agendaDao).execute(alarm);
+        new DeleteAlarmAsyncTask(alarmDao).execute(alarm);
     }
 
     public void deleteAllAlarms() {
-        new DeleteAllAlarmsAsyncTask(agendaDao).execute();
+        new DeleteAllAlarmsAsyncTask(alarmDao).execute();
     }
 
     public LiveData<List<_Alarm>> getAlarms() {
@@ -76,58 +76,58 @@ public class AlarmRepository {
     }
 
     public LiveData<List<_Alarm>> requestAlarms(String searchEntry) {
-        return alarms = agendaDao.getAlarmsAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
+        return alarms = alarmDao.getAlarmsAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
     }
 
     private static class InsertAlarmAsyncTask extends AsyncTask<_Alarm, Void, Void> {
-        private AgendaDao agendaDao;
+        private AlarmDao alarmDao;
 
-        private InsertAlarmAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private InsertAlarmAsyncTask(AlarmDao alarmDao) {
+            this.alarmDao = alarmDao;
         }
 
         @Override
         protected Void doInBackground(_Alarm... alarms) {
-            agendaDao.insert(alarms[0]);
+            alarmDao.insert(alarms[0]);
             return null;
         }
     }
     private static class UpdateAlarmAsyncTask extends AsyncTask<_Alarm, Void, Void> {
-        private AgendaDao agendaDao;
+        private AlarmDao alarmDao;
 
-        private UpdateAlarmAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private UpdateAlarmAsyncTask(AlarmDao alarmDao) {
+            this.alarmDao = alarmDao;
         }
 
         @Override
         protected Void doInBackground(_Alarm... alarms) {
-            agendaDao.insert(alarms[0]);
+            alarmDao.insert(alarms[0]);
             return null;
         }
     }
     private static class DeleteAlarmAsyncTask extends AsyncTask<_Alarm, Void, Void> {
-        private AgendaDao agendaDao;
+        private AlarmDao alarmDao;
 
-        private DeleteAlarmAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private DeleteAlarmAsyncTask(AlarmDao alarmDao) {
+            this.alarmDao = alarmDao;
         }
 
         @Override
         protected Void doInBackground(_Alarm... alarms) {
-            agendaDao.delete(alarms[0]);
+            alarmDao.delete(alarms[0]);
             return null;
         }
     }
     private static class DeleteAllAlarmsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private AgendaDao agendaDao;
+        private AlarmDao alarmDao;
 
-        private DeleteAllAlarmsAsyncTask(AgendaDao agendaDao) {
-            this.agendaDao = agendaDao;
+        private DeleteAllAlarmsAsyncTask(AlarmDao alarmDao) {
+            this.alarmDao = alarmDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            agendaDao.deleteAllAlarms();
+            alarmDao.deleteAllAlarms();
             return null;
         }
     }

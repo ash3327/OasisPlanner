@@ -12,7 +12,8 @@ import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
-import com.aurora.oasisplanner.data.repository.GeneralRepository;
+import com.aurora.oasisplanner.data.repository.MultimediaRepository;
+import com.aurora.oasisplanner.data.repository.TagRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
@@ -36,16 +37,19 @@ public class AppModule {
     }
 
     public static AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler) {
-        return new AgendaRepository(db.agendaDao(), alarmScheduler);
+        return new AgendaRepository(db.agendaDao(), db.alarmDao(), alarmScheduler);
     }
     public static AlarmRepository provideAlarmRepository(AppDatabase db) {
-        return new AlarmRepository(db.agendaDao());
+        return new AlarmRepository(db.alarmDao());
     }
     public static MemoRepository provideMemoRepository(AppDatabase db) {
-        return new MemoRepository(db.agendaDao());
+        return new MemoRepository(db.memoDao());
     }
-    public static GeneralRepository provideGeneralRepository(AppDatabase db) {
-        return new GeneralRepository(db.agendaDao());
+    public static TagRepository provideGeneralRepository(AppDatabase db) {
+        return new TagRepository(db.tagDao());
+    }
+    public static MultimediaRepository provideMultimediaRepository(AppDatabase db, Executor executor) {
+        return new MultimediaRepository(db.multimediaDao(), executor);
     }
 
     public static AgendaUseCases provideAgendaUseCases(AgendaRepository repository) {
@@ -81,7 +85,7 @@ public class AppModule {
         return memoUseCases;
     }
 
-    public static GetTagUseCases provideGetTagUseCases(GeneralRepository repository) {
+    public static GetTagUseCases provideGetTagUseCases(TagRepository repository) {
         if (getTagUseCases != null) return getTagUseCases;
         return getTagUseCases = new GetTagUseCases(repository);
     }
@@ -103,6 +107,7 @@ public class AppModule {
         provideEditAlarmListUseCases();
         provideMemoUseCases(provideMemoRepository(db));
         provideGetTagUseCases(provideGeneralRepository(db));
+        provideMultimediaRepository(db, executor);
 
         // INFO: setup alarms
         AlarmRepository alarmRepository = provideAlarmRepository(db);
