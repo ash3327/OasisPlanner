@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Entity
-public class _Alarm {
+public class _Alarm extends __Entity {
     @PrimaryKey(autoGenerate = true)
     public long id;
     public String title;

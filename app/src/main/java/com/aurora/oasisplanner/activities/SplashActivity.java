@@ -19,6 +19,7 @@ import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -33,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
 
         latch = new CountDownLatch(3);
 
-        setupDatabase();
+        AppModule.setupDatabase(getApplication(), this, latch);
 
         new Thread(()->{
             try {
@@ -68,20 +69,5 @@ public class SplashActivity extends AppCompatActivity {
         return new Intent(this, MainActivity.class);
     }
 
-    /** setting up the database */
-    private void setupDatabase() {
-        // INFO: setup database and usecases
-        AppDatabase db = AppModule.provideAppDatabase(getApplication());
-        AlarmScheduler alarmScheduler = new AlarmScheduler(getApplicationContext());
-        AgendaRepository agendaRepository = AppModule.provideAgendaRepository(db, alarmScheduler);
-        MemoRepository memoRepository = AppModule.provideMemoRepository(db);
-        GeneralRepository generalRepository = AppModule.provideGeneralRepository(db);
-        AppModule.provideAgendaUseCases(agendaRepository);
-        AppModule.provideMemoUseCases(memoRepository);
-        AppModule.provideGeneralUseCases(generalRepository);
 
-        // INFO: setup alarms
-        AlarmRepository alarmRepository = AppModule.provideAlarmRepository(db);
-        alarmRepository.schedule(alarmScheduler, this, latch);
-    }
 }

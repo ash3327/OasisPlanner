@@ -4,9 +4,13 @@ import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 
 import com.aurora.oasisplanner.data.datasource.AgendaDao;
+import com.aurora.oasisplanner.data.model.Entity;
+import com.aurora.oasisplanner.data.model.entities._Activity;
+import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
 import com.aurora.oasisplanner.data.model.entities._Doc;
 import com.aurora.oasisplanner.data.model.entities._SubAlarm;
+import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.Activity;
@@ -270,4 +274,5 @@ public class AgendaRepository {
         }
         agendaDao.deleteAllAlarms();
     }
+
 }

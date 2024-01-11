@@ -3,7 +3,6 @@ package com.aurora.oasisplanner.data.model.entities;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 
-import androidx.annotation.DrawableRes;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity()
-public class _Activity {
+public class _Activity extends __Entity {
     public enum Type {
         event, task;
 
@@ -46,6 +45,9 @@ public class _Activity {
     public Map<String,String> args = new HashMap<>();
     public int i = -1;
 
+    @Ignore
+    public boolean visible = true;
+
     public _Activity(){}
 
     @Ignore
@@ -64,4 +66,10 @@ public class _Activity {
             importance = Importance.regular;
         return importance;
     }//*/
+
+    @Ignore
+    public _Activity setI(int i) {
+        this.i = i;
+        return this;
+    }
 }

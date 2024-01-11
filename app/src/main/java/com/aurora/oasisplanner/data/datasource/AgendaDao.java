@@ -72,6 +72,13 @@ public interface AgendaDao {
 
     // INFO: AGENDAS
 
+    // INFO: GENERAL __ENTITY
+
+
+    // INFO: GENERAL _ENTITY
+
+    // INFO: OLD AGENDAS
+
     @Transaction
     @Query("SELECT * FROM _agenda")
     LiveData<List<Agenda>> getAgendas();

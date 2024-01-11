@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AlarmList {
+public class AlarmList extends _Entity {
     @Embedded
     public _AlarmList alarmList;
 

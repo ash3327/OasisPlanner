@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class Activity {
+public class Activity extends _Entity {
     @Embedded
     public _Activity activity;
 
@@ -46,21 +46,6 @@ public class Activity {
     @Ignore
     public Activity(Object obj) {
         this.activity = new _Activity();
-    }
-
-    @Ignore
-    public Activity putItems(Object... objs) {
-        for (Object obj : objs) {
-            if (obj instanceof AlarmList) {
-                activity.types.add(new ActivityType(ActivityType.Type.activity, alarmList.size()));
-                alarmList.add((AlarmList) obj);
-            }
-            if (obj instanceof _Doc) {
-                activity.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
-                docs.add((_Doc) obj);
-            }
-        }
-        return this;
     }
 
     @Ignore

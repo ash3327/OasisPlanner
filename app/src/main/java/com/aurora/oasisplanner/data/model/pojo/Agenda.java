@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Agenda {
+public class Agenda extends _Entity {
     @Embedded
     public _Agenda agenda;
 
@@ -36,26 +36,11 @@ public class Agenda {
         this.agenda = new _Agenda(type, title);
     }
 
-    @Ignore
-    public Agenda putItems(Object... objs) {
-        for (Object obj : objs) {
-            if (obj instanceof Activity) {
-                agenda.types.add(new ActivityType(ActivityType.Type.activity, activities.size()));
-                activities.add((Activity) obj);
-            }
-            if (obj instanceof _Doc) {
-                agenda.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));
-                docs.add((_Doc) obj);
-            }
-        }
-        return this;
-    }
-
     public static Agenda empty() {
         return new Agenda(
                 AgendaType.agenda,
                 ""
-        ).putItems(Activity.empty());
+        );
     }
 
     @Ignore

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-public class _Agenda {
+public class _Agenda extends __Entity {
     @PrimaryKey(autoGenerate = true)
     public long id;
     public String title;

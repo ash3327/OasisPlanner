@@ -1,7 +1,10 @@
 package com.aurora.oasisplanner.data.core;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GeneralUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GetTagUseCase;
@@ -23,12 +26,19 @@ import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class AppModule {
 
     private static AgendaUseCases agendaUseCases;
     private static MemoUseCases memoUseCases;
     private static GeneralUseCases generalUseCases;
 
+    public static Executor provideExecutor() {
+        return Executors.newFixedThreadPool(2);
+    }
     public static AppDatabase provideAppDatabase(Application application) {
         return AppDatabase.getInstance(application);
     }
@@ -89,6 +99,25 @@ public class AppModule {
         if (generalUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return generalUseCases;
+    }
+
+
+    /** setting up the database */
+    public static void setupDatabase(Application application, AppCompatActivity activity, CountDownLatch latch) {
+        // INFO: setup database and usecases
+        AppDatabase db = provideAppDatabase(application);
+        Executor executor = provideExecutor();
+        AlarmScheduler alarmScheduler = new AlarmScheduler(application);
+        AgendaRepository agendaRepository = provideAgendaRepository(db, alarmScheduler);
+        MemoRepository memoRepository = provideMemoRepository(db);
+        GeneralRepository generalRepository = provideGeneralRepository(db);
+        provideAgendaUseCases(agendaRepository);
+        provideMemoUseCases(memoRepository);
+        provideGeneralUseCases(generalRepository);
+
+        // INFO: setup alarms
+        AlarmRepository alarmRepository = provideAlarmRepository(db);
+        alarmRepository.schedule(alarmScheduler, activity, latch);
     }
 
 

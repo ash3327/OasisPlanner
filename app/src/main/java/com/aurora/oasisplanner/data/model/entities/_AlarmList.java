@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
-public class _AlarmList {
+public class _AlarmList extends __Entity {
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
