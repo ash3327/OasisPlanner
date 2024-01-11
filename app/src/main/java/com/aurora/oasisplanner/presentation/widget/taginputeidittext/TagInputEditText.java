@@ -29,6 +29,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GetTagUseCase;
+import com.aurora.oasisplanner.data.model.entities._Tag;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
@@ -142,12 +146,23 @@ public class TagInputEditText extends TextInputEditText {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.tags_token_layout, layout, false);
 
+        GetTagUseCase getTagUseCase = AppModule.retrieveGeneralUseCases().getTagUseCase;
+        _Tag t = getTagUseCase.invoke(text);
+        view.findViewById(R.id.tag_chip).getBackground().setColorFilter(
+                new PorterDuffColorFilter(t.color, PorterDuff.Mode.SRC_OVER)
+        );
+
         TextView tv = view.findViewById(R.id.tag_tv);
-        tv.setText(text);
+        tv.setText(t.name);
+        tv.setTextColor(t.getTextColor());
+
         ImageView imgv = view.findViewById(R.id.tag_cross);
         imgv.setVisibility(editable ? VISIBLE : GONE);
         view.setFocusable(editable);
         layout.addView(view);
+
+        if (t.isNew)
+            getTagUseCase.put(t);
 
         return layout;
     }

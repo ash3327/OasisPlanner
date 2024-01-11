@@ -3,6 +3,8 @@ package com.aurora.oasisplanner.data.core;
 import android.app.Application;
 import android.content.res.Resources;
 
+import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GeneralUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GetTagUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.DeleteMemoUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.EditMemoUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.GetMemoUseCase;
@@ -16,6 +18,7 @@ import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.EditAgendaUse
 import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.EditAlarmListUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.GetAgendaUseCase;
 import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.PutAgendaUseCase;
+import com.aurora.oasisplanner.data.repository.GeneralRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
@@ -24,6 +27,7 @@ public class AppModule {
 
     private static AgendaUseCases agendaUseCases;
     private static MemoUseCases memoUseCases;
+    private static GeneralUseCases generalUseCases;
 
     public static AppDatabase provideAppDatabase(Application application) {
         return AppDatabase.getInstance(application);
@@ -37,6 +41,9 @@ public class AppModule {
     }
     public static MemoRepository provideMemoRepository(AppDatabase db) {
         return new MemoRepository(db.agendaDao());
+    }
+    public static GeneralRepository provideGeneralRepository(AppDatabase db) {
+        return new GeneralRepository(db.agendaDao());
     }
 
     public static AgendaUseCases provideAgendaUseCases(AgendaRepository repository) {
@@ -69,6 +76,19 @@ public class AppModule {
         if (memoUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return memoUseCases;
+    }
+
+    public static GeneralUseCases provideGeneralUseCases(GeneralRepository repository) {
+        if (generalUseCases != null) return generalUseCases;
+        return generalUseCases = new GeneralUseCases(
+                new GetTagUseCase(repository)
+        );
+    }
+
+    public static GeneralUseCases retrieveGeneralUseCases() {
+        if (generalUseCases == null)
+            throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
+        return generalUseCases;
     }
 
 

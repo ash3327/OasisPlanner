@@ -11,6 +11,7 @@ import androidx.room.Transaction;
 import com.aurora.oasisplanner.data.model.entities._Activity;
 import com.aurora.oasisplanner.data.model.entities._Memo;
 import com.aurora.oasisplanner.data.model.entities._SubAlarm;
+import com.aurora.oasisplanner.data.model.entities._Tag;
 import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.model.entities._Agenda;
 import com.aurora.oasisplanner.data.model.entities._Alarm;
@@ -127,4 +128,23 @@ public interface AgendaDao {
 
     @Query("DELETE FROM _Memo")
     void deleteAllMemos();
+
+    // INFO: Tags
+    @Query("SELECT * FROM _Tag WHERE name = :name")
+    _Tag getTagByName(String name);
+
+    @Query("SELECT * FROM _Tag")
+    LiveData<List<_Tag>> getTags();
+
+    @Query("SELECT * FROM _Tag WHERE name LIKE '%' || :searchEntry || '%' ")
+    LiveData<List<_Tag>> getTags(String searchEntry);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(_Tag tag);
+
+    @Delete
+    void delete(_Tag tag);
+
+    @Query("DELETE FROM _Tag")
+    void deleteAllTags();
 }

@@ -12,6 +12,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
+import com.aurora.oasisplanner.data.repository.GeneralRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
@@ -74,8 +75,10 @@ public class SplashActivity extends AppCompatActivity {
         AlarmScheduler alarmScheduler = new AlarmScheduler(getApplicationContext());
         AgendaRepository agendaRepository = AppModule.provideAgendaRepository(db, alarmScheduler);
         MemoRepository memoRepository = AppModule.provideMemoRepository(db);
+        GeneralRepository generalRepository = AppModule.provideGeneralRepository(db);
         AppModule.provideAgendaUseCases(agendaRepository);
         AppModule.provideMemoUseCases(memoRepository);
+        AppModule.provideGeneralUseCases(generalRepository);
 
         // INFO: setup alarms
         AlarmRepository alarmRepository = AppModule.provideAlarmRepository(db);
