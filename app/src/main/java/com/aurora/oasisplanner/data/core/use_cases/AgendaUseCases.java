@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases.agenda_usecases;
+package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -8,14 +8,17 @@ import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.model.pojo.Agenda;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
 
-public class EditAgendaUseCase {
+public class AgendaUseCases {
     private AgendaRepository repository;
     private FragmentManager fragmentManager;
 
-    public EditAgendaUseCase(AgendaRepository repository) {
+    public AgendaUseCases(
+            AgendaRepository repository
+    ) {
         this.repository = repository;
     }
 
@@ -24,7 +27,7 @@ public class EditAgendaUseCase {
     }
 
     /** -1 indicates a new agenda. */
-    public void invoke(long agendaId, long activityLId) {
+    public void edit(long agendaId, long activityLId) {
         if (fragmentManager == null)
             throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
         //AgendaEditDialog dialog = new AgendaEditDialog();
@@ -35,5 +38,13 @@ public class EditAgendaUseCase {
         Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment).navigate(
                 R.id.navigation_agendaEditDialog, bundle);
         //dialog.show(fragmentManager, "myDialog");
+    }
+
+    public Agenda get(long agendaId) {
+        return repository.getAgendaFromId(agendaId);
+    }
+
+    public void put(Agenda agenda) {
+        repository.insert(agenda);
     }
 }

@@ -166,7 +166,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     }
 
     public void editTagOfChecked() {
-        AppModule.retrieveAgendaUseCases().editAlarmListUseCase.invokeDialogForTagType(
+        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
                 checkedList, this::updateUi
         );
     }
@@ -319,7 +319,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                             if (aSwitch.getState())
                                 checkToggle(gp);
                             else {
-                                AppModule.retrieveAgendaUseCases().editAlarmListUseCase
+                                AppModule.retrieveEditAlarmListUseCases()
                                         .invoke(
                                                 gp, grp,
                                                 onSaveAlarmListener
@@ -334,7 +334,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                                 aSwitch.setState(false);
                             }
 
-                            AppModule.retrieveAgendaUseCases().editAlarmListUseCase
+                            AppModule.retrieveEditAlarmListUseCases()
                                     .invoke(
                                             gp, grp,
                                             onSaveAlarmListener

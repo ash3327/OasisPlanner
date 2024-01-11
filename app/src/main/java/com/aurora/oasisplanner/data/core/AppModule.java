@@ -1,26 +1,17 @@
 package com.aurora.oasisplanner.data.core;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GeneralUseCases;
-import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GetTagUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.DeleteMemoUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.EditMemoUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.GetMemoUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.MemoUseCases;
-import com.aurora.oasisplanner.data.core.use_cases.memo_usecases.PutMemoUseCase;
+import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.MemoUseCases;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
-import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.AgendaUseCases;
-import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.EditAgendaUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.EditAlarmListUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.GetAgendaUseCase;
-import com.aurora.oasisplanner.data.core.use_cases.agenda_usecases.PutAgendaUseCase;
+import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
 import com.aurora.oasisplanner.data.repository.GeneralRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
@@ -33,8 +24,9 @@ import java.util.concurrent.Executors;
 public class AppModule {
 
     private static AgendaUseCases agendaUseCases;
+    private static EditAlarmListUseCases editAlarmListUseCases;
     private static MemoUseCases memoUseCases;
-    private static GeneralUseCases generalUseCases;
+    private static GetTagUseCases getTagUseCases;
 
     public static Executor provideExecutor() {
         return Executors.newFixedThreadPool(2);
@@ -58,12 +50,12 @@ public class AppModule {
 
     public static AgendaUseCases provideAgendaUseCases(AgendaRepository repository) {
         if (agendaUseCases != null) return agendaUseCases;
-        return agendaUseCases = new AgendaUseCases(
-                new GetAgendaUseCase(repository),
-                new EditAgendaUseCase(repository),
-                new PutAgendaUseCase(repository),
-                new EditAlarmListUseCase(repository)
-        );
+        return agendaUseCases = new AgendaUseCases(repository);
+    }
+
+    public static EditAlarmListUseCases provideEditAlarmListUseCases() {
+        if (editAlarmListUseCases != null) return editAlarmListUseCases;
+        return editAlarmListUseCases = new EditAlarmListUseCases();
     }
 
     public static AgendaUseCases retrieveAgendaUseCases() {
@@ -72,14 +64,15 @@ public class AppModule {
         return agendaUseCases;
     }
 
+    public static EditAlarmListUseCases retrieveEditAlarmListUseCases() {
+        if (editAlarmListUseCases == null)
+            throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
+        return editAlarmListUseCases;
+    }
+
     public static MemoUseCases provideMemoUseCases(MemoRepository repository) {
         if (memoUseCases != null) return memoUseCases;
-        return memoUseCases = new MemoUseCases(
-                new GetMemoUseCase(repository),
-                new EditMemoUseCase(repository),
-                new PutMemoUseCase(repository),
-                new DeleteMemoUseCase(repository)
-        );
+        return memoUseCases = new MemoUseCases(repository);
     }
 
     public static MemoUseCases retrieveMemoUseCases() {
@@ -88,17 +81,15 @@ public class AppModule {
         return memoUseCases;
     }
 
-    public static GeneralUseCases provideGeneralUseCases(GeneralRepository repository) {
-        if (generalUseCases != null) return generalUseCases;
-        return generalUseCases = new GeneralUseCases(
-                new GetTagUseCase(repository)
-        );
+    public static GetTagUseCases provideGetTagUseCases(GeneralRepository repository) {
+        if (getTagUseCases != null) return getTagUseCases;
+        return getTagUseCases = new GetTagUseCases(repository);
     }
 
-    public static GeneralUseCases retrieveGeneralUseCases() {
-        if (generalUseCases == null)
+    public static GetTagUseCases retrieveGetTagUseCases() {
+        if (getTagUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
-        return generalUseCases;
+        return getTagUseCases;
     }
 
 
@@ -109,8 +100,9 @@ public class AppModule {
         Executor executor = provideExecutor();
         AlarmScheduler alarmScheduler = new AlarmScheduler(application);
         provideAgendaUseCases(provideAgendaRepository(db, alarmScheduler));
+        provideEditAlarmListUseCases();
         provideMemoUseCases(provideMemoRepository(db));
-        provideGeneralUseCases(provideGeneralRepository(db));
+        provideGetTagUseCases(provideGeneralRepository(db));
 
         // INFO: setup alarms
         AlarmRepository alarmRepository = provideAlarmRepository(db);

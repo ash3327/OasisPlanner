@@ -118,7 +118,7 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
         public boolean bindMemo(int i, _Memo memo) {
             BoxMemoBinding binding = (BoxMemoBinding) vbinding;
 
-            View.OnClickListener ocl = (v)-> AppModule.retrieveMemoUseCases().editMemoUseCase.invoke(memo.id);
+            View.OnClickListener ocl = (v)-> AppModule.retrieveMemoUseCases().edit(memo.id);
 
             binding.bar.setOnClickListener(ocl);
             //if (memo.args.containsKey("importance"))

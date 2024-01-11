@@ -17,7 +17,6 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,12 +28,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.core.use_cases.general_usecases.GetTagUseCase;
+import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.model.entities._Tag;
 import com.aurora.oasisplanner.util.styling.Resources;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.MessageFormat;
@@ -146,8 +143,8 @@ public class TagInputEditText extends TextInputEditText {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.tags_token_layout, layout, false);
 
-        GetTagUseCase getTagUseCase = AppModule.retrieveGeneralUseCases().getTagUseCase;
-        _Tag t = getTagUseCase.invoke(text);
+        GetTagUseCases getTagUseCases = AppModule.retrieveGetTagUseCases();
+        _Tag t = getTagUseCases.get(text);
         view.findViewById(R.id.tag_chip).getBackground().setColorFilter(
                 new PorterDuffColorFilter(t.color, PorterDuff.Mode.SRC_OVER)
         );
@@ -162,7 +159,7 @@ public class TagInputEditText extends TextInputEditText {
         layout.addView(view);
 
         if (t.isNew)
-            getTagUseCase.put(t);
+            getTagUseCases.put(t);
 
         return layout;
     }

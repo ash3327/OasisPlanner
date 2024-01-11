@@ -77,7 +77,7 @@ public class AgendaEditDialog extends Fragment {
         long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
         activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
         if (agendaId != -1)
-            agenda = AppModule.retrieveAgendaUseCases().getAgendaUseCase.invoke(agendaId);
+            agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
         else
             agenda = Agenda.empty();
 
@@ -199,8 +199,7 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void saveAgenda() {
-        AppModule.retrieveAgendaUseCases()
-                .putAgendaUseCase.invoke(agenda);
+        AppModule.retrieveAgendaUseCases().put(agenda);
     }
 
     private void navigateUp() {

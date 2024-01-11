@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases.general_usecases;
+package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.graphics.Color;
 
@@ -9,14 +9,14 @@ import com.aurora.oasisplanner.data.model.entities._Tag;
 import com.aurora.oasisplanner.data.repository.GeneralRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 
-public class GetTagUseCase {
+public class GetTagUseCases {
     private GeneralRepository repository;
 
-    public GetTagUseCase(GeneralRepository repository) {
+    public GetTagUseCases(GeneralRepository repository) {
         this.repository = repository;
     }
 
-    public _Tag invoke(String name) {
+    public _Tag get(String name) {
 
         @ColorInt int col = _Tag.defaultCol;
         if (name.contains(":")) {

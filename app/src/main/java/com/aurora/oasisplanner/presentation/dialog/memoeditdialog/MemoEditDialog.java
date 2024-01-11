@@ -46,7 +46,7 @@ public class MemoEditDialog extends AppCompatDialogFragment {
 
         long memoId = getArguments().getLong(EXTRA_MEMO_ID, -1);
         if (memoId != -1)
-            memo = AppModule.retrieveMemoUseCases().getMemoUseCase.invoke(memoId);
+            memo = AppModule.retrieveMemoUseCases().get(memoId);
         else
             memo = _Memo.empty();
 
@@ -177,14 +177,12 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         }
         memo.contents = ssb;
         memo.tags = Arrays.asList(Objects.requireNonNull(tagtiet.getText()).toString().split(TagInputEditText.SEP));
-        AppModule.retrieveMemoUseCases()
-                .putMemoUseCase.invoke(memo);
+        AppModule.retrieveMemoUseCases().put(memo);
         return true;
     }
 
     public boolean deleteMemo() {
-        AppModule.retrieveMemoUseCases()
-                .deleteMemoUseCase.invoke(memo);
+        AppModule.retrieveMemoUseCases().delete(memo);
         return true;
     }
 }

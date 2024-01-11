@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 long agendaId = extras.getLong(NotificationModule.NOTIFICATION_CONTENT);
                 long activityLId = extras.getLong(NotificationModule.NOTIFICATION_ACTIVITY);
-                AppModule.retrieveAgendaUseCases().editAgendaUseCase.invoke(agendaId, activityLId);
+                AppModule.retrieveAgendaUseCases().edit(agendaId, activityLId);
             }
 
             intent.removeExtra(NotificationModule.NOTIFICATION_MODE);
@@ -91,15 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /** setting up the database */
     private void setupDatabase() {
         // INFO: setup database and usecases
-        AppModule.retrieveAgendaUseCases()
-                .editAgendaUseCase
-                .setFragmentManager(getSupportFragmentManager());
-        AppModule.retrieveAgendaUseCases()
-                .editAlarmListUseCase
-                .setFragmentManager(getSupportFragmentManager());
-        AppModule.retrieveMemoUseCases()
-                .editMemoUseCase
-                .setFragmentManager(getSupportFragmentManager());
+        AppModule.retrieveAgendaUseCases().setFragmentManager(getSupportFragmentManager());
+        AppModule.retrieveEditAlarmListUseCases().setFragmentManager(getSupportFragmentManager());
+        AppModule.retrieveMemoUseCases().setFragmentManager(getSupportFragmentManager());
     }
 
     void setupToolbar() {

@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.core.use_cases.agenda_usecases;
+package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,14 +14,9 @@ import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDial
 
 import java.util.Set;
 
-public class EditAlarmListUseCase {
-    private AgendaRepository repository;
+public class EditAlarmListUseCases {
     private FragmentManager fragmentManager;
     private AlarmList alarmList;
-
-    public EditAlarmListUseCase(AgendaRepository repository) {
-        this.repository = repository;
-    }
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
