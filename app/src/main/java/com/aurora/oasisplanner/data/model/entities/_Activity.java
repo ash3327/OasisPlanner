@@ -15,7 +15,9 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity()
 public class _Activity {
@@ -41,6 +43,7 @@ public class _Activity {
     public Importance importance;
     @ColumnInfo(defaultValue = "")
     public SpannableStringBuilder descr;
+    public Map<String,String> args = new HashMap<>();
     public int i = -1;
 
     public _Activity(){}

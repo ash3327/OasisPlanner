@@ -8,6 +8,7 @@ import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.DeleteColumn;
 import androidx.room.DeleteTable;
+import androidx.room.RenameColumn;
 import androidx.room.RenameTable;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -43,14 +44,16 @@ import java.time.LocalTime;
                 _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
                 _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class
         },
-        version = 20,
+        version = 22,
         autoMigrations = {
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=8, to=11, spec=AppDatabase.Migration8to9.class),
                 @AutoMigration(from=11, to=17, spec=AppDatabase.Migration11to12.class),
                 @AutoMigration(from=17, to=18),
                 @AutoMigration(from=18, to=19),
-                @AutoMigration(from=19, to=20)
+                @AutoMigration(from=19, to=20),
+                @AutoMigration(from=20, to=21),
+                @AutoMigration(from=21, to=22, spec=AppDatabase.Migration21to22.class)
         }
 )
 @TypeConverters({Converters.class})
@@ -162,4 +165,7 @@ public abstract class AppDatabase extends RoomDatabase {
     @DeleteTable(tableName = "_Period")
     @DeleteTable(tableName = "_Periods")
     public static class Migration11to12 implements AutoMigrationSpec {}
+
+    @RenameColumn(tableName = "_AlarmList", fromColumnName = "groupId", toColumnName = "activityId")
+    public static class Migration21to22 implements AutoMigrationSpec {}
 }

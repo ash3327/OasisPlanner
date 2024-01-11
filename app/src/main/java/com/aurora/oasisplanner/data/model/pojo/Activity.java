@@ -25,7 +25,7 @@ public class Activity {
     @Embedded
     public _Activity activity;
 
-    @Relation(parentColumn = "id", entityColumn = "groupId", entity = _AlarmList.class)
+    @Relation(parentColumn = "id", entityColumn = "activityId", entity = _AlarmList.class)
     public List<AlarmList> alarmList = new ArrayList<>();
 
     @Relation(parentColumn = "id", entityColumn = "groupId", entity = _Doc.class)

@@ -162,7 +162,7 @@ public class AgendaRepository {
             agendaDao.insert(doc);
         }
         for (AlarmList alarmList : activity.alarmList) {
-            alarmList.alarmList.groupId = id;
+            alarmList.alarmList.activityId = id;
             alarmList.alarmList.agendaId = activity.activity.agendaId;
             //
             Map<String, String> alarmArgs = new HashMap<>();

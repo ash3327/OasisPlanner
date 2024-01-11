@@ -10,7 +10,9 @@ import com.aurora.oasisplanner.data.tags.AgendaType;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class _Agenda {
@@ -19,6 +21,7 @@ public class _Agenda {
     public String title;
     public AgendaType type;
     public List<ActivityType> types = new ArrayList<>();
+    public Map<String,String> args = new HashMap<>();
 
     public _Agenda(){}
 

@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,12 +35,9 @@ import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
@@ -135,7 +129,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             types.add((ActivityType.Type) objlist[1].get(i));
             if (obj instanceof Activity
                     && ((Activity) obj).alarmList.size() > 0
-                    && ((Activity) obj).alarmList.get(0).alarmList.groupId == activityLId) {
+                    && ((Activity) obj).alarmList.get(0).alarmList.activityId == activityLId) {
                 activityPId = i;
             }
             i++;

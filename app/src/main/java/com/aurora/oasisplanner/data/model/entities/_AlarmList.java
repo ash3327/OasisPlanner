@@ -32,7 +32,7 @@ public class _AlarmList {
     public LocalTime time;
     public AlarmType type;
     public Importance importance;
-    public long groupId;
+    public long activityId;
     public long agendaId;
     public int i = -1;
     public Map<String,String> args = new HashMap<>();
