@@ -108,12 +108,9 @@ public class AppModule {
         AppDatabase db = provideAppDatabase(application);
         Executor executor = provideExecutor();
         AlarmScheduler alarmScheduler = new AlarmScheduler(application);
-        AgendaRepository agendaRepository = provideAgendaRepository(db, alarmScheduler);
-        MemoRepository memoRepository = provideMemoRepository(db);
-        GeneralRepository generalRepository = provideGeneralRepository(db);
-        provideAgendaUseCases(agendaRepository);
-        provideMemoUseCases(memoRepository);
-        provideGeneralUseCases(generalRepository);
+        provideAgendaUseCases(provideAgendaRepository(db, alarmScheduler));
+        provideMemoUseCases(provideMemoRepository(db));
+        provideGeneralUseCases(provideGeneralRepository(db));
 
         // INFO: setup alarms
         AlarmRepository alarmRepository = provideAlarmRepository(db);
