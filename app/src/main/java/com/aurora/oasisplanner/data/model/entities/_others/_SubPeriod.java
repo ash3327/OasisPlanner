@@ -1,13 +1,10 @@
-package com.aurora.oasisplanner.data.model.entities;
-
-import android.text.SpannableStringBuilder;
+package com.aurora.oasisplanner.data.model.entities._others;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class _SubPeriod {

@@ -1,10 +1,8 @@
-package com.aurora.oasisplanner.data.model.entities;
+package com.aurora.oasisplanner.data.model.entities._others;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import com.aurora.oasisplanner.data.util.Converters;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

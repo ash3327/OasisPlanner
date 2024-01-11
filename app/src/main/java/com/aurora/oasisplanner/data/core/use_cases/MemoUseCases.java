@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.aurora.oasisplanner.data.model.entities._Memo;
+import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 import com.aurora.oasisplanner.presentation.dialog.memoeditdialog.MemoEditDialog;
 

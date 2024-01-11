@@ -2,24 +2,18 @@ package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,25 +23,20 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.ItemEditTagBinding;
-import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 

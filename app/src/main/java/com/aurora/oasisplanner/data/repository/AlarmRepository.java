@@ -1,22 +1,16 @@
 package com.aurora.oasisplanner.data.repository;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.datasource.AgendaDao;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.model.entities._SubAlarm;
+import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;

@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.model.entities._Activity;
-import com.aurora.oasisplanner.data.model.pojo.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.model.entities.util._Doc;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;

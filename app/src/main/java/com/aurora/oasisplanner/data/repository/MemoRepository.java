@@ -1,12 +1,11 @@
 package com.aurora.oasisplanner.data.repository;
 
 import android.os.AsyncTask;
-import android.text.SpannableStringBuilder;
 
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.data.datasource.AgendaDao;
-import com.aurora.oasisplanner.data.model.entities._Memo;
+import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.util.Converters;
 
 import java.util.List;

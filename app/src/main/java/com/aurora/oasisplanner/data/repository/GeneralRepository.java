@@ -4,10 +4,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.data.datasource.AgendaDao;
-import com.aurora.oasisplanner.data.model.entities._Tag;
-import com.aurora.oasisplanner.data.model.entities._Tag;
-import com.aurora.oasisplanner.data.util.Converters;
+import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.model.entities.util._Tag;
 
 import java.util.List;
 

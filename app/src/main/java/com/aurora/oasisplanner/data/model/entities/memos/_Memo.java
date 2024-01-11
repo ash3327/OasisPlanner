@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.model.entities;
+package com.aurora.oasisplanner.data.model.entities.memos;
 
 import android.text.SpannableStringBuilder;
 

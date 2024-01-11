@@ -1,15 +1,13 @@
 package com.aurora.oasisplanner.presentation.ui.alarms;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
 

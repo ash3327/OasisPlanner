@@ -1,14 +1,11 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.content.res.Resources;
-import android.os.Bundle;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 

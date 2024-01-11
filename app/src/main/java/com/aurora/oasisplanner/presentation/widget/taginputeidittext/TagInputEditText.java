@@ -30,7 +30,7 @@ import androidx.annotation.Nullable;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
-import com.aurora.oasisplanner.data.model.entities._Tag;
+import com.aurora.oasisplanner.data.model.entities.util._Tag;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.google.android.material.textfield.TextInputEditText;
 

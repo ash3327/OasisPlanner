@@ -3,19 +3,11 @@ package com.aurora.oasisplanner.util.notificationfeatures;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Log;
 
 import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.tags.AlarmType;
-import com.aurora.oasisplanner.data.tags.Importance;
-import com.aurora.oasisplanner.util.styling.Styles;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 
 public class AlarmReceiver extends BroadcastReceiver {
 

@@ -1,19 +1,16 @@
-package com.aurora.oasisplanner.data.model.pojo;
+package com.aurora.oasisplanner.data.model.pojo.events;
 
-import static com.aurora.oasisplanner.data.tags.ActivityType.Type.doc;
 import static com.aurora.oasisplanner.data.tags.ActivityType.Type.loc;
-
-import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
-import com.aurora.oasisplanner.data.model.entities._AlarmList;
-import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.util._Doc;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.pojo._Entity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionItemAdapter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

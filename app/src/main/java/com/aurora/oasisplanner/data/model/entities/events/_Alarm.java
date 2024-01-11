@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.model.entities;
+package com.aurora.oasisplanner.data.model.entities.events;
 
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -8,11 +8,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
-import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.io.Serializable;
@@ -20,11 +20,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Entity
 public class _Alarm extends __Entity {

@@ -1,7 +1,6 @@
 package com.aurora.oasisplanner.data.datasource;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
@@ -16,29 +15,18 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.AutoMigrationSpec;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities._Memo;
-import com.aurora.oasisplanner.data.model.entities._SelectedDates;
-import com.aurora.oasisplanner.data.model.entities._SubAlarm;
-import com.aurora.oasisplanner.data.model.entities._SubPeriod;
-import com.aurora.oasisplanner.data.model.entities._Tag;
-import com.aurora.oasisplanner.data.model.pojo.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.entities._Agenda;
-import com.aurora.oasisplanner.data.model.entities._AlarmList;
-import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.entities._Activity;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
-import com.aurora.oasisplanner.data.tags.AgendaType;
-import com.aurora.oasisplanner.data.tags.AlarmType;
-import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.model.entities.memos._Memo;
+import com.aurora.oasisplanner.data.model.entities._others._SelectedDates;
+import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
+import com.aurora.oasisplanner.data.model.entities._others._SubPeriod;
+import com.aurora.oasisplanner.data.model.entities.util._Tag;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._Agenda;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.util._Doc;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.util.Converters;
-import com.aurora.oasisplanner.util.styling.Styles;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Database(
         entities = {

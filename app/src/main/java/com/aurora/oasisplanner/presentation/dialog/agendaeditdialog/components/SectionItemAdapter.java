@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -17,20 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.model.entities._Doc;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.databinding.ItemDocBinding;
 import com.aurora.oasisplanner.databinding.ItemGapBinding;
 import com.aurora.oasisplanner.databinding.ItemLocBinding;
-import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
@@ -39,9 +34,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
 

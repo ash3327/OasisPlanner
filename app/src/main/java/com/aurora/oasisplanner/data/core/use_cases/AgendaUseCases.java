@@ -8,7 +8,7 @@ import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.model.pojo.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
 

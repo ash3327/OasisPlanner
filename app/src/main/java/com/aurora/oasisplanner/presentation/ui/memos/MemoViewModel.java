@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
-import com.aurora.oasisplanner.data.model.entities._Memo;
+import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
 
 import java.util.List;

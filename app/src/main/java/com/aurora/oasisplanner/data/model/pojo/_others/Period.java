@@ -1,9 +1,9 @@
-package com.aurora.oasisplanner.data.model.pojo;
+package com.aurora.oasisplanner.data.model.pojo._others;
 
 import androidx.room.Relation;
 
-import com.aurora.oasisplanner.data.model.entities._SelectedDates;
-import com.aurora.oasisplanner.data.model.entities._SubPeriod;
+import com.aurora.oasisplanner.data.model.entities._others._SelectedDates;
+import com.aurora.oasisplanner.data.model.entities._others._SubPeriod;
 
 import java.util.ArrayList;
 import java.util.List;

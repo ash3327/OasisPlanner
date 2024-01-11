@@ -10,18 +10,9 @@ import android.widget.LinearLayout;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.tags.AlarmType;
-import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.databinding.ChooseTypeBinding;
-import com.aurora.oasisplanner.util.notificationfeatures.AlarmNotificationService;
-import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 import com.aurora.oasisplanner.util.styling.Resources;
-import com.aurora.oasisplanner.util.styling.Styles;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class ChooseTypeDialog {
     LinearLayout[] fabs = new LinearLayout[3];

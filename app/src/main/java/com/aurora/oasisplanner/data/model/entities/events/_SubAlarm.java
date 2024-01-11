@@ -1,15 +1,13 @@
-package com.aurora.oasisplanner.data.model.entities;
+package com.aurora.oasisplanner.data.model.entities.events;
 
 import android.text.SpannableStringBuilder;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.tags.AlarmType;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
-import com.aurora.oasisplanner.data.util.Converters;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

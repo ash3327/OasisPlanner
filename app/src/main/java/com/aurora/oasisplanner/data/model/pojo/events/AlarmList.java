@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.model.pojo;
+package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
 
@@ -6,9 +6,10 @@ import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
-import com.aurora.oasisplanner.data.model.entities._Alarm;
-import com.aurora.oasisplanner.data.model.entities._AlarmList;
-import com.aurora.oasisplanner.data.model.entities._SubAlarm;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
+import com.aurora.oasisplanner.data.model.pojo._Entity;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 

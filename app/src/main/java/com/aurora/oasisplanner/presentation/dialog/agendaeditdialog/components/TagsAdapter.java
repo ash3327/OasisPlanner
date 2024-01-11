@@ -1,58 +1,25 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.SpannableStringBuilder;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.model.entities._Activity;
-import com.aurora.oasisplanner.data.model.pojo.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.Activity;
-import com.aurora.oasisplanner.data.model.entities._Doc;
-import com.aurora.oasisplanner.data.model.pojo.AlarmList;
-import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
-import com.aurora.oasisplanner.data.util.Id;
-import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemTagContentBinding;
 import com.aurora.oasisplanner.databinding.ItemTagNotifBinding;
 import com.aurora.oasisplanner.databinding.ItemTagTagsBinding;
-import com.aurora.oasisplanner.databinding.SectionBinding;
-import com.aurora.oasisplanner.databinding.SectionDocBinding;
-import com.aurora.oasisplanner.databinding.SectionGapBinding;
-import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
-import com.aurora.oasisplanner.util.styling.Resources;
-import com.aurora.oasisplanner.util.styling.Styles;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
 

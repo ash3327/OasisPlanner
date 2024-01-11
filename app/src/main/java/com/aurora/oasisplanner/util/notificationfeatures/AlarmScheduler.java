@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 
-import com.aurora.oasisplanner.data.model.entities._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

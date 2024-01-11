@@ -2,7 +2,6 @@ package com.aurora.oasisplanner.presentation.dialog.memoeditdialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,13 +17,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities._Memo;
+import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.databinding.MemoPageBinding;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.google.android.material.textfield.TextInputEditText;

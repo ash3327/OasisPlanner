@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.model.entities;
+package com.aurora.oasisplanner.data.model.entities.events;
 
 import android.text.SpannableStringBuilder;
 
@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.tags.AgendaType;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 
