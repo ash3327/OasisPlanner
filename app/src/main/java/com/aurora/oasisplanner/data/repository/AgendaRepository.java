@@ -4,8 +4,10 @@ import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
 import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
+import com.aurora.oasisplanner.data.datasource.daos.EventDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
@@ -22,11 +24,18 @@ import java.util.Map;
 
 public class AgendaRepository {
     private AgendaDao agendaDao;
+    private ActivityDao activityDao;
+    private EventDao eventDao;
     private AlarmDao alarmDao;
     private AlarmScheduler alarmScheduler;
 
-    public AgendaRepository(AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+    public AgendaRepository(
+            AgendaDao agendaDao, AlarmDao alarmDao,
+            ActivityDao activityDao, EventDao eventDao,
+            AlarmScheduler alarmScheduler) {
         this.agendaDao = agendaDao;
+        this.activityDao = activityDao;
+        this.eventDao = eventDao;
         this.alarmDao = alarmDao;
         this.alarmScheduler = alarmScheduler;
     }
@@ -34,15 +43,15 @@ public class AgendaRepository {
     // INFO: Agenda
 
     public void insert(Agenda agenda) {
-        new InsertAgendaAsyncTask(agendaDao, alarmDao, alarmScheduler).execute(agenda);
+        new InsertAgendaAsyncTask(agendaDao, alarmDao, activityDao, eventDao, alarmScheduler).execute(agenda);
     }
 
     public void delete(Agenda agenda) {
-        new DeleteAgendaAsyncTask(agendaDao, alarmDao, alarmScheduler).execute(agenda);
+        new DeleteAgendaAsyncTask(agendaDao, alarmDao, activityDao, eventDao, alarmScheduler).execute(agenda);
     }
 
     public void deleteAllAlarms() {
-        new DeleteAllAgendaAsyncTask(agendaDao, alarmDao, alarmScheduler).execute();
+        new DeleteAllAgendaAsyncTask(agendaDao, alarmDao, activityDao, eventDao, alarmScheduler).execute();
     }
 
     public Agenda getAgendaFromId(long id) {
@@ -55,52 +64,71 @@ public class AgendaRepository {
 
     private static class InsertAgendaAsyncTask extends AsyncTask<Agenda, Void, Void> {
         private AgendaDao agendaDao;
+        private ActivityDao activityDao;
+        private EventDao eventDao;
         private AlarmDao alarmDao;
         private AlarmScheduler alarmScheduler;
 
-        private InsertAgendaAsyncTask(AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+        private InsertAgendaAsyncTask(
+                AgendaDao agendaDao, AlarmDao alarmDao,
+                ActivityDao activityDao, EventDao eventDao,
+                AlarmScheduler alarmScheduler) {
             this.agendaDao = agendaDao;
+            this.activityDao = activityDao;
+            this.eventDao = eventDao;
             this.alarmDao = alarmDao;
             this.alarmScheduler = alarmScheduler;
         }
 
         @Override
         protected Void doInBackground(Agenda... agendas) {
-            insert(agendas[0], agendaDao, alarmDao, alarmScheduler);
+            insert(agendas[0], agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
             return null;
         }
     }
     private static class DeleteAgendaAsyncTask extends AsyncTask<Agenda, Void, Void> {
         private AgendaDao agendaDao;
         private AlarmDao alarmDao;
+        private ActivityDao activityDao;
+        private EventDao eventDao;
         private AlarmScheduler alarmScheduler;
 
-        private DeleteAgendaAsyncTask(AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+        private DeleteAgendaAsyncTask(AgendaDao agendaDao, AlarmDao alarmDao,
+                                      ActivityDao activityDao, EventDao eventDao,
+                                      AlarmScheduler alarmScheduler) {
             this.agendaDao = agendaDao;
+            this.activityDao = activityDao;
+            this.eventDao = eventDao;
             this.alarmDao = alarmDao;
             this.alarmScheduler = alarmScheduler;
         }
 
         @Override
         protected Void doInBackground(Agenda... agendas) {
-            delete(agendas[0], agendaDao, alarmDao, alarmScheduler);
+            delete(agendas[0], agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
             return null;
         }
     }
     private static class DeleteAllAgendaAsyncTask extends AsyncTask<Void, Void, Void> {
         private AgendaDao agendaDao;
         private AlarmDao alarmDao;
+        private ActivityDao activityDao;
+        private EventDao eventDao;
         private AlarmScheduler alarmScheduler;
 
-        private DeleteAllAgendaAsyncTask(AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+        private DeleteAllAgendaAsyncTask(AgendaDao agendaDao, AlarmDao alarmDao,
+                                         ActivityDao activityDao, EventDao eventDao,
+                                         AlarmScheduler alarmScheduler) {
             this.agendaDao = agendaDao;
             this.alarmDao = alarmDao;
+            this.activityDao = activityDao;
+            this.eventDao = eventDao;
             this.alarmScheduler = alarmScheduler;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            deleteAll(agendaDao, alarmDao, alarmScheduler);
+            deleteAll(agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
             return null;
         }
     }
@@ -117,7 +145,10 @@ public class AgendaRepository {
         }
     }
 
-    private static long insert(Agenda agenda, AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+    private static long insert(Agenda agenda,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
         // convert to object list without invisible
         // convert back
         agenda.update();
@@ -125,7 +156,7 @@ public class AgendaRepository {
         /*for (_Doc doc : agenda.invisDocs)
             agendaDao.delete(doc);*/
         for (Activity gp : agenda.invisGroups)
-            delete(gp, agendaDao, alarmDao, alarmScheduler);
+            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
 
         long id = agendaDao.insert(agenda.agenda);
         agenda.agenda.id = id;
@@ -137,7 +168,7 @@ public class AgendaRepository {
         SpannableStringBuilder content = _Doc.getFirst(agenda.docs, "");
         for (Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda)) {
             gp.activity.agendaId = id;
-            insert(gp, title, content, agendaDao, alarmDao, alarmScheduler);
+            insert(gp, title, content, agendaDao, activityDao, eventDao, alarmDao, alarmScheduler);
         }
         return id;
     }
@@ -147,6 +178,8 @@ public class AgendaRepository {
             String title,
             SpannableStringBuilder agendaDescr,
             AgendaDao agendaDao,
+            ActivityDao activityDao,
+            EventDao eventDao,
             AlarmDao alarmDao,
             AlarmScheduler alarmScheduler
     ) {
@@ -156,7 +189,7 @@ public class AgendaRepository {
         /*for (_Doc doc : activity.invisDocs)
             agendaDao.delete(doc);*/
         for (AlarmList gp : activity.invisGroups)
-            delete(gp, agendaDao, alarmDao, alarmScheduler);
+            delete(gp, agendaDao, alarmDao, eventDao, alarmScheduler);
 
         SpannableStringBuilder alarmDescr = activity.activity.descr;
 
@@ -166,7 +199,7 @@ public class AgendaRepository {
             activityImp = Importance.max(activityImp, alarmList.alarmList.importance);
         activity.activity.importance = activityImp;
 
-        long id = agendaDao.insert(activity.activity);
+        long id = activityDao.insert(activity.activity);
         activity.activity.id = id;
         /*for (_Doc doc : activity.docs) {
             doc.setGroupId(id);
@@ -180,7 +213,7 @@ public class AgendaRepository {
             Converters converter = new Converters();
             _Doc loc = activity.getLoc(alarmList);
             alarmArgs.put(TagType.LOC.name(), converter.spannableToString(loc == null ? null : loc.contents));
-            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmDao, alarmScheduler, alarmArgs);
+            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmDao, eventDao, alarmScheduler, alarmArgs);
         }
         return id;
     }
@@ -193,11 +226,12 @@ public class AgendaRepository {
             long actvId,
             AgendaDao agendaDao,
             AlarmDao alarmDao,
+            EventDao eventDao,
             AlarmScheduler alarmScheduler,
             Map<String, String> alarmArgs
     ) {
 
-        long id = agendaDao.insert(alarmList.alarmList);
+        long id = eventDao.insert(alarmList.alarmList);
         alarmList.alarmList.id = id;
         for (_Alarm alarm : alarmList.alarms) {
             if (alarm.visible) {
@@ -240,24 +274,31 @@ public class AgendaRepository {
         return id;
     }
 
-    private static void delete(Agenda agenda, AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+    private static void delete(Agenda agenda,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
         agendaDao.delete(agenda.agenda);
         for (Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda))
-            delete(gp, agendaDao, alarmDao, alarmScheduler);
+            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
         /*for (_Doc doc : agenda.docs)
             agendaDao.delete(doc);*/
     }
 
-    private static void delete(Activity activity, AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
-        agendaDao.delete(activity.activity);
+    private static void delete(Activity activity,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
+        activityDao.delete(activity.activity);
         for (AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
-            delete(alarmList, agendaDao, alarmDao, alarmScheduler);
+            delete(alarmList, agendaDao, alarmDao, eventDao, alarmScheduler);
         /*for (_Doc doc : activity.docs)
             agendaDao.delete(doc);*/
     }
 
-    private static void delete(AlarmList alarmList, AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
-        agendaDao.delete(alarmList.alarmList);
+    private static void delete(AlarmList alarmList, AgendaDao agendaDao, AlarmDao alarmDao,
+                               EventDao eventDao, AlarmScheduler alarmScheduler) {
+        eventDao.delete(alarmList.alarmList);
         for (_Alarm alarm : alarmList.alarms) {
             if (alarmScheduler != null)
                 alarmScheduler.cancel(alarm);
@@ -270,10 +311,12 @@ public class AgendaRepository {
         }
     }
 
-    private static void deleteAll(AgendaDao agendaDao, AlarmDao alarmDao, AlarmScheduler alarmScheduler) {
+    private static void deleteAll(AgendaDao agendaDao, AlarmDao alarmDao,
+                                  ActivityDao activityDao, EventDao eventDao,
+                                  AlarmScheduler alarmScheduler) {
         agendaDao.deleteAllAgendas();
-        agendaDao.deleteAllGroups();
-        agendaDao.deleteAllAlarmLists();
+        activityDao.deleteAllGroups();
+        eventDao.deleteAllAlarmLists();
         if (alarmScheduler != null) {
             for (_Alarm alarm : alarmDao.getAlarms())
                 alarmScheduler.cancel(alarm);

@@ -37,7 +37,10 @@ public class AppModule {
     }
 
     public static AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler) {
-        return new AgendaRepository(db.agendaDao(), db.alarmDao(), alarmScheduler);
+        return new AgendaRepository(
+                db.agendaDao(), db.alarmDao(),
+                db.activityDao(), db.eventDao(),
+                alarmScheduler);
     }
     public static AlarmRepository provideAlarmRepository(AppDatabase db) {
         return new AlarmRepository(db.alarmDao());

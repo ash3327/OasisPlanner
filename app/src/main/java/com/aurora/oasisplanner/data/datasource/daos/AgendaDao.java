@@ -36,22 +36,10 @@ public interface AgendaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Agenda agenda);
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_Activity activity);
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_AlarmList alarmList);
 
     @Delete
     void delete(_Agenda agenda);
-    @Delete
-    void delete(_Activity activity);
-    @Delete
-    void delete(_AlarmList alarmList);
 
     @Query("DELETE FROM _agenda")
     void deleteAllAgendas();
-    @Query("DELETE FROM _Activity")
-    void deleteAllGroups();
-    @Query("DELETE FROM _alarmlist")
-    void deleteAllAlarmLists();
 }
