@@ -23,13 +23,13 @@ public class Activity extends _Entity {
     public _Activity activity;
 
     @Relation(parentColumn = "id", entityColumn = "activityId", entity = _AlarmList.class)
-    public List<AlarmList> alarmLists = new ArrayList<>();
+    public List<_AlarmList> alarmLists = new ArrayList<>();
 
     @Relation(parentColumn = "id", entityColumn = "groupId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
-    public List<AlarmList> invisGroups = new ArrayList<>();
+    public List<_AlarmList> invisGroups = new ArrayList<>();
     @Ignore
     public List<_Doc> invisDocs = new ArrayList<>();
 
@@ -50,27 +50,13 @@ public class Activity extends _Entity {
         return new Activity(null);
     }
 
-    @Ignore
-    public _Doc getLoc(AlarmList aL) {
-        _Doc out = null;
-        List[] objList = getObjList(false);
-        int i = 0;
-        for (Object obj : objList[0]) {
-            if (obj instanceof _Doc && objList[1].get(i) == loc)
-                out = (_Doc) obj;
-            if (Objects.equals(obj, aL))
-                break;
-            i++;
-        }
-        return out;
-    }
-    /** Returns Object[3]: {alarmList: AlarmList, firstDateTime: LocalDateTime}*/
+    /** Returns Object[3]: {_AlarmList: _AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
     public Object[] getFirstAlarmList() {
-        AlarmList aL = alarmLists.get(0);
-        LocalDateTime dt = aL.alarmList.getNextDateTime();
-        for (AlarmList al : alarmLists) {
-            LocalDateTime aldt = al.alarmList.getNextDateTime();
+        _AlarmList aL = alarmLists.get(0);
+        LocalDateTime dt = aL.getNextDateTime();
+        for (_AlarmList al : alarmLists) {
+            LocalDateTime aldt = al.getNextDateTime();
             if (aldt != null && (dt == null || aldt.isBefore(dt))) {
                 aL = al;
                 dt = aldt;
@@ -86,7 +72,7 @@ public class Activity extends _Entity {
         List<ActivityType.Type> types = new ArrayList<>();
 
         if (sort) {
-            alarmLists.sort(Comparator.comparingInt(a -> a.alarmList.i));
+            alarmLists.sort(Comparator.comparingInt(a -> a.i));
             docs.sort(Comparator.comparingInt(a -> a.i));
         }
 
@@ -96,7 +82,7 @@ public class Activity extends _Entity {
             switch (gt.type) {
                 case activity:
                     obj = alarmLists.get(gt.i);
-                    visible = ((AlarmList) obj).visible;
+                    visible = ((_AlarmList) obj).visible;
                     break;
                 case doc:
                 case loc:
@@ -109,7 +95,7 @@ public class Activity extends _Entity {
                 types.add(gt.type);
             }
         }
-        for (AlarmList gp : alarmLists)
+        for (_AlarmList gp : alarmLists)
             if (!gp.visible) invisGroups.add(gp);
         for (_Doc doc : docs)
             if (!doc.visible) invisDocs.add(doc);
@@ -127,9 +113,9 @@ public class Activity extends _Entity {
 
         int i = 0;
         for (Object obj : list) {
-            if (obj instanceof AlarmList) {
+            if (obj instanceof _AlarmList) {
                 types.add(new ActivityType(ActivityType.Type.activity, alarmLists.size()));
-                alarmLists.add(((AlarmList) obj).setI(i));
+                alarmLists.add(((_AlarmList) obj).setI(i));
             }
             if (obj instanceof _Doc) {
                 _Doc doc = (_Doc) obj;

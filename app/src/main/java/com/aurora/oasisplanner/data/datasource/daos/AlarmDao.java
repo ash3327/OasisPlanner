@@ -32,6 +32,8 @@ public interface AlarmDao {
 
     @Delete
     void delete(_SubAlarm alarm);
+    @Delete
+    void deleteSubAlarms(List<_SubAlarm> subAlarms);
 
     @Query("DELETE FROM _SubAlarm")
     void deleteAllSubAlarms();
@@ -48,16 +50,20 @@ public interface AlarmDao {
     LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 
     @Query("SELECT * FROM _Alarm WHERE id = :id")
-    _Alarm getAlarmById(int id);
+    _Alarm getAlarmById(long id);
 
     @Query("SELECT * FROM _Alarm")
     List<_Alarm> getAlarms();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Alarm alarm);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(List<_Alarm> alarms);
 
     @Delete
     void delete(_Alarm alarm);
+    @Delete
+    void delete(List<_Alarm> alarm);
 
     @Query("DELETE FROM _Alarm")
     void deleteAllAlarms();

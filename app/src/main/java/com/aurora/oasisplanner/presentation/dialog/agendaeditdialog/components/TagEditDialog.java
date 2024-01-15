@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
@@ -47,7 +51,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public TagType type = TagType.LOC;
     private DateType dateType = DateType.minutes;
     private ItemEditTagBinding vbinding;
-    private Set<AlarmList> checkedList;
+    private Set<_AlarmList> checkedList;
     private Runnable updateUiFunction = ()->{};
     private int idx = 0;
 
@@ -209,10 +213,27 @@ public class TagEditDialog extends AppCompatDialogFragment {
     }
 
     public void onConfirm() {
-        if (saveTags()) {
-            updateUiFunction.run();
-            dialog.dismiss();
-        }
+        AppModule.provideExecutor().submit(
+                ()->{
+                    Log.d("test3", "STARTED CONFIRM");
+                    try {
+                        if (saveTags()) {
+                            Activity a = getActivity();
+                            a.runOnUiThread(
+                                    ()->{
+                                        updateUiFunction.run();
+                                        dialog.dismiss();
+                                    }
+                            );
+                        }
+                    } catch (Exception e) {
+                        Log.d("test3", "ERROR: "+e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    Log.d("test3", "FINISHED CONFIRM");
+                }
+        );
     }
     public void onCancel() {
         updateUiFunction.run();
@@ -267,28 +288,28 @@ public class TagEditDialog extends AppCompatDialogFragment {
         assert checkedList != null;
         switch (type) {
             case IMPORTANCE:
-                for (AlarmList checked : checkedList)
-                    checked.alarmList.importance = Importance.values()[idx];
+                for (_AlarmList checked : checkedList)
+                    checked.importance = Importance.values()[idx];
                 break;
             case ALARMTYPE:
-                for (AlarmList checked : checkedList)
-                    checked.alarmList.type = AlarmType.values()[idx];
+                for (_AlarmList checked : checkedList)
+                    checked.type = AlarmType.values()[idx];
                 break;
             case TAGS:
-                for (AlarmList checked : checkedList) {
-                    SpannableStringBuilder ssb2 = checked.alarmList.getArg(type.name());
-                    checked.alarmList.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
+                for (_AlarmList checked : checkedList) {
+                    SpannableStringBuilder ssb2 = checked.getArg(type.name());
+                    checked.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
                 }
                 break;
             case ALARM:
-                for (AlarmList checked : checkedList) {
-                    checked.alarmList.putArgs(type.name(), ssb);
-                    checked.setSubalarms();
+                for (_AlarmList checked : checkedList) {
+                    checked.putArgs(type.name(), ssb);
+                    checked.getAssociates().setSubalarms();
                 }
                 break;
             default:
-                for (AlarmList checked : checkedList)
-                    checked.alarmList.putArgs(type.name(), ssb);
+                for (_AlarmList checked : checkedList)
+                    checked.putArgs(type.name(), ssb);
         }
 
         return true;
@@ -297,14 +318,14 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public boolean deleteTags() {
         assert checkedList != null;
         if (type != TagType.IMPORTANCE && type != TagType.ALARMTYPE) {
-            for (AlarmList checked : checkedList)
-                checked.alarmList.removeKey(type.name());
+            for (_AlarmList checked : checkedList)
+                checked.removeKey(type.name());
             return true;
         }
         return false;
     }
 
-    public void setSelectedList(Set<AlarmList> checkedList) {
+    public void setSelectedList(Set<_AlarmList> checkedList) {
         this.checkedList = checkedList;
     }
 

@@ -12,6 +12,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Agenda;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public interface EventDao {
     @Transaction
     @Query("SELECT * FROM _AlarmList WHERE id = :id")
     _AlarmList getEventById(long id);
+    @Transaction
+    @Query("SELECT * FROM _AlarmList WHERE id = :id")
+    AlarmList getEventWithChildById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_AlarmList alarmList);

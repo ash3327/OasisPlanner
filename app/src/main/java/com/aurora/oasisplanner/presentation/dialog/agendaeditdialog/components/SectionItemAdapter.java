@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -55,7 +55,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public List<ActivityType.Type> types = new ArrayList<>();
 
     private final Switch tSwitch;
-    private final Set<AlarmList> checkedList;
+    private final Set<_AlarmList> checkedList;
 
     public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
@@ -85,7 +85,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         long numClasses = 3;
         if (item instanceof GapData)
             return ((GapData) item).i * numClasses;
-        if (item instanceof AlarmList)
+        if (item instanceof _AlarmList)
             return Styles.hashInt(item) * numClasses + 1;
         if (item instanceof _Doc)
             return Styles.hashInt(item) * numClasses + 2;
@@ -152,8 +152,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
     public void removeChecked() {
         try {
-            for (AlarmList aL : checkedList)
-                remove(aL, aL.alarmList.i);
+            for (_AlarmList aL : checkedList)
+                remove(aL, aL.i);
             tSwitch.setState(false);
         } catch (Exception e) {e.printStackTrace();}
     }
@@ -178,9 +178,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         if (i == -1) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
-        if (obj instanceof AlarmList && type.type == ActivityType.Type.activity
+        if (obj instanceof _AlarmList && type.type == ActivityType.Type.activity
                 && AppModule.retrieveAgendaUseCases().getAlarmLists(activity).get(type.i).equals(obj))
-            ((AlarmList) obj).visible = false;
+            ((_AlarmList) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.doc && activity.docs.get(type.i).equals(obj))
             ((_Doc) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.loc && activity.docs.get(type.i).equals(obj))
@@ -197,7 +197,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public void insert(ActivityType.Type type, int i) {
         switch (type) {
             case activity:
-                AlarmList gp = AlarmList.empty();
+                _AlarmList gp = _AlarmList.empty();
                 activity.activity.types.add(i, new ActivityType(type,
                         AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));
                 AppModule.retrieveAgendaUseCases().getAlarmLists(activity).add(gp);
@@ -224,13 +224,13 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         private final SectionItemAdapter adapter;
         /** aSwtich = true shows the checkboxes. */
         private final Switch aSwitch;
-        private final Set<AlarmList> checkedList;
+        private final Set<_AlarmList> checkedList;
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
 
         public AlarmGroupsHolder(ViewDataBinding binding, SectionItemAdapter adapter, int len,
-                                 Switch tSwitch, Set<AlarmList> checkedList) {
+                                 Switch tSwitch, Set<_AlarmList> checkedList) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
@@ -243,8 +243,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             this.item = sect;
             if (sect instanceof GapData)
                 return bindGap(i, (GapData) sect);
-            if (sect instanceof AlarmList)
-                return bindAlarms(i, (AlarmList) sect, gp);
+            if (sect instanceof _AlarmList)
+                return bindAlarms(i, (_AlarmList) sect, gp);
             if (sect instanceof _Doc) {
                 _Doc doc = (_Doc) sect;
                 if (getItemViewType() == ActivityType.Type.loc.ordinal())
@@ -291,7 +291,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             return true;
         }
 
-        public boolean bindAlarms(int i, AlarmList gp, Activity grp) {
+        public boolean bindAlarms(int i, _AlarmList gp, Activity grp) {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
             aSwitch.observe((state)-> {
@@ -304,7 +304,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                         aSwitch.setState(!checkedList.isEmpty());
                     } catch (Exception e){e.printStackTrace();}
                 });
-            }, true, gp.alarmList.id);
+            }, true, gp.id);
 
             binding.bar.setOnClickListener(
                     (v)->{
@@ -351,7 +351,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
             return true;
         }
-        public void checkToggle(AlarmList gp) {
+        public void checkToggle(_AlarmList gp) {
             if (checkedList.contains(gp))
                 checkedList.remove(gp);
             else
@@ -360,18 +360,18 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         }
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
-            if (item instanceof AlarmList) {
-                AlarmList gp = (AlarmList) item;
+            if (item instanceof _AlarmList) {
+                _AlarmList gp = (_AlarmList) item;
 
-                binding.icon.setImageDrawable(gp.alarmList.type.getDrawable());
-                binding.importanceLabel.setColorFilter(gp.alarmList.importance.getColorPr());
-                binding.barDescriptionText.setText(gp.alarmList.getDateTime());
+                binding.icon.setImageDrawable(gp.type.getDrawable());
+                binding.importanceLabel.setColorFilter(gp.importance.getColorPr());
+                binding.barDescriptionText.setText(gp.getDateTime());
                 RecyclerView recyclerView = binding.itemAlarmRecyclerView;
                 TagsAdapter adapter = new TagsAdapter();
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
-                adapter.setTags(gp.alarmList.getArgs());
+                adapter.setTags(gp.getArgs());
             }
         }
 

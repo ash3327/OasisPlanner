@@ -4,6 +4,8 @@ import android.content.res.Resources;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
@@ -19,19 +21,23 @@ public class EditAlarmListUseCases {
         this.fragmentManager = fragmentManager;
     }
 
-    public void invoke(AlarmList alarmList, Activity grp, AlarmEditDialog.OnSaveListener onSaveListener) {
-        this.alarmList = alarmList;
-        alarmList.contents = grp.activity.descr;//_Doc.getFirst(, "(no content)");
+    public void invoke(_AlarmList alarmList, Activity grp, AlarmEditDialog.OnSaveListener onSaveListener) {
+        AppModule.provideExecutor().submit(
+                ()->{
+                    this.alarmList = alarmList.getAssociates();
+                    this.alarmList.contents = grp.activity.descr;//_Doc.getFirst(, "(no content)");
 
-        if (fragmentManager == null)
-            throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
-        AlarmEditDialog dialog = new AlarmEditDialog();
-        dialog.setOnSaveListener(onSaveListener);
+                    if (fragmentManager == null)
+                        throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
+                    AlarmEditDialog dialog = new AlarmEditDialog();
+                    dialog.setOnSaveListener(onSaveListener);
 
-        dialog.show(fragmentManager, "dialogAlarmEdit");
+                    dialog.show(fragmentManager, "dialogAlarmEdit");
+                }
+        );
     }
 
-    public void invokeDialogForTagType(Set<AlarmList> checkedList, Runnable updateUi) {
+    public void invokeDialogForTagType(Set<_AlarmList> checkedList, Runnable updateUi) {
         TagEditDialog dialog = new TagEditDialog();
         dialog.setUpdateUiFunction(updateUi);
         dialog.setSelectedList(checkedList);

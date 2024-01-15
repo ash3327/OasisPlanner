@@ -43,6 +43,10 @@ public class AlarmList extends _Entity {
     }
 
     @Ignore
+    public AlarmList putDates(LocalTime time, List<LocalDate> dates) {
+        return putDates(time, dates.toArray(new LocalDate[0]));
+    }
+    @Ignore
     public AlarmList putDates(LocalTime time, LocalDate... dates) {
         for (_Alarm alarm : this.alarms)
             alarm.visible = false;

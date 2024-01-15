@@ -20,20 +20,16 @@ public class AlarmsViewModel extends AndroidViewModel {
     public AlarmsViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppModule.provideAppDatabase(application);
-        repository = AppModule.provideAlarmRepository(database);
+        repository = AppModule.provideAlarmRepository(database, AppModule.provideExecutor());
         alarms = repository.getAlarms();
     }
 
     public void refreshAlarms(String searchEntry) {
-        alarms = repository.requestAlarms(searchEntry);
+        alarms = repository.requestAlarm(searchEntry);
     }
 
     public void insert(_Alarm alarm) {
         repository.insert(alarm);
-    }
-
-    public void update(_Alarm alarm) {
-        repository.update(alarm);
     }
 
     public void delete(_Alarm alarm) {

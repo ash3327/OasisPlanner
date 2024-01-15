@@ -9,6 +9,7 @@ import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.datasource.daos.EventDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
@@ -188,15 +189,15 @@ public class AgendaRepository {
 
         /*for (_Doc doc : activity.invisDocs)
             agendaDao.delete(doc);*/
-        for (AlarmList gp : activity.invisGroups)
+        for (_AlarmList gp : activity.invisGroups)
             delete(gp, agendaDao, alarmDao, eventDao, alarmScheduler);
 
         SpannableStringBuilder alarmDescr = activity.activity.descr;
 
         // TODO: Agenda Importance = Max (Alarm Importance, temporarily)
         Importance activityImp = Importance.unimportant;
-        for (AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
-            activityImp = Importance.max(activityImp, alarmList.alarmList.importance);
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
+            activityImp = Importance.max(activityImp, alarmList.importance);
         activity.activity.importance = activityImp;
 
         long id = activityDao.insert(activity.activity);
@@ -205,21 +206,19 @@ public class AgendaRepository {
             doc.setGroupId(id);
             agendaDao.insert(doc);
         }*/
-        for (AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity)) {
-            alarmList.alarmList.activityId = id;
-            alarmList.alarmList.agendaId = activity.activity.agendaId;
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity)) {
+            alarmList.activityId = id;
+            alarmList.agendaId = activity.activity.agendaId;
             //
             Map<String, String> alarmArgs = new HashMap<>();
             Converters converter = new Converters();
-            _Doc loc = activity.getLoc(alarmList);
-            alarmArgs.put(TagType.LOC.name(), converter.spannableToString(loc == null ? null : loc.contents));
             insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmDao, eventDao, alarmScheduler, alarmArgs);
         }
         return id;
     }
 
     private static long insert(
-            AlarmList alarmList,
+            _AlarmList alarmList,
             String title,
             SpannableStringBuilder agendaDescr,
             SpannableStringBuilder alarmDescr,
@@ -231,18 +230,19 @@ public class AgendaRepository {
             Map<String, String> alarmArgs
     ) {
 
-        long id = eventDao.insert(alarmList.alarmList);
-        alarmList.alarmList.id = id;
-        for (_Alarm alarm : alarmList.alarms) {
+        long id = AppModule.retrieveEventUseCases().put(alarmList);
+        alarmList.id = id;
+        AlarmList parent = alarmList.getAssociates();
+        for (_Alarm alarm : parent.alarms) {
             if (alarm.visible) {
                 alarm.alarmListId = id;
                 alarm.activityId = actvId;
-                alarm.agendaId = alarmList.alarmList.agendaId;
+                alarm.agendaId = alarmList.agendaId;
                 alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);
+                alarm.setAlarmData(alarmList.type, alarmList.importance);
                 if (alarmArgs != null)
                     alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.alarmList.getArgs());
+                alarm.getArgs().putAll(alarmList.getArgs());
                 alarm.id = alarmDao.insert(alarm);
                 if (alarmScheduler != null)
                     alarmScheduler.schedule(alarm);
@@ -252,16 +252,16 @@ public class AgendaRepository {
                 alarmDao.delete(alarm);
             }
         }
-        for (_SubAlarm alarm : alarmList.subalarms) {
+        for (_SubAlarm alarm : parent.subalarms) {
             if (alarm.visible) {
                 alarm.alarmListId = id;
                 alarm.activityId = actvId;
-                alarm.agendaId = alarmList.alarmList.agendaId;
+                alarm.agendaId = alarmList.agendaId;
                 alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                alarm.setAlarmData(alarmList.alarmList.type, alarmList.alarmList.importance);
+                alarm.setAlarmData(alarmList.type, alarmList.importance);
                 if (alarmArgs != null)
                     alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.alarmList.getArgs());
+                alarm.getArgs().putAll(alarmList.getArgs());
                 alarm.id = alarmDao.insert(alarm);
                 if (alarmScheduler != null)
                     alarmScheduler.schedule(alarm);
@@ -290,21 +290,22 @@ public class AgendaRepository {
                                ActivityDao activityDao, EventDao eventDao,
                                AlarmScheduler alarmScheduler) {
         activityDao.delete(activity.activity);
-        for (AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
             delete(alarmList, agendaDao, alarmDao, eventDao, alarmScheduler);
         /*for (_Doc doc : activity.docs)
             agendaDao.delete(doc);*/
     }
 
-    private static void delete(AlarmList alarmList, AgendaDao agendaDao, AlarmDao alarmDao,
+    private static void delete(_AlarmList alarmList, AgendaDao agendaDao, AlarmDao alarmDao,
                                EventDao eventDao, AlarmScheduler alarmScheduler) {
-        eventDao.delete(alarmList.alarmList);
-        for (_Alarm alarm : alarmList.alarms) {
+        AppModule.retrieveEventUseCases().delete(alarmList);
+        AlarmList parent = alarmList.getAssociates();
+        for (_Alarm alarm : parent.alarms) {
             if (alarmScheduler != null)
                 alarmScheduler.cancel(alarm);
             alarmDao.delete(alarm);
         }
-        for (_SubAlarm alarm : alarmList.subalarms) {
+        for (_SubAlarm alarm : parent.subalarms) {
             if (alarmScheduler != null)
                 alarmScheduler.cancel(alarm);
             alarmDao.delete(alarm);

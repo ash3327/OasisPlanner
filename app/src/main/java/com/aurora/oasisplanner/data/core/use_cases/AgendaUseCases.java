@@ -8,6 +8,7 @@ import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
@@ -56,7 +57,7 @@ public class AgendaUseCases {
         return agenda.activities;
     }
 
-    public List<AlarmList> getAlarmLists(Activity activity) {
+    public List<_AlarmList> getAlarmLists(Activity activity) {
         return activity.alarmLists;
     }
 }

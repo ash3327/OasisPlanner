@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
@@ -129,9 +130,9 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
             if (obj instanceof Activity) {
-                List<AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists((Activity) obj);
+                List<_AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists((Activity) obj);
                 if (alarmLists.size() > 0
-                        && alarmLists.get(0).alarmList.activityId == activityLId) {
+                        && alarmLists.get(0).activityId == activityLId) {
                     activityPId = i;
                 }
             }
@@ -257,13 +258,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setVisibility(visibility);
             binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);
-            AlarmList gpl_alarmL = null;
-            List<AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists(gp);
+            _AlarmList gpl_alarmL = null;
+            List<_AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists(gp);
             if (alarmLists.size() > 0) {
                 Object[] gpl = gp.getFirstAlarmList();
-                gpl_alarmL = (AlarmList)gpl[0];
+                gpl_alarmL = (_AlarmList)gpl[0];
                 LocalDateTime gpl_dt = (LocalDateTime)gpl[1];
-                binding.sectdI1.setImageDrawable(gpl_alarmL.alarmList.type.getDrawable());
+                binding.sectdI1.setImageDrawable(gpl_alarmL.type.getDrawable());
                 //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
                 binding.sectdT1.setText(DateTimesFormatter.getDateTime(gpl_dt));
             } else {
@@ -272,7 +273,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             }
             SpannableStringBuilder ssb = null;
             if (gpl_alarmL != null)
-                ssb = gpl_alarmL.alarmList.getArg(TagType.LOC.name());
+                ssb = gpl_alarmL.getArg(TagType.LOC.name());
             if (gpl_alarmL != null && ssb != null) {
                 binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
                 binding.sectdT2.setText(ssb);
