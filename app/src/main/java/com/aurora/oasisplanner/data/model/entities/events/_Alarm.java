@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Entity
 public class _Alarm extends __Entity {
@@ -40,6 +42,9 @@ public class _Alarm extends __Entity {
     @ColumnInfo(defaultValue = "-1")
     public long activityId;
     public Map<String,String> args = new HashMap<>();
+
+    @Ignore
+    public boolean isSubalarm() {return false;}
 
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
@@ -81,20 +86,20 @@ public class _Alarm extends __Entity {
 
     @Override
     public String toString() {
-        return "<"+id+","+title+","+agendaDescr+","+alarmDescr+","+datetime+":"+date+">";
+        return "<"+id+","+getTitle()+","+getAgendaDescr()+","+getAlarmDescr()+","+datetime+":"+date+">";
     }
 
     @Ignore
     public SpannableStringBuilder getContents(boolean inExpandedMode) {
         return inExpandedMode ?
-                agendaDescr.toString().isEmpty() ?
+                getAgendaDescr().toString().isEmpty() ?
                         new SpannableStringBuilder()
-                                .append(alarmDescr) :
+                                .append(getAlarmDescr()) :
                         new SpannableStringBuilder()
-                                .append(alarmDescr)
+                                .append(getAlarmDescr())
                                 .append("\n\n")
-                                .append(agendaDescr)
-                : Styles.truncate(alarmDescr, 12);
+                                .append(getAgendaDescr())
+                : Styles.truncate(getAlarmDescr(), 12);
     }
 
     @Ignore
@@ -124,9 +129,9 @@ public class _Alarm extends __Entity {
         Converters converter = new Converters();
 
         extras.putLong("id", id);
-        extras.putString("title", title);
-        extras.putString("agendaDescr", converter.spannableToString(agendaDescr));
-        extras.putString("alarmDescr", converter.spannableToString(alarmDescr));
+        extras.putString("title", getTitle());
+        extras.putString("agendaDescr", converter.spannableToString(getAgendaDescr()));
+        extras.putString("alarmDescr", converter.spannableToString(getAlarmDescr()));
         extras.putLong("dateTime", converter.datetimeToTimestamp(datetime));
         extras.putLong("date", converter.dateToTimestamp(date));
         extras.putString("type", type.name());
@@ -173,5 +178,44 @@ public class _Alarm extends __Entity {
     public String getTagsString() {
         SpannableStringBuilder ssb = getArg(TagType.TAGS.name());
         return ssb==null ? null : ssb.toString();
+    }
+
+    @Ignore
+    private _Activity activity = null;
+    public _Activity getActivity() {
+        if (activity == null) {
+            try {
+                activity = AppModule.retrieveActivityUseCases().get(activityId).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return activity;
+    }
+
+    @Ignore
+    private _Agenda agenda = null;
+    public _Agenda getAgenda() {
+        if (agenda == null) {
+            try {
+                agenda = AppModule.retrieve_AgendaUseCases().get(agendaId).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return agenda;
+    }
+    
+    public String getTitle() {
+        //return getAgenda().title;
+        return title;
+    }
+    public SpannableStringBuilder getAgendaDescr() {
+        //return getAgenda().;
+        return agendaDescr;
+    }
+    public SpannableStringBuilder getAlarmDescr() {
+        //return getActivity().descr;
+        return alarmDescr;
     }
 }

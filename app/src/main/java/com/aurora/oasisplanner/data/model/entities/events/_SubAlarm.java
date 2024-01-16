@@ -15,6 +15,10 @@ import java.util.List;
 
 @Entity(tableName = "_SubAlarm")
 public class _SubAlarm extends _Alarm {
+
+    @Ignore @Override
+    public boolean isSubalarm() {return false;}
+
     @Ignore
     public static List<_SubAlarm> generateSubAlarms(AlarmList alarmList) {
         ArrayList<_SubAlarm> list = new ArrayList<>();

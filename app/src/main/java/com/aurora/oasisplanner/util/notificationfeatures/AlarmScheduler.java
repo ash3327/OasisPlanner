@@ -33,7 +33,6 @@ public class AlarmScheduler {
         }
     }
 
-    @SuppressLint("MissingPermission")
     public void schedule(_Alarm alarm) {
 
         if (LocalDateTime.now().isAfter(alarm.datetime)) return;
@@ -51,6 +50,13 @@ public class AlarmScheduler {
                 )
         );
     }
+    public static void scheduleMany(AlarmScheduler alarmScheduler, _Alarm... alarms) {
+        if (alarmScheduler == null)
+            return;
+        for (_Alarm alarm : alarms)
+            alarmScheduler.schedule(alarm);
+    }
+
 
     public void cancel(_Alarm alarm) {
         alarmManager.cancel(
@@ -61,5 +67,11 @@ public class AlarmScheduler {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 )
         );
+    }
+    public static void cancelMany(AlarmScheduler alarmScheduler, _Alarm... alarms) {
+        if (alarmScheduler == null)
+            return;
+        for (_Alarm alarm : alarms)
+            alarmScheduler.cancel(alarm);
     }
 }

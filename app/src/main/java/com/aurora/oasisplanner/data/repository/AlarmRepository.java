@@ -1,10 +1,12 @@
 package com.aurora.oasisplanner.data.repository;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
@@ -12,6 +14,7 @@ import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -61,23 +64,37 @@ public class AlarmRepository {
 
     public void insert(_Alarm alarm) {
         executor.execute(()->alarmDao.insert(alarm));
+        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarm);
     }
     public void insert(List<_Alarm> alarms) {
         executor.execute(()->alarmDao.insert(alarms));
+        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarms.toArray(new _Alarm[0]));
+    }
+
+    public void insertSubAlarm(_SubAlarm alarm) {
+        executor.execute(()->alarmDao.insertSubAlarm(alarm));
+        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarm);
+    }
+    public void insertSubAlarms(List<_SubAlarm> alarms) {
+        executor.execute(()->alarmDao.insertSubAlarms(alarms));
+        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarms.toArray(new _Alarm[0]));
     }
 
     public void delete(_Alarm alarm) {
         executor.execute(()->alarmDao.delete(alarm));
+        AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), alarm);
     }
     public void delete(List<_Alarm> alarms) {
         executor.execute(()->alarmDao.delete(alarms));
+        AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), alarms.toArray(new _Alarm[0]));
+    }
+    public void deleteSubAlarm(_SubAlarm alarm) {
+        executor.execute(()->alarmDao.deleteSubAlarm(alarm));
+        AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), alarm);
     }
     public void deleteSubAlarms(List<_SubAlarm> subAlarms) {
         executor.execute(()->alarmDao.deleteSubAlarms(subAlarms));
-    }
-
-    public void deleteAllAlarms() {
-        executor.execute(()->alarmDao.deleteAllAlarms());
+        AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), subAlarms.toArray(new _Alarm[0]));
     }
 
     public LiveData<List<_Alarm>> getAlarms() {

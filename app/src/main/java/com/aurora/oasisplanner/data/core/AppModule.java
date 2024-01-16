@@ -5,11 +5,14 @@ import android.content.res.Resources;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.aurora.oasisplanner.data.core.use_cases.ActivityUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.AlarmUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EventUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.MemoUseCases;
+import com.aurora.oasisplanner.data.core.use_cases._AgendaUseCases;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
+import com.aurora.oasisplanner.data.repository.ActivityRepository;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
@@ -18,6 +21,7 @@ import com.aurora.oasisplanner.data.repository.EventRepository;
 import com.aurora.oasisplanner.data.repository.MultimediaRepository;
 import com.aurora.oasisplanner.data.repository.TagRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
+import com.aurora.oasisplanner.data.repository._AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -29,11 +33,14 @@ import java.util.concurrent.Executors;
 public class AppModule {
 
     private static AgendaUseCases agendaUseCases;
-    private static EditAlarmListUseCases editAlarmListUseCases;
+    private static _AgendaUseCases _agendaUseCases;
+    private static ActivityUseCases activityUseCases;
     private static EventUseCases eventUseCases;
     private static AlarmUseCases alarmUseCases;
+    private static EditAlarmListUseCases editAlarmListUseCases;
     private static MemoUseCases memoUseCases;
     private static GetTagUseCases getTagUseCases;
+    private static AlarmScheduler alarmScheduler;
 
     private static ExecutorService executor;
 
@@ -41,6 +48,15 @@ public class AppModule {
         if (executor == null)
             executor = Executors.newFixedThreadPool(2);
         return executor;
+    }
+
+    public static AlarmScheduler provideAlarmScheduler(Application application) {
+        if (alarmScheduler == null)
+            alarmScheduler = new AlarmScheduler(application);
+        return alarmScheduler;
+    }
+    public static AlarmScheduler retrieveAlarmScheduler() {
+        return alarmScheduler;
     }
 
     public static AppDatabase provideAppDatabase(Application application) {
@@ -52,6 +68,12 @@ public class AppModule {
                 db.agendaDao(), db.alarmDao(),
                 db.activityDao(), db.eventDao(),
                 alarmScheduler);
+    }
+    public static _AgendaRepository provide_AgendaRepository(AppDatabase db, ExecutorService executor) {
+        return new _AgendaRepository(db.agendaDao(), executor);
+    }
+    public static ActivityRepository provideActivityRepository(AppDatabase db, ExecutorService executor) {
+        return new ActivityRepository(db.activityDao(), executor);
     }
     public static EventRepository provideEventRepository(AppDatabase db, ExecutorService executor) {
         return new EventRepository(db.eventDao(), executor);
@@ -77,6 +99,27 @@ public class AppModule {
         if (agendaUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return agendaUseCases;
+    }
+
+
+    public static _AgendaUseCases provide_AgendaUseCases(_AgendaRepository repository) {
+        if (_agendaUseCases != null) return _agendaUseCases;
+        return _agendaUseCases = new _AgendaUseCases(repository);
+    }
+    public static _AgendaUseCases retrieve_AgendaUseCases() {
+        if (_agendaUseCases == null)
+            throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
+        return _agendaUseCases;
+    }
+
+    public static ActivityUseCases provideActivityUseCases(ActivityRepository repository) {
+        if (activityUseCases != null) return activityUseCases;
+        return activityUseCases = new ActivityUseCases(repository);
+    }
+    public static ActivityUseCases retrieveActivityUseCases() {
+        if (activityUseCases == null)
+            throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
+        return activityUseCases;
     }
 
     public static EventUseCases provideEventUseCases(EventRepository repository) {
@@ -137,8 +180,10 @@ public class AppModule {
         // INFO: setup database and usecases
         AppDatabase db = provideAppDatabase(application);
         ExecutorService executor = provideExecutor();
-        AlarmScheduler alarmScheduler = new AlarmScheduler(application);
+        AlarmScheduler alarmScheduler = provideAlarmScheduler(application);
         provideAgendaUseCases(provideAgendaRepository(db, alarmScheduler));
+        provide_AgendaUseCases(provide_AgendaRepository(db, executor));
+        provideActivityUseCases(provideActivityRepository(db, executor));
         provideEventUseCases(provideEventRepository(db, executor));
         provideAlarmUseCases(provideAlarmRepository(db, executor));
         provideEditAlarmListUseCases();

@@ -24,6 +24,7 @@ import androidx.core.app.NotificationCompat;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.SplashActivity;
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
@@ -46,7 +47,9 @@ public class AlarmNotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             _Alarm alarm = _Alarm.unpackContents(intent.getBundleExtra("ALARM"));
-            showNotification(alarm);
+            AppModule.provideExecutor().submit(
+                    ()->showNotification(alarm)
+            );
         }
         stopSelf();
         return START_NOT_STICKY;
@@ -97,7 +100,7 @@ public class AlarmNotificationService extends Service {
         RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.notification_collapsed_view);
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
         expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
-        expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
+        expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.getTitle());
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
         SpannableStringBuilder locText = alarm.getLoc();
         if (locText == null) {
@@ -111,7 +114,7 @@ public class AlarmNotificationService extends Service {
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)
                 .setColor(Color.argb(0, 0, 0, 0))
                 .setSmallIcon(R.drawable.ic_agenda_calendar)
-                .setContentTitle(alarm.title)
+                .setContentTitle(alarm.getTitle()+": "+(alarm.isSubalarm() ? "(SubAlarm)" : "(MainAlarm)"))
                 .setContentText(alarm.getContents(false))
                 .setCustomContentView(expandedView)//collapsedView)
                 .setCustomBigContentView(expandedView)

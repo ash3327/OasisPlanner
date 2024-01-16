@@ -33,6 +33,9 @@ public interface AgendaDao {
     @Transaction
     @Query("SELECT * FROM _agenda WHERE id = :id")
     Agenda getAgendaById(long id);
+    @Transaction
+    @Query("SELECT * FROM _agenda WHERE id = :id")
+    _Agenda get_AgendaById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Agenda agenda);

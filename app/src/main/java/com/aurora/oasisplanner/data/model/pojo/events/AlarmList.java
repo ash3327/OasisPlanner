@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -54,8 +55,10 @@ public class AlarmList extends _Entity {
             subAlarm.visible = false;
         this.alarmList.time = time;
         this.alarmList.dates = Arrays.stream(dates).collect(Collectors.toList());
+
         this.alarms.addAll(Arrays.stream(dates).map((d)->new _Alarm().setDateTime(d, alarmList.time)).collect(Collectors.toList()));
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
+
         return this;
     }
     @Ignore

@@ -2,12 +2,14 @@ package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
@@ -15,6 +17,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AgendaUseCases {

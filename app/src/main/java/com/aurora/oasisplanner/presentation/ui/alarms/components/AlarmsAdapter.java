@@ -272,7 +272,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_notif));
             binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
             binding.triangle.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
-            binding.barTitle.setText(alarm.title);
+            binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
 
             return true;
@@ -288,7 +288,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_event));
             binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
             binding.bar.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
-            binding.barTitle.setText(alarm.title);
+            binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
             SpannableStringBuilder loc = alarm.getLoc();
             if (loc == null)
@@ -319,7 +319,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             binding.boxBottomtag.setText(DateTimesFormatter.toTime12h(alarm.datetime.toLocalTime()));
             binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
             binding.triangle.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
-            binding.barTitle.setText(alarm.title);
+            binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
 
             return true;

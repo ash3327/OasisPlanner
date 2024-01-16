@@ -231,15 +231,15 @@ public class AgendaRepository {
     ) {
 
         long id = AppModule.retrieveEventUseCases().put(alarmList);
-        alarmList.id = id;
+        /*alarmList.id = id;
         AlarmList parent = alarmList.getAssociates();
         for (_Alarm alarm : parent.alarms) {
             if (alarm.visible) {
                 alarm.alarmListId = id;
                 alarm.activityId = actvId;
                 alarm.agendaId = alarmList.agendaId;
-                alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                alarm.setAlarmData(alarmList.type, alarmList.importance);
+                //alarm.setAgendaData(title, agendaDescr, alarmDescr);
+                //alarm.setAlarmData(alarmList.type, alarmList.importance);
                 if (alarmArgs != null)
                     alarm.getArgs().putAll(alarmArgs);
                 alarm.getArgs().putAll(alarmList.getArgs());
@@ -262,15 +262,15 @@ public class AgendaRepository {
                 if (alarmArgs != null)
                     alarm.getArgs().putAll(alarmArgs);
                 alarm.getArgs().putAll(alarmList.getArgs());
-                alarm.id = alarmDao.insert(alarm);
+                alarm.id = alarmDao.insertSubAlarm(alarm);
                 if (alarmScheduler != null)
                     alarmScheduler.schedule(alarm);
             } else {
                 if (alarmScheduler != null)
                     alarmScheduler.cancel(alarm);
-                alarmDao.delete(alarm);
+                alarmDao.deleteSubAlarm(alarm);
             }
-        }
+        }//*/
         return id;
     }
 
@@ -308,7 +308,7 @@ public class AgendaRepository {
         for (_SubAlarm alarm : parent.subalarms) {
             if (alarmScheduler != null)
                 alarmScheduler.cancel(alarm);
-            alarmDao.delete(alarm);
+            alarmDao.deleteSubAlarm(alarm);
         }
     }
 

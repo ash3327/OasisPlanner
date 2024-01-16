@@ -28,10 +28,12 @@ public interface AlarmDao {
     List<_SubAlarm> getSubAlarms();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(_SubAlarm alarm);
+    long insertSubAlarm(_SubAlarm alarm);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertSubAlarms(List<_SubAlarm> alarms);
 
     @Delete
-    void delete(_SubAlarm alarm);
+    void deleteSubAlarm(_SubAlarm alarm);
     @Delete
     void deleteSubAlarms(List<_SubAlarm> subAlarms);
 
