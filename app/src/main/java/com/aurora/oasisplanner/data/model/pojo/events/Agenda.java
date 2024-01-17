@@ -7,7 +7,6 @@ import androidx.room.Relation;
 import com.aurora.oasisplanner.data.model.entities.events._Agenda;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
-import com.aurora.oasisplanner.data.model.pojo._Entity;
 import com.aurora.oasisplanner.data.tags.AgendaType;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Agenda extends _Entity {
+public class Agenda {
     @Embedded
     public _Agenda agenda;
 

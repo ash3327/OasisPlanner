@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class AlarmsViewModel extends AndroidViewModel {
     private AlarmRepository repository;
-    public LiveData<List<_Alarm>> alarms;
+    public LiveData<List<Alarm>> alarms;
 
     public AlarmsViewModel(@NonNull Application application) {
         super(application);
@@ -36,7 +37,7 @@ public class AlarmsViewModel extends AndroidViewModel {
         repository.delete(alarm);
     }
 
-    public LiveData<List<_Alarm>> getAlarms() {
+    public LiveData<List<Alarm>> getAlarms() {
         return alarms;
     }
 }

@@ -1,7 +1,6 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -10,7 +9,6 @@ import androidx.room.Relation;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
-import com.aurora.oasisplanner.data.model.pojo._Entity;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 
@@ -21,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AlarmList extends _Entity {
+public class AlarmList {
     @Embedded
     public _AlarmList alarmList;
 

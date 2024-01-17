@@ -6,10 +6,13 @@ import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.SubAlarm;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -22,14 +25,14 @@ import java.util.concurrent.ExecutorService;
 
 public class AlarmRepository {
     private AlarmDao alarmDao;
-    private LiveData<List<_Alarm>> alarms;
-    private LiveData<List<_SubAlarm>> subalarms;
+    private LiveData<List<Alarm>> alarms;
+    private LiveData<List<SubAlarm>> subalarms;
     private ExecutorService executor;
 
     public AlarmRepository(AlarmDao alarmDao, ExecutorService executor) {
         this.alarmDao = alarmDao;
-        this.alarms = alarmDao.getAlarmsAfter(LocalDateTime.now());
-        this.subalarms = alarmDao.getSubAlarmsAfter(LocalDateTime.now());
+        this.alarms = alarmDao.getAlarmsInfoAfter(LocalDateTime.now());
+        this.subalarms = alarmDao.getSubAlarmsInfoAfter(LocalDateTime.now());
         this.executor = executor;
     }
 
@@ -40,7 +43,7 @@ public class AlarmRepository {
             if (!firstTime) return;
             firstTime = false;
             try {
-                for (_Alarm alarm : _alarms)
+                for (Alarm alarm : _alarms)
                     alarmScheduler.schedule(alarm);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -52,7 +55,7 @@ public class AlarmRepository {
             if (!firstTimeSubAlarm) return;
             firstTimeSubAlarm = false;
             try {
-                for (_SubAlarm alarm : _subalarms)
+                for (SubAlarm alarm : _subalarms)
                     alarmScheduler.schedule(alarm);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -63,21 +66,17 @@ public class AlarmRepository {
     }
 
     public void insert(_Alarm alarm) {
-        executor.execute(()->alarmDao.insert(alarm));
-        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarm);
-    }
-    public void insert(List<_Alarm> alarms) {
-        executor.execute(()->alarmDao.insert(alarms));
-        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarms.toArray(new _Alarm[0]));
+        executor.execute(()->{
+            long id = alarmDao.insert(alarm);
+            AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), AppModule.retrieveAlarmUseCases().get(id));
+        });
     }
 
     public void insertSubAlarm(_SubAlarm alarm) {
-        executor.execute(()->alarmDao.insertSubAlarm(alarm));
-        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarm);
-    }
-    public void insertSubAlarms(List<_SubAlarm> alarms) {
-        executor.execute(()->alarmDao.insertSubAlarms(alarms));
-        AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), alarms.toArray(new _Alarm[0]));
+        executor.execute(()->{
+            long id = alarmDao.insertSubAlarm(alarm);
+            AlarmScheduler.scheduleMany(AppModule.retrieveAlarmScheduler(), AppModule.retrieveAlarmUseCases().getSubAlarmInfo(id));
+        });
     }
 
     public void delete(_Alarm alarm) {
@@ -97,14 +96,17 @@ public class AlarmRepository {
         AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), subAlarms.toArray(new _Alarm[0]));
     }
 
-    public LiveData<List<_Alarm>> getAlarms() {
+    public LiveData<List<Alarm>> getAlarms() {
         return alarms;
     }
 
-    public LiveData<List<_Alarm>> requestAlarm(String searchEntry) {
-        return alarms = alarmDao.getAlarmsAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
+    public LiveData<List<Alarm>> requestAlarm(String searchEntry) {
+        return alarms = alarmDao.getAlarmsInfoAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
     }
-    public _Alarm requestAlarm(long id) {
-        return alarmDao.getAlarmById(id);
+    public Alarm requestAlarm(long id) {
+        return alarmDao.getAlarmInfoById(id);
+    }
+    public SubAlarm requestSubAlarm(long id) {
+        return alarmDao.getSubAlarmInfoById(id);
     }
 }

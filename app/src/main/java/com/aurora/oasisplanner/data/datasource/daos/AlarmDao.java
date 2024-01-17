@@ -10,6 +10,8 @@ import androidx.room.Query;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.SubAlarm;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,4 +71,30 @@ public interface AlarmDao {
 
     @Query("DELETE FROM _Alarm")
     void deleteAllAlarms();
+
+    // INFO: Alarm
+    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
+    LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate);
+
+    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
+            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
+            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
+            "ORDER BY datetime ASC")
+    LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
+
+    @Query("SELECT * FROM _Alarm WHERE id = :id")
+    Alarm getAlarmInfoById(long id);
+
+    // INFO: SubAlarm
+    @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
+    LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate);
+
+    @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate AND " +
+            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
+            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
+            "ORDER BY datetime ASC")
+    LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
+
+    @Query("SELECT * FROM _SubAlarm WHERE id = :id")
+    SubAlarm getSubAlarmInfoById(long id);
 }

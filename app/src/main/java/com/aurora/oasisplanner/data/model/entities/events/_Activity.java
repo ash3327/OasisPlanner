@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.entities.events;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 
 import androidx.room.ColumnInfo;
@@ -9,18 +10,20 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Entity()
-public class _Activity extends __Entity {
+public class _Activity {
     public enum Type {
         event, task;
 
@@ -72,5 +75,45 @@ public class _Activity extends __Entity {
     public _Activity setI(int i) {
         this.i = i;
         return this;
+    }
+
+    @Ignore
+    public Bundle packContents() {
+        Bundle extras = new Bundle();
+
+        Converters converter = new Converters();
+
+        extras.putLong("id", id);
+        extras.putLong("agendaId", agendaId);
+        extras.putString("types", converter.typeListToString(types));
+        extras.putString("type", getType().name());
+        extras.putString("importance", getImportance().name());
+        extras.putString("descr", converter.spannableToString(descr));
+        extras.putSerializable("args", (Serializable) args);
+
+        return extras;
+    }
+
+    @Ignore
+    public static _Activity unpackContents(Bundle extras) {
+        _Activity alarm = new _Activity();
+
+        Converters converter = new Converters();
+
+        alarm.id = extras.getLong("id");
+        alarm.agendaId = extras.getLong("agendaId");
+        alarm.types = converter.typeListFromString(extras.getString("types"));
+        alarm.type = Type.valueOf(extras.getString("type"));
+        alarm.importance = Importance.valueOf(extras.getString("importance"));
+        alarm.descr = converter.spannableFromString(extras.getString("descr"));
+        alarm.args = (Map<String,String>) extras.getSerializable("args");
+
+        return alarm;
+    }
+
+    @Ignore
+    public String toString() {
+        return "\n\t\t [ Activity : "+id+" : \n\t\t\t"+importance.name()+"\n\t\t\t"+type.name()+
+                "\n\t\t\t"+descr.toString()+"\n\t\t ]";
     }
 }

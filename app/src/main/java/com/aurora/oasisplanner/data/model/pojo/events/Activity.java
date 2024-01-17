@@ -1,7 +1,5 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
-import static com.aurora.oasisplanner.data.tags.ActivityType.Type.loc;
-
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -9,16 +7,14 @@ import androidx.room.Relation;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
-import com.aurora.oasisplanner.data.model.pojo._Entity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
-public class Activity extends _Entity {
+public class Activity {
     @Embedded
     public _Activity activity;
 

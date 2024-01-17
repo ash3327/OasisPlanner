@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 
 import java.util.Arrays;
@@ -26,8 +27,11 @@ public class AlarmUseCases {
         this.fragmentManager = fragmentManager;
     }
 
-    public _Alarm get(long alarmId) {
+    public Alarm get(long alarmId) {
         return repository.requestAlarm(alarmId);
+    }
+    public Alarm getSubAlarmInfo(long alarmId) {
+        return repository.requestSubAlarm(alarmId);
     }
 
     public void put(_Alarm alarm) {

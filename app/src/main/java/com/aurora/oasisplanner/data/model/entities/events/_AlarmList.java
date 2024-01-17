@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.data.model.entities.events;
 
+import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 
 import androidx.room.Entity;
@@ -7,13 +8,14 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,11 +25,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Entity
-public class _AlarmList extends __Entity {
+public class _AlarmList {
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
@@ -106,6 +107,20 @@ public class _AlarmList extends __Entity {
     }
 
     @Ignore
+    public String getTagsString() {
+        SpannableStringBuilder ssb = getArg(TagType.TAGS.name());
+        return ssb==null ? null : ssb.toString();
+    }
+    // INFO: GET ARGS:
+    public SpannableStringBuilder getLoc() {
+        SpannableStringBuilder out = getArg(TagType.LOC.name());
+        if (out == null || out.toString().isEmpty() || out.toString().equals("null"))
+            return null;
+        return out;
+    }
+
+
+    @Ignore
     public boolean hasAssociates() {
         return associates != null;
     }
@@ -140,6 +155,42 @@ public class _AlarmList extends __Entity {
         alarmList.time = LocalTime.now();
         alarmList.dates = Collections.singletonList(LocalDate.now());
         return alarmList;
+    }
+
+    @Ignore
+    public Bundle packContents() {
+        Bundle extras = new Bundle();
+
+        Converters converter = new Converters();
+
+        extras.putLong("id", id);
+        extras.putString("dates", converter.localDatesToString(dates));
+        extras.putLong("time", converter.localTimeToTimestamp(time));
+        extras.putString("type", type.name());
+        extras.putString("importance", importance.name());
+        extras.putLong("agendaId", agendaId);
+        extras.putLong("activityId", activityId);
+        extras.putSerializable("args", (Serializable) args);
+
+        return extras;
+    }
+
+    @Ignore
+    public static _AlarmList unpackContents(Bundle extras) {
+        _AlarmList alarm = new _AlarmList();
+
+        Converters converter = new Converters();
+
+        alarm.id = extras.getLong("id");
+        alarm.dates = converter.localDatesFromString(extras.getString("dates"));
+        alarm.time = converter.localTimeFromTimestamp(extras.getLong("time"));
+        alarm.type = AlarmType.valueOf(extras.getString("type"));
+        alarm.importance = Importance.valueOf(extras.getString("importance"));
+        alarm.agendaId = extras.getLong("agendaId");
+        alarm.activityId = extras.getLong("activityId");
+        alarm.args = (Map<String,String>) extras.getSerializable("args");
+
+        return alarm;
     }
 
     @Ignore

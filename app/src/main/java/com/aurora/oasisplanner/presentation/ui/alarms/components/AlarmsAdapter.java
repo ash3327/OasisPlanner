@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.structure.Image;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.util.Id;
@@ -66,14 +66,14 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     @Override
     public int getItemViewType(int position) {
         Object item = alarms.get(position);
-        if (item instanceof _Alarm)
-            switch (((_Alarm) item).type) {
+        if (item instanceof Alarm)
+            switch (((Alarm) item).getType()) {
                 case notif: return ViewType.AlarmNotif.ordinal();
                 case agenda: return ViewType.AlarmEvent.ordinal();
                 case todo: return ViewType.AlarmTask.ordinal();
                 default:
                     throw new RuntimeException(
-                            "Improper AlarmType "+((_Alarm) item).type.name()+" at item "+position
+                            "Improper AlarmType "+((Alarm) item).getType().name()+" at item "+position
                     );
             }
         if (item instanceof MonthData)
@@ -87,10 +87,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     public long getItemId(int position) {
         Object item = alarms.get(position);
         int numClasses = 3;
-        if (item instanceof _Alarm)
+        if (item instanceof Alarm)
             return  (
-                            ((_Alarm) item).datetime.toEpochSecond(ZoneOffset.UTC) * AlarmType.values().length
-                            + ((_Alarm) item).type.ordinal()
+                            ((Alarm) item).getDateTime().toEpochSecond(ZoneOffset.UTC) * AlarmType.values().length
+                            + ((Alarm) item).getType().ordinal()
                     ) * numClasses;
         if (item instanceof MonthData)
             return ((MonthData) item).month.toEpochDay() * numClasses + 1;
@@ -152,13 +152,13 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
-    public void setAlarms(List<_Alarm> alarms) {
+    public void setAlarms(List<Alarm> alarms) {
         List<Object> list = new ArrayList<>();
 
         LocalDate currentMonth = null;
         LocalDate currentDay = null;
-        for (_Alarm gp : alarms) {
-            LocalDate date = gp.date;
+        for (Alarm gp : alarms) {
+            LocalDate date = gp.getDate();
             LocalDate month = date.withDayOfMonth(1);
             if (!month.equals(currentMonth)) {
                 list.add(new MonthData(month));
@@ -184,8 +184,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
 
     public LocalDate getLocalDateOfItem(Object item) {
         LocalDate ldt = LocalDate.now();
-        if (item instanceof _Alarm)
-            ldt = ((_Alarm) item).datetime.toLocalDate();
+        if (item instanceof Alarm)
+            ldt = ((Alarm) item).getDateTime().toLocalDate();
         else if (item instanceof MonthData)
             ldt = ((MonthData) item).month;
         else if (item instanceof DayData)
@@ -249,11 +249,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
         public boolean bind(int i, Object alarmGp) {
             switch (ViewType.values()[getItemViewType()]) {
                 case AlarmNotif:
-                    return bindAlarmNotif(i, (_Alarm) alarmGp);
+                    return bindAlarmNotif(i, (Alarm) alarmGp);
                 case AlarmEvent:
-                    return bindAlarmEvent(i, (_Alarm) alarmGp);
+                    return bindAlarmEvent(i, (Alarm) alarmGp);
                 case AlarmTask:
-                    return bindAlarmTask(i, (_Alarm) alarmGp);
+                    return bindAlarmTask(i, (Alarm) alarmGp);
                 case MonthData:
                     return bindMonth(i, (MonthData) alarmGp);
                 case DayData:
@@ -262,32 +262,32 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             return false;
         }
 
-        public boolean bindAlarmNotif(int i, _Alarm alarm) {
+        public boolean bindAlarmNotif(int i, Alarm alarm) {
             BoxNotifBinding binding = (BoxNotifBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.agendaId, alarm.activityId)
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
             );
-            binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.datetime.toLocalTime()));
+            binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_notif));
-            binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
-            binding.triangle.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
+            binding.barIcon.setImageDrawable(alarm.getType().getSimpleDrawable());
+            binding.triangle.getBackground().setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
 
             return true;
         }
 
-        public boolean bindAlarmEvent(int i, _Alarm alarm) {
+        public boolean bindAlarmEvent(int i, Alarm alarm) {
             BoxEventBinding binding = (BoxEventBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.agendaId, alarm.activityId)
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
             );
-            binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.datetime.toLocalTime()));
+            binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_event));
-            binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
-            binding.bar.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
+            binding.barIcon.setImageDrawable(alarm.getType().getSimpleDrawable());
+            binding.bar.getBackground().setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
             SpannableStringBuilder loc = alarm.getLoc();
@@ -309,16 +309,16 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             return true;
         }
 
-        public boolean bindAlarmTask(int i, _Alarm alarm) {
+        public boolean bindAlarmTask(int i, Alarm alarm) {
             BoxTaskBinding binding = (BoxTaskBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.agendaId, alarm.activityId)
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
             );
             binding.boxToptag.setText(Resources.getString(R.string.bar_task));
-            binding.boxBottomtag.setText(DateTimesFormatter.toTime12h(alarm.datetime.toLocalTime()));
-            binding.barIcon.setImageDrawable(alarm.type.getSimpleDrawable());
-            binding.triangle.getBackground().setColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_OVER);
+            binding.boxBottomtag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));
+            binding.barIcon.setImageDrawable(alarm.getType().getSimpleDrawable());
+            binding.triangle.getBackground().setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
             binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));
 

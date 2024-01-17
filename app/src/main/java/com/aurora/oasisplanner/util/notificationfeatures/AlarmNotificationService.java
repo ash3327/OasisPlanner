@@ -16,6 +16,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.IBinder;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -26,9 +27,12 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
+
+import java.util.Arrays;
 
 public class AlarmNotificationService extends Service {
 
@@ -46,7 +50,7 @@ public class AlarmNotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
-            _Alarm alarm = _Alarm.unpackContents(intent.getBundleExtra("ALARM"));
+            Alarm alarm = Alarm.unpackContents(intent.getBundleExtra("ALARM"));
             AppModule.provideExecutor().submit(
                     ()->showNotification(alarm)
             );
@@ -63,14 +67,14 @@ public class AlarmNotificationService extends Service {
 
     final String SHORTCUT_ID = "OasisShortcutId";
     @SuppressLint("UnspecifiedImmutableFlag")
-    public void showNotification(_Alarm alarm) {
+    public void showNotification(Alarm alarm) {
         Resources.context = this;
 
-        Intent activityIntent = new Intent(this, MainActivity.main == null ? SplashActivity.class : MainActivity.class);
+        Intent activityIntent = new Intent(this, SplashActivity.class);//appClosed ? SplashActivity.class : MainActivity.class);
         activityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, NotificationMode.AGENDA.name());
 
-        activityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, alarm.agendaId);
-        activityIntent.putExtra(NotificationModule.NOTIFICATION_ACTIVITY, alarm.activityId);
+        activityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, alarm.getAgendaId());
+        activityIntent.putExtra(NotificationModule.NOTIFICATION_ACTIVITY, alarm.getActivityId());
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -80,11 +84,11 @@ public class AlarmNotificationService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        Bitmap img = BitmapFactory.decodeResource(this.getResources(), alarm.importance.getNotifIcon());
+        Bitmap img = BitmapFactory.decodeResource(this.getResources(), alarm.getImportance().getNotifIcon());
         img = img.extractAlpha();
 
         Paint paint = new Paint();
-        paint.setColorFilter(new PorterDuffColorFilter(alarm.importance.getColorPr(), PorterDuff.Mode.SRC_IN));
+        paint.setColorFilter(new PorterDuffColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_IN));
         Bitmap bitmapResult = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmapResult);
@@ -99,7 +103,7 @@ public class AlarmNotificationService extends Service {
         //*/
         RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.notification_collapsed_view);
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
-        expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.datetime.toLocalTime()));
+        expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.getDateTime().toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.getTitle());
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
         SpannableStringBuilder locText = alarm.getLoc();
@@ -114,7 +118,7 @@ public class AlarmNotificationService extends Service {
         Notification notification = new NotificationCompat.Builder(this, ALARM_CHANNEL_ID)
                 .setColor(Color.argb(0, 0, 0, 0))
                 .setSmallIcon(R.drawable.ic_agenda_calendar)
-                .setContentTitle(alarm.getTitle()+": "+(alarm.isSubalarm() ? "(SubAlarm)" : "(MainAlarm)"))
+                .setContentTitle(alarm.getTitle() + ": " + (alarm.getAlarm().isSubalarm() ? "(SubAlarm)" : "(MainAlarm)"))
                 .setContentText(alarm.getContents(false))
                 .setCustomContentView(expandedView)//collapsedView)
                 .setCustomBigContentView(expandedView)
@@ -145,7 +149,7 @@ public class AlarmNotificationService extends Service {
 
         notificationManager.notify(
                 // same id -> update notification instead
-                (int) alarm.id, notification
+                (int) alarm.getEncodedId(), notification
         );
 
         if (MainActivity.main != null)

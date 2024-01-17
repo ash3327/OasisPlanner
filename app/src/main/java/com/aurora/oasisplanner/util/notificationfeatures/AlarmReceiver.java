@@ -8,12 +8,13 @@ import android.os.PowerManager;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        _Alarm alarm = _Alarm.unpackContents(intent.getBundleExtra("ALARM"));
+        Alarm alarm = Alarm.unpackContents(intent.getBundleExtra("ALARM"));
 
         wakeDevice(context);
 

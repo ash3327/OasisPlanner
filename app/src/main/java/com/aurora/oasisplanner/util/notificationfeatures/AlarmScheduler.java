@@ -9,6 +9,7 @@ import android.os.Build;
 import android.provider.Settings;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,27 +34,27 @@ public class AlarmScheduler {
         }
     }
 
-    public void schedule(_Alarm alarm) {
+    public void schedule(Alarm alarm) {
 
-        if (LocalDateTime.now().isAfter(alarm.datetime)) return;
+        if (LocalDateTime.now().isAfter(alarm.getDateTime())) return;
         Intent intent = new Intent(context, AlarmReceiver.class)
                 .putExtra("ALARM", alarm.packContents());
         // still checks if alarm needs triggering even in low power mode.
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
-                alarm.datetime.withSecond(0).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
+                alarm.getDateTime().withSecond(0).atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
                 PendingIntent.getBroadcast(
                         context,
-                        (int) alarm.id,
+                        (int) alarm.getAlarmId(),
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 )
         );
     }
-    public static void scheduleMany(AlarmScheduler alarmScheduler, _Alarm... alarms) {
+    public static void scheduleMany(AlarmScheduler alarmScheduler, Alarm... alarms) {
         if (alarmScheduler == null)
             return;
-        for (_Alarm alarm : alarms)
+        for (Alarm alarm : alarms)
             alarmScheduler.schedule(alarm);
     }
 

@@ -9,7 +9,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities.__Entity;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.TagType;
@@ -23,10 +22,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @Entity
-public class _Alarm extends __Entity {
+public class _Alarm {
     @PrimaryKey(autoGenerate = true)
     public long id;
     public String title;
@@ -44,7 +42,8 @@ public class _Alarm extends __Entity {
     public Map<String,String> args = new HashMap<>();
 
     @Ignore
-    public boolean isSubalarm() {return false;}
+    boolean isSubalarm = false;
+    public boolean isSubalarm() {return isSubalarm;}
 
     {
         setAgendaData("title", "agendaDescr", "alarmDescr");
@@ -69,12 +68,12 @@ public class _Alarm extends __Entity {
     }
     public _Alarm setDateTime(LocalDate date, LocalTime time) {
         this.date = date;
-        this.datetime = date.atTime(time);
+        this.datetime = date.atTime(time).withSecond(0);
         return this;
     }
     public _Alarm setDateTime(LocalDateTime ldt) {
         this.date = ldt.toLocalDate();
-        this.datetime = ldt;
+        this.datetime = ldt.withSecond(0);
         return this;
     }
 
@@ -86,7 +85,7 @@ public class _Alarm extends __Entity {
 
     @Override
     public String toString() {
-        return "<"+id+","+getTitle()+","+getAgendaDescr()+","+getAlarmDescr()+","+datetime+":"+date+">";
+        return "<"+id+","+datetime+":"+date+">";
     }
 
     @Ignore
@@ -140,14 +139,13 @@ public class _Alarm extends __Entity {
         extras.putLong("alarmListId", alarmListId);
         extras.putLong("activityId", activityId);
         extras.putSerializable("args", (Serializable) args);
+        extras.putBoolean("isSubAlarm", isSubalarm);
 
         return extras;
     }
 
     @Ignore
-    public static _Alarm unpackContents(Bundle extras) {
-        _Alarm alarm = new _Alarm();
-
+    public static void unpack(_Alarm alarm, Bundle extras) {
         Converters converter = new Converters();
 
         alarm.id = extras.getLong("id");
@@ -162,6 +160,13 @@ public class _Alarm extends __Entity {
         alarm.alarmListId = extras.getLong("alarmListId");
         alarm.activityId = extras.getLong("activityId");
         alarm.args = (Map<String,String>) extras.getSerializable("args");
+        alarm.isSubalarm = extras.getBoolean("isSubAlarm");
+    }
+    @Ignore
+    public static _Alarm unpackContents(Bundle extras) {
+        _Alarm alarm = new _Alarm();
+
+        unpack(alarm, extras);
 
         return alarm;
     }
