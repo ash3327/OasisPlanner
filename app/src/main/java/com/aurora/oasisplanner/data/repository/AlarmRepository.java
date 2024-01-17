@@ -37,7 +37,7 @@ public class AlarmRepository {
     }
 
     private boolean firstTime = true, firstTimeSubAlarm = true;
-    public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs, CountDownLatch latch) {
+    public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs) {
         firstTime = true;
         alarms.observe(obs, (_alarms)->{
             if (!firstTime) return;
@@ -48,7 +48,7 @@ public class AlarmRepository {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            latch.countDown();
+            //latch.countDown();
             //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
         });
         subalarms.observe(obs, (_subalarms)->{
@@ -60,7 +60,7 @@ public class AlarmRepository {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            latch.countDown();
+            //latch.countDown();
             //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
         });
     }

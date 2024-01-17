@@ -178,6 +178,7 @@ public class AppModule {
     /** setting up the database */
     public static void setupDatabase(Application application, AppCompatActivity activity, CountDownLatch latch) {
         // INFO: setup database and usecases
+        AlarmRepository alarmRepository;
         AppDatabase db = provideAppDatabase(application);
         ExecutorService executor = provideExecutor();
         AlarmScheduler alarmScheduler = provideAlarmScheduler(application);
@@ -185,15 +186,15 @@ public class AppModule {
         provide_AgendaUseCases(provide_AgendaRepository(db, executor));
         provideActivityUseCases(provideActivityRepository(db, executor));
         provideEventUseCases(provideEventRepository(db, executor));
-        provideAlarmUseCases(provideAlarmRepository(db, executor));
+        provideAlarmUseCases(alarmRepository = provideAlarmRepository(db, executor));
         provideEditAlarmListUseCases();
         provideMemoUseCases(provideMemoRepository(db));
         provideGetTagUseCases(provideGeneralRepository(db));
         provideMultimediaRepository(db, executor);
 
         // INFO: setup alarms
-        AlarmRepository alarmRepository = provideAlarmRepository(db, executor);
-        alarmRepository.schedule(alarmScheduler, activity, latch);
+        executor.submit(()->alarmRepository.schedule(alarmScheduler, activity));
+        latch.countDown();
     }
 
 
