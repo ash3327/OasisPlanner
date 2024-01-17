@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
+import android.text.SpannableStringBuilder;
+
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -34,6 +36,12 @@ public class Activity {
 
     /** This constructor is not for programmer access. Please use Activity(null) instead. */
     public Activity(){}
+
+    @Ignore
+    public Activity(String descr) {
+        this.activity = new _Activity();
+        this.activity.descr = new SpannableStringBuilder(descr);
+    }
 
     /** Please always use this constructor with content NULL. */
     @Ignore

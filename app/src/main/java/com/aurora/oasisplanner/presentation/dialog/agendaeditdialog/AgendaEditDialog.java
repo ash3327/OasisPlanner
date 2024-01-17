@@ -27,6 +27,7 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionAdapter;
 
@@ -120,6 +121,8 @@ public class AgendaEditDialog extends Fragment {
                         binding.pageYellowLabel2Icon
                 )
         );
+        binding.pageAddItemEditText.setOnEnterListener(
+                (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         int expandId = adapter.setAgenda(agenda, activityLId);
         recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }

@@ -108,6 +108,7 @@
         <dimen name="page_icon_padding">6dp</dimen>
         <dimen name="page_gap_height">10dp</dimen>
         <dimen name="page_gap_unfocused_height">6dp</dimen>
+        <dimen name="page_item_textsize">16sp</dimen>
 
     <!-- Edit _Alarm Dimensions -->
     <dimen name="edit_alarm_pickerHeaderSize">15sp</dimen>

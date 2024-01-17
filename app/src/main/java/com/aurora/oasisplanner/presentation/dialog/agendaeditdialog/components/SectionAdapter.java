@@ -72,8 +72,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public long getItemId(int position) {
         Object item = sections.get(position);
         long numClasses = 3;
-        if (item instanceof GapData)
-            return ((GapData) item).i * numClasses;
         if (item instanceof Activity)
             return Styles.hashInt(item) * numClasses + 1;
         if (item instanceof _Doc)
@@ -125,8 +123,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         int i = 0, activityPId = -1;
         List[] objlist = agenda.getObjList(true);
         for (Object obj : objlist[0]) {
-            list.add(new GapData(i));
-            types.add(ActivityType.Type.gap);
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
             if (obj instanceof Activity) {
@@ -139,10 +135,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             i++;
         }
-        list.add(new GapData(i));
-        types.add(ActivityType.Type.gap);
 
-        int expandId = activityPId == -1 ? -1 : activityPId * 2 + 1;
+        int expandId = activityPId == -1 ? -1 : activityPId;
         if (activityLId != -2)
             id.setId(expandId);
 
@@ -166,10 +160,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(ActivityType.Type type, int i) {
+    public void insert(ActivityType.Type type, int i, String descr) {
         switch (type) {
             case activity:
-                Activity gp = Activity.empty();
+                Activity gp = new Activity(descr);
                 List<Activity> activities = AppModule.retrieveAgendaUseCases().getActivities(agenda);
                 agenda.agenda.types.add(i, new ActivityType(type, activities.size()));
                 activities.add(gp);
@@ -183,7 +177,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         toAddSection.setId(0);
         agenda.update();
         setAgenda(agenda);
-        id.setId(i * 2 + 1);
+        //id.setId(i * 2 + 1);
     }
 
     public void setScrollToFunc(Id.IdObj scrollFunc) {
@@ -201,8 +195,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         }
 
         public boolean bind(int i, Object sect) {
-            if (sect instanceof GapData)
-                return bindGap(i, (GapData) sect);
             if (sect instanceof Activity)
                 return bindActivity(i, (Activity) sect);
             if (sect instanceof _Doc)
@@ -210,7 +202,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             return false;
         }
 
-        public boolean bindGap(int i, GapData gap) {
+        /*public boolean bindGap(int i, GapData gap) {
             SectionGapBinding binding = (SectionGapBinding) vbinding;
 
             toAddSection.observe((ov, v)->{
@@ -235,7 +227,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             );
 
             return true;
-        }
+        }//*/
 
         public boolean bindActivity(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
@@ -487,15 +479,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     }
     public void addNewSection(View v) {
         toAddSection.setId(1);
-    }
-
-
-    public static class GapData {
-        public int i;
-
-        public GapData(int i) {
-            this.i = i;
-        }
     }
 
     public static class Label {

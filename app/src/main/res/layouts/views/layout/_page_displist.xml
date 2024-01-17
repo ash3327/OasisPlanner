@@ -3,15 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include layout="@layout/section_gap"/>
-    <include layout="@layout/section_doc"/>
-    <include layout="@layout/section_gap"/>
     <include layout="@layout/section"/>
-    <include layout="@layout/section_gap"/>
-    <include layout="@layout/section_doc"/>
-    <include layout="@layout/section_gap"/>
     <include layout="@layout/section"/>
-    <include layout="@layout/section_gap"/>
     <include layout="@layout/section"/>
-    <include layout="@layout/section_gap"/>
 </LinearLayout>
