@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
@@ -73,28 +74,34 @@ public interface AlarmDao {
     void deleteAllAlarms();
 
     // INFO: Alarm
+    @Transaction
     @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate);
 
+    @Transaction
     @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
             "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
             "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
             "ORDER BY datetime ASC")
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 
+    @Transaction
     @Query("SELECT * FROM _Alarm WHERE id = :id")
     Alarm getAlarmInfoById(long id);
 
     // INFO: SubAlarm
+    @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
     LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate);
 
+    @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate AND " +
             "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
             "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
             "ORDER BY datetime ASC")
     LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 
+    @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE id = :id")
     SubAlarm getSubAlarmInfoById(long id);
 }

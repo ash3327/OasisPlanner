@@ -22,10 +22,9 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
-import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;
@@ -42,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
+public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmGroupsHolder> {
 
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id id;
@@ -186,9 +185,9 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     class AlarmGroupsHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding vbinding;
-        private SectionAdapter adapter;
+        private _SectionAdapter adapter;
 
-        public AlarmGroupsHolder(ViewDataBinding binding, SectionAdapter adapter) {
+        public AlarmGroupsHolder(ViewDataBinding binding, _SectionAdapter adapter) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
@@ -320,6 +319,22 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             };
             docText.setTag(textWatcher);
             docText.addTextChangedListener(textWatcher);
+
+            /*RecyclerView recyclerView = binding.sectionItems;
+            recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
+            recyclerView.setHasFixedSize(true);
+
+            final SectionItemAdapter adapter = new SectionItemAdapter(
+                    (alarmList)-> notifyItemChanged(i), recyclerView, id, i, tSwitch
+            );
+            tSwitch.observe((state)-> {
+                if (!(id.equals(-1) && toAddSection.equals(0)) && id.equals(i))
+                    updateLabel(label, label2, false, state,
+                            (v)->adapter.removeChecked(), (v)->adapter.editTagOfChecked(),
+                            adapter::checkListIsEmpty, adapter.bSwitch);
+            }, true);
+            recyclerView.setAdapter(adapter);
+            adapter.setGroup(gp);*/
 
             return true;
         }
