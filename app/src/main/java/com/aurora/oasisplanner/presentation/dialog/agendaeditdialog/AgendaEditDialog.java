@@ -25,11 +25,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgendaEditDialog extends Fragment {
     public static final String EXTRA_AGENDA_ID = "agendaId";
@@ -37,6 +41,10 @@ public class AgendaEditDialog extends Fragment {
 
     private Agenda agenda;
     private long activityLId;
+
+    public static final int NO_ACTIVITY_SELECTED = -2;
+    private List<_Activity> selected = new ArrayList<>();
+    private PageBinding binding;
 
     @NonNull
     @Override
@@ -73,8 +81,8 @@ public class AgendaEditDialog extends Fragment {
         else
             agenda = Agenda.empty();
 
-        PageBinding binding = PageBinding.inflate(getLayoutInflater());
-        onBind(binding);
+        binding = PageBinding.inflate(getLayoutInflater());
+        onBind();
 
         return binding.getRoot();
     }
@@ -89,7 +97,7 @@ public class AgendaEditDialog extends Fragment {
         super.onDestroy();
     }
 
-    public void onBind(PageBinding binding) {
+    public void onBind() {
         //binding.header.setText(agenda.agenda.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
         binding.img.setImageResource(R.drawable.blur_v1);
         binding.agendaConfirmEdit.setOnClickListener(
@@ -101,6 +109,13 @@ public class AgendaEditDialog extends Fragment {
 
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
+
+        show(selected);
+    }
+
+    public void showActivities(Agenda agenda) {
+        binding.pageGreyBar1.setVisibility(View.GONE);
+        binding.pageActivities.setVisibility(View.GONE);
 
         RecyclerView recyclerView = binding.pageSections;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -125,6 +140,15 @@ public class AgendaEditDialog extends Fragment {
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         int expandId = adapter.setAgenda(agenda, activityLId);
         recyclerView.post(()-> scrollTo(expandId, recyclerView));
+    }
+    public void showEvents(List<_Activity> selected) {
+
+    }
+    public void show(List<_Activity> selected) {
+        if (selected == null || selected.size() == 0)
+            showActivities(agenda);
+        else
+            showEvents(selected);
     }
 
     public void scrollTo(int pos, RecyclerView recyclerView) {

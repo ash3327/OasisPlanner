@@ -59,6 +59,11 @@ public class _Activity {
         agendaId = agenda.id;
     }
 
+    @Ignore
+    public _Activity(String descr) {
+        this.descr = new SpannableStringBuilder(descr);
+    }
+
     public Type getType() {
         if (type == null)
             type = Type.event;

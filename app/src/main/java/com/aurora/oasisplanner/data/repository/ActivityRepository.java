@@ -68,9 +68,8 @@ public class ActivityRepository {
     }
 
     public Future<Activity> getActivityWithChild(final long id) {
-        //return executor.submit(()->activityDao.getActivityWithChildById(id));
-        assert false;
-        return null;
+        return executor.submit(()->activityDao.getActivityWithChildById(id));
+        //return null;
     }
 
     public void deleteActivityWithChild(final Activity activity) {

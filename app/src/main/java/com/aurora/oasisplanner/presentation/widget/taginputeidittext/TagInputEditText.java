@@ -44,6 +44,7 @@ public class TagInputEditText extends TextInputEditText {
     String lastString = null;
     public static final String SEP = " ";
     public boolean editable;
+    private OnUpdateListener onUpdateListener = null;
 
     public TagInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -78,11 +79,22 @@ public class TagInputEditText extends TextInputEditText {
                 String str = s.toString();
                 if (str.length() > 0 && !str.equals(lastString))
                     format();
+                update();
             }
         };
 
         addTextChangedListener(textWatcher);
     }
+
+    private void update() {
+        Editable s = getText();
+        if (onUpdateListener != null)
+            onUpdateListener.onUpdate(s == null ? "" : s.toString());
+    }
+    public void setOnUpdateListener(OnUpdateListener onUpdateListener) {
+        this.onUpdateListener = onUpdateListener;
+    }
+    public interface OnUpdateListener { void onUpdate(String tags); }
 
     public static String format(String str) {
         String[] strings = str.trim().replaceAll("\\s+"," ").split(SEP);
@@ -99,7 +111,7 @@ public class TagInputEditText extends TextInputEditText {
         return new SpannableStringBuilder(format(c));
     }
 
-    private void format() {
+    public void format() {
         int selection = getSelectionStart();
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
         String fullString = Objects.requireNonNull(getText()).toString();

@@ -11,6 +11,7 @@ import androidx.room.Transaction;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Agenda;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public interface ActivityDao {
     @Transaction
     @Query("SELECT * FROM _Activity WHERE id = :id")
     _Activity getActivityById(long id);
+    @Transaction
+    @Query("SELECT * FROM _Activity WHERE id = :id")
+    Activity getActivityWithChildById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(_Activity activity);

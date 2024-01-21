@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentManager;
 
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.repository.ActivityRepository;
 
 import java.util.concurrent.Future;
@@ -24,6 +25,9 @@ public class ActivityUseCases {
 
     public Future<_Activity> get(long activityId) {
         return repository.getActivity(activityId);
+    }
+    public Future<Activity> getActivityWithChild(long activityId) {
+        return repository.getActivityWithChild(activityId);
     }
 
     public void put(_Activity activity) {
