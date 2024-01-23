@@ -6,6 +6,7 @@ import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
@@ -40,7 +41,7 @@ public class Activity {
     @Ignore
     public Activity(String descr) {
         this.activity = new _Activity();
-        this.activity.descr = new SpannableStringBuilder(descr);
+        this.activity.descr = descr == null ? null : new SpannableStringBuilder(descr);
     }
 
     /** Please always use this constructor with content NULL. */
@@ -72,6 +73,27 @@ public class Activity {
             }
         }
         return new Object[]{aL, dt};
+    }
+    @Ignore
+    public Alarm getFirstAlarm() {
+        _AlarmList aL = alarmLists.get(0);
+        LocalDateTime dt = aL.getNextDateTime();
+        for (_AlarmList al : alarmLists) {
+            LocalDateTime aldt = al.getNextDateTime();
+            if (aldt != null && (dt == null || aldt.isBefore(dt))) {
+                aL = al;
+                dt = aldt;
+            }
+        }
+        if (dt != null) {
+            Alarm a = new Alarm();
+            a.alarmList = aL;
+            a.alarm = new _Alarm()
+                    .setAlarmData(aL.type, aL.importance)
+                    .setDateTime(dt);
+            return a;
+        }
+        return null;
     }
 
     /** output format: List[2]: {objlist: List<Object>, types: List<ActivityType.Type>}*/

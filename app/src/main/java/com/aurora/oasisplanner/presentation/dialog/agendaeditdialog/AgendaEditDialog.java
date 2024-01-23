@@ -180,16 +180,19 @@ public class AgendaEditDialog extends Fragment {
 
         }, true);
         recyclerView.setAdapter(adapter);
-        binding.pageAddItemEditText.setOnEnterListener(
-                (s)->adapter.insert(ActivityType.Type.activity, 0, s));
 
         ExecutorService executor = AppModule.provideExecutor();
         executor.submit(()->{
             try {
-                Activity activity = AppModule.retrieveActivityUseCases().getActivityWithChild(selected.get(0).id).get();
+                //TODO: selection of multiple activities.
+                _Activity actv = selected.get(0);
+                Activity activity = actv.getCache();
+                assert activity != null;
                 binding.getRoot().post(()->{
                     adapter.setGroup(activity);
                 });
+                binding.pageAddItemEditText.setOnEnterListener(
+                        (s)->adapter.insert(ActivityType.Type.activity, 0, s));
             } catch (Exception e) {
                 e.printStackTrace();
             }

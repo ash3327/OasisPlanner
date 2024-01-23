@@ -10,18 +10,18 @@ import com.aurora.oasisplanner.data.core.use_cases.AlarmUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EventUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.MemoUseCases;
-import com.aurora.oasisplanner.data.core.use_cases._AgendaUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.repository.ActivityRepository;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
+import com.aurora.oasisplanner.data.repository._AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
-import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
+import com.aurora.oasisplanner.data.core.use_cases._AgendaUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
 import com.aurora.oasisplanner.data.repository.EventRepository;
 import com.aurora.oasisplanner.data.repository.MultimediaRepository;
 import com.aurora.oasisplanner.data.repository.TagRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
-import com.aurora.oasisplanner.data.repository._AgendaRepository;
+import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -32,8 +32,8 @@ import java.util.concurrent.Executors;
 
 public class AppModule {
 
-    private static AgendaUseCases agendaUseCases;
-    private static _AgendaUseCases _agendaUseCases;
+    private static _AgendaUseCases agendaUseCases;
+    private static AgendaUseCases _agendaUseCases;
     private static ActivityUseCases activityUseCases;
     private static EventUseCases eventUseCases;
     private static AlarmUseCases alarmUseCases;
@@ -63,14 +63,14 @@ public class AppModule {
         return AppDatabase.getInstance(application);
     }
 
-    public static AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler) {
-        return new AgendaRepository(
+    public static _AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler) {
+        return new _AgendaRepository(
                 db.agendaDao(), db.alarmDao(),
                 db.activityDao(), db.eventDao(),
                 alarmScheduler);
     }
-    public static _AgendaRepository provide_AgendaRepository(AppDatabase db, ExecutorService executor) {
-        return new _AgendaRepository(db.agendaDao(), executor);
+    public static AgendaRepository provide_AgendaRepository(AppDatabase db, ExecutorService executor) {
+        return new AgendaRepository(db.agendaDao(), executor);
     }
     public static ActivityRepository provideActivityRepository(AppDatabase db, ExecutorService executor) {
         return new ActivityRepository(db.activityDao(), executor);
@@ -91,22 +91,22 @@ public class AppModule {
         return new MultimediaRepository(db.multimediaDao(), executor);
     }
 
-    public static AgendaUseCases provideAgendaUseCases(AgendaRepository repository) {
+    public static _AgendaUseCases provideAgendaUseCases(_AgendaRepository repository) {
         if (agendaUseCases != null) return agendaUseCases;
-        return agendaUseCases = new AgendaUseCases(repository);
+        return agendaUseCases = new _AgendaUseCases(repository);
     }
-    public static AgendaUseCases retrieveAgendaUseCases() {
+    public static _AgendaUseCases retrieveAgendaUseCases() {
         if (agendaUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return agendaUseCases;
     }
 
 
-    public static _AgendaUseCases provide_AgendaUseCases(_AgendaRepository repository) {
+    public static AgendaUseCases provide_AgendaUseCases(AgendaRepository repository) {
         if (_agendaUseCases != null) return _agendaUseCases;
-        return _agendaUseCases = new _AgendaUseCases(repository);
+        return _agendaUseCases = new AgendaUseCases(repository);
     }
-    public static _AgendaUseCases retrieve_AgendaUseCases() {
+    public static AgendaUseCases retrieve_AgendaUseCases() {
         if (_agendaUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return _agendaUseCases;

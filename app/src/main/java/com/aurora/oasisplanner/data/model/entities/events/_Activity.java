@@ -10,6 +10,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Entity()
 public class _Activity {
@@ -120,5 +123,31 @@ public class _Activity {
     public String toString() {
         return "\n\t\t [ Activity : "+id+" : \n\t\t\t"+importance.name()+"\n\t\t\t"+type.name()+
                 "\n\t\t\t"+descr.toString()+"\n\t\t ]";
+    }
+
+
+    @Ignore
+    private Activity cache = null;
+
+    /** Note: This method is NOT thread safe for the UI thread. */
+    public Activity getCache() throws ExecutionException, InterruptedException {
+        return mergeCache(
+                AppModule.retrieveActivityUseCases().getActivityWithChild(id).get(),
+                cache
+        );
+    }
+    public boolean hasCache() {
+        return cache != null;
+    }
+    public void setCache(Activity activity) {
+        this.cache = activity;
+    }
+    private Activity mergeCache(Activity activity, Activity cache) {
+        if (cache == null)
+            cache = activity;
+        if (cache == null)
+            cache = Activity.empty();
+        cache.activity = this;
+        return this.cache = cache;
     }
 }
