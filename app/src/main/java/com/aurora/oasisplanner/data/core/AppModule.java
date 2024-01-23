@@ -43,7 +43,7 @@ public class AppModule {
 
     public static ExecutorService provideExecutor() {
         if (executor == null)
-            executor = Executors.newFixedThreadPool(2);
+            executor = Executors.newFixedThreadPool(5);
         return executor;
     }
 

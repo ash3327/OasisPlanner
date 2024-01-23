@@ -23,7 +23,7 @@ public class ActivityRepository {
     public Future<Long> insertActivity(final _Activity activity) {
         /*return executor.submit(()->{
             if (!activity.hasAssociates())
-                return activityDao.insert(activity);
+                return activityDao.save(activity);
             else
                 return insertActivityWithChild(activity.getAssociates()).get();
         });*/
@@ -48,7 +48,7 @@ public class ActivityRepository {
     
     public Future<Long> insertActivityWithChild(final Activity activity) {
         /*return executor.submit(()->{
-            long id = activityDao.insert(activity.activity);
+            long id = activityDao.save(activity.activity);
             for (_Alarm alarm : activity.alarms) {
                 alarm.activityId = id;
                 alarm.activityId = activity.activity.activityId;

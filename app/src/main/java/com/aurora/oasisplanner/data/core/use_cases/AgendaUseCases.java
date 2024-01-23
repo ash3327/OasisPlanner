@@ -53,7 +53,7 @@ public class AgendaUseCases {
     }
 
     public void put(Agenda agenda) {
-        repository.insert(agenda);
+        repository.save(agenda);
     }
 
     public List<_Activity> getActivities(Agenda agenda) {

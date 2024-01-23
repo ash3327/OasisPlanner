@@ -3,6 +3,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.S
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -85,11 +87,20 @@ public class AgendaEditDialog extends Fragment {
         AppModule.provideExecutor().submit(()->{
             long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
             activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
+
             if (agendaId != -1)
                 agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
             else
                 agenda = Agenda.empty();
 
+            if (activityLId != -1) {
+                for (_Activity actv : agenda.activities) {
+                    if (actv.id == activityLId) {
+                        selected = Collections.singletonList(actv);
+                        break;
+                    }
+                }
+            }
             binding.getRoot().post(this::onBind);
         });
 
@@ -199,6 +210,7 @@ public class AgendaEditDialog extends Fragment {
         });
     }
     public void show(List<_Activity> selected) {
+        Log.d("test3", Arrays.deepToString(selected.toArray()));
         if (selected == null || selected.size() == 0)
             showActivities(agenda);
         else

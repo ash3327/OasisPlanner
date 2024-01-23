@@ -159,7 +159,7 @@ public class _SectionAdapter {/* extends RecyclerView.Adapter<_SectionAdapter.Al
     }
 
     /* the index i is the index i IN THE VISUAL LIST. /
-    public void insert(ActivityType.Type type, int i, String descr) {
+    public void save(ActivityType.Type type, int i, String descr) {
         switch (type) {
             case activity:
                 Activity gp = new Activity(descr);
@@ -215,13 +215,13 @@ public class _SectionAdapter {/* extends RecyclerView.Adapter<_SectionAdapter.Al
             binding.btnAddGroup.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                            adapter.insert(ActivityType.Type.activity, gap.i);
+                            adapter.save(ActivityType.Type.activity, gap.i);
                     }
             );
             binding.btnAddDoc.setOnClickListener(
                     (v)->{
                         if (id.equals(i))
-                            adapter.insert(ActivityType.Type.doc, gap.i);
+                            adapter.save(ActivityType.Type.doc, gap.i);
                     }
             );
 
