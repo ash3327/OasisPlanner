@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -226,24 +227,32 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             ExecutorService executor = AppModule.provideExecutor();
             executor.submit(()->{
-                Alarm nextAlarm = AppModule.retrieveAgendaUseCases().getNextAlarm(gp);
-                if (nextAlarm != null) {
-                    binding.sectdI1.setImageDrawable(nextAlarm.getType().getDrawable());
-                    //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
-                    binding.sectdT1.setText(DateTimesFormatter.getDateTime(nextAlarm.getDateTime()));
-                } else {
-                    binding.sectdI1.setVisibility(View.GONE);
-                    binding.sectdT1.setVisibility(View.GONE);
-                }
-                SpannableStringBuilder ssb = null;
-                if (nextAlarm != null)
-                    ssb = nextAlarm.getLoc();
-                if (nextAlarm != null && ssb != null) {
-                    binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
-                    binding.sectdT2.setText(ssb);
-                } else {
-                    binding.sectdI2.setVisibility(View.GONE);
-                    binding.sectdT2.setVisibility(View.GONE);
+                try {
+                    Alarm nextAlarm = AppModule.retrieveAgendaUseCases().getNextAlarm(gp);
+                    binding.getRoot().post(()->{
+                        if (nextAlarm != null) {
+                            binding.sectdI1.setImageDrawable(nextAlarm.getType().getDrawable());
+                            //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
+                            binding.sectdT1.setText(DateTimesFormatter.getDateTime(nextAlarm.getDateTime()));
+                        } else {
+                            binding.sectdI1.setVisibility(View.GONE);
+                            binding.sectdT1.setVisibility(View.GONE);
+                        }
+                        SpannableStringBuilder ssb = null;
+                        if (nextAlarm != null)
+                            ssb = nextAlarm.getLoc();
+                        if (nextAlarm != null && ssb != null) {
+                            binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
+                            binding.sectdT2.setText(ssb);
+                        } else {
+                            binding.sectdI2.setVisibility(View.GONE);
+                            binding.sectdT2.setVisibility(View.GONE);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("test3", e.getMessage());
                 }
             });
 

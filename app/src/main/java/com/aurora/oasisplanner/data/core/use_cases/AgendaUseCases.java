@@ -66,11 +66,6 @@ public class AgendaUseCases {
         return activity.alarmLists;
     }
     public Alarm getNextAlarm(Activity activity) {
-        try {
-            return AppModule.retrieveAlarmUseCases().getNextAlarmFromActivity(activity.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return AppModule.retrieveAlarmUseCases().getNextAlarmFromActivity(activity.getId());
     }
 }
