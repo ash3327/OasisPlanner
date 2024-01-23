@@ -180,6 +180,8 @@ public class AgendaEditDialog extends Fragment {
 
         }, true);
         recyclerView.setAdapter(adapter);
+        binding.pageAddItemEditText.setOnEnterListener(
+                (s)->adapter.insert(ActivityType.Type.activity, 0, s));
 
         ExecutorService executor = AppModule.provideExecutor();
         executor.submit(()->{

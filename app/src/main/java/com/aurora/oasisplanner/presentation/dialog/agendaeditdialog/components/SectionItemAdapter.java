@@ -22,6 +22,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
@@ -188,10 +189,11 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(ActivityType.Type type, int i) {
+    public void insert(ActivityType.Type type, int i, String s) {
         switch (type) {
             case activity:
                 _AlarmList gp = _AlarmList.empty();
+                gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
                 activity.activity.types.add(i, new ActivityType(type,
                         AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));
                 AppModule.retrieveAgendaUseCases().getAlarmLists(activity).add(gp);
