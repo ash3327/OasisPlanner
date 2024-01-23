@@ -36,6 +36,9 @@ public interface EventDao {
     @Delete
     void delete(_AlarmList alarmList);
 
+    @Query("DELETE FROM _AlarmList WHERE activityId = :activityId")
+    void deleteEventsByActivity(long activityId);
+
     @Query("DELETE FROM _AlarmList")
     void deleteAllAlarmLists();
 }

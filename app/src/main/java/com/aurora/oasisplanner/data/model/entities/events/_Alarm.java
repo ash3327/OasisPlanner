@@ -77,28 +77,9 @@ public class _Alarm {
         return this;
     }
 
-    public static class InvalidAlarmException extends RuntimeException {
-        public InvalidAlarmException(String message) {
-            super(message);
-        }
-    }
-
     @Override
     public String toString() {
         return "<"+id+","+datetime+":"+date+">";
-    }
-
-    @Ignore
-    public SpannableStringBuilder getContents(boolean inExpandedMode) {
-        return inExpandedMode ?
-                getAgendaDescr().toString().isEmpty() ?
-                        new SpannableStringBuilder()
-                                .append(getAlarmDescr()) :
-                        new SpannableStringBuilder()
-                                .append(getAlarmDescr())
-                                .append("\n\n")
-                                .append(getAgendaDescr())
-                : Styles.truncate(getAlarmDescr(), 12);
     }
 
     @Ignore
@@ -128,9 +109,6 @@ public class _Alarm {
         Converters converter = new Converters();
 
         extras.putLong("id", id);
-        extras.putString("title", getTitle());
-        extras.putString("agendaDescr", converter.spannableToString(getAgendaDescr()));
-        extras.putString("alarmDescr", converter.spannableToString(getAlarmDescr()));
         extras.putLong("dateTime", converter.datetimeToTimestamp(datetime));
         extras.putLong("date", converter.dateToTimestamp(date));
         extras.putString("type", type.name());
@@ -149,9 +127,6 @@ public class _Alarm {
         Converters converter = new Converters();
 
         alarm.id = extras.getLong("id");
-        alarm.title = extras.getString("title");
-        alarm.agendaDescr = converter.spannableFromString(extras.getString("agendaDescr"));
-        alarm.alarmDescr = converter.spannableFromString(extras.getString("alarmDescr"));
         alarm.datetime = converter.datetimeFromTimestamp(extras.getLong("dateTime"));
         alarm.date = converter.dateFromTimestamp(extras.getLong("date"));
         alarm.type = AlarmType.valueOf(extras.getString("type"));
@@ -169,58 +144,5 @@ public class _Alarm {
         unpack(alarm, extras);
 
         return alarm;
-    }
-
-    // INFO: GET ARGS:
-    public SpannableStringBuilder getLoc() {
-        SpannableStringBuilder out = getArg(TagType.LOC.name());
-        if (out == null || out.toString().isEmpty() || out.toString().equals("null"))
-            return null;
-        return out;
-    }
-
-    @Ignore
-    public String getTagsString() {
-        SpannableStringBuilder ssb = getArg(TagType.TAGS.name());
-        return ssb==null ? null : ssb.toString();
-    }
-
-    @Ignore
-    private _Activity activity = null;
-    public _Activity getActivity() {
-        if (activity == null) {
-            try {
-                activity = AppModule.retrieveActivityUseCases().get(activityId).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return activity;
-    }
-
-    @Ignore
-    private _Agenda agenda = null;
-    public _Agenda getAgenda() {
-        if (agenda == null) {
-            try {
-                agenda = AppModule.retrieve_AgendaUseCases().get(agendaId).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return agenda;
-    }
-    
-    public String getTitle() {
-        //return getAgenda().title;
-        return title;
-    }
-    public SpannableStringBuilder getAgendaDescr() {
-        //return getAgenda().;
-        return agendaDescr;
-    }
-    public SpannableStringBuilder getAlarmDescr() {
-        //return getActivity().descr;
-        return alarmDescr;
     }
 }

@@ -8,6 +8,7 @@ import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
 import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.datasource.daos.EventDao;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
@@ -156,7 +157,7 @@ public class AgendaRepository {
 
         /*for (_Doc doc : agenda.invisDocs)
             agendaDao.delete(doc);*/
-        for (Activity gp : agenda.invisGroups)
+        for (_Activity gp : agenda.invisGroups)
             delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
 
         long id = agendaDao.insert(agenda.agenda);
@@ -167,10 +168,12 @@ public class AgendaRepository {
         }*/
         String title = agenda.agenda.title;
         SpannableStringBuilder content = _Doc.getFirst(agenda.docs, "");
-        for (Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda)) {
-            gp.activity.agendaId = id;
+        // TODO : FIX THIS
+        /*
+        for (_Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda)) {
+            gp.agendaId = id;
             insert(gp, title, content, agendaDao, activityDao, eventDao, alarmDao, alarmScheduler);
-        }
+        }//*/
         return id;
     }
 
@@ -279,19 +282,24 @@ public class AgendaRepository {
                                ActivityDao activityDao, EventDao eventDao,
                                AlarmScheduler alarmScheduler) {
         agendaDao.delete(agenda.agenda);
+        // TODO: FIX THIS
+        /*
         for (Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda))
-            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
+            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);*/
         /*for (_Doc doc : agenda.docs)
             agendaDao.delete(doc);*/
     }
 
-    private static void delete(Activity activity,
+    private static void delete(_Activity activity,
                                AgendaDao agendaDao, AlarmDao alarmDao,
                                ActivityDao activityDao, EventDao eventDao,
                                AlarmScheduler alarmScheduler) {
-        activityDao.delete(activity.activity);
+        activityDao.delete(activity);
+        eventDao.deleteEventsByActivity(activity.id);
+        //TODO: fix this:
+        /*
         for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
-            delete(alarmList, agendaDao, alarmDao, eventDao, alarmScheduler);
+            delete(alarmList, agendaDao, alarmDao, eventDao, alarmScheduler);*/
         /*for (_Doc doc : activity.docs)
             agendaDao.delete(doc);*/
     }

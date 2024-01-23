@@ -19,13 +19,13 @@ public class Agenda {
     public _Agenda agenda;
 
     @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Activity.class)
-    public List<Activity> activities = new ArrayList<>();
+    public List<_Activity> activities = new ArrayList<>();
 
     @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
-    public List<Activity> invisGroups = new ArrayList<>();
+    public List<_Activity> invisGroups = new ArrayList<>();
     @Ignore
     public List<_Doc> invisDocs = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class Agenda {
         List<ActivityType.Type> types = new ArrayList<>();
 
         if (sort) {
-            activities.sort(Comparator.comparingInt(a -> a.activity.i));
+            activities.sort(Comparator.comparingInt(a -> a.i));
             docs.sort(Comparator.comparingInt(a -> a.i));
         }
 
@@ -59,7 +59,7 @@ public class Agenda {
             switch (gt.type) {
                 case activity:
                     obj = activities.get(gt.i);
-                    visible = ((Activity) obj).visible;
+                    visible = ((_Activity) obj).visible;
                     break;
                 case doc:
                     obj = docs.get(gt.i);
@@ -71,7 +71,7 @@ public class Agenda {
                 types.add(gt.type);
             }
         }
-        for (Activity gp : activities)
+        for (_Activity gp : activities)
             if (!gp.visible) invisGroups.add(gp);
         for (_Doc doc : docs)
             if (!doc.visible) invisDocs.add(doc);
@@ -89,9 +89,9 @@ public class Agenda {
 
         int i = 0;
         for (Object obj : list) {
-            if (obj instanceof Activity) {
+            if (obj instanceof _Activity) {
                 agenda.types.add(new ActivityType(ActivityType.Type.activity, activities.size()));
-                activities.add(((Activity) obj).setI(i));
+                activities.add(((_Activity) obj).setI(i));
             }
             if (obj instanceof _Doc) {
                 agenda.types.add(new ActivityType(ActivityType.Type.doc, docs.size()));

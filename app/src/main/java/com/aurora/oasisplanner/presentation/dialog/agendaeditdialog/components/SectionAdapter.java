@@ -23,7 +23,6 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
-import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.tags.ActivityType;
@@ -45,18 +44,12 @@ import java.util.function.Function;
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
 
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
-    private Id id;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
     private Label label, label2;
 
     {
         setHasStableIds(true);
-        id = new Id(-1, ID_KEY_SECTIONS);
-        id.observe((oldId, newId)->{
-            if(oldId >= 0) notifyItemChanged(oldId);
-            if(newId >= 0) notifyItemChanged(newId);
-        });
     }
 
     private Agenda agenda;
@@ -72,10 +65,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public long getItemId(int position) {
         Object item = sections.get(position);
         long numClasses = 3;
-        if (item instanceof Activity)
+        if (item instanceof _Activity)
             return Styles.hashInt(item) * numClasses + 1;
-        if (item instanceof _Doc)
-            return Styles.hashInt(item) * numClasses + 2;
         return -1;
     }
 
@@ -115,45 +106,28 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         setAgenda(agenda, -2);
     }
     @SuppressLint("NotifyDataSetChanged")
-    public int setAgenda(Agenda agenda, long activityLId) {
+    public void setAgenda(Agenda agenda, long activityLId) {
         this.agenda = agenda;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0, activityPId = -1;
+        int i = 0;
         List[] objlist = agenda.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
-            if (obj instanceof Activity) {
-                List<_AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists((Activity) obj);
-                if (alarmLists.size() > 0
-                        && alarmLists.get(0).activityId == activityLId) {
-                    activityPId = i;
-                }
-            }
-
             i++;
         }
-
-        int expandId = activityPId == -1 ? -1 : activityPId;
-        if (activityLId != -2)
-            id.setId(expandId);
 
         this.sections = list;
         this.types = types;
         notifyDataSetChanged();
-
-        return expandId;
     }
 
     public void remove(Object obj, int i) {
-        if (obj instanceof Activity)
-            ((Activity) obj).visible = false;
-        if (obj instanceof _Doc)
-            ((_Doc) obj).visible = false;
+        if (obj instanceof _Activity)
+            ((_Activity) obj).visible = false;
         toAddSection.setId(0);
-        id.setId(-1);
         agenda.agenda.types.remove(i);
         agenda.update();
         setAgenda(agenda);
@@ -163,16 +137,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public void insert(ActivityType.Type type, int i, String descr) {
         switch (type) {
             case activity:
-                Activity gp = new Activity(descr);
-                List<Activity> activities = AppModule.retrieveAgendaUseCases().getActivities(agenda);
+                _Activity gp = new _Activity(descr);
+                List<_Activity> activities = AppModule.retrieveAgendaUseCases().getActivities(agenda);
                 agenda.agenda.types.add(i, new ActivityType(type, activities.size()));
                 activities.add(gp);
                 break;
-            /*case doc:
-                _Doc doc = _Doc.empty();
-                agenda.agenda.types.add(i, new ActivityType(type, agenda.docs.size()));
-                agenda.docs.add(doc);
-                break;*/
         }
         toAddSection.setId(0);
         agenda.update();
@@ -195,14 +164,12 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         }
 
         public boolean bind(int i, Object sect) {
-            if (sect instanceof Activity)
-                return bindActivity(i, (Activity) sect);
-            if (sect instanceof _Doc)
-                return bindDoc(i, (_Doc) sect);
+            if (sect instanceof _Activity)
+                return bindActivity(i, (_Activity) sect);
             return false;
         }
 
-        public boolean bindActivity(int i, Activity gp) {
+        public boolean bindActivity(int i, _Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
             Switch tSwitch = new Switch(false);
 
@@ -210,7 +177,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                     (v)->{
                         toAddSection.setId(0);
                         scrollFunc.run(i, i);
-                        id.setId(i);
                         tSwitch.setState(false);
                     }
             );
@@ -218,7 +184,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             binding.btnDelete.setOnClickListener(
                     (v)->adapter.remove(gp, i/2)
             );
-            boolean expanded = id.equals(i);
+            boolean expanded = false;
             int visibility = expanded ? View.VISIBLE : View.GONE;
             int antiVisibility = !expanded ? View.VISIBLE : View.GONE;
             binding.btnDelete.setVisibility(visibility);
@@ -256,30 +222,29 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 }
             });
 
-            Drawable icon = gp.activity.getType().getDrawable();
+            Drawable icon = gp.getType().getDrawable();
             icon.setColorFilter(
-                    gp.activity.getImportance().getColorPr(),
+                    gp.getImportance().getColorPr(),
                     PorterDuff.Mode.SRC_IN
             );
             binding.docIcon.setImageDrawable(icon);
 
             Drawable bg = binding.sectionCard.getBackground();
             bg.setColorFilter(
-                    gp.activity.getImportance().getColorPr(),
+                    gp.getImportance().getColorPr(),
                     PorterDuff.Mode.SRC_IN
             );//*/
             binding.sectionCard.setBackground(bg);
 
             EditText docText = binding.docTag;
-            associate(docText, gp.activity);
+            associate(docText, gp);
             docText.setFocusableInTouchMode(true);
-            docText.setFocusable(id.equals(i));
+            docText.setFocusable(true);
             docText.setOnClickListener(
                     (v)->{
                         docText.setFocusable(true);
                         toAddSection.setId(0);
                         scrollFunc.run(i, i);
-                        id.setId(i);
                     }
             );//*/
 
@@ -297,7 +262,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 @Override
                 public void afterTextChanged(Editable s) {
                     docText.clearComposingText();
-                    gp.activity.descr = new SpannableStringBuilder(docText.getText());
+                    gp.descr = new SpannableStringBuilder(docText.getText());
                 }
             };
             docText.setTag(textWatcher);
@@ -314,57 +279,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             editText.setText(activity.descr);
         }
 
-        public boolean bindDoc(int i, _Doc doc) {
-            SectionDocBinding binding = (SectionDocBinding) vbinding;
-
-            binding.bar.setOnClickListener(
-                    (v)->{
-                        if (!id.equals(i)) {
-                            toAddSection.setId(0);
-                            id.setId(i);
-                        }
-                    }
-            );
-            binding.btnDelete.setOnClickListener(
-                    (v)->adapter.remove(doc, i/2)
-            );
-            binding.btnDelete.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
-            binding.docContentEdittext.setOnClickListener(
-                    (v)->{
-                        if (!id.equals(i)) {
-                            toAddSection.setId(0);
-                            id.setId(i);
-                        }
-                    }
-            );
-            binding.docContentEdittext.setFocusable(id.equals(i));
-
-            EditText editText;
-            associate(editText = binding.docContentEdittext, doc);
-
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    editText.clearComposingText();
-                    doc.contents = new SpannableStringBuilder(editText.getText());
-                }
-            };
-            editText.setTag(textWatcher);
-            editText.addTextChangedListener(textWatcher);
-
-            return true;
-        }
-
         public void associate(EditText editText, _Doc doc) {
             //prevents triggering at the initial change in text (initialization)
             Object tag = editText.getTag();
@@ -379,11 +293,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     public void setBinaryLabel(Label lbl, Label lbl2) {
         this.label = lbl;
         this.label2 = lbl2;
-        id.observe((oi, i)->{
-            boolean collapsed = i == -1 && toAddSection.equals(0);
-            updateLabel(this.label, this.label2, collapsed, false,
-                    null, null, null, null);
-        }, true);
     }
 
     private void updateLabel(Label lbl, Label lbl2, boolean collapsed, boolean checkListIsOn,
@@ -441,7 +350,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     public void refreshCollapsed(View v) {
         toAddSection.setId(0);
-        id.setId(-1);
     }
     public void addNewSection(View v) {
         toAddSection.setId(1);

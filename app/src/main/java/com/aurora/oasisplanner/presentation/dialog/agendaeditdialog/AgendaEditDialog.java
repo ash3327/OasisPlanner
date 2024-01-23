@@ -138,8 +138,9 @@ public class AgendaEditDialog extends Fragment {
         );
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
-        int expandId = adapter.setAgenda(agenda, activityLId);
-        recyclerView.post(()-> scrollTo(expandId, recyclerView));
+        //int expandId =
+        adapter.setAgenda(agenda, activityLId);
+        //recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }
     public void showEvents(List<_Activity> selected) {
 
