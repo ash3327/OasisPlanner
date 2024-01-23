@@ -34,6 +34,10 @@ public class AlarmUseCases {
         return repository.requestSubAlarm(alarmId);
     }
 
+    public Alarm getNextAlarmFromActivity(long activityId) {
+        return repository.requestFirstAlarmFromActivity(activityId);
+    }
+
     public void put(_Alarm alarm) {
         repository.insert(alarm);
     }

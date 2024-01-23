@@ -89,6 +89,10 @@ public interface AlarmDao {
     @Query("SELECT * FROM _Alarm WHERE id = :id")
     Alarm getAlarmInfoById(long id);
 
+    @Transaction
+    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND activityId == :activityId ORDER BY datetime ASC LIMIT 1")
+    Alarm getFirstAlarmInfoFromActivityAfter(long activityId, LocalDateTime fromDate);
+
     // INFO: SubAlarm
     @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")

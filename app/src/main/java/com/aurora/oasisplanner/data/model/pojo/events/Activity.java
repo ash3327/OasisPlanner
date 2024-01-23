@@ -54,6 +54,11 @@ public class Activity {
         return new Activity(null);
     }
 
+    @Ignore
+    public long getId() {
+        assert activity != null && activity.id != 0;
+        return activity.id;
+    }
     /** Returns Object[3]: {_AlarmList: _AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
     public Object[] getFirstAlarmList() {

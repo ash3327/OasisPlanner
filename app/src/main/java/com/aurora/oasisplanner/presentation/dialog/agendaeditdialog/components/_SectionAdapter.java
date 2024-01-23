@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmGroupsHolder> {
+public class _SectionAdapter {/* extends RecyclerView.Adapter<_SectionAdapter.AlarmGroupsHolder> {
 
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id id;
@@ -108,7 +108,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
     }
 
     /** Since the alarm list will be overall changed when any agenda is edited,
-     *  a global notification in change of ui is required. */
+     *  a global notification in change of ui is required.
 
     public void setAgenda(Agenda agenda) {
         setAgenda(agenda, -2);
@@ -158,7 +158,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
         setAgenda(agenda);
     }
 
-    /** the index i is the index i IN THE VISUAL LIST. */
+    /* the index i is the index i IN THE VISUAL LIST. /
     public void insert(ActivityType.Type type, int i, String descr) {
         switch (type) {
             case activity:
@@ -171,7 +171,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
                 _Doc doc = _Doc.empty();
                 agenda.agenda.types.add(i, new ActivityType(type, agenda.docs.size()));
                 agenda.docs.add(doc);
-                break;*/
+                break;/
         }
         toAddSection.setId(0);
         agenda.update();
@@ -226,7 +226,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
             );
 
             return true;
-        }//*/
+        }///
 
         public boolean bindActivity(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
@@ -284,7 +284,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
             bg.setColorFilter(
                     gp.activity.getImportance().getColorPr(),
                     PorterDuff.Mode.SRC_IN
-            );//*/
+            );///
             binding.sectionCard.setBackground(bg);
 
             EditText docText = binding.docTag;
@@ -298,7 +298,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
                         scrollFunc.run(i, i);
                         id.setId(i);
                     }
-            );//*/
+            );///
 
             TextWatcher textWatcher = new TextWatcher() {
                 @Override
@@ -334,7 +334,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
                             adapter::checkListIsEmpty, adapter.bSwitch);
             }, true);
             recyclerView.setAdapter(adapter);
-            adapter.setGroup(gp);*/
+            adapter.setGroup(gp);/
 
             return true;
         }
@@ -408,7 +408,7 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
         }
     }
 
-    /** This must be executed before setAgenda. */
+    /** This must be executed before setAgenda. /
     public void setBinaryLabel(Label lbl, Label lbl2) {
         this.label = lbl;
         this.label2 = lbl2;
@@ -490,5 +490,5 @@ public class _SectionAdapter extends RecyclerView.Adapter<_SectionAdapter.AlarmG
             this.tv = tv;
             this.imgv = imgv;
         }
-    }
+    }*/
 }

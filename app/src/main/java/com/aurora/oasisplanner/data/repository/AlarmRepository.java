@@ -109,4 +109,8 @@ public class AlarmRepository {
     public SubAlarm requestSubAlarm(long id) {
         return alarmDao.getSubAlarmInfoById(id);
     }
+
+    public Alarm requestFirstAlarmFromActivity(long activityId) {
+        return alarmDao.getFirstAlarmInfoFromActivityAfter(activityId, LocalDateTime.now());
+    }
 }

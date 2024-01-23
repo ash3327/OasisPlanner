@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
@@ -25,7 +24,7 @@ import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;
@@ -37,9 +36,9 @@ import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
@@ -202,33 +201,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             return false;
         }
 
-        /*public boolean bindGap(int i, GapData gap) {
-            SectionGapBinding binding = (SectionGapBinding) vbinding;
-
-            toAddSection.observe((ov, v)->{
-                binding.bar.setVisibility(v == 1 ? View.VISIBLE : View.GONE);
-            }, true);
-            binding.expandedTab.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
-            binding.collapsedTab.setVisibility(id.equals(i) ? View.GONE : View.VISIBLE);
-            binding.tab.setOnClickListener(
-                    (v)-> id.setId(i)
-            );
-            binding.btnAddGroup.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.activity, gap.i);
-                    }
-            );
-            binding.btnAddDoc.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.doc, gap.i);
-                    }
-            );
-
-            return true;
-        }//*/
-
         public boolean bindActivity(int i, Activity gp) {
             SectionBinding binding = (SectionBinding) vbinding;
             Switch tSwitch = new Switch(false);
@@ -241,6 +213,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                         tSwitch.setState(false);
                     }
             );
+            //*
             binding.btnDelete.setOnClickListener(
                     (v)->adapter.remove(gp, i/2)
             );
@@ -249,30 +222,30 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             int antiVisibility = !expanded ? View.VISIBLE : View.GONE;
             binding.btnDelete.setVisibility(visibility);
             //binding.sectionItems.setVisibility(visibility);
-            binding.sectionDetails.setVisibility(antiVisibility);
-            _AlarmList gpl_alarmL = null;
-            List<_AlarmList> alarmLists = AppModule.retrieveAgendaUseCases().getAlarmLists(gp);
-            if (alarmLists.size() > 0) {
-                Object[] gpl = gp.getFirstAlarmList();
-                gpl_alarmL = (_AlarmList)gpl[0];
-                LocalDateTime gpl_dt = (LocalDateTime)gpl[1];
-                binding.sectdI1.setImageDrawable(gpl_alarmL.type.getDrawable());
-                //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
-                binding.sectdT1.setText(DateTimesFormatter.getDateTime(gpl_dt));
-            } else {
-                binding.sectdI1.setVisibility(View.GONE);
-                binding.sectdT1.setVisibility(View.GONE);
-            }
-            SpannableStringBuilder ssb = null;
-            if (gpl_alarmL != null)
-                ssb = gpl_alarmL.getArg(TagType.LOC.name());
-            if (gpl_alarmL != null && ssb != null) {
-                binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
-                binding.sectdT2.setText(ssb);
-            } else {
-                binding.sectdI2.setVisibility(View.GONE);
-                binding.sectdT2.setVisibility(View.GONE);
-            }
+            binding.sectionDetails.setVisibility(antiVisibility);//*/
+
+            ExecutorService executor = AppModule.provideExecutor();
+            executor.submit(()->{
+                Alarm nextAlarm = AppModule.retrieveAgendaUseCases().getNextAlarm(gp);
+                if (nextAlarm != null) {
+                    binding.sectdI1.setImageDrawable(nextAlarm.getType().getDrawable());
+                    //binding.importanceLabel.setColorFilter(gpl.alarmList.importance.getColorPr());
+                    binding.sectdT1.setText(DateTimesFormatter.getDateTime(nextAlarm.getDateTime()));
+                } else {
+                    binding.sectdI1.setVisibility(View.GONE);
+                    binding.sectdT1.setVisibility(View.GONE);
+                }
+                SpannableStringBuilder ssb = null;
+                if (nextAlarm != null)
+                    ssb = nextAlarm.getLoc();
+                if (nextAlarm != null && ssb != null) {
+                    binding.sectdI2.setImageDrawable(TagType.LOC.getDrawable());
+                    binding.sectdT2.setText(ssb);
+                } else {
+                    binding.sectdI2.setVisibility(View.GONE);
+                    binding.sectdT2.setVisibility(View.GONE);
+                }
+            });
 
             Drawable icon = gp.activity.getType().getDrawable();
             icon.setColorFilter(
