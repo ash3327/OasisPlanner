@@ -37,6 +37,7 @@ import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
@@ -47,6 +48,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
     private Label label, label2;
+    private OnClickListener ocl = null;
 
     {
         setHasStableIds(true);
@@ -133,6 +135,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         setAgenda(agenda);
     }
 
+    public interface OnClickListener {void onClick(_Activity activity);}
+    public void setOnClickListener(OnClickListener ocl) {
+        this.ocl = ocl;
+    }
+
     /** the index i is the index i IN THE VISUAL LIST. */
     public void insert(ActivityType.Type type, int i, String descr) {
         switch (type) {
@@ -175,8 +182,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        toAddSection.setId(0);
-                        scrollFunc.run(i, i);
+                        barOnClicked(i, gp);
                         tSwitch.setState(false);
                     }
             );
@@ -218,7 +224,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("test3", e.getMessage());
                 }
             });
 
@@ -243,8 +248,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
             docText.setOnClickListener(
                     (v)->{
                         docText.setFocusable(true);
-                        toAddSection.setId(0);
-                        scrollFunc.run(i, i);
+                        barOnClicked(i, gp);
                     }
             );//*/
 
@@ -270,6 +274,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             return true;
         }
+
+        public void barOnClicked(int i, _Activity gp) {
+            toAddSection.setId(0);
+            scrollFunc.run(i, i);
+            if (ocl != null)
+                ocl.onClick(gp);
+        }
+
         public void associate(EditText editText, _Activity activity) {
             //prevents triggering at the initial change in text (initialization)
             Object tag = editText.getTag();

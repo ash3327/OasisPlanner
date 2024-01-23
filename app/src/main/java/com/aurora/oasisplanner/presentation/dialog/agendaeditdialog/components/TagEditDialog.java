@@ -227,11 +227,8 @@ public class TagEditDialog extends AppCompatDialogFragment {
                             );
                         }
                     } catch (Exception e) {
-                        Log.d("test3", "ERROR: "+e.getMessage());
                         e.printStackTrace();
                     }
-
-                    Log.d("test3", "FINISHED CONFIRM");
                 }
         );
     }

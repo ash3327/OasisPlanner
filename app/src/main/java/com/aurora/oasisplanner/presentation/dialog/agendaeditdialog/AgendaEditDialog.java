@@ -3,6 +3,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,14 +27,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionAdapter;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionItemAdapter;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 
 public class AgendaEditDialog extends Fragment {
     public static final String EXTRA_AGENDA_ID = "agendaId";
@@ -116,8 +125,10 @@ public class AgendaEditDialog extends Fragment {
     public void showActivities(Agenda agenda) {
         binding.pageGreyBar1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
+        binding.pageSectionsActivities.setVisibility(View.VISIBLE);
+        binding.pageSectionsEvents.setVisibility(View.GONE);
 
-        RecyclerView recyclerView = binding.pageSections;
+        RecyclerView recyclerView = binding.pageSectionsActivities;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(false);
 
@@ -136,6 +147,7 @@ public class AgendaEditDialog extends Fragment {
                         binding.pageYellowLabel2Icon
                 )
         );
+        adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         //int expandId =
@@ -143,7 +155,43 @@ public class AgendaEditDialog extends Fragment {
         //recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }
     public void showEvents(List<_Activity> selected) {
+        binding.pageGreyBar1.setVisibility(View.VISIBLE);
+        binding.pageActivities.setVisibility(View.VISIBLE);
+        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
+                .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
+        binding.pageActivities.setOnUpdateListener((tags)->{
+            if (tags.trim().isEmpty())
+                showActivities(agenda);
+        });
+        binding.pageActivities.format();
 
+        binding.pageSectionsActivities.setVisibility(View.GONE);
+        binding.pageSectionsEvents.setVisibility(View.VISIBLE);
+
+        RecyclerView recyclerView = binding.pageSectionsEvents;
+        recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
+        recyclerView.setHasFixedSize(true);
+
+        Switch tSwitch = new Switch(false);
+        final SectionItemAdapter adapter = new SectionItemAdapter(
+                (alarmList)->show(selected), recyclerView, tSwitch
+        );
+        tSwitch.observe((state)-> {
+
+        }, true);
+        recyclerView.setAdapter(adapter);
+
+        ExecutorService executor = AppModule.provideExecutor();
+        executor.submit(()->{
+            try {
+                Activity activity = AppModule.retrieveActivityUseCases().getActivityWithChild(selected.get(0).id).get();
+                binding.getRoot().post(()->{
+                    adapter.setGroup(activity);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
     public void show(List<_Activity> selected) {
         if (selected == null || selected.size() == 0)

@@ -104,6 +104,8 @@
                         android:layout_height="wrap_content"
                         style="@style/EditTextTheme"
                         android:textSize="@dimen/page_item_textsize"
+                        android:background="@android:color/transparent"
+                        android:layout_marginVertical="5dp"
                         android:layout_marginHorizontal="25dp"/>
                     <LinearLayout
                         android:id="@+id/page_grey_bar_1"
@@ -122,9 +124,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingHorizontal="20sp"
-                        android:id="@+id/page_sections"
+                        android:id="@+id/page_sections_activities"
                         tools:listitem="@layout/_page_displist"
                         tools:itemCount="1"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/page_sections_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20sp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/_section_displist" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

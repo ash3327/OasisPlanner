@@ -42,8 +42,7 @@ import java.util.Set;
 public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
 
     private static final int ID_KEY_ITEMS = 3;
-    private final Id id, parentId;
-    private final int pid;
+    private final Id id;
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
     public Switch bSwitch = new Switch(false);
@@ -60,10 +59,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     private final Switch tSwitch;
     private final Set<_AlarmList> checkedList;
 
-    public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Id parentId, int pid, Switch tSwitch) {
+    public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
-        this.parentId = parentId;
-        this.pid = pid;
         this.tSwitch = tSwitch;
         checkedList = new HashSet<>();
         id.setId(-1);
@@ -86,8 +83,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     public long getItemId(int position) {
         Object item = sections.get(position);
         long numClasses = 3;
-        if (item instanceof GapData)
-            return ((GapData) item).i * numClasses;
         if (item instanceof _AlarmList)
             return Styles.hashInt(item) * numClasses + 1;
         if (item instanceof _Doc)
@@ -138,14 +133,10 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         int i = 0;
         List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
-            list.add(new GapData(i));
-            types.add(ActivityType.Type.gap);
             list.add(obj);
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
-        list.add(new GapData(i));
-        types.add(ActivityType.Type.gap);
 
         this.sections = list;
         this.types = types;
@@ -244,8 +235,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
         public boolean bind(int i, Object sect, Activity gp) {
             this.item = sect;
-            if (sect instanceof GapData)
-                return bindGap(i, (GapData) sect);
             if (sect instanceof _AlarmList)
                 return bindAlarms(i, (_AlarmList) sect, gp);
             if (sect instanceof _Doc) {
@@ -255,43 +244,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 return bindDoc(i, doc);
             }
             return false;
-        }
-
-        public boolean bindGap(int i, GapData gap) {
-            ItemGapBinding binding = (ItemGapBinding) vbinding;
-
-            bSwitch.observe((state)->{
-                binding.bar.setVisibility(state ? View.VISIBLE : View.GONE);
-                binding.bar.requestLayout();
-            }, true);
-            binding.bar.setOnClickListener(
-                    (v)->id.setId(parentId.setId(pid) ? -1 : i)
-            );
-            binding.bar.setFocusable(id.equals(i) && parentId.equals(pid));
-            binding.tab.setVisibility(parentId.equals(pid) ? View.VISIBLE : View.GONE);
-            binding.expandedTab.setVisibility(id.equals(i) ? View.VISIBLE : View.GONE);
-            binding.collapsedTab.setVisibility(id.equals(i) ? View.GONE : View.VISIBLE);
-            binding.veryCollapsedTab.setVisibility(parentId.equals(pid) || gap.i == 0 || gap.i == len ? View.GONE : View.VISIBLE);
-            binding.btnAddGroup.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.activity, gap.i);
-                    }
-            );
-            binding.btnAddDoc.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.doc, gap.i);
-                    }
-            );
-            binding.btnAddLoc.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i))
-                            adapter.insert(ActivityType.Type.loc, gap.i);
-                    }
-            );
-
-            return true;
         }
 
         public boolean bindAlarms(int i, _AlarmList gp, Activity grp) {
@@ -311,7 +263,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (id.equals(i) && parentId.equals(pid)) {
+                        if (id.equals(i)) {
                             if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
                                 return;
                             if (aSwitch.getState())
@@ -327,7 +279,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                         else if (aSwitch.getState())
                             checkToggle(gp);
                         else {
-                            parentId.setId(pid);
                             if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500) {
                                 aSwitch.setState(false);
                             }
@@ -383,20 +334,19 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
             aSwitch.observe((state)-> {
                 binding.bar.setBackgroundColor(
-                        id.equals(i) && parentId.equals(pid) && state ?
+                        id.equals(i) && state ?
                                 Resources.getColor(R.color.red_100) : 0
                 );
-                binding.card.setVisibility(id.equals(i) && parentId.equals(pid) && state ? View.VISIBLE : View.GONE);
-                binding.docContentEdittext.setFocusable(parentId.equals(pid) && !state);
+                binding.card.setVisibility(id.equals(i) && state ? View.VISIBLE : View.GONE);
+                binding.docContentEdittext.setFocusable(!state);
             }, true);
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (id.equals(i) && parentId.equals(pid)) {
+                        if (id.equals(i)) {
                             if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
                                 adapter.remove(doc, i/2);
                         } else {
-                            parentId.setId(pid);
                             id.setId(i);
                             if (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
                                 aSwitch.setState(false);
@@ -405,18 +355,17 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.docContentEdittext.setOnClickListener(
                     (v)->{
-                        if (id.equals(i) && parentId.equals(pid)) {
+                        if (id.equals(i)) {
                             if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
                                 adapter.remove(doc, i/2);
                         } else {
-                            parentId.setId(pid);
                             id.setId(i);
                         }
                     }
             );
             binding.bar.setOnLongClickListener(
                     (v)->{
-                        if (!(parentId.setId(pid) & id.setId(i)))
+                        if (!id.setId(i))
                             aSwitch.setState(true);
                         clicked = Instant.now();
                         return false;
@@ -424,7 +373,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.docContentEdittext.setOnLongClickListener(
                     (v)->{
-                        parentId.setId(pid);
                         id.setId(i);
                         aSwitch.setState(true);
                         clicked = Instant.now();
@@ -465,20 +413,19 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
             aSwitch.observe((state)-> {
                 binding.bar.setBackgroundColor(
-                        id.equals(i) && parentId.equals(pid) && state ?
+                        id.equals(i) && state ?
                                 Resources.getColor(R.color.red_100) : 0
                 );
-                binding.card.setVisibility(id.equals(i) && parentId.equals(pid) && state ? View.VISIBLE : View.GONE);
-                binding.docContentEdittext.setFocusable(parentId.equals(pid) && !state);
+                binding.card.setVisibility(id.equals(i) && state ? View.VISIBLE : View.GONE);
+                binding.docContentEdittext.setFocusable(!state);
             }, true);
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (id.equals(i) && parentId.equals(pid)) {
+                        if (id.equals(i)) {
                             if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
                                 adapter.remove(doc, i/2);
                         } else {
-                            parentId.setId(pid);
                             id.setId(i);
                             if (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
                                 aSwitch.setState(false);
@@ -487,18 +434,17 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.docContentEdittext.setOnClickListener(
                     (v)->{
-                        if (id.equals(i) && parentId.equals(pid)) {
+                        if (id.equals(i)) {
                             if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
                                 adapter.remove(doc, i/2);
                         } else {
-                            parentId.setId(pid);
                             id.setId(i);
                         }
                     }
             );
             binding.bar.setOnLongClickListener(
                     (v)->{
-                        if (!(parentId.setId(pid) & id.setId(i)))
+                        if (!id.setId(i))
                             aSwitch.setState(true);
                         clicked = Instant.now();
                         return false;
@@ -506,7 +452,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
             );
             binding.docContentEdittext.setOnLongClickListener(
                     (v)->{
-                        parentId.setId(pid);
                         id.setId(i);
                         aSwitch.setState(true);
                         clicked = Instant.now();
@@ -547,14 +492,6 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 editText.removeTextChangedListener((TextWatcher) tag);
 
             editText.setText(doc.contents);
-        }
-    }
-
-    public static class GapData {
-        public int i;
-
-        public GapData(int i) {
-            this.i = i;
         }
     }
 }
