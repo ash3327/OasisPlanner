@@ -13,14 +13,9 @@ import java.util.concurrent.Future;
 
 public class ActivityUseCases {
     private ActivityRepository repository;
-    private FragmentManager fragmentManager;
 
     public ActivityUseCases(ActivityRepository repository) {
         this.repository = repository;
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public Future<_Activity> get(long activityId) {
@@ -28,15 +23,5 @@ public class ActivityUseCases {
     }
     public Future<Activity> getActivityWithChild(long activityId) {
         return repository.getActivityWithChild(activityId);
-    }
-
-    public void put(_Activity activity) {
-        // NOT IMPEMENTED
-        repository.insertActivity(activity);
-    }
-
-    public void delete(_Activity activity) {
-        // NOT IMPEMENTED
-        repository.deleteActivity(activity);
     }
 }

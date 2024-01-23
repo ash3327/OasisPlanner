@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 

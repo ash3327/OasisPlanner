@@ -3,7 +3,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,10 +37,8 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.S
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 public class AgendaEditDialog extends Fragment {
@@ -83,15 +80,18 @@ public class AgendaEditDialog extends Fragment {
                     }
                 });
 
-        long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
-        activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
-        if (agendaId != -1)
-            agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
-        else
-            agenda = Agenda.empty();
-
         binding = PageBinding.inflate(getLayoutInflater());
-        onBind();
+
+        AppModule.provideExecutor().submit(()->{
+            long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
+            activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
+            if (agendaId != -1)
+                agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
+            else
+                agenda = Agenda.empty();
+
+            binding.getRoot().post(this::onBind);
+        });
 
         return binding.getRoot();
     }

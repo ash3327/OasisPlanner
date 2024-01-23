@@ -10,18 +10,16 @@ import com.aurora.oasisplanner.data.core.use_cases.AlarmUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EventUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.MemoUseCases;
-import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
 import com.aurora.oasisplanner.data.datasource.AppDatabase;
 import com.aurora.oasisplanner.data.repository.ActivityRepository;
-import com.aurora.oasisplanner.data.repository._AgendaRepository;
+import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
-import com.aurora.oasisplanner.data.core.use_cases._AgendaUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
 import com.aurora.oasisplanner.data.repository.EventRepository;
 import com.aurora.oasisplanner.data.repository.MultimediaRepository;
 import com.aurora.oasisplanner.data.repository.TagRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
-import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
@@ -32,8 +30,7 @@ import java.util.concurrent.Executors;
 
 public class AppModule {
 
-    private static _AgendaUseCases agendaUseCases;
-    private static AgendaUseCases _agendaUseCases;
+    private static AgendaUseCases agendaUseCases;
     private static ActivityUseCases activityUseCases;
     private static EventUseCases eventUseCases;
     private static AlarmUseCases alarmUseCases;
@@ -63,14 +60,12 @@ public class AppModule {
         return AppDatabase.getInstance(application);
     }
 
-    public static _AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler) {
-        return new _AgendaRepository(
+    public static AgendaRepository provideAgendaRepository(AppDatabase db, AlarmScheduler alarmScheduler,
+                                                           ExecutorService executor) {
+        return new AgendaRepository(
                 db.agendaDao(), db.alarmDao(),
                 db.activityDao(), db.eventDao(),
-                alarmScheduler);
-    }
-    public static AgendaRepository provide_AgendaRepository(AppDatabase db, ExecutorService executor) {
-        return new AgendaRepository(db.agendaDao(), executor);
+                alarmScheduler, executor);
     }
     public static ActivityRepository provideActivityRepository(AppDatabase db, ExecutorService executor) {
         return new ActivityRepository(db.activityDao(), executor);
@@ -91,25 +86,14 @@ public class AppModule {
         return new MultimediaRepository(db.multimediaDao(), executor);
     }
 
-    public static _AgendaUseCases provideAgendaUseCases(_AgendaRepository repository) {
+    public static AgendaUseCases provideAgendaUseCases(AgendaRepository repository) {
         if (agendaUseCases != null) return agendaUseCases;
-        return agendaUseCases = new _AgendaUseCases(repository);
+        return agendaUseCases = new AgendaUseCases(repository);
     }
-    public static _AgendaUseCases retrieveAgendaUseCases() {
+    public static AgendaUseCases retrieveAgendaUseCases() {
         if (agendaUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
         return agendaUseCases;
-    }
-
-
-    public static AgendaUseCases provide_AgendaUseCases(AgendaRepository repository) {
-        if (_agendaUseCases != null) return _agendaUseCases;
-        return _agendaUseCases = new AgendaUseCases(repository);
-    }
-    public static AgendaUseCases retrieve_AgendaUseCases() {
-        if (_agendaUseCases == null)
-            throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
-        return _agendaUseCases;
     }
 
     public static ActivityUseCases provideActivityUseCases(ActivityRepository repository) {
@@ -182,8 +166,7 @@ public class AppModule {
         AppDatabase db = provideAppDatabase(application);
         ExecutorService executor = provideExecutor();
         AlarmScheduler alarmScheduler = provideAlarmScheduler(application);
-        provideAgendaUseCases(provideAgendaRepository(db, alarmScheduler));
-        provide_AgendaUseCases(provide_AgendaRepository(db, executor));
+        provideAgendaUseCases(provideAgendaRepository(db, alarmScheduler, executor));
         provideActivityUseCases(provideActivityRepository(db, executor));
         provideEventUseCases(provideEventRepository(db, executor));
         provideAlarmUseCases(alarmRepository = provideAlarmRepository(db, executor));

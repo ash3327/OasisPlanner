@@ -15,16 +15,11 @@ import java.util.stream.Collectors;
 
 public class AlarmUseCases {
     private AlarmRepository repository;
-    private FragmentManager fragmentManager;
 
     public AlarmUseCases(
             AlarmRepository repository
     ) {
         this.repository = repository;
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public Alarm get(long alarmId) {

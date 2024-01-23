@@ -1,79 +1,260 @@
 package com.aurora.oasisplanner.data.repository;
 
-import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
-import com.aurora.oasisplanner.data.model.entities.events._Agenda;
-import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import android.os.AsyncTask;
+import android.text.SpannableStringBuilder;
 
+import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
+import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
+import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
+import com.aurora.oasisplanner.data.datasource.daos.EventDao;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.util._Doc;
+import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.util.Converters;
+import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class AgendaRepository {
-    private final AgendaDao agendaDao;
-    private final ExecutorService executor;
+    private AgendaDao agendaDao;
+    private ActivityDao activityDao;
+    private EventDao eventDao;
+    private AlarmDao alarmDao;
+    private AlarmScheduler alarmScheduler;
+    private ExecutorService executor;
 
-    public AgendaRepository(AgendaDao agendaDao, ExecutorService executor) {
+    public AgendaRepository(
+            AgendaDao agendaDao, AlarmDao alarmDao,
+            ActivityDao activityDao, EventDao eventDao,
+            AlarmScheduler alarmScheduler,
+            ExecutorService executor) {
         this.agendaDao = agendaDao;
+        this.activityDao = activityDao;
+        this.eventDao = eventDao;
+        this.alarmDao = alarmDao;
+        this.alarmScheduler = alarmScheduler;
         this.executor = executor;
     }
 
-    public Future<Long> insertAgenda(final _Agenda agenda) {
-        /*return executor.submit(()->{
-            if (!agenda.hasAssociates())
-                return agendaDao.insert(agenda);
-            else
-                return insertAgendaWithChild(agenda.getAssociates()).get();
-        });*/
-        assert false;
-        return null;
+    // INFO: Agenda
+
+    public void insert(Agenda agenda) {
+        executor.submit(()-> insert(agenda, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler));
     }
 
-    public Future<_Agenda> getAgenda(final long id) {
-        return executor.submit(()->agendaDao.get_AgendaById(id));
+    public void delete(Agenda agenda) {
+        executor.submit(()-> delete(agenda, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler));
     }
 
-    public void deleteAgenda(final _Agenda agenda) {
-        /*executor.execute(()->{
-            Agenda parent = agenda.getAssociates();
-            AppModule.retrieveAlarmUseCases().delete(parent.alarms);
-            AppModule.retrieveAlarmUseCases().deleteSubAlarms(parent.subalarms);
-            agendaDao.delete(agenda);
-        });*/
-        assert false;
+    public void deleteAllAlarms() {
+        executor.submit(()-> deleteAll(agendaDao, alarmDao, activityDao, eventDao, alarmScheduler));
     }
 
-    
-    public Future<Long> insertAgendaWithChild(final Agenda agenda) {
-        /*return executor.submit(()->{
-            long id = agendaDao.insert(agenda.agenda);
-            for (_Alarm alarm : agenda.alarms) {
-                alarm.agendaId = id;
-                alarm.agendaId = agenda.agenda.agendaId;
-                alarm.agendaId = agenda.agenda.agendaId;
+    public Agenda getAgendaFromId(long id) {
+        try {
+            return executor.submit(()-> agendaDao.getAgendaById(id)).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static long insert(Agenda agenda,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
+        // convert to object list without invisible
+        // convert back
+        agenda.update();
+
+        /*for (_Doc doc : agenda.invisDocs)
+            agendaDao.delete(doc);*/
+        for (_Activity gp : agenda.invisGroups)
+            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);
+
+        long id = agendaDao.insert(agenda.agenda);
+        agenda.agenda.id = id;
+        /*for (_Doc doc : agenda.docs) {
+            doc.setAgendaId(id);
+            agendaDao.insert(doc);
+        }*/
+        String title = agenda.agenda.title;
+        SpannableStringBuilder content = _Doc.getFirst(agenda.docs, "");
+        // TODO : FIX THIS
+        /*
+        for (_Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda)) {
+            gp.agendaId = id;
+            insert(gp, title, content, agendaDao, activityDao, eventDao, alarmDao, alarmScheduler);
+        }//*/
+        return id;
+    }
+
+    private static long insert(
+            Activity activity,
+            String title,
+            SpannableStringBuilder agendaDescr,
+            AgendaDao agendaDao,
+            ActivityDao activityDao,
+            EventDao eventDao,
+            AlarmDao alarmDao,
+            AlarmScheduler alarmScheduler
+    ) {
+
+        activity.update();
+
+        /*for (_Doc doc : activity.invisDocs)
+            agendaDao.delete(doc);*/
+        for (_AlarmList gp : activity.invisGroups)
+            delete(gp, agendaDao, alarmDao, eventDao, alarmScheduler);
+
+        SpannableStringBuilder alarmDescr = activity.activity.descr;
+
+        // TODO: Agenda Importance = Max (Alarm Importance, temporarily)
+        Importance activityImp = Importance.unimportant;
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
+            activityImp = Importance.max(activityImp, alarmList.importance);
+        activity.activity.importance = activityImp;
+
+        long id = activityDao.insert(activity.activity);
+        activity.activity.id = id;
+        /*for (_Doc doc : activity.docs) {
+            doc.setGroupId(id);
+            agendaDao.insert(doc);
+        }*/
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity)) {
+            alarmList.activityId = id;
+            alarmList.agendaId = activity.activity.agendaId;
+            //
+            Map<String, String> alarmArgs = new HashMap<>();
+            Converters converter = new Converters();
+            insert(alarmList, title, agendaDescr, alarmDescr, id, agendaDao, alarmDao, eventDao, alarmScheduler, alarmArgs);
+        }
+        return id;
+    }
+
+    private static long insert(
+            _AlarmList alarmList,
+            String title,
+            SpannableStringBuilder agendaDescr,
+            SpannableStringBuilder alarmDescr,
+            long actvId,
+            AgendaDao agendaDao,
+            AlarmDao alarmDao,
+            EventDao eventDao,
+            AlarmScheduler alarmScheduler,
+            Map<String, String> alarmArgs
+    ) {
+
+        long id = AppModule.retrieveEventUseCases().put(alarmList);
+        /*alarmList.id = id;
+        AlarmList parent = alarmList.getAssociates();
+        for (_Alarm alarm : parent.alarms) {
+            if (alarm.visible) {
+                alarm.alarmListId = id;
+                alarm.activityId = actvId;
+                alarm.agendaId = alarmList.agendaId;
+                //alarm.setAgendaData(title, agendaDescr, alarmDescr);
+                //alarm.setAlarmData(alarmList.type, alarmList.importance);
+                if (alarmArgs != null)
+                    alarm.getArgs().putAll(alarmArgs);
+                alarm.getArgs().putAll(alarmList.getArgs());
+                alarm.id = alarmDao.insert(alarm);
+                if (alarmScheduler != null)
+                    alarmScheduler.schedule(alarm);
+            } else {
+                if (alarmScheduler != null)
+                    alarmScheduler.cancel(alarm);
+                alarmDao.delete(alarm);
             }
-            for (_SubAlarm alarm : agenda.subalarms) {
-                alarm.agendaId = id;
-                alarm.agendaId = agenda.agenda.agendaId;
-                alarm.agendaId = agenda.agenda.agendaId;
+        }
+        for (_SubAlarm alarm : parent.subalarms) {
+            if (alarm.visible) {
+                alarm.alarmListId = id;
+                alarm.activityId = actvId;
+                alarm.agendaId = alarmList.agendaId;
+                alarm.setAgendaData(title, agendaDescr, alarmDescr);
+                alarm.setAlarmData(alarmList.type, alarmList.importance);
+                if (alarmArgs != null)
+                    alarm.getArgs().putAll(alarmArgs);
+                alarm.getArgs().putAll(alarmList.getArgs());
+                alarm.id = alarmDao.insertSubAlarm(alarm);
+                if (alarmScheduler != null)
+                    alarmScheduler.schedule(alarm);
+            } else {
+                if (alarmScheduler != null)
+                    alarmScheduler.cancel(alarm);
+                alarmDao.deleteSubAlarm(alarm);
             }
-            AppModule.retrieveAlarmUseCases().put(agenda.alarms);
-            AppModule.retrieveAlarmUseCases().putSubAlarms(agenda.subalarms);
-            return id;
-        });*/
-        assert false;
-        return null;
+        }//*/
+        return id;
     }
 
-    public Future<Agenda> getAgendaWithChild(final long id) {
-        //return executor.submit(()->agendaDao.getAgendaWithChildById(id));
-        assert false;
-        return null;
+    private static void delete(Agenda agenda,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
+        agendaDao.delete(agenda.agenda);
+        // TODO: FIX THIS
+        /*
+        for (Activity gp : AppModule.retrieveAgendaUseCases().getActivities(agenda))
+            delete(gp, agendaDao, alarmDao, activityDao, eventDao, alarmScheduler);*/
+        /*for (_Doc doc : agenda.docs)
+            agendaDao.delete(doc);*/
     }
 
-    public void deleteAgendaWithChild(final Agenda agenda) {
-        /*executor.execute(()->{
-            agendaDao.delete(agenda.agenda);
-            AppModule.retrieveAlarmUseCases().delete(agenda.alarms);
-        });*/
-        assert false;
+    private static void delete(_Activity activity,
+                               AgendaDao agendaDao, AlarmDao alarmDao,
+                               ActivityDao activityDao, EventDao eventDao,
+                               AlarmScheduler alarmScheduler) {
+        activityDao.delete(activity);
+        eventDao.deleteEventsByActivity(activity.id);
+        //TODO: fix this:
+        /*
+        for (_AlarmList alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
+            delete(alarmList, agendaDao, alarmDao, eventDao, alarmScheduler);*/
+        /*for (_Doc doc : activity.docs)
+            agendaDao.delete(doc);*/
     }
+
+    private static void delete(_AlarmList alarmList, AgendaDao agendaDao, AlarmDao alarmDao,
+                               EventDao eventDao, AlarmScheduler alarmScheduler) {
+        AppModule.retrieveEventUseCases().delete(alarmList);
+        AlarmList parent = alarmList.getAssociates();
+        for (_Alarm alarm : parent.alarms) {
+            if (alarmScheduler != null)
+                alarmScheduler.cancel(alarm);
+            alarmDao.delete(alarm);
+        }
+        for (_SubAlarm alarm : parent.subalarms) {
+            if (alarmScheduler != null)
+                alarmScheduler.cancel(alarm);
+            alarmDao.deleteSubAlarm(alarm);
+        }
+    }
+
+    private static void deleteAll(AgendaDao agendaDao, AlarmDao alarmDao,
+                                  ActivityDao activityDao, EventDao eventDao,
+                                  AlarmScheduler alarmScheduler) {
+        agendaDao.deleteAllAgendas();
+        activityDao.deleteAllGroups();
+        eventDao.deleteAllAlarmLists();
+        if (alarmScheduler != null) {
+            for (_Alarm alarm : alarmDao.getAlarms())
+                alarmScheduler.cancel(alarm);
+            for (_SubAlarm alarm : alarmDao.getSubAlarms())
+                alarmScheduler.cancel(alarm);
+        }
+        alarmDao.deleteAllAlarms();
+    }
+
 }

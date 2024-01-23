@@ -14,14 +14,9 @@ import java.util.concurrent.Future;
 
 public class EventUseCases {
     private EventRepository repository;
-    private FragmentManager fragmentManager;
 
     public EventUseCases(EventRepository repository) {
         this.repository = repository;
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public Future<_AlarmList> get(long eventId) {
