@@ -27,9 +27,6 @@ import java.util.Map;
 public class _Alarm {
     @PrimaryKey(autoGenerate = true)
     public long id;
-    public String title;
-    public SpannableStringBuilder agendaDescr;
-    public SpannableStringBuilder alarmDescr;
     public LocalDateTime datetime;
     public Duration duration;
     public LocalDate date;
@@ -46,7 +43,6 @@ public class _Alarm {
     public boolean isSubalarm() {return isSubalarm;}
 
     {
-        setAgendaData("title", "agendaDescr", "alarmDescr");
         setAlarmData(AlarmType.notif, Importance.regular);
     }
 
@@ -55,12 +51,6 @@ public class _Alarm {
 
     public _Alarm() {}
 
-    public _Alarm setAgendaData(String title, CharSequence agendaDescr, CharSequence alarmDescr) {
-        this.title = title;
-        this.agendaDescr = new SpannableStringBuilder(agendaDescr);
-        this.alarmDescr = new SpannableStringBuilder(alarmDescr);
-        return this;
-    }
     public _Alarm setAlarmData(AlarmType type, Importance importance) {
         this.type = type;
         this.importance = importance;

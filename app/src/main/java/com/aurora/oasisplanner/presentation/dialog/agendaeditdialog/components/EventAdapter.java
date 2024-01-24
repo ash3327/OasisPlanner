@@ -180,6 +180,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         switch (type) {
             case activity:
                 _AlarmList gp = _AlarmList.empty();
+                gp.title = s;
                 gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
                 activity.activity.types.add(i, new ActivityType(type,
                         AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));

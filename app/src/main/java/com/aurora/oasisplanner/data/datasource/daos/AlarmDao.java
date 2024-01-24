@@ -48,12 +48,6 @@ public interface AlarmDao {
     @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
     LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate);
 
-    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
-            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
-            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
-            "ORDER BY datetime ASC")
-    LiveData<List<_Alarm>> getAlarmsAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
-
     @Query("SELECT * FROM _Alarm WHERE id = :id")
     _Alarm getAlarmById(long id);
 
@@ -79,10 +73,16 @@ public interface AlarmDao {
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate);
 
     @Transaction
-    @Query("SELECT * FROM _Alarm WHERE datetime >= :fromDate AND " +
-            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
-            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
-            "ORDER BY datetime ASC")
+    @Query("SELECT * FROM _Alarm " +
+            "INNER JOIN _Agenda ON _Alarm.agendaId = _Agenda.id " +
+            "INNER JOIN _Activity ON _Alarm.activityId = _Activity.id " +
+            "INNER JOIN _AlarmList ON _Alarm.alarmListId = _AlarmList.id " +
+            "WHERE _Alarm.datetime >= :fromDate AND " +
+            "(_Alarm.args LIKE '%' || :searchEntry || '%' OR " +
+            "_Agenda.title LIKE '%' || :searchEntry || '%' OR " +
+            "_Activity.descr LIKE '%' || :htmlSearchEntry || '%' OR " +
+            "_AlarmList.title LIKE '%' || :searchEntry || '%') " +
+            "ORDER BY _Alarm.datetime ASC")
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 
     @Transaction
@@ -97,13 +97,6 @@ public interface AlarmDao {
     @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate ORDER BY datetime ASC")
     LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate);
-
-    @Transaction
-    @Query("SELECT * FROM _SubAlarm WHERE datetime >= :fromDate AND " +
-            "(title LIKE '%' || :searchEntry || '%' OR alarmDescr LIKE '%' || :htmlSearchEntry || '%'" +
-            "OR agendaDescr LIKE '%' || :htmlSearchEntry || '%' OR args LIKE '%' || :searchEntry || '%') " +
-            "ORDER BY datetime ASC")
-    LiveData<List<SubAlarm>> getSubAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 
     @Transaction
     @Query("SELECT * FROM _SubAlarm WHERE id = :id")

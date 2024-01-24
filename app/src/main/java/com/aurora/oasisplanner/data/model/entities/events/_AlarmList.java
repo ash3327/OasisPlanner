@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.data.model.entities.events;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -33,6 +34,8 @@ public class _AlarmList {
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
     public long id;
+    @ColumnInfo(defaultValue = "")
+    public String title;
     public List<LocalDate> dates;
     public LocalTime time;
     public AlarmType type;
@@ -164,6 +167,7 @@ public class _AlarmList {
         Converters converter = new Converters();
 
         extras.putLong("id", id);
+        extras.putString("title", title);
         extras.putString("dates", converter.localDatesToString(dates));
         extras.putLong("time", converter.localTimeToTimestamp(time));
         extras.putString("type", type.name());
@@ -182,6 +186,7 @@ public class _AlarmList {
         Converters converter = new Converters();
 
         alarm.id = extras.getLong("id");
+        alarm.title = extras.getString("title");
         alarm.dates = converter.localDatesFromString(extras.getString("dates"));
         alarm.time = converter.localTimeFromTimestamp(extras.getLong("time"));
         alarm.type = AlarmType.valueOf(extras.getString("type"));

@@ -39,17 +39,14 @@ import com.aurora.oasisplanner.data.util.Converters;
                 _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
                 _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class, _Tag.class
         },
-        version = 23,
+        version = 24,
         autoMigrations = {
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=8, to=11, spec=AppDatabase.Migration8to9.class),
                 @AutoMigration(from=11, to=17, spec=AppDatabase.Migration11to12.class),
-                @AutoMigration(from=17, to=18),
-                @AutoMigration(from=18, to=19),
-                @AutoMigration(from=19, to=20),
-                @AutoMigration(from=20, to=21),
-                @AutoMigration(from=21, to=22, spec=AppDatabase.Migration21to22.class),
+                @AutoMigration(from=17, to=22, spec=AppDatabase.Migration21to22.class),
                 @AutoMigration(from=22, to=23),
+                @AutoMigration(from=23, to=24, spec=AppDatabase.Migration23to24.class),
         }
 )
 @TypeConverters({Converters.class})
@@ -104,4 +101,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     @RenameColumn(tableName = "_AlarmList", fromColumnName = "groupId", toColumnName = "activityId")
     public static class Migration21to22 implements AutoMigrationSpec {}
+
+    @DeleteColumn(tableName = "_Alarm", columnName = "title")
+    @DeleteColumn(tableName = "_Alarm", columnName = "agendaDescr")
+    @DeleteColumn(tableName = "_Alarm", columnName = "alarmDescr")
+    @DeleteColumn(tableName = "_SubAlarm", columnName = "title")
+    @DeleteColumn(tableName = "_SubAlarm", columnName = "agendaDescr")
+    @DeleteColumn(tableName = "_SubAlarm", columnName = "alarmDescr")
+    public static class Migration23to24 implements AutoMigrationSpec {}
 }
