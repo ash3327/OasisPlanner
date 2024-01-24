@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
@@ -141,6 +142,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         switch (type) {
             case activity:
                 _Activity gp = new _Activity(descr);
+                gp.setCache(Activity.empty());
                 List<_Activity> activities = AppModule.retrieveAgendaUseCases().getActivities(agenda);
                 agenda.agenda.types.add(i, new ActivityType(type, activities.size()));
                 activities.add(gp);

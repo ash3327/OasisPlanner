@@ -91,6 +91,8 @@ public class Converters {
 
     @TypeConverter
     public List<ActivityType> typeListFromString(String val) {
+        if (val.isEmpty())
+            return new ArrayList<>();
         return Arrays.stream(val.split(Styles.SEP)).map(ActivityType::valueOf).collect(Collectors.toList());
     }
     @TypeConverter

@@ -76,6 +76,8 @@ public class Activity {
     }
     @Ignore
     public Alarm getFirstAlarm() {
+        if (alarmLists.size() == 0)
+            return null;
         _AlarmList aL = alarmLists.get(0);
         LocalDateTime dt = aL.getNextDateTime();
         for (_AlarmList al : alarmLists) {
