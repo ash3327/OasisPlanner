@@ -51,12 +51,13 @@ android {
                             'src/main/res/values/colors',
                             'src/main/res/values/animations',
 
-                            'src/main/res/drawables/shapes',
                             'src/main/res/drawables/tab_icons',
                             'src/main/res/drawables/importance_icons',
                             'src/main/res/drawables/other_icons',
                             'src/main/res/drawables/header_images',
-                            'src/main/res/drawables/app_icons'
+                            'src/main/res/drawables/app_icons',
+                            'src/main/res/drawables/animation',
+                            'src/main/res/drawables/shapes',
                     ]
         }
     }

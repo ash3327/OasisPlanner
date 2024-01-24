@@ -26,7 +26,7 @@
 
     <!-- Navigation box width / heights -->
     <dimen name="portrait_action_bar_height">60dp</dimen>
-    <dimen name="portrait_bottom_navigation_bar_height">55dp</dimen>
+    <dimen name="portrait_bottom_navigation_bar_height">70dp</dimen>
     <dimen name="landscape_navigation_rail_width">70dp</dimen>
     <dimen name="nav_textsize">15sp</dimen>
 
