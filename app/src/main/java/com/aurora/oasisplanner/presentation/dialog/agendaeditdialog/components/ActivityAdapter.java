@@ -39,12 +39,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
-public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGroupsHolder> {
+public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityHolder> {
 
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
-    private Label label, label2;
     private OnClickListener ocl = null;
 
     {
@@ -71,7 +70,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
     @NonNull
     @Override
-    public AlarmGroupsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewDataBinding binding = null;
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         switch (ActivityType.Type.values()[viewType]) {
@@ -85,11 +84,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
                 binding = SectionDocBinding.inflate(li, parent, false);
                 break;
         }
-        return new AlarmGroupsHolder(binding, this);
+        return new ActivityHolder(binding, this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AlarmGroupsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
         holder.bind(position, sections.get(position));
     }
 
@@ -157,11 +156,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
         this.scrollFunc = scrollFunc;
     }
 
-    class AlarmGroupsHolder extends RecyclerView.ViewHolder {
+    class ActivityHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding vbinding;
-        private SectionAdapter adapter;
+        private ActivityAdapter adapter;
 
-        public AlarmGroupsHolder(ViewDataBinding binding, SectionAdapter adapter) {
+        public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
@@ -296,12 +295,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.AlarmGro
 
             editText.setText(doc.contents);
         }
-    }
-
-    /** This must be executed before setAgenda. */
-    public void setBinaryLabel(Label lbl, Label lbl2) {
-        this.label = lbl;
-        this.label2 = lbl2;
     }
 
     private void updateLabel(Label lbl, Label lbl2, boolean collapsed, boolean checkListIsOn,

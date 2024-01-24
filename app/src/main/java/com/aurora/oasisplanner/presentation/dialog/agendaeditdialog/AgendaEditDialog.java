@@ -33,8 +33,8 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionAdapter;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.SectionItemAdapter;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventAdapter;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
@@ -143,21 +143,9 @@ public class AgendaEditDialog extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(false);
 
-        final SectionAdapter adapter = new SectionAdapter();
+        final ActivityAdapter adapter = new ActivityAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
-        adapter.setBinaryLabel(
-                new SectionAdapter.Label(
-                        binding.pageYellowLabel,
-                        binding.pageYellowLabelText,
-                        binding.pageYellowLabelIcon
-                ),
-                new SectionAdapter.Label(
-                        binding.pageYellowLabel2,
-                        binding.pageYellowLabel2Text,
-                        binding.pageYellowLabel2Icon
-                )
-        );
         adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
@@ -184,7 +172,7 @@ public class AgendaEditDialog extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         Switch tSwitch = new Switch(false);
-        final SectionItemAdapter adapter = new SectionItemAdapter(
+        final EventAdapter adapter = new EventAdapter(
                 (alarmList)->show(selected), recyclerView, tSwitch
         );
         tSwitch.observe((state)-> {

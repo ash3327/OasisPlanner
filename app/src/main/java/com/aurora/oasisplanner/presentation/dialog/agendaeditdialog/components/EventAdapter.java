@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.AlarmGroupsHolder> {
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder> {
 
     private static final int ID_KEY_ITEMS = 3;
     private final Id id;
@@ -57,7 +57,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
     private final Switch tSwitch;
     private final Set<_AlarmList> checkedList;
 
-    public SectionItemAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Switch tSwitch) {
+    public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
         this.tSwitch = tSwitch;
         checkedList = new HashSet<>();
@@ -90,7 +90,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
 
     @NonNull
     @Override
-    public AlarmGroupsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EventHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewDataBinding binding = null;
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         switch (ActivityType.Type.values()[viewType]) {
@@ -107,11 +107,11 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
                 binding = ItemLocBinding.inflate(li, parent, false);
                 break;
         }
-        return new AlarmGroupsHolder(binding, this, len, tSwitch, checkedList);
+        return new EventHolder(binding, this, len, tSwitch, checkedList);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AlarmGroupsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EventHolder holder, int position) {
         holder.bind(position, sections.get(position), activity);
     }
 
@@ -212,9 +212,9 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         setGroup(activity);
     }
 
-    class AlarmGroupsHolder extends RecyclerView.ViewHolder {
+    class EventHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding vbinding;
-        private final SectionItemAdapter adapter;
+        private final EventAdapter adapter;
         /** aSwtich = true shows the checkboxes. */
         private final Switch aSwitch;
         private final Set<_AlarmList> checkedList;
@@ -222,8 +222,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionItemAdapter.
         private Object item;
         private final int len;
 
-        public AlarmGroupsHolder(ViewDataBinding binding, SectionItemAdapter adapter, int len,
-                                 Switch tSwitch, Set<_AlarmList> checkedList) {
+        public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
+                           Switch tSwitch, Set<_AlarmList> checkedList) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
