@@ -134,7 +134,7 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void showActivities(Agenda agenda) {
-        binding.agendaPageCheckbox.setVisibility(View.GONE); //TODO: Selection for activities
+        binding.agendaPageSelectionTools.setVisibility(View.GONE); //TODO: Selection for activities
 
         binding.pageGreyBar1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
@@ -180,13 +180,15 @@ public class AgendaEditDialog extends Fragment {
                     binding.agendaPageCheckbox.setTag(true);
                     binding.agendaPageCheckbox.setChecked(isFull);
                     binding.agendaPageCheckbox.setTag(null);
-                    Log.d("test3", "+::"+Arrays.deepToString(events.toArray()));
                 },
                 recyclerView, tSwitch
         );
         tSwitch.observe((state)-> {
-            binding.agendaPageCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
+            binding.agendaPageSelectionTools.setVisibility(state ? View.VISIBLE : View.GONE);
+            binding.pageAddItemEditText.setEditable(!state);
         }, true);
+        binding.agendaPageDelete.setOnClickListener((v)-> adapter.removeChecked());
+        binding.agendaPageEdit.setOnClickListener((v)-> adapter.editTagOfChecked());
         binding.agendaPageCheckbox.setOnCheckedChangeListener((v,checked)->{
             if (v.getTag() != null)
                 return;

@@ -1,6 +1,9 @@
 package com.aurora.oasisplanner.data.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class Switch {
             for (StateObj action : idxActions.values())
                 action.run(state);
         }
+
         return changed;
     }
     public boolean toggleState() {

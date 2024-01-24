@@ -13,17 +13,14 @@ import androidx.annotation.Nullable;
 import com.aurora.oasisplanner.databinding.AddItemEditTextBinding;
 
 public class AddItemEditText extends LinearLayout {
-    private ImageView icon;
-    private EditText editText;
+    private final ImageView icon;
+    private final EditText editText;
+    private final AddItemEditTextBinding binding;
 
     public AddItemEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    private void init() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        AddItemEditTextBinding binding = AddItemEditTextBinding.inflate(inflater, this, true);
+        binding = AddItemEditTextBinding.inflate(inflater, this, true);
         icon = binding.aietIcon;
         editText = binding.aietEditText;
     }
@@ -33,14 +30,22 @@ public class AddItemEditText extends LinearLayout {
 
     public void setOnEnterListener(OnEnterListener r) {
         editText.setOnKeyListener((view,keyCode,keyEvent)->{
+            String s = editText.getText().toString().trim();
             if (keyCode == KeyEvent.KEYCODE_ENTER &&
-                    keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                r.run(editText.getText().toString().trim());
+                    keyEvent.getAction() == KeyEvent.ACTION_UP
+            ) {
+                if (!s.isEmpty())
+                    r.run(s);
                 editText.setText("");
                 return true; // Consume key event.
             }
             return false; // Not consumed event
         });
+    }
+
+    public void setEditable(boolean editable) {
+        editText.setEnabled(editable);
+        binding.getRoot().setVisibility(editable ? VISIBLE : INVISIBLE);
     }
 
     public interface OnEnterListener {

@@ -194,6 +194,18 @@ public class _AlarmList {
     }
 
     @Ignore
+    private static long count = 0;
+    @Ignore
+    private long privateId = 0;
+    public long getUniqueReference() {
+        if (id != 0)
+            return id;
+        if (privateId != 0)
+            return privateId;
+        return privateId = --count;
+    }
+
+    @Ignore
     public String toString() {
         return "\n\t\t [ AlarmList : "+id+" : \n\t\t\t"+dates.toString()+"\n\t\t\t"+time.toString()+"\n\t\t ]";
     }

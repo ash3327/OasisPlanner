@@ -257,7 +257,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
                         aSwitch.setState(!checkedList.isEmpty());
                     } catch (Exception e){e.printStackTrace();}
                 });
-            }, true, gp.id);
+            }, true, gp.getUniqueReference());
 
             binding.bar.setOnClickListener(
                     (v)->{
