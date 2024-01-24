@@ -1,5 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
+import android.util.Log;
+
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
@@ -11,6 +13,7 @@ import com.aurora.oasisplanner.data.tags.AgendaType;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 

@@ -198,7 +198,6 @@ public class AgendaEditDialog extends Fragment {
         });
     }
     public void show(List<_Activity> selected) {
-        Log.d("test3", Arrays.deepToString(selected.toArray()));
         if (selected == null || selected.size() == 0)
             showActivities(agenda);
         else

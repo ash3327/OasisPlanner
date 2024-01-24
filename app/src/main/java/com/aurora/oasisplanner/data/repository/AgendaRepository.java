@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.repository;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
@@ -19,6 +20,7 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -99,8 +101,10 @@ public class AgendaRepository {
             String title
     ) throws ExecutionException, InterruptedException {
 
-        if (!actv.hasCache())
+        if (!actv.hasCache()) {
+            activityDao.insert(actv);
             return;
+        }
 
         Activity activity = actv.getCache();
         activity.update();

@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.data.model.entities.events;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
