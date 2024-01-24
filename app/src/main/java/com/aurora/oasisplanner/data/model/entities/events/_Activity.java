@@ -151,4 +151,16 @@ public class _Activity {
         cache.activity = this;
         return this.cache = cache;
     }
+
+    @Ignore
+    private static long count = 0;
+    @Ignore
+    private long privateId = 0;
+    public long getUniqueReference() {
+        if (id != 0)
+            return id;
+        if (privateId != 0)
+            return privateId;
+        return privateId = --count;
+    }
 }

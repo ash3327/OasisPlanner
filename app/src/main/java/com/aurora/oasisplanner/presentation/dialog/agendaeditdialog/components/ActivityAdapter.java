@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
@@ -31,12 +32,16 @@ import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
@@ -46,6 +51,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
     private OnClickListener ocl = null;
+    private Instant clicked = Instant.now();
 
     {
         setHasStableIds(true);
@@ -54,6 +60,16 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     private Agenda agenda;
     public List<Object> activities = new ArrayList<>();
     public List<ActivityType.Type> types = new ArrayList<>();
+
+    private final OnSelectListener onSelectListener;
+    private final Switch tSwitch;
+    private final Set<_Activity> checkedList;
+
+    public ActivityAdapter(OnSelectListener onSelectListener, Switch tSwitch) {
+        this.onSelectListener = onSelectListener;
+        this.tSwitch = tSwitch;
+        this.checkedList = new HashSet<>();
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -85,7 +101,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                 binding = SectionDocBinding.inflate(li, parent, false);
                 break;
         }
-        return new ActivityHolder(binding, this);
+        return new ActivityHolder(binding, this, tSwitch, checkedList);
     }
 
     @Override
@@ -161,11 +177,16 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     class ActivityHolder extends RecyclerView.ViewHolder {
         private ViewDataBinding vbinding;
         private ActivityAdapter adapter;
+        private final Set<_Activity> checkedList;
+        /** aSwtich = true shows the checkboxes. */
+        private final Switch aSwitch;
 
-        public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter) {
+        public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter, Switch tSwitch, Set<_Activity> checkedList) {
             super(binding.getRoot());
             this.vbinding = binding;
             this.adapter = adapter;
+            this.aSwitch = tSwitch;
+            this.checkedList = checkedList;
         }
 
         public boolean bind(int i, Object sect) {
@@ -178,10 +199,31 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             SectionBinding binding = (SectionBinding) vbinding;
             Switch tSwitch = new Switch(false);
 
+            aSwitch.observe((state)-> {
+                binding.activityCheckbox.setChecked(checkedList.contains(gp));
+                binding.activityCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
+                binding.activityCheckbox.setOnCheckedChangeListener((v,checked)->{
+                    try {
+                        if (checked) checkedList.add(gp);
+                        else checkedList.remove(gp);
+                        adapter.onUpdate(checkedList);
+                        aSwitch.setState(!checkedList.isEmpty());
+                    } catch (Exception e){e.printStackTrace();}
+                });
+            }, true, gp.getUniqueReference());
+
             binding.bar.setOnClickListener(
                     (v)->{
                         barOnClicked(i, gp);
                         tSwitch.setState(false);
+                    }
+            );
+            binding.bar.setOnLongClickListener(
+                    (v)->{
+                        checkToggle(gp);
+
+                        clicked = Instant.now();
+                        return true;
                     }
             );
             //*
@@ -274,10 +316,16 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         }
 
         public void barOnClicked(int i, _Activity gp) {
-            toAddSection.setId(0);
-            scrollFunc.run(i, i);
-            if (ocl != null)
-                ocl.onClick(gp);
+            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
+                return;
+            if (aSwitch.getState())
+                checkToggle(gp);
+            else {
+                toAddSection.setId(0);
+                scrollFunc.run(i, i);
+                if (ocl != null)
+                    ocl.onClick(gp);
+            }
         }
 
         public void associate(EditText editText, _Activity activity) {
@@ -296,6 +344,15 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                 editText.removeTextChangedListener((TextWatcher) tag);
 
             editText.setText(doc.contents);
+        }
+
+        public void checkToggle(_Activity gp) {
+            if (checkedList.contains(gp))
+                checkedList.remove(gp);
+            else
+                checkedList.add(gp);
+            aSwitch.setState(!checkedList.isEmpty(), true);
+            adapter.onUpdate(checkedList);
         }
     }
 
@@ -357,6 +414,41 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     }
     public void addNewSection(View v) {
         toAddSection.setId(1);
+    }
+
+    public void removeChecked() {
+        try {
+            for (_Activity aL : checkedList)
+                remove(aL, aL.i);
+            tSwitch.setState(false);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+    public void editTagOfChecked() {
+        /* TODO: Edit tag for activity
+        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
+                checkedList, this::updateUi
+        );//*/
+    }
+
+    public void clearChecked() {
+        checkedList.clear();
+        tSwitch.setState(false, true);
+    }
+    public void checkAll() {
+        checkedList.addAll(agenda.activities);
+        tSwitch.setState(true, true);
+    }
+
+    public void updateUi() {
+        checkedList.clear();
+        tSwitch.setState(false, true);
+        notifyDataSetChanged();
+    }
+
+    public interface OnSelectListener {void onSelect(Set<_Activity> checkedList, boolean isFull);}
+    public void onUpdate(Set<_Activity> checkedList) {
+        if (onSelectListener != null)
+            onSelectListener.onSelect(checkedList, checkedList.size()==agenda.activities.size());
     }
 
     public static class Label {

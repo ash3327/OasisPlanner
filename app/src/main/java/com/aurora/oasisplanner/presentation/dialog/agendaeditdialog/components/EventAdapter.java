@@ -64,7 +64,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         this.onSaveAlarmListener = onSaveAlarmListener;
         this.onSelectListener = onSelectListener;
         this.tSwitch = tSwitch;
-        checkedList = new HashSet<>();
+        this.checkedList = new HashSet<>();
         id.setId(-1);
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();

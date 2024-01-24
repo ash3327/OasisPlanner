@@ -145,7 +145,32 @@ public class AgendaEditDialog extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(false);
 
-        final ActivityAdapter adapter = new ActivityAdapter();
+        Switch tSwitch = new Switch(false);
+        final ActivityAdapter adapter = new ActivityAdapter(
+                (activities, isFull)->{
+                    binding.agendaPageCheckbox.setTag(true);
+                    binding.agendaPageCheckbox.setChecked(isFull);
+                    binding.agendaPageCheckbox.setTag(null);
+                },
+                tSwitch
+        );
+
+        // START FROM HERE
+        tSwitch.observe((state)-> {
+            binding.agendaPageSelectionTools.setVisibility(state ? View.VISIBLE : View.GONE);
+            binding.pageAddItemEditText.setEditable(!state);
+        }, true);
+        binding.agendaPageDelete.setOnClickListener((v)-> adapter.removeChecked());
+        binding.agendaPageEdit.setOnClickListener((v)-> adapter.editTagOfChecked());
+        binding.agendaPageCheckbox.setOnCheckedChangeListener((v,checked)->{
+            if (v.getTag() != null)
+                return;
+            if (checked) // to full
+                adapter.checkAll();
+            else // to empty
+                adapter.clearChecked();
+        });//*/
+        // ENDS HERE
         recyclerView.setAdapter(adapter);
         adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
         adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
