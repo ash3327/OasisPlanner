@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
         android:id="@+id/bar">
 
         <LinearLayout
@@ -21,20 +22,20 @@
 
             <LinearLayout
                 android:id="@+id/section_card"
-                android:layout_width="@dimen/big_icon_bound_height"
-                android:layout_height="@dimen/big_icon_bound_height"
+                android:layout_width="@dimen/big_icon_height"
+                android:layout_height="@dimen/big_icon_height"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="5dp"
+                android:layout_marginVertical="5dp"
 
                 android:background="@drawable/circlestyle_border_filled"
                 android:gravity="center">
                 <ImageView
                     android:id="@+id/doc_icon"
-                    android:layout_width="@dimen/big_icon_height"
-                    android:layout_height="@dimen/big_icon_height"
+                    android:layout_width="@dimen/medium_icon_height"
+                    android:layout_height="@dimen/medium_icon_height"
                     android:src="@drawable/ic_agendatype_calendar"
 
                     app:tint="@color/grey_300" />
