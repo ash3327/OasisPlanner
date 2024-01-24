@@ -3,6 +3,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.E
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -132,6 +134,8 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void showActivities(Agenda agenda) {
+        binding.agendaPageCheckbox.setVisibility(View.GONE); //TODO: Selection for activities
+
         binding.pageGreyBar1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
         binding.pageSectionsActivities.setVisibility(View.VISIBLE);
@@ -171,11 +175,26 @@ public class AgendaEditDialog extends Fragment {
 
         Switch tSwitch = new Switch(false);
         final EventAdapter adapter = new EventAdapter(
-                (alarmList)->show(selected), recyclerView, tSwitch
+                (alarmList)->show(selected),
+                (events, isFull)->{
+                    binding.agendaPageCheckbox.setTag(true);
+                    binding.agendaPageCheckbox.setChecked(isFull);
+                    binding.agendaPageCheckbox.setTag(null);
+                    Log.d("test3", "+::"+Arrays.deepToString(events.toArray()));
+                },
+                recyclerView, tSwitch
         );
         tSwitch.observe((state)-> {
-
+            binding.agendaPageCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
         }, true);
+        binding.agendaPageCheckbox.setOnCheckedChangeListener((v,checked)->{
+            if (v.getTag() != null)
+                return;
+            if (checked) // to full
+                adapter.checkAll();
+            else // to empty
+                adapter.clearChecked();
+        });
         recyclerView.setAdapter(adapter);
 
         ExecutorService executor = AppModule.provideExecutor();

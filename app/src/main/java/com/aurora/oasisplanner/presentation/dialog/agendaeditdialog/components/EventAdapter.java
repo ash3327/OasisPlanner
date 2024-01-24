@@ -43,6 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
     private final Id id;
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
+    private final OnSelectListener onSelectListener;
     public Switch bSwitch = new Switch(false);
 
     {
@@ -57,8 +58,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
     private final Switch tSwitch;
     private final Set<_AlarmList> checkedList;
 
-    public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener, RecyclerView recyclerView, Switch tSwitch) {
+    public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
+                        OnSelectListener onSelectListener,
+                        RecyclerView recyclerView, Switch tSwitch) {
         this.onSaveAlarmListener = onSaveAlarmListener;
+        this.onSelectListener = onSelectListener;
         this.tSwitch = tSwitch;
         checkedList = new HashSet<>();
         id.setId(-1);
@@ -83,8 +87,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         long numClasses = 3;
         if (item instanceof _AlarmList)
             return Styles.hashInt(item) * numClasses + 1;
-        if (item instanceof _Doc)
-            return Styles.hashInt(item) * numClasses + 2;
         return -1;
     }
 
@@ -93,20 +95,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
     public EventHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewDataBinding binding = null;
         LayoutInflater li = LayoutInflater.from(parent.getContext());
-        switch (ActivityType.Type.values()[viewType]) {
-            case gap:
-                binding = ItemGapBinding.inflate(li, parent, false);
-                break;
-            case activity:
-                binding = ItemAlarmBinding.inflate(li, parent, false);
-                break;
-            case doc:
-                binding = ItemDocBinding.inflate(li, parent, false);
-                break;
-            case loc:
-                binding = ItemLocBinding.inflate(li, parent, false);
-                break;
-        }
+        assert ActivityType.Type.values()[viewType].equals(ActivityType.Type.activity);
+        binding = ItemAlarmBinding.inflate(li, parent, false);
         return new EventHolder(binding, this, len, tSwitch, checkedList);
     }
 
@@ -162,7 +152,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         notifyDataSetChanged();
     }
 
-    public boolean checkListIsEmpty(boolean v) {
+    public boolean checkListIsEmpty() {
         return checkedList.isEmpty();
     }
 
@@ -212,6 +202,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         setEventList(activity);
     }
 
+    public interface OnSelectListener {void onSelect(Set<_AlarmList> checkedList, boolean isFull);}
+    public void onUpdate(Set<_AlarmList> checkedList) {
+        if (onSelectListener != null)
+            onSelectListener.onSelect(checkedList, checkedList.size()==activity.alarmLists.size());
+    }
+    public void clearChecked() {
+        checkedList.clear();
+        tSwitch.setState(false, true);
+    }
+    public void checkAll() {
+        checkedList.addAll(activity.alarmLists);
+        tSwitch.setState(true, true);
+    }
+
     class EventHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding vbinding;
         private final EventAdapter adapter;
@@ -236,12 +240,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
             this.item = sect;
             if (sect instanceof _AlarmList)
                 return bindAlarms(i, (_AlarmList) sect, gp);
-            if (sect instanceof _Doc) {
-                _Doc doc = (_Doc) sect;
-                if (getItemViewType() == ActivityType.Type.loc.ordinal())
-                    return bindLoc(i, doc);
-                return bindDoc(i, doc);
-            }
             return false;
         }
 
@@ -255,6 +253,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
                     try {
                         if (checked) checkedList.add(gp);
                         else checkedList.remove(gp);
+                        adapter.onUpdate(checkedList);
                         aSwitch.setState(!checkedList.isEmpty());
                     } catch (Exception e){e.printStackTrace();}
                 });
@@ -280,6 +279,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
                         else {
                             if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500) {
                                 aSwitch.setState(false);
+                                adapter.onUpdate(checkedList);
                             }
 
                             AppModule.retrieveEditAlarmListUseCases()
@@ -310,6 +310,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
             else
                 checkedList.add(gp);
             aSwitch.setState(!checkedList.isEmpty(), true);
+            adapter.onUpdate(checkedList);
         }
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
@@ -326,162 +327,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
                 adapter.setTags(gp.getArgs());
             }
-        }
-
-        public boolean bindDoc(int i, _Doc doc) {
-            ItemDocBinding binding = (ItemDocBinding) vbinding;
-
-            aSwitch.observe((state)-> {
-                binding.bar.setBackgroundColor(
-                        id.equals(i) && state ?
-                                Resources.getColor(R.color.red_100) : 0
-                );
-                binding.card.setVisibility(id.equals(i) && state ? View.VISIBLE : View.GONE);
-                binding.docContentEdittext.setFocusable(!state);
-            }, true);
-
-            binding.bar.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i)) {
-                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
-                                adapter.remove(doc, i/2);
-                        } else {
-                            id.setId(i);
-                            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
-                                aSwitch.setState(false);
-                        }
-                    }
-            );
-            binding.docContentEdittext.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i)) {
-                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
-                                adapter.remove(doc, i/2);
-                        } else {
-                            id.setId(i);
-                        }
-                    }
-            );
-            binding.bar.setOnLongClickListener(
-                    (v)->{
-                        if (!id.setId(i))
-                            aSwitch.setState(true);
-                        clicked = Instant.now();
-                        return false;
-                    }
-            );
-            binding.docContentEdittext.setOnLongClickListener(
-                    (v)->{
-                        id.setId(i);
-                        aSwitch.setState(true);
-                        clicked = Instant.now();
-                        return false;
-                    }
-            );
-
-            EditText editText;
-            associate(editText = binding.docContentEdittext, doc);
-
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    editText.clearComposingText();
-                    doc.contents = new SpannableStringBuilder(editText.getText());
-                    //types.set(i/2, ActivityType.Type.loc);
-                    //notifyItemChanged(i);
-                }
-            };
-            editText.setTag(textWatcher);
-            editText.addTextChangedListener(textWatcher);
-
-            return true;
-        }
-
-        public boolean bindLoc(int i, _Doc doc) {
-            ItemLocBinding binding = (ItemLocBinding) vbinding;
-
-            aSwitch.observe((state)-> {
-                binding.bar.setBackgroundColor(
-                        id.equals(i) && state ?
-                                Resources.getColor(R.color.red_100) : 0
-                );
-                binding.card.setVisibility(id.equals(i) && state ? View.VISIBLE : View.GONE);
-                binding.docContentEdittext.setFocusable(!state);
-            }, true);
-
-            binding.bar.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i)) {
-                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
-                                adapter.remove(doc, i/2);
-                        } else {
-                            id.setId(i);
-                            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500)
-                                aSwitch.setState(false);
-                        }
-                    }
-            );
-            binding.docContentEdittext.setOnClickListener(
-                    (v)->{
-                        if (id.equals(i)) {
-                            if (aSwitch.getState() && (Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500))
-                                adapter.remove(doc, i/2);
-                        } else {
-                            id.setId(i);
-                        }
-                    }
-            );
-            binding.bar.setOnLongClickListener(
-                    (v)->{
-                        if (!id.setId(i))
-                            aSwitch.setState(true);
-                        clicked = Instant.now();
-                        return false;
-                    }
-            );
-            binding.docContentEdittext.setOnLongClickListener(
-                    (v)->{
-                        id.setId(i);
-                        aSwitch.setState(true);
-                        clicked = Instant.now();
-                        return false;
-                    }
-            );
-
-            EditText editText;
-            associate(editText = binding.docContentEdittext, doc);
-
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    editText.clearComposingText();
-                    doc.contents = new SpannableStringBuilder(editText.getText());
-                }
-            };
-            editText.setTag(textWatcher);
-            editText.addTextChangedListener(textWatcher);
-
-            return true;
         }
 
         public void associate(EditText editText, _Doc doc) {

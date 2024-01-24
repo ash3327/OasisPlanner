@@ -113,12 +113,40 @@
                         android:layout_height="15dp"
                         android:background="@color/grey_50"
                         android:orientation="horizontal"/>
-                    <com.aurora.oasisplanner.presentation.widget.AddItemEditText
-                        android:id="@+id/page_add_item_edit_text"
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/agenda_page_checkbox_ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginVertical="10dp"/>
+                        android:orientation="horizontal">
+                        <com.aurora.oasisplanner.presentation.widget.AddItemEditText
+                            android:id="@+id/page_add_item_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginVertical="10dp"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                        <CheckBox
+                            android:id="@+id/agenda_page_checkbox"
+                            android:layout_width="@dimen/big_icon_height"
+                            android:layout_height="@dimen/big_icon_height"
+                            app:buttonTint="@color/black"
+                            android:checked="false"
+                            android:layout_marginEnd="30dp"
+                            android:button="@null"
+                            android:foreground="@drawable/selector_half_checkbox"
+                            android:foregroundGravity="center"
+                            android:visibility="gone"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -133,7 +161,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="20sp"
                         tools:itemCount="1"
                         tools:listitem="@layout/_section_displist" />
                 </LinearLayout>

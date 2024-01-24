@@ -7,6 +7,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/appic_sprout2.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_add_location.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_app_logo_sprout.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_baseline_minimize_24.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_launcher_foreground.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_note.xml" value="0.1" />
@@ -35,6 +36,9 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_baseline_add_24.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_bold.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_calendar_wcolor.xml" value="0.115" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_checkbox_checked.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_checkbox_empty.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_checkbox_half.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_circle_add.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_circle_cross.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_contract.xml" value="0.1" />
@@ -71,6 +75,8 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_time.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_addnote.xml" value="0.105" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_note.xml" value="0.105" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/selector_full_checkbox.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/selector_half_checkbox.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/border_gold.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/border_grey.xml" value="0.1505" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/circlestyle_border_filled.xml" value="0.1" />
@@ -154,7 +160,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/_page_displist.xml" value="0.1368106028217187" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/_section_displist.xml" value="0.1368106028217187" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/add_item_edit_text.xml" value="0.22" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/agenda_edit_page.xml" value="0.1368106028217187" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/agenda_edit_page.xml" value="0.37407407407407406" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog.xml" value="0.14666666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog_page_dates.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog_page_infos.xml" value="0.19223300970873786" />
@@ -176,7 +182,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/datetype_spinner_element.xml" value="0.22" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/drawer_header.xml" value="0.22" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item.xml" value="0.10587431693989072" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_alarm.xml" value="0.22" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_alarm.xml" value="0.4466666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_doc.xml" value="0.1710114702815433" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_edit_tag_dialog.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/item_gap.xml" value="0.14666666666666667" />
