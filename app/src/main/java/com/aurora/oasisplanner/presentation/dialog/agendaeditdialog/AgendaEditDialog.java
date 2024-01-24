@@ -3,7 +3,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +37,6 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.E
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -188,7 +186,7 @@ public class AgendaEditDialog extends Fragment {
                 Activity activity = actv.getCache();
                 assert activity != null;
                 binding.getRoot().post(()->{
-                    adapter.setGroup(activity);
+                    adapter.setEventList(activity);
                 });
                 binding.pageAddItemEditText.setOnEnterListener(
                         (s)->adapter.insert(ActivityType.Type.activity, 0, s));

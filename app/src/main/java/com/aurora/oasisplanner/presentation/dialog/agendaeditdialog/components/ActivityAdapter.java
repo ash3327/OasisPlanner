@@ -52,7 +52,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     }
 
     private Agenda agenda;
-    public List<Object> sections = new ArrayList<>();
+    public List<Object> activities = new ArrayList<>();
     public List<ActivityType.Type> types = new ArrayList<>();
 
     @Override
@@ -62,7 +62,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
 
     @Override
     public long getItemId(int position) {
-        Object item = sections.get(position);
+        Object item = activities.get(position);
         long numClasses = 3;
         if (item instanceof _Activity)
             return Styles.hashInt(item) * numClasses + 1;
@@ -90,12 +90,12 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
 
     @Override
     public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
-        holder.bind(position, sections.get(position));
+        holder.bind(position, activities.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return sections.size();
+        return activities.size();
     }
 
     /** Since the alarm list will be overall changed when any agenda is edited,
@@ -118,7 +118,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             i++;
         }
 
-        this.sections = list;
+        this.activities = list;
         this.types = types;
         notifyDataSetChanged();
     }

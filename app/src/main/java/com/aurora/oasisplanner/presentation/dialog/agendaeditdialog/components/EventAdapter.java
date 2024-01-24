@@ -123,7 +123,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
-    public void setGroup(Activity activity) {
+    public void setEventList(Activity activity) {
         this.activity = activity;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
@@ -181,7 +181,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         if (valid) {
             activity.activity.types.remove(i);
             activity.update();
-            setGroup(activity);
+            setEventList(activity);
         }
     }
 
@@ -209,7 +209,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
         id.setId(i * 2 + 1);
         activity.update();
-        setGroup(activity);
+        setEventList(activity);
     }
 
     class EventHolder extends RecyclerView.ViewHolder {
