@@ -11,18 +11,15 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurora.oasisplanner.data.model.entities.events._Activity;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.TagType;
-import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
-import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmList> {
+public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event> {
 
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
@@ -90,7 +87,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
 
     public void removeChecked() {
         try {
-            for (_AlarmList aL : checkedList)
+            for (_Event aL : checkedList)
                 remove(aL, aL.i);
             tSwitch.setState(false);
         } catch (Exception e) {e.printStackTrace();}
@@ -106,9 +103,9 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
         if (i == -1) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
-        if (obj instanceof _AlarmList && type.type == ActivityType.Type.activity
+        if (obj instanceof _Event && type.type == ActivityType.Type.activity
                 && AppModule.retrieveAgendaUseCases().getAlarmLists(activity).get(type.i).equals(obj))
-            ((_AlarmList) obj).visible = false;
+            ((_Event) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.doc && activity.docs.get(type.i).equals(obj))
             ((_Doc) obj).visible = false;
         else if (obj instanceof _Doc && type.type == ActivityType.Type.loc && activity.docs.get(type.i).equals(obj))
@@ -125,7 +122,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
     public void insert(ActivityType.Type type, int i, String s) {
         switch (type) {
             case activity:
-                _AlarmList gp = _AlarmList.empty();
+                _Event gp = _Event.empty();
                 gp.title = s;
                 gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
                 activity.activity.types.add(i, new ActivityType(type,
@@ -148,7 +145,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
         setEventList(activity);
     }
 
-    List<_AlarmList> getList() { return activity.alarmLists; }
+    List<_Event> getList() { return activity.alarmLists; }
 
     private boolean swapping = false;
     public void swapItems(int fromPosition, int toPosition) {
@@ -166,33 +163,33 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
     public void save() {
         int i = 0;
         for (Object aL : items) {
-            if (!(aL instanceof _AlarmList))
+            if (!(aL instanceof _Event))
                 continue;
-            ((_AlarmList)aL).i = i;
+            ((_Event)aL).i = i;
             i++;
         }
         activity.getObjList(true);
     }
 
-    class EventHolder extends _BaseHolder<EventAdapter.EventHolder, _AlarmList, EventAdapter> {
+    class EventHolder extends _BaseHolder<EventAdapter.EventHolder, _Event, EventAdapter> {
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
 
         public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
-                           Switch tSwitch, Set<_AlarmList> checkedList) {
+                           Switch tSwitch, Set<_Event> checkedList) {
             super(binding, adapter, tSwitch, checkedList);
             this.len = len;
         }
 
         public boolean bind(int i, Object sect, Activity gp) {
             this.item = sect;
-            if (sect instanceof _AlarmList)
-                return bindAlarms(i, (_AlarmList) sect, gp);
+            if (sect instanceof _Event)
+                return bindAlarms(i, (_Event) sect, gp);
             return false;
         }
 
-        public boolean bindAlarms(int i, _AlarmList gp, Activity grp) {
+        public boolean bindAlarms(int i, _Event gp, Activity grp) {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
             setDragHandle(binding.itemAlarmDraghandle, this);
@@ -242,8 +239,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmL
 
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
-            if (item instanceof _AlarmList) {
-                _AlarmList gp = (_AlarmList) item;
+            if (item instanceof _Event) {
+                _Event gp = (_Event) item;
 
                 binding.icon.setImageDrawable(gp.type.getDrawable());
                 binding.importanceLabel.setColorFilter(gp.importance.getColorPr());

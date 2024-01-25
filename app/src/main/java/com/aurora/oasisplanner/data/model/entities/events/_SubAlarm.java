@@ -6,18 +6,13 @@ import android.text.SpannableStringBuilder;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
-import com.aurora.oasisplanner.data.tags.AlarmType;
-import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
-import com.aurora.oasisplanner.data.util.Converters;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Entity(tableName = "_SubAlarm")
 public class _SubAlarm extends _Alarm {
@@ -27,12 +22,12 @@ public class _SubAlarm extends _Alarm {
     }
 
     @Ignore
-    public static List<_SubAlarm> generateSubAlarms(AlarmList alarmList) {
+    public static List<_SubAlarm> generateSubAlarms(Event event) {
         ArrayList<_SubAlarm> list = new ArrayList<>();
-        for (_Alarm alarm : alarmList.alarms) {
+        for (_Alarm alarm : event.alarms) {
             if (alarm.visible)
                 list.addAll(generateSubAlarms(alarm,
-                        alarmList.alarmList.getArg(TagType.ALARM.name())));
+                        event.alarmList.getArg(TagType.ALARM.name())));
         }
         return list;
     }

@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
@@ -21,14 +21,14 @@ public class Activity {
     @Embedded
     public _Activity activity;
 
-    @Relation(parentColumn = "id", entityColumn = "activityId", entity = _AlarmList.class)
-    public List<_AlarmList> alarmLists = new ArrayList<>();
+    @Relation(parentColumn = "id", entityColumn = "activityId", entity = _Event.class)
+    public List<_Event> alarmLists = new ArrayList<>();
 
     @Relation(parentColumn = "id", entityColumn = "groupId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
-    public List<_AlarmList> invisGroups = new ArrayList<>();
+    public List<_Event> invisGroups = new ArrayList<>();
     @Ignore
     public List<_Doc> invisDocs = new ArrayList<>();
 
@@ -63,9 +63,9 @@ public class Activity {
     /** Returns Object[3]: {_AlarmList: _AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
     public Object[] getFirstAlarmList() {
-        _AlarmList aL = alarmLists.get(0);
+        _Event aL = alarmLists.get(0);
         LocalDateTime dt = aL.getNextDateTime();
-        for (_AlarmList al : alarmLists) {
+        for (_Event al : alarmLists) {
             LocalDateTime aldt = al.getNextDateTime();
             if (aldt != null && (dt == null || aldt.isBefore(dt))) {
                 aL = al;
@@ -78,9 +78,9 @@ public class Activity {
     public Alarm getFirstAlarm() {
         if (alarmLists.size() == 0)
             return null;
-        _AlarmList aL = alarmLists.get(0);
+        _Event aL = alarmLists.get(0);
         LocalDateTime dt = aL.getNextDateTime();
-        for (_AlarmList al : alarmLists) {
+        for (_Event al : alarmLists) {
             LocalDateTime aldt = al.getNextDateTime();
             if (aldt != null && (dt == null || aldt.isBefore(dt))) {
                 aL = al;
@@ -115,7 +115,7 @@ public class Activity {
             switch (gt.type) {
                 case activity:
                     obj = alarmLists.get(gt.i);
-                    visible = ((_AlarmList) obj).visible;
+                    visible = ((_Event) obj).visible;
                     break;
                 case doc:
                 case loc:
@@ -128,7 +128,7 @@ public class Activity {
                 types.add(gt.type);
             }
         }
-        for (_AlarmList gp : alarmLists)
+        for (_Event gp : alarmLists)
             if (!gp.visible) invisGroups.add(gp);
         for (_Doc doc : docs)
             if (!doc.visible) invisDocs.add(doc);
@@ -146,9 +146,9 @@ public class Activity {
 
         int i = 0;
         for (Object obj : list) {
-            if (obj instanceof _AlarmList) {
+            if (obj instanceof _Event) {
                 types.add(new ActivityType(ActivityType.Type.activity, alarmLists.size()));
-                alarmLists.add(((_AlarmList) obj).setI(i));
+                alarmLists.add(((_Event) obj).setI(i));
             }
             if (obj instanceof _Doc) {
                 _Doc doc = (_Doc) obj;

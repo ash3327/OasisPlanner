@@ -1,15 +1,9 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
-import android.content.res.Resources;
-import android.os.Bundle;
-
-import androidx.fragment.app.FragmentManager;
-
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.repository.EventRepository;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class EventUseCases {
@@ -19,11 +13,11 @@ public class EventUseCases {
         this.repository = repository;
     }
 
-    public Future<_AlarmList> get(long eventId) {
+    public Future<_Event> get(long eventId) {
         return repository.getEvent(eventId);
     }
 
-    public long put(_AlarmList event) {
+    public long put(_Event event) {
         try {
             return repository.insertEvent(event).get();
         } catch (Exception e) {
@@ -32,20 +26,20 @@ public class EventUseCases {
         return event.id;
     }
 
-    public void delete(_AlarmList event) {
+    public void delete(_Event event) {
         repository.deleteEvent(event);
     }
 
 
-    public Future<AlarmList> getWithChild(long eventId) {
+    public Future<Event> getWithChild(long eventId) {
         return repository.getEventWithChild(eventId);
     }
 
-    public void putWithChild(AlarmList event) {
+    public void putWithChild(Event event) {
         repository.insertEventWithChild(event);
     }
 
-    public void deleteWithChild(AlarmList event) {
+    public void deleteWithChild(Event event) {
         repository.deleteEventWithChild(event);
     }
 }

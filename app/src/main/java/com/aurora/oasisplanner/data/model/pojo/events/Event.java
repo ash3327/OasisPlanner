@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
@@ -19,9 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AlarmList {
+public class Event {
     @Embedded
-    public _AlarmList alarmList;
+    public _Event alarmList;
 
     @Relation(parentColumn = "id", entityColumn = "alarmListId")
     public List<_Alarm> alarms = new ArrayList<>();
@@ -34,19 +34,19 @@ public class AlarmList {
     @Ignore
     public SpannableStringBuilder contents;
 
-    public AlarmList(){}
+    public Event(){}
 
     @Ignore
-    public AlarmList(AlarmType type, Importance importance) {
-        this.alarmList = new _AlarmList(type, importance);
+    public Event(AlarmType type, Importance importance) {
+        this.alarmList = new _Event(type, importance);
     }
 
     @Ignore
-    public AlarmList putDates(LocalTime time, List<LocalDate> dates) {
+    public Event putDates(LocalTime time, List<LocalDate> dates) {
         return putDates(time, dates.toArray(new LocalDate[0]));
     }
     @Ignore
-    public AlarmList putDates(LocalTime time, LocalDate... dates) {
+    public Event putDates(LocalTime time, LocalDate... dates) {
         for (_Alarm alarm : this.alarms)
             alarm.visible = false;
         for (_SubAlarm subAlarm : this.subalarms)
@@ -60,7 +60,7 @@ public class AlarmList {
         return this;
     }
     @Ignore
-    public AlarmList setSubalarms() {
+    public Event setSubalarms() {
         for (_SubAlarm subAlarm : this.subalarms)
             subAlarm.visible = false;
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
@@ -68,14 +68,14 @@ public class AlarmList {
     }
 
     @Ignore
-    public static AlarmList empty() {
-        return new AlarmList(
+    public static Event empty() {
+        return new Event(
                 AlarmType.notif,
                 Importance.regular
             ).putDates(LocalTime.now(), LocalDate.now());
     }
 
-    public AlarmList setI(int i) {
+    public Event setI(int i) {
         this.alarmList.i = i;
         return this;
     }

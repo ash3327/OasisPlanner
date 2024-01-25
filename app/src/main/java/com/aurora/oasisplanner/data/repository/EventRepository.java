@@ -1,25 +1,14 @@
 package com.aurora.oasisplanner.data.repository;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import androidx.lifecycle.LiveData;
-
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.EventDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
-import com.aurora.oasisplanner.data.util.Converters;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class EventRepository {
     private final EventDao eventDao;
@@ -30,7 +19,7 @@ public class EventRepository {
         this.executor = executor;
     }
 
-    public Future<Long> insertEvent(final _AlarmList alarmList) {
+    public Future<Long> insertEvent(final _Event alarmList) {
         return executor.submit(()->{
             if (!alarmList.hasAssociates())
                 return eventDao.insert(alarmList);
@@ -39,13 +28,13 @@ public class EventRepository {
         });
     }
 
-    public Future<_AlarmList> getEvent(final long id) {
+    public Future<_Event> getEvent(final long id) {
         return executor.submit(()->eventDao.getEventById(id));
     }
 
-    public void deleteEvent(final _AlarmList alarmList) {
+    public void deleteEvent(final _Event alarmList) {
         executor.execute(()->{
-            AlarmList parent = alarmList.getAssociates();
+            Event parent = alarmList.getAssociates();
             AppModule.retrieveAlarmUseCases().delete(parent.alarms);
             AppModule.retrieveAlarmUseCases().deleteSubAlarms(parent.subalarms);
             eventDao.delete(alarmList);
@@ -53,33 +42,33 @@ public class EventRepository {
     }
 
     
-    public Future<Long> insertEventWithChild(final AlarmList alarmList) {
+    public Future<Long> insertEventWithChild(final Event event) {
         return executor.submit(()->{
-            long id = eventDao.insert(alarmList.alarmList);
-            for (_Alarm alarm : alarmList.alarms) {
+            long id = eventDao.insert(event.alarmList);
+            for (_Alarm alarm : event.alarms) {
                 alarm.alarmListId = id;
-                alarm.activityId = alarmList.alarmList.activityId;
-                alarm.agendaId = alarmList.alarmList.agendaId;
+                alarm.activityId = event.alarmList.activityId;
+                alarm.agendaId = event.alarmList.agendaId;
             }
-            for (_SubAlarm alarm : alarmList.subalarms) {
+            for (_SubAlarm alarm : event.subalarms) {
                 alarm.alarmListId = id;
-                alarm.activityId = alarmList.alarmList.activityId;
-                alarm.agendaId = alarmList.alarmList.agendaId;
+                alarm.activityId = event.alarmList.activityId;
+                alarm.agendaId = event.alarmList.agendaId;
             }
-            AppModule.retrieveAlarmUseCases().put(alarmList.alarms);
-            AppModule.retrieveAlarmUseCases().putSubAlarms(alarmList.subalarms);
+            AppModule.retrieveAlarmUseCases().put(event.alarms);
+            AppModule.retrieveAlarmUseCases().putSubAlarms(event.subalarms);
             return id;
         });
     }
 
-    public Future<AlarmList> getEventWithChild(final long id) {
+    public Future<Event> getEventWithChild(final long id) {
         return executor.submit(()->eventDao.getEventWithChildById(id));
     }
 
-    public void deleteEventWithChild(final AlarmList alarmList) {
+    public void deleteEventWithChild(final Event event) {
         executor.execute(()->{
-            eventDao.delete(alarmList.alarmList);
-            AppModule.retrieveAlarmUseCases().delete(alarmList.alarms);
+            eventDao.delete(event.alarmList);
+            AppModule.retrieveAlarmUseCases().delete(event.alarms);
         });
     }
 }

@@ -22,7 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -46,7 +46,7 @@ import java.util.List;
 
 public class AlarmEditDialog extends AppCompatDialogFragment {
 
-    private AlarmList alarmList;
+    private Event event;
     private AlertDialog dialog;
 
     public AlarmType type;
@@ -63,15 +63,15 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         EditAlarmListUseCases editAlarmListUseCase = AppModule.retrieveEditAlarmListUseCases();
-        this.alarmList = editAlarmListUseCase.retrieveAlarms();
+        this.event = editAlarmListUseCase.retrieveAlarms();
 
-        assert alarmList != null;
+        assert event != null;
 
-        this.type = alarmList.alarmList.type;
-        this.importance = alarmList.alarmList.importance;
-        this.selectedDates = alarmList.alarmList.dates;
-        this.selectedTime = alarmList.alarmList.time;
-        this.contents = alarmList.contents;
+        this.type = event.alarmList.type;
+        this.importance = event.alarmList.importance;
+        this.selectedDates = event.alarmList.dates;
+        this.selectedTime = event.alarmList.time;
+        this.contents = event.contents;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
@@ -246,11 +246,11 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     }
 
     public void saveAlarms() {
-        alarmList.alarmList.importance = importance;
-        alarmList.alarmList.type = type;
-        alarmList.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
+        event.alarmList.importance = importance;
+        event.alarmList.type = type;
+        event.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
         if (onSaveListener != null)
-            onSaveListener.save(alarmList);
+            onSaveListener.save(event);
     }
 
     public static class AlarmTypeAdapter extends ArrayAdapter<AlarmType> {
@@ -333,7 +333,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     }
 
     public interface OnSaveListener {
-        void save(AlarmList alarmList);
+        void save(Event event);
     }
 }
 

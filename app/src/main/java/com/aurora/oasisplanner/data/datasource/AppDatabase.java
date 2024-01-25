@@ -29,24 +29,27 @@ import com.aurora.oasisplanner.data.model.entities._others._SubPeriod;
 import com.aurora.oasisplanner.data.model.entities.util._Tag;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Agenda;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.util.Converters;
 
 @Database(
         entities = {
-                _Alarm.class, _Agenda.class, _Activity.class, _AlarmList.class, _Doc.class,
+                _Alarm.class, _Agenda.class, _Activity.class, _Event.class, _Doc.class,
                 _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class, _Tag.class
         },
-        version = 24,
+        version = 25,
         autoMigrations = {
+                //INFO: v0.1.0 update
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
                 @AutoMigration(from=8, to=11, spec=AppDatabase.Migration8to9.class),
                 @AutoMigration(from=11, to=17, spec=AppDatabase.Migration11to12.class),
                 @AutoMigration(from=17, to=22, spec=AppDatabase.Migration21to22.class),
                 @AutoMigration(from=22, to=23),
+                //INFO: v0.1.1 update
                 @AutoMigration(from=23, to=24, spec=AppDatabase.Migration23to24.class),
+                @AutoMigration(from=24, to=25, spec=AppDatabase.Migration24to25.class),
         }
 )
 @TypeConverters({Converters.class})
@@ -109,4 +112,7 @@ public abstract class AppDatabase extends RoomDatabase {
     @DeleteColumn(tableName = "_SubAlarm", columnName = "agendaDescr")
     @DeleteColumn(tableName = "_SubAlarm", columnName = "alarmDescr")
     public static class Migration23to24 implements AutoMigrationSpec {}
+
+    @RenameTable(fromTableName = "_AlarmList", toTableName = "_Event")
+    public static class Migration24to25 implements AutoMigrationSpec {}
 }

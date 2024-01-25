@@ -76,12 +76,12 @@ public interface AlarmDao {
     @Query("SELECT * FROM _Alarm " +
             "INNER JOIN _Agenda ON _Alarm.agendaId = _Agenda.id " +
             "INNER JOIN _Activity ON _Alarm.activityId = _Activity.id " +
-            "INNER JOIN _AlarmList ON _Alarm.alarmListId = _AlarmList.id " +
+            "INNER JOIN _Event ON _Alarm.alarmListId = _Event.id " +
             "WHERE _Alarm.datetime >= :fromDate AND " +
             "(_Alarm.args LIKE '%' || :searchEntry || '%' OR " +
             "_Agenda.title LIKE '%' || :searchEntry || '%' OR " +
             "_Activity.descr LIKE '%' || :htmlSearchEntry || '%' OR " +
-            "_AlarmList.title LIKE '%' || :searchEntry || '%') " +
+            "_Event.title LIKE '%' || :searchEntry || '%') " +
             "ORDER BY _Alarm.datetime ASC")
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
 

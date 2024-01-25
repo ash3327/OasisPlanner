@@ -8,17 +8,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.aurora.oasisplanner.data.model.entities.events._Activity;
-import com.aurora.oasisplanner.data.model.entities.memos._Memo;
-import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
-import com.aurora.oasisplanner.data.model.entities.util._Tag;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.entities.events._Agenda;
-import com.aurora.oasisplanner.data.model.entities.events._Alarm;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
-import com.aurora.oasisplanner.data.model.entities.util._Doc;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Dao

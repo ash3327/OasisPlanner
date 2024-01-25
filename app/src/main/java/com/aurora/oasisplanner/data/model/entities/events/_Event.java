@@ -9,7 +9,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.TagType;
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
-public class _AlarmList {
+public class _Event {
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
@@ -46,19 +46,19 @@ public class _AlarmList {
     public Map<String,String> args = new HashMap<>();
 
     @Ignore
-    private AlarmList associates = null;
+    private Event associates = null;
 
-    public _AlarmList(){}
+    public _Event(){}
 
     @Ignore
-    public _AlarmList(AlarmType type, Importance importance) {
+    public _Event(AlarmType type, Importance importance) {
         this.type = type;
         this.importance = importance;
         this.dates = new ArrayList<>();
     }
 
     @Ignore
-    public _AlarmList putDates(LocalDate... dates) {
+    public _Event putDates(LocalDate... dates) {
         this.dates = Arrays.stream(dates).collect(Collectors.toList());
         return this;
     }
@@ -104,7 +104,7 @@ public class _AlarmList {
     }
 
     @Ignore
-    public _AlarmList setI(int i) {
+    public _Event setI(int i) {
         this.i = i;
         return this;
     }
@@ -130,22 +130,22 @@ public class _AlarmList {
 
     /** Not Thread Safe. Wrap this function in executor.submit(). */
     @Ignore
-    public AlarmList getAssociates() {
+    public Event getAssociates() {
         if (!hasAssociates())
             setAndWaitAssociates(); // not thread safe.
         return associates;
     }
     @Ignore
-    public void setAssociates(AlarmList associates) {
+    public void setAssociates(Event associates) {
         associates.alarmList = this;
         this.associates = associates;
     }
     @Ignore
     private void setAndWaitAssociates() {
         try {
-            AlarmList associate = AppModule.retrieveEventUseCases().getWithChild(id).get();
+            Event associate = AppModule.retrieveEventUseCases().getWithChild(id).get();
             if (associate == null)
-                associate = new AlarmList(type, importance).putDates(time, dates);
+                associate = new Event(type, importance).putDates(time, dates);
             setAssociates(associate);
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,8 +153,8 @@ public class _AlarmList {
     }
 
     @Ignore
-    public static _AlarmList empty() {
-        _AlarmList alarmList = new _AlarmList(AlarmType.notif, Importance.regular);
+    public static _Event empty() {
+        _Event alarmList = new _Event(AlarmType.notif, Importance.regular);
         alarmList.time = LocalTime.now();
         alarmList.dates = Collections.singletonList(LocalDate.now());
         return alarmList;
@@ -180,8 +180,8 @@ public class _AlarmList {
     }
 
     @Ignore
-    public static _AlarmList unpackContents(Bundle extras) {
-        _AlarmList alarm = new _AlarmList();
+    public static _Event unpackContents(Bundle extras) {
+        _Event alarm = new _Event();
 
         Converters converter = new Converters();
 

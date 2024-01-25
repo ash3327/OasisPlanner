@@ -26,8 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
-import com.aurora.oasisplanner.data.model.pojo.events.AlarmList;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.NotifType;
@@ -51,7 +50,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public TagType type = TagType.LOC;
     private DateType dateType = DateType.minutes;
     private ItemEditTagBinding vbinding;
-    private Set<_AlarmList> checkedList;
+    private Set<_Event> checkedList;
     private Runnable updateUiFunction = ()->{};
     private int idx = 0;
 
@@ -285,27 +284,27 @@ public class TagEditDialog extends AppCompatDialogFragment {
         assert checkedList != null;
         switch (type) {
             case IMPORTANCE:
-                for (_AlarmList checked : checkedList)
+                for (_Event checked : checkedList)
                     checked.importance = Importance.values()[idx];
                 break;
             case ALARMTYPE:
-                for (_AlarmList checked : checkedList)
+                for (_Event checked : checkedList)
                     checked.type = AlarmType.values()[idx];
                 break;
             case TAGS:
-                for (_AlarmList checked : checkedList) {
+                for (_Event checked : checkedList) {
                     SpannableStringBuilder ssb2 = checked.getArg(type.name());
                     checked.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
                 }
                 break;
             case ALARM:
-                for (_AlarmList checked : checkedList) {
+                for (_Event checked : checkedList) {
                     checked.putArgs(type.name(), ssb);
                     checked.getAssociates().setSubalarms();
                 }
                 break;
             default:
-                for (_AlarmList checked : checkedList)
+                for (_Event checked : checkedList)
                     checked.putArgs(type.name(), ssb);
         }
 
@@ -315,14 +314,14 @@ public class TagEditDialog extends AppCompatDialogFragment {
     public boolean deleteTags() {
         assert checkedList != null;
         if (type != TagType.IMPORTANCE && type != TagType.ALARMTYPE) {
-            for (_AlarmList checked : checkedList)
+            for (_Event checked : checkedList)
                 checked.removeKey(type.name());
             return true;
         }
         return false;
     }
 
-    public void setSelectedList(Set<_AlarmList> checkedList) {
+    public void setSelectedList(Set<_Event> checkedList) {
         this.checkedList = checkedList;
     }
 
