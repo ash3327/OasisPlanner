@@ -11,8 +11,7 @@
     <color name="black">#FF2F2E31 </color>
 
     <color name="navtext">#FF13ABB4</color>
-    <color name="bottomnavcolor">#3913ABB4 </color>
-    <color name="bottomnavcolor_a">#1313ABB4 </color>
+    <color name="bottomnavcolor">#2213ABB4 </color>
 
     <color name="past">@color/red_500</color>
     <color name="future">@color/blue_300</color>

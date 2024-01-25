@@ -1,16 +1,13 @@
 package com.aurora.oasisplanner.activities;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -61,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDatabase();
         setupUI();
-        setupAnimation();
         navigateTo(Page.HOME);
     }
 
@@ -162,26 +158,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navBar = bar;
         bottomBar = binding.mainBottomBar;
-    }
-
-    private void setupAnimation() {
-        setupAnimationFor(binding.mainWaveBar, 0, 5, 3000);
-        setupAnimationFor(binding.mainWaveBar2, 5, 0, 2067);
-        setupAnimationFor(binding.mainWaveBar3, 5, 0, 2077);
-    }
-    private void setupAnimationFor(LinearLayout view, float min, float max, long duration) {
-        int col = Resources.getColor(R.color.bottomnavcolor);
-        ValueAnimator animator = ValueAnimator.ofFloat(min,max);
-        animator.setDuration(duration);
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.addUpdateListener((animation)->{
-            view.setPadding(0,
-                    (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float)animation.getAnimatedValue(), getResources().getDisplayMetrics()),
-                    0,0
-            );
-        });
-        animator.start();
     }
 
     private boolean activelyNavigating = false;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Basic Color Palette -->
-    <color name="grey_50a">#88F5F5F5</color>
     <color name="grey_50">#FFF5F5F5</color>
     <color name="grey_75">#FFEEEEEE</color>
     <color name="grey_100">#FFDDDDDD</color>
