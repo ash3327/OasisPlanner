@@ -1,4 +1,6 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog;
+import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +22,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +41,6 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.E
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -134,7 +136,11 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void showActivities(Agenda agenda) {
-        binding.agendaPageSelectionTools.setVisibility(View.GONE); //TODO: Selection for activities
+        //TODO: Selection for activities
+        binding.agendaPageSelectionTools.setVisibility(View.GONE);
+        binding.agendaPageEdit.setVisibility(View.GONE);
+        binding.agendaPageMove.setVisibility(View.GONE);
+        //END
 
         binding.pageGreyBar1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
@@ -181,15 +187,8 @@ public class AgendaEditDialog extends Fragment {
         //recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }
     public void showEvents(List<_Activity> selected) {
-        binding.pageGreyBar1.setVisibility(View.VISIBLE);
-        binding.pageActivities.setVisibility(View.VISIBLE);
-        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
-                .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
-        binding.pageActivities.setOnUpdateListener((tags)->{
-            if (tags.trim().isEmpty())
-                showActivities(agenda);
-        });
-        binding.pageActivities.format();
+        binding.agendaPageEdit.setVisibility(View.VISIBLE);
+        binding.agendaPageMove.setVisibility(View.VISIBLE);
 
         binding.pageSectionsActivities.setVisibility(View.GONE);
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);
@@ -222,6 +221,49 @@ public class AgendaEditDialog extends Fragment {
             else // to empty
                 adapter.clearChecked();
         });
+        // TODO: ONGOING
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0){
+
+            private int lastPos = -1;
+
+            @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                super.onSelectedChanged(viewHolder, actionState);
+                if (viewHolder == null)
+                    return;
+                if (actionState == ACTION_STATE_DRAG)
+                    viewHolder.itemView.setAlpha(.5f);
+                lastPos = viewHolder.getAdapterPosition();
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+                if (toPosition != lastPos) {
+                    adapter.swapItems(fromPosition, toPosition);
+                    lastPos = toPosition;
+                }
+                return true;
+            }
+
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                viewHolder.itemView.setAlpha(1f);
+                lastPos = -1;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {}
+
+            @Override
+            public boolean isLongPressDragEnabled() {return false;}
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        adapter.setItemTouchHelper(itemTouchHelper);
+        //END
         recyclerView.setAdapter(adapter);
 
         ExecutorService executor = AppModule.provideExecutor();
@@ -240,6 +282,18 @@ public class AgendaEditDialog extends Fragment {
                 e.printStackTrace();
             }
         });
+
+        binding.pageGreyBar1.setVisibility(View.VISIBLE);
+        binding.pageActivities.setVisibility(View.VISIBLE);
+        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
+                .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
+        binding.pageActivities.setOnUpdateListener((tags)->{
+            if (tags.trim().isEmpty()) {
+                adapter.save();
+                showActivities(agenda);
+            }
+        });
+        binding.pageActivities.format();
     }
     public void show(List<_Activity> selected) {
         if (selected == null || selected.size() == 0)

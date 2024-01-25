@@ -4,13 +4,16 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +36,8 @@ import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +62,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
     private final Switch tSwitch;
     private final Set<_AlarmList> checkedList;
+
+    private ItemTouchHelper itemTouchHelper = null;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
@@ -102,7 +109,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
     @Override
     public void onBindViewHolder(@NonNull EventHolder holder, int position) {
-        holder.bind(position, sections.get(position), activity);
+        holder.bind(position, sections.get(holder.getAdapterPosition()), activity);
     }
 
     @Override
@@ -114,6 +121,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
     public void setEventList(Activity activity) {
+        _setEventList(activity);
+        notifyDataSetChanged();
+    }
+    private void _setEventList(Activity activity) {
         this.activity = activity;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
@@ -129,7 +140,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         this.sections = list;
         this.types = types;
         this.len = i;
-        notifyDataSetChanged();
     }
 
     public void removeChecked() {
@@ -217,6 +227,35 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         tSwitch.setState(true, true);
     }
 
+    private boolean swapping = false;
+    public void swapItems(int fromPosition, int toPosition) {
+        Log.d("test3", fromPosition+"<->"+toPosition+":"+swapping);
+        if (swapping) return;
+        try {
+            swapping = true;
+            Collections.swap(sections, fromPosition, toPosition);
+            super.notifyItemMoved(fromPosition, toPosition);
+            swapping = false;
+        } catch(Exception e){Log.d("test3",e.getMessage());e.printStackTrace();}
+        Log.d("test3", "-->"+Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).i).toArray()));
+        Log.d("test3", "-->"+Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).id).toArray()));
+    }
+
+    public void save() {
+        int i = 0;
+        for (Object aL : sections) {
+            if (!(aL instanceof _AlarmList))
+                continue;
+            ((_AlarmList)aL).i = i;
+            i++;
+        }
+        Log.d("test3", Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).i).toArray()));
+    }
+
+    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.itemTouchHelper = itemTouchHelper;
+    }
+
     class EventHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding vbinding;
         private final EventAdapter adapter;
@@ -247,9 +286,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         public boolean bindAlarms(int i, _AlarmList gp, Activity grp) {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
+            binding.itemAlarmDraghandle.setOnTouchListener((v,te)->{
+                if (te.getActionMasked() == MotionEvent.ACTION_DOWN)
+                    itemTouchHelper.startDrag(this);
+                return true;
+            });//TODO: SET ON TOUCH LISTENER.
+
             aSwitch.observe((state)-> {
                 binding.itemAlarmCheckbox.setChecked(checkedList.contains(gp));
                 binding.itemAlarmCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
+                binding.itemAlarmDraghandle.setVisibility(!state ? View.VISIBLE : View.GONE);
                 binding.itemAlarmCheckbox.setOnCheckedChangeListener((v,checked)->{
                     try {
                         if (checked) checkedList.add(gp);

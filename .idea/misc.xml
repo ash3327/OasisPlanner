@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/animation/drawable/water_wave.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/appic_sprout2.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_add_location.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/drawable/ic_app_logo_sprout.xml" value="0.1" />
@@ -44,6 +45,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_contract.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_cross.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_dashboard.xml" value="0.115" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_drag.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_edit_label.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_event.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_event_calendar.xml" value="0.105" />
