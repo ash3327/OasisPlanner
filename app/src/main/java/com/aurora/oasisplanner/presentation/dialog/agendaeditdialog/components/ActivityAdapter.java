@@ -17,13 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
-import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
-import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.tags.TagType;
@@ -32,58 +29,28 @@ import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.SectionBinding;
 import com.aurora.oasisplanner.databinding.SectionDocBinding;
 import com.aurora.oasisplanner.databinding.SectionGapBinding;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
-import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
 
-public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder> {
+public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder, _Activity> {
 
-    private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
+    private static final int ID_KEY_SECTIONS_ADD = 4;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
     private Id.IdObj scrollFunc = (oi, i)->{};
     private OnClickListener ocl = null;
     private Instant clicked = Instant.now();
 
-    {
-        setHasStableIds(true);
-    }
-
     private Agenda agenda;
-    public List<Object> activities = new ArrayList<>();
-    public List<ActivityType.Type> types = new ArrayList<>();
-
-    private final OnSelectListener onSelectListener;
-    private final Switch tSwitch;
-    private final Set<_Activity> checkedList;
 
     public ActivityAdapter(OnSelectListener onSelectListener, Switch tSwitch) {
-        this.onSelectListener = onSelectListener;
-        this.tSwitch = tSwitch;
-        this.checkedList = new HashSet<>();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return types.get(position).ordinal();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        Object item = activities.get(position);
-        long numClasses = 3;
-        if (item instanceof _Activity)
-            return Styles.hashInt(item) * numClasses + 1;
-        return -1;
+        super(onSelectListener, tSwitch);
     }
 
     @NonNull
@@ -107,12 +74,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
     @Override
     public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
-        holder.bind(position, activities.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return activities.size();
+        holder.bind(position, items.get(holder.getAdapterPosition()));
     }
 
     /** Since the alarm list will be overall changed when any agenda is edited,
@@ -132,7 +94,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             i++;
         }
 
-        this.activities = list;
+        this.items = list;
         this.types = types;
         notifyDataSetChanged();
     }
@@ -176,7 +138,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         if (swapping) return;
         try {
             swapping = true;
-            Collections.swap(activities, fromPosition, toPosition);
+            Collections.swap(items, fromPosition, toPosition);
             super.notifyItemMoved(fromPosition, toPosition);
             swapping = false;
         } catch (Exception e){
@@ -186,7 +148,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
     public void save() {
         int i = 0;
-        for (Object aL : activities) {
+        for (Object aL : items) {
             if (!(aL instanceof _Activity))
                 continue;
             ((_Activity)aL).i = i;
@@ -195,19 +157,26 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         agenda.getObjList(true);
     }
 
-    class ActivityHolder extends RecyclerView.ViewHolder {
-        private ViewDataBinding vbinding;
-        private ActivityAdapter adapter;
-        private final Set<_Activity> checkedList;
-        /** aSwtich = true shows the checkboxes. */
-        private final Switch aSwitch;
+    public void removeChecked() {
+        try {
+            for (_Activity aL : checkedList)
+                remove(aL, aL.i);
+            tSwitch.setState(false);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+    public void editTagOfChecked() {
+        /* TODO: Edit tag for activity
+        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
+                checkedList, this::updateUi
+        );//*/
+    }
+
+    List<_Activity> getList() { return agenda.activities; }
+
+    class ActivityHolder extends _BaseHolder<ActivityAdapter.ActivityHolder, _Activity, ActivityAdapter> {
 
         public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter, Switch tSwitch, Set<_Activity> checkedList) {
-            super(binding.getRoot());
-            this.vbinding = binding;
-            this.adapter = adapter;
-            this.aSwitch = tSwitch;
-            this.checkedList = checkedList;
+            super(binding, adapter, tSwitch, checkedList);
         }
 
         public boolean bind(int i, Object sect) {
@@ -301,7 +270,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             binding.sectionCard.setBackground(bg);
 
             EditText docText = binding.docTag;
-            associate(docText, gp);
+            associate(docText, gp.descr);
             docText.setFocusableInTouchMode(true);
             docText.setFocusable(true);
             docText.setOnClickListener(
@@ -345,140 +314,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
                 if (ocl != null)
                     ocl.onClick(gp);
             }
-        }
-
-        public void associate(EditText editText, _Activity activity) {
-            //prevents triggering at the initial change in text (initialization)
-            Object tag = editText.getTag();
-            if (tag instanceof TextWatcher)
-                editText.removeTextChangedListener((TextWatcher) tag);
-
-            editText.setText(activity.descr);
-        }
-
-        public void associate(EditText editText, _Doc doc) {
-            //prevents triggering at the initial change in text (initialization)
-            Object tag = editText.getTag();
-            if (tag instanceof TextWatcher)
-                editText.removeTextChangedListener((TextWatcher) tag);
-
-            editText.setText(doc.contents);
-        }
-
-        public void checkToggle(_Activity gp) {
-            if (checkedList.contains(gp))
-                checkedList.remove(gp);
-            else
-                checkedList.add(gp);
-            aSwitch.setState(!checkedList.isEmpty(), true);
-            adapter.onUpdate(checkedList);
-        }
-    }
-
-    private void updateLabel(Label lbl, Label lbl2, boolean collapsed, boolean checkListIsOn,
-                             View.OnClickListener removeChecked, View.OnClickListener editTagofChecked,
-                             Function<Boolean, Boolean> checkListIsEmpty, Switch bSwitch) {
-        if (checkListIsEmpty == null) checkListIsEmpty = (v)->false;
-        if (lbl == null) return;
-        lbl.vg.setOnClickListener(
-                collapsed ?
-                    this::addNewSection :
-                        checkListIsOn ?
-                            editTagofChecked :
-                            this::refreshCollapsed);
-        lbl.tv.setText(collapsed ?
-                Resources.getString(R.string.yellow_bar_text_newevent) :
-                    checkListIsOn ?
-                        Resources.getString(R.string.yellow_bar_text_tag):
-                        Resources.getString(R.string.yellow_bar_text_collapse));
-        lbl.imgv.setImageResource(collapsed ?
-                R.drawable.ic_symb_plus :
-                    checkListIsOn ?
-                        R.drawable.ic_edit_label :
-                        R.drawable.ic_contract);
-
-        if (lbl2 == null) return;
-        boolean listEmpty = checkListIsEmpty.apply(true);
-        if (!collapsed) {
-            if (checkListIsOn) {
-                lbl2.vg.setVisibility(View.VISIBLE);
-                lbl2.tv.setText(Resources.getString(
-                        listEmpty ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_delete
-                ));
-                lbl2.imgv.setImageResource(listEmpty ? R.drawable.ic_contract : R.drawable.ic_trashcan);
-                lbl2.vg.setOnClickListener(removeChecked);
-            } else if (bSwitch != null) {
-                lbl2.tv.setText(Resources.getString(
-                         bSwitch.getState() ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_newevent
-                ));
-                lbl2.imgv.setImageResource(bSwitch.getState() ? R.drawable.ic_contract : R.drawable.ic_symb_plus);
-                lbl2.vg.setVisibility(View.VISIBLE);
-                lbl2.vg.setOnClickListener((v)->{
-                    boolean state = bSwitch.toggleState();
-                    lbl2.tv.setText(Resources.getString(
-                            state ? R.string.yellow_bar_text_collapse : R.string.yellow_bar_text_newevent
-                    ));
-                    lbl2.imgv.setImageResource(state ? R.drawable.ic_contract : R.drawable.ic_symb_plus);
-                });
-            } else {
-                lbl2.vg.setVisibility(View.GONE);
-            }
-        } else {
-            lbl2.vg.setVisibility(View.GONE);
-        }
-    }
-
-    public void refreshCollapsed(View v) {
-        toAddSection.setId(0);
-    }
-    public void addNewSection(View v) {
-        toAddSection.setId(1);
-    }
-
-    public void removeChecked() {
-        try {
-            for (_Activity aL : checkedList)
-                remove(aL, aL.i);
-            tSwitch.setState(false);
-        } catch (Exception e) {e.printStackTrace();}
-    }
-    public void editTagOfChecked() {
-        /* TODO: Edit tag for activity
-        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
-                checkedList, this::updateUi
-        );//*/
-    }
-
-    public void clearChecked() {
-        checkedList.clear();
-        tSwitch.setState(false, true);
-    }
-    public void checkAll() {
-        checkedList.addAll(agenda.activities);
-        tSwitch.setState(true, true);
-    }
-
-    public void updateUi() {
-        checkedList.clear();
-        tSwitch.setState(false, true);
-        notifyDataSetChanged();
-    }
-
-    public interface OnSelectListener {void onSelect(boolean isFull);}
-    public void onUpdate(Set<_Activity> checkedList) {
-        if (onSelectListener != null)
-            onSelectListener.onSelect(checkedList.size()==agenda.activities.size());
-    }
-
-    public static class Label {
-        ViewGroup vg;
-        TextView tv;
-        ImageView imgv;
-
-        public Label(ViewGroup vg, TextView tv, ImageView imgv) {
-            this.vg = vg;
-            this.tv = tv;
-            this.imgv = imgv;
         }
     }
 }

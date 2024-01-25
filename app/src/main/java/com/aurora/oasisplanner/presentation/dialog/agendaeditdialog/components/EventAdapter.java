@@ -1,23 +1,17 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
-import android.text.Editable;
 import android.text.SpannableStringBuilder;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._AlarmList;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
@@ -27,72 +21,31 @@ import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
-import com.aurora.oasisplanner.databinding.ItemDocBinding;
-import com.aurora.oasisplanner.databinding.ItemGapBinding;
-import com.aurora.oasisplanner.databinding.ItemLocBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
-import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
+public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _AlarmList> {
 
-    private static final int ID_KEY_ITEMS = 3;
-    private final Id id;
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
-    private final OnSelectListener onSelectListener;
     public Switch bSwitch = new Switch(false);
 
-    {
-        setHasStableIds(true);
-        id = new Id(-1, ID_KEY_ITEMS);
-    }
-
     private Activity activity;
-    public List<Object> sections = new ArrayList<>();
-    public List<ActivityType.Type> types = new ArrayList<>();
-
-    private final Switch tSwitch;
-    private final Set<_AlarmList> checkedList;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
                         RecyclerView recyclerView, Switch tSwitch) {
+        super(onSelectListener, tSwitch);
         this.onSaveAlarmListener = onSaveAlarmListener;
-        this.onSelectListener = onSelectListener;
-        this.tSwitch = tSwitch;
-        this.checkedList = new HashSet<>();
-        id.setId(-1);
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
         }, true);
-        id.observe((oldId, newId)->{
-            if(oldId >= 0) notifyItemChanged(oldId);
-            if((oldId < 0 || newId % 2 == 0) && newId >= 0) notifyItemChanged(newId);
-            recyclerView.requestLayout();
-        });//*/
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return types.get(position).ordinal();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        Object item = sections.get(position);
-        long numClasses = 3;
-        if (item instanceof _AlarmList)
-            return Styles.hashInt(item) * numClasses + 1;
-        return -1;
     }
 
     @NonNull
@@ -107,12 +60,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull EventHolder holder, int position) {
-        holder.bind(position, sections.get(holder.getAdapterPosition()), activity);
-    }
-
-    @Override
-    public int getItemCount() {
-        return sections.size();
+        holder.bind(position, items.get(holder.getAdapterPosition()), activity);
     }
 
     /** Since the alarm list will be overall changed when any agenda is edited,
@@ -135,7 +83,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
             i++;
         }
 
-        this.sections = list;
+        this.items = list;
         this.types = types;
         this.len = i;
     }
@@ -152,16 +100,6 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
         AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
                 checkedList, this::updateUi
         );
-    }
-
-    public void updateUi() {
-        checkedList.clear();
-        tSwitch.setState(false, true);
-        notifyDataSetChanged();
-    }
-
-    public boolean checkListIsEmpty() {
-        return checkedList.isEmpty();
     }
 
     public void remove(Object obj, int i) {
@@ -206,31 +144,18 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
                 break;
         }
 
-        id.setId(i * 2 + 1);
         activity.update();
         setEventList(activity);
     }
 
-    public interface OnSelectListener {void onSelect(boolean isFull);}
-    public void onUpdate(Set<_AlarmList> checkedList) {
-        if (onSelectListener != null)
-            onSelectListener.onSelect(checkedList.size()==activity.alarmLists.size());
-    }
-    public void clearChecked() {
-        checkedList.clear();
-        tSwitch.setState(false, true);
-    }
-    public void checkAll() {
-        checkedList.addAll(activity.alarmLists);
-        tSwitch.setState(true, true);
-    }
+    List<_AlarmList> getList() { return activity.alarmLists; }
 
     private boolean swapping = false;
     public void swapItems(int fromPosition, int toPosition) {
         if (swapping) return;
         try {
             swapping = true;
-            Collections.swap(sections, fromPosition, toPosition);
+            Collections.swap(items, fromPosition, toPosition);
             super.notifyItemMoved(fromPosition, toPosition);
             swapping = false;
         } catch (Exception e){
@@ -240,7 +165,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
 
     public void save() {
         int i = 0;
-        for (Object aL : sections) {
+        for (Object aL : items) {
             if (!(aL instanceof _AlarmList))
                 continue;
             ((_AlarmList)aL).i = i;
@@ -249,24 +174,15 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
         activity.getObjList(true);
     }
 
-    class EventHolder extends RecyclerView.ViewHolder {
-        private final ViewDataBinding vbinding;
-        private final EventAdapter adapter;
-        /** aSwtich = true shows the checkboxes. */
-        private final Switch aSwitch;
-        private final Set<_AlarmList> checkedList;
+    class EventHolder extends _BaseHolder<EventAdapter.EventHolder, _AlarmList, EventAdapter> {
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
 
         public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
                            Switch tSwitch, Set<_AlarmList> checkedList) {
-            super(binding.getRoot());
-            this.vbinding = binding;
-            this.adapter = adapter;
+            super(binding, adapter, tSwitch, checkedList);
             this.len = len;
-            this.aSwitch = tSwitch;
-            this.checkedList = checkedList;
         }
 
         public boolean bind(int i, Object sect, Activity gp) {
@@ -297,27 +213,11 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (id.equals(i)) {
-                            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
-                                return;
-                            if (aSwitch.getState())
-                                checkToggle(gp);
-                            else {
-                                AppModule.retrieveEditAlarmListUseCases()
-                                        .invoke(
-                                                gp, grp,
-                                                onSaveAlarmListener
-                                        );
-                            }
-                        }
-                        else if (aSwitch.getState())
+                        if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
+                            return;
+                        if (aSwitch.getState())
                             checkToggle(gp);
                         else {
-                            if (id.setId(i) && Instant.now().toEpochMilli() - clicked.toEpochMilli() > 500) {
-                                aSwitch.setState(false);
-                                adapter.onUpdate(checkedList);
-                            }
-
                             AppModule.retrieveEditAlarmListUseCases()
                                     .invoke(
                                             gp, grp,
@@ -328,7 +228,6 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
             );
             binding.bar.setOnLongClickListener(
                     (v)->{
-                        id.setId(i);
                         checkToggle(gp);
 
                         clicked = Instant.now();
@@ -340,14 +239,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
 
             return true;
         }
-        public void checkToggle(_AlarmList gp) {
-            if (checkedList.contains(gp))
-                checkedList.remove(gp);
-            else
-                checkedList.add(gp);
-            aSwitch.setState(!checkedList.isEmpty(), true);
-            adapter.onUpdate(checkedList);
-        }
+
         public void alarmRefreshUi() {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
             if (item instanceof _AlarmList) {
@@ -363,15 +255,6 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
                 adapter.setTags(gp.getArgs());
             }
-        }
-
-        public void associate(EditText editText, _Doc doc) {
-            //prevents triggering at the initial change in text (initialization)
-            Object tag = editText.getTag();
-            if (tag instanceof TextWatcher)
-                editText.removeTextChangedListener((TextWatcher) tag);
-
-            editText.setText(doc.contents);
         }
     }
 }
