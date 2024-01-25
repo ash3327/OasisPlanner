@@ -116,15 +116,10 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/btn_delete"
-                android:layout_width="@dimen/medium_small_icon_height"
-                android:layout_height="@dimen/medium_small_icon_height"
-                android:src="@drawable/ic_symb_remove"
-                android:visibility="visible"
-
-                android:layout_margin="15dp"
-
-                app:tint="@color/black" />
+                android:id="@+id/activity_draghandle"
+                android:layout_width="@dimen/big_icon_height"
+                android:layout_height="@dimen/big_icon_height"
+                android:src="@drawable/ic_drag"/>
             <CheckBox
                 android:id="@+id/activity_checkbox"
                 android:layout_width="@dimen/big_icon_height"

@@ -42,7 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder> {
+public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder> {
 
     private static final int ID_KEY_ITEMS = 3;
     private final Id id;
@@ -62,8 +62,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
     private final Switch tSwitch;
     private final Set<_AlarmList> checkedList;
-
-    private ItemTouchHelper itemTouchHelper = null;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
@@ -213,10 +211,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         setEventList(activity);
     }
 
-    public interface OnSelectListener {void onSelect(Set<_AlarmList> checkedList, boolean isFull);}
+    public interface OnSelectListener {void onSelect(boolean isFull);}
     public void onUpdate(Set<_AlarmList> checkedList) {
         if (onSelectListener != null)
-            onSelectListener.onSelect(checkedList, checkedList.size()==activity.alarmLists.size());
+            onSelectListener.onSelect(checkedList.size()==activity.alarmLists.size());
     }
     public void clearChecked() {
         checkedList.clear();
@@ -251,10 +249,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         activity.getObjList(true);
     }
 
-    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
-        this.itemTouchHelper = itemTouchHelper;
-    }
-
     class EventHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding vbinding;
         private final EventAdapter adapter;
@@ -285,11 +279,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         public boolean bindAlarms(int i, _AlarmList gp, Activity grp) {
             ItemAlarmBinding binding = (ItemAlarmBinding) vbinding;
 
-            binding.itemAlarmDraghandle.setOnTouchListener((v,te)->{
-                if (te.getActionMasked() == MotionEvent.ACTION_DOWN)
-                    itemTouchHelper.startDrag(this);
-                return true;
-            });//TODO: SET ON TOUCH LISTENER.
+            setDragHandle(binding.itemAlarmDraghandle, this);
 
             aSwitch.observe((state)-> {
                 binding.itemAlarmCheckbox.setChecked(checkedList.contains(gp));

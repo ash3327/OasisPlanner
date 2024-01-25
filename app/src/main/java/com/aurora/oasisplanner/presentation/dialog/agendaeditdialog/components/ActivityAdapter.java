@@ -39,13 +39,14 @@ import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
-public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityHolder> {
+public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder> {
 
     private static final int ID_KEY_SECTIONS = 2, ID_KEY_SECTIONS_ADD = 4;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
@@ -117,11 +118,8 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
 
-    public void setAgenda(Agenda agenda) {
-        setAgenda(agenda, -2);
-    }
     @SuppressLint("NotifyDataSetChanged")
-    public void setAgenda(Agenda agenda, long activityLId) {
+    public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
@@ -167,11 +165,34 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         toAddSection.setId(0);
         agenda.update();
         setAgenda(agenda);
-        //id.setId(i * 2 + 1);
     }
 
     public void setScrollToFunc(Id.IdObj scrollFunc) {
         this.scrollFunc = scrollFunc;
+    }
+
+    private boolean swapping = false;
+    public void swapItems(int fromPosition, int toPosition) {
+        if (swapping) return;
+        try {
+            swapping = true;
+            Collections.swap(activities, fromPosition, toPosition);
+            super.notifyItemMoved(fromPosition, toPosition);
+            swapping = false;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        int i = 0;
+        for (Object aL : activities) {
+            if (!(aL instanceof _Activity))
+                continue;
+            ((_Activity)aL).i = i;
+            i++;
+        }
+        agenda.getObjList(true);
     }
 
     class ActivityHolder extends RecyclerView.ViewHolder {
@@ -199,9 +220,12 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             SectionBinding binding = (SectionBinding) vbinding;
             Switch tSwitch = new Switch(false);
 
+            setDragHandle(binding.activityDraghandle, this);
+
             aSwitch.observe((state)-> {
                 binding.activityCheckbox.setChecked(checkedList.contains(gp));
                 binding.activityCheckbox.setVisibility(state ? View.VISIBLE : View.GONE);
+                binding.activityDraghandle.setVisibility(!state ? View.VISIBLE : View.GONE);
                 binding.activityCheckbox.setOnCheckedChangeListener((v,checked)->{
                     try {
                         if (checked) checkedList.add(gp);
@@ -226,14 +250,9 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                         return true;
                     }
             );
-            //*
-            binding.btnDelete.setOnClickListener(
-                    (v)->adapter.remove(gp, i/2)
-            );
             boolean expanded = false;
             int visibility = expanded ? View.VISIBLE : View.GONE;
             int antiVisibility = !expanded ? View.VISIBLE : View.GONE;
-            binding.btnDelete.setVisibility(visibility);
             //binding.sectionItems.setVisibility(visibility);
             binding.sectionDetails.setVisibility(antiVisibility);//*/
 
@@ -445,10 +464,10 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         notifyDataSetChanged();
     }
 
-    public interface OnSelectListener {void onSelect(Set<_Activity> checkedList, boolean isFull);}
+    public interface OnSelectListener {void onSelect(boolean isFull);}
     public void onUpdate(Set<_Activity> checkedList) {
         if (onSelectListener != null)
-            onSelectListener.onSelect(checkedList, checkedList.size()==agenda.activities.size());
+            onSelectListener.onSelect(checkedList.size()==agenda.activities.size());
     }
 
     public static class Label {

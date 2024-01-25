@@ -38,6 +38,7 @@ import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventAdapter;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components._BaseAdapter;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
@@ -53,7 +54,6 @@ public class AgendaEditDialog extends Fragment {
     private Agenda agenda;
     private long activityLId;
 
-    public static final int NO_ACTIVITY_SELECTED = -2;
     private List<_Activity> selected = new ArrayList<>();
     private PageBinding binding;
 
@@ -126,9 +126,6 @@ public class AgendaEditDialog extends Fragment {
         binding.agendaConfirmEdit.setOnClickListener(
                 (v)->onConfirm()
         );
-        /*binding.cancelButton.setOnClickListener(
-                (v)->onCancel()
-        );//*/
 
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
@@ -136,13 +133,12 @@ public class AgendaEditDialog extends Fragment {
         show(selected);
     }
 
+    private ActivityAdapter activityAdapter = null;
+    private EventAdapter eventAdapter = null;
     public void showActivities(Agenda agenda) {
-        //TODO: Selection for activities
         eventAdapter = null;
-        binding.agendaPageSelectionTools.setVisibility(View.GONE);
         binding.agendaPageEdit.setVisibility(View.GONE);
         binding.agendaPageMove.setVisibility(View.GONE);
-        //END
 
         binding.pageGreyBar1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
@@ -150,67 +146,88 @@ public class AgendaEditDialog extends Fragment {
         binding.pageSectionsEvents.setVisibility(View.GONE);
 
         RecyclerView recyclerView = binding.pageSectionsActivities;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
         recyclerView.setHasFixedSize(false);
 
         Switch tSwitch = new Switch(false);
-        final ActivityAdapter adapter = new ActivityAdapter(
-                (activities, isFull)->{
-                    binding.agendaPageCheckbox.setTag(true);
-                    binding.agendaPageCheckbox.setChecked(isFull);
-                    binding.agendaPageCheckbox.setTag(null);
-                },
-                tSwitch
-        );
+        final ActivityAdapter adapter = activityAdapter
+                = new ActivityAdapter(this::checkboxOnSelect, tSwitch);
 
-        // START FROM HERE
-        tSwitch.observe((state)-> {
-            binding.agendaPageSelectionTools.setVisibility(state ? View.VISIBLE : View.GONE);
-            binding.pageAddItemEditText.setEditable(!state);
-        }, true);
-        binding.agendaPageDelete.setOnClickListener((v)-> adapter.removeChecked());
-        binding.agendaPageEdit.setOnClickListener((v)-> adapter.editTagOfChecked());
-        binding.agendaPageCheckbox.setOnCheckedChangeListener((v,checked)->{
-            if (v.getTag() != null)
-                return;
-            if (checked) // to full
-                adapter.checkAll();
-            else // to empty
-                adapter.clearChecked();
-        });//*/
-        // ENDS HERE
+        setupEditToolbar(tSwitch, adapter);
+        associateDragToReorder(adapter, recyclerView);
         recyclerView.setAdapter(adapter);
         adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
         adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
-        //int expandId =
-        adapter.setAgenda(agenda, activityLId);
-        //recyclerView.post(()-> scrollTo(expandId, recyclerView));
+        adapter.setAgenda(agenda);
     }
-    private EventAdapter eventAdapter = null;
     public void showEvents(List<_Activity> selected) {
         binding.agendaPageEdit.setVisibility(View.VISIBLE);
         binding.agendaPageMove.setVisibility(View.VISIBLE);
 
+        binding.pageGreyBar1.setVisibility(View.VISIBLE);
+        binding.pageActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsActivities.setVisibility(View.GONE);
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);
 
         RecyclerView recyclerView = binding.pageSectionsEvents;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         Switch tSwitch = new Switch(false);
-        final EventAdapter adapter = new EventAdapter(
+        final EventAdapter adapter = eventAdapter = new EventAdapter(
                 (alarmList)->show(selected),
-                (events, isFull)->{
-                    binding.agendaPageCheckbox.setTag(true);
-                    binding.agendaPageCheckbox.setChecked(isFull);
-                    binding.agendaPageCheckbox.setTag(null);
-                },
+                this::checkboxOnSelect,
                 recyclerView, tSwitch
         );
-        eventAdapter = adapter;
+        setupEditToolbar(tSwitch, adapter);
+        associateDragToReorder(adapter, recyclerView);
+        recyclerView.setAdapter(adapter);
+
+        ExecutorService executor = AppModule.provideExecutor();
+        executor.submit(()->{
+            try {
+                //TODO: selection of multiple activities.
+                _Activity actv = selected.get(0);
+                Activity activity = actv.getCache();
+                assert activity != null;
+                binding.getRoot().post(()->{
+                    adapter.setEventList(activity);
+                });
+                binding.pageAddItemEditText.setOnEnterListener(
+                        (s)->adapter.insert(ActivityType.Type.activity, 0, s));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        // INFO: Showing a list of activities that the event belongs to.
+        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
+                .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
+        binding.pageActivities.setOnUpdateListener((tags)->{
+            if (tags.trim().isEmpty()) {
+                if (eventAdapter != null)
+                    eventAdapter.save();
+                showActivities(agenda);
+            }
+        });
+        binding.pageActivities.format();
+    }
+    public void show(List<_Activity> selected) {
+        if (selected == null || selected.size() == 0)
+            showActivities(agenda);
+        else
+            showEvents(selected);
+    }
+
+    public void checkboxOnSelect(boolean isFull) {
+        binding.agendaPageCheckbox.setTag(true);
+        binding.agendaPageCheckbox.setChecked(isFull);
+        binding.agendaPageCheckbox.setTag(null);
+    }
+
+    public void setupEditToolbar(Switch tSwitch, _BaseAdapter adapter) {
         tSwitch.observe((state)-> {
             binding.agendaPageSelectionTools.setVisibility(state ? View.VISIBLE : View.GONE);
             binding.pageAddItemEditText.setEditable(!state);
@@ -225,7 +242,9 @@ public class AgendaEditDialog extends Fragment {
             else // to empty
                 adapter.clearChecked();
         });
-        // TODO: ONGOING
+    }
+
+    public void associateDragToReorder(_BaseAdapter adapter, RecyclerView recyclerView) {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0){
 
             private int lastPos = -1;
@@ -267,44 +286,6 @@ public class AgendaEditDialog extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         adapter.setItemTouchHelper(itemTouchHelper);
-        //END
-        recyclerView.setAdapter(adapter);
-
-        ExecutorService executor = AppModule.provideExecutor();
-        executor.submit(()->{
-            try {
-                //TODO: selection of multiple activities.
-                _Activity actv = selected.get(0);
-                Activity activity = actv.getCache();
-                assert activity != null;
-                binding.getRoot().post(()->{
-                    adapter.setEventList(activity);
-                });
-                binding.pageAddItemEditText.setOnEnterListener(
-                        (s)->adapter.insert(ActivityType.Type.activity, 0, s));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        binding.pageGreyBar1.setVisibility(View.VISIBLE);
-        binding.pageActivities.setVisibility(View.VISIBLE);
-        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
-                .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
-        binding.pageActivities.setOnUpdateListener((tags)->{
-            if (tags.trim().isEmpty()) {
-                if (eventAdapter != null)
-                    eventAdapter.save();
-                showActivities(agenda);
-            }
-        });
-        binding.pageActivities.format();
-    }
-    public void show(List<_Activity> selected) {
-        if (selected == null || selected.size() == 0)
-            showActivities(agenda);
-        else
-            showEvents(selected);
     }
 
     public void scrollTo(int pos, RecyclerView recyclerView) {
@@ -348,8 +329,8 @@ public class AgendaEditDialog extends Fragment {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (eventAdapter != null)
-            eventAdapter.save();
+        _BaseAdapter.save(activityAdapter);
+        _BaseAdapter.save(eventAdapter);
         saveAgenda();
         navigateUp();
     }
