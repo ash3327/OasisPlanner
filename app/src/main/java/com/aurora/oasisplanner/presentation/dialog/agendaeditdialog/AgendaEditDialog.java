@@ -41,6 +41,7 @@ import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.E
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -137,6 +138,7 @@ public class AgendaEditDialog extends Fragment {
 
     public void showActivities(Agenda agenda) {
         //TODO: Selection for activities
+        eventAdapter = null;
         binding.agendaPageSelectionTools.setVisibility(View.GONE);
         binding.agendaPageEdit.setVisibility(View.GONE);
         binding.agendaPageMove.setVisibility(View.GONE);
@@ -186,6 +188,7 @@ public class AgendaEditDialog extends Fragment {
         adapter.setAgenda(agenda, activityLId);
         //recyclerView.post(()-> scrollTo(expandId, recyclerView));
     }
+    private EventAdapter eventAdapter = null;
     public void showEvents(List<_Activity> selected) {
         binding.agendaPageEdit.setVisibility(View.VISIBLE);
         binding.agendaPageMove.setVisibility(View.VISIBLE);
@@ -207,6 +210,7 @@ public class AgendaEditDialog extends Fragment {
                 },
                 recyclerView, tSwitch
         );
+        eventAdapter = adapter;
         tSwitch.observe((state)-> {
             binding.agendaPageSelectionTools.setVisibility(state ? View.VISIBLE : View.GONE);
             binding.pageAddItemEditText.setEditable(!state);
@@ -289,7 +293,8 @@ public class AgendaEditDialog extends Fragment {
                 .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
         binding.pageActivities.setOnUpdateListener((tags)->{
             if (tags.trim().isEmpty()) {
-                adapter.save();
+                if (eventAdapter != null)
+                    eventAdapter.save();
                 showActivities(agenda);
             }
         });
@@ -343,6 +348,8 @@ public class AgendaEditDialog extends Fragment {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (eventAdapter != null)
+            eventAdapter.save();
         saveAgenda();
         navigateUp();
     }

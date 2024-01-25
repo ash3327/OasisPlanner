@@ -229,16 +229,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
     private boolean swapping = false;
     public void swapItems(int fromPosition, int toPosition) {
-        Log.d("test3", fromPosition+"<->"+toPosition+":"+swapping);
         if (swapping) return;
         try {
             swapping = true;
             Collections.swap(sections, fromPosition, toPosition);
             super.notifyItemMoved(fromPosition, toPosition);
             swapping = false;
-        } catch(Exception e){Log.d("test3",e.getMessage());e.printStackTrace();}
-        Log.d("test3", "-->"+Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).i).toArray()));
-        Log.d("test3", "-->"+Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).id).toArray()));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void save() {
@@ -249,7 +248,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
             ((_AlarmList)aL).i = i;
             i++;
         }
-        Log.d("test3", Arrays.deepToString(sections.stream().map(a->((_AlarmList)a).i).toArray()));
+        activity.getObjList(true);
     }
 
     public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
