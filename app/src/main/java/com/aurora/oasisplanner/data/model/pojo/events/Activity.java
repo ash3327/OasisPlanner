@@ -89,7 +89,7 @@ public class Activity {
         }
         if (dt != null) {
             Alarm a = new Alarm();
-            a.alarmList = aL;
+            a.event = aL;
             a.alarm = new _Alarm()
                     .setAlarmData(aL.type, aL.importance)
                     .setDateTime(dt);

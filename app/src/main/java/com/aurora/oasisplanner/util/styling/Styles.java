@@ -88,6 +88,11 @@ public class Styles {
         return System.identityHashCode(obj);
     }
 
+    public static boolean isEmpty(SpannableStringBuilder ssb) {
+        if (ssb == null) return true;
+        return ssb.toString().isEmpty();
+    }
+
     public static String loremIpsum() {
         return  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +

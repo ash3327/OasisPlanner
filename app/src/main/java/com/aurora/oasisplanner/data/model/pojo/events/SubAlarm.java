@@ -26,11 +26,11 @@ public class SubAlarm extends Alarm {
     public _Alarm getAlarm() { return alarm; }
     public _Agenda getAgenda() { return agenda; }
     public _Activity getActivity() { return activity; }
-    public _Event getAlarmList() { return alarmList; }
+    public _Event getEvent() { return alarmList; }
     public void setAlarm(_Alarm alarm) { this.alarm = (_SubAlarm) alarm; }
     public void setAgenda(_Agenda agenda) { this.agenda = agenda; }
     public void setActivity(_Activity activity) { this.activity = activity; }
-    public void setAlarmList(_Event alarmList) { this.alarmList = alarmList; }
+    public void setEvent(_Event event) { this.alarmList = event; }
 
     @Ignore
     public String toString() {

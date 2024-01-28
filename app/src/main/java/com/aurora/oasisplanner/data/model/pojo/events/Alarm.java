@@ -13,6 +13,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.LocalDate;
@@ -27,24 +28,24 @@ public class Alarm {
     @Relation(parentColumn = "activityId", entityColumn = "id", entity = _Activity.class)
     public _Activity activity;
     @Relation(parentColumn = "alarmListId", entityColumn = "id", entity = _Event.class)
-    public _Event alarmList;
+    public _Event event;
 
     public Alarm(){}
 
     public _Alarm getAlarm() { return alarm; }
     public _Agenda getAgenda() { return agenda; }
     public _Activity getActivity() { return activity; }
-    public _Event getAlarmList() { return alarmList; }
+    public _Event getEvent() { return event; }
     public void setAlarm(_Alarm alarm) { this.alarm = alarm; }
     public void setAgenda(_Agenda agenda) { this.agenda = agenda; }
     public void setActivity(_Activity activity) { this.activity = activity; }
-    public void setAlarmList(_Event alarmList) { this.alarmList = alarmList; }
+    public void setEvent(_Event event) { this.event = event; }
 
     public AlarmType getType() {
-        return getAlarmList().type;
+        return getEvent().type;
     }
     public Importance getImportance() {
-        return getAlarmList().importance;
+        return getEvent().importance;
     }
     public LocalDateTime getDateTime() {
         return getAlarm().datetime;
@@ -59,30 +60,37 @@ public class Alarm {
     public SpannableStringBuilder getAgendaDescr() {
         return new SpannableStringBuilder();
     }
-    public SpannableStringBuilder getAlarmDescr() {
+    public SpannableStringBuilder getActivityDescr() {
         return getActivity().descr;
+    }
+    public SpannableStringBuilder getEventDescr() {
+        return getEvent().getArg(TagType.DESCR.name());
     }
     @Ignore
     public SpannableStringBuilder getContents(boolean inExpandedMode) {
-        return inExpandedMode ?
-                getAgendaDescr().toString().isEmpty() ?
-                        new SpannableStringBuilder()
-                                .append(getAlarmDescr()) :
-                        new SpannableStringBuilder()
-                                .append(getAlarmDescr())
-                                .append("\n\n")
-                                .append(getAgendaDescr())
-                : Styles.truncate(getAlarmDescr(), 12);
+        SpannableStringBuilder out = new SpannableStringBuilder(), temp;
+        String SEP = inExpandedMode ? "\n\n" : " • ";
+
+        if (!Styles.isEmpty(temp = getActivityDescr()))  out.append(temp).append(SEP);
+        if (!Styles.isEmpty(temp = getEventDescr()))     out.append(temp).append(SEP);
+
+        if (!Styles.isEmpty(temp = getAgendaDescr()) && inExpandedMode)
+            out.append(temp).append(SEP);
+
+        int len = out.length();
+        out = out.delete(len-SEP.length(), len);
+
+        return inExpandedMode ? out : Styles.truncate(out, 12);
     }
     @Ignore
     public String getTagsString() {
         String out = "";
-        out += getAlarmList().getTagsString();
+        out += getEvent().getTagsString();
         return out.isEmpty() || out.equals(null + "") ? null : out;
     }
     @Ignore
     public SpannableStringBuilder getLoc() {
-        return getAlarmList().getLoc();
+        return getEvent().getLoc();
     }
 
     public long getAgendaId() {
@@ -92,7 +100,7 @@ public class Alarm {
         return getActivity().id;
     }
     public long getAlarmListId() {
-        return getAlarmList().id;
+        return getEvent().id;
     }
     public long getAlarmId() {
         return getAlarm().id;
@@ -106,7 +114,7 @@ public class Alarm {
         Bundle extras = new Bundle();
 
         extras.putBundle("alarm", getAlarm().packContents());
-        extras.putBundle("alarmList", getAlarmList().packContents());
+        extras.putBundle("alarmList", getEvent().packContents());
         extras.putBundle("activity", getActivity().packContents());
         extras.putBundle("agenda", getAgenda().packContents());
 
@@ -115,7 +123,7 @@ public class Alarm {
 
     @Ignore
     public static void unpackExceptAlarm(Alarm alarm, Bundle extras) {
-        alarm.setAlarmList(_Event.unpackContents(extras.getBundle("alarmList")));
+        alarm.setEvent(_Event.unpackContents(extras.getBundle("alarmList")));
         alarm.setActivity(_Activity.unpackContents(extras.getBundle("activity")));
         alarm.setAgenda(_Agenda.unpackContents(extras.getBundle("agenda")));
     }
@@ -131,6 +139,6 @@ public class Alarm {
 
     @Ignore
     public String toString() {
-        return "<ALARM "+alarm+"\nALARMLIST "+alarmList+"\nACTIVITY "+activity+"\nAGENDA"+agenda+">";
+        return "<ALARM "+alarm+"\nALARMLIST "+ event +"\nACTIVITY "+activity+"\nAGENDA"+agenda+">";
     }
 }
