@@ -110,6 +110,24 @@ public class _Event {
     }
 
     @Ignore
+    public String getTitle() {
+        if (title == null || title.isEmpty())
+            title = getArg(TagType.DESCR.name()).toString();
+        return title;
+    }
+
+    @Ignore
+    public void setTitle(SpannableStringBuilder ssb) {
+        title = ssb.toString();
+        putArgs(TagType.DESCR.name(), ssb);
+    }
+    @Ignore
+    public void setTitle(String s) {
+        title = s;
+        putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
+    }
+
+    @Ignore
     public String getTagsString() {
         SpannableStringBuilder ssb = getArg(TagType.TAGS.name());
         return ssb==null ? null : ssb.toString();

@@ -92,6 +92,10 @@ public class Styles {
         if (ssb == null) return true;
         return ssb.toString().isEmpty();
     }
+    public static boolean isEmpty(String s) {
+        if (s == null) return true;
+        return s.isEmpty();
+    }
 
     public static String loremIpsum() {
         return  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +

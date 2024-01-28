@@ -58,21 +58,21 @@ public class Alarm {
         return getAgenda().title;
     }
     public SpannableStringBuilder getAgendaDescr() {
-        return new SpannableStringBuilder();
+        return new SpannableStringBuilder(getTitle());
     }
     public SpannableStringBuilder getActivityDescr() {
         return getActivity().descr;
     }
-    public SpannableStringBuilder getEventDescr() {
-        return getEvent().getArg(TagType.DESCR.name());
+    public String getEventDescr() {
+        return getEvent().getTitle();
     }
     @Ignore
     public SpannableStringBuilder getContents(boolean inExpandedMode) {
         SpannableStringBuilder out = new SpannableStringBuilder(), temp;
-        String SEP = inExpandedMode ? "\n\n" : " • ";
+        String SEP = inExpandedMode ? "\n\n" : " • ", temp2;
 
         if (!Styles.isEmpty(temp = getActivityDescr()))  out.append(temp).append(SEP);
-        if (!Styles.isEmpty(temp = getEventDescr()))     out.append(temp).append(SEP);
+        if (!Styles.isEmpty(temp2 = getEventDescr()))     out.append(temp2).append(SEP);
 
         if (!Styles.isEmpty(temp = getAgendaDescr()) && inExpandedMode)
             out.append(temp).append(SEP);

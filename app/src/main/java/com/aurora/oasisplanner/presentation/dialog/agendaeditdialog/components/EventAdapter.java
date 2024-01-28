@@ -123,7 +123,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         switch (type) {
             case activity:
                 _Event gp = _Event.empty();
-                gp.title = s;
+                gp.setTitle(s);
                 gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
                 activity.activity.types.add(i, new ActivityType(type,
                         AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));

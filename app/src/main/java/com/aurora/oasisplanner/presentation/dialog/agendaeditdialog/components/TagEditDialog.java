@@ -303,6 +303,10 @@ public class TagEditDialog extends AppCompatDialogFragment {
                     checked.getAssociates().setSubalarms();
                 }
                 break;
+            case DESCR:
+                for (_Event checked : checkedList)
+                    checked.setTitle(ssb);
+                break;
             default:
                 for (_Event checked : checkedList)
                     checked.putArgs(type.name(), ssb);
