@@ -56,7 +56,10 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
     public abstract void save();
     public abstract void removeChecked();
     public abstract void editTagOfChecked();
+    public abstract void moveChecked();
     abstract List<T2> getList();
+
+    public abstract void refreshDataset();
 
     // INFO: UTIL METHODS
     public void clearChecked() {
@@ -101,6 +104,10 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
         checkedList.clear();
         tSwitch.setState(false, true);
         notifyDataSetChanged();
+    }
+    public void forceUpdateUi() {
+        refreshDataset();
+        updateUi();
     }
 
     public void onUpdate(Set<T2> checkedList) {

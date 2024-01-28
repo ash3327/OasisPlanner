@@ -182,13 +182,14 @@
                                 />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/page_sections_activities"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:id="@+id/page_sections_activities"
-                        tools:listitem="@layout/_page_displist"
-                        tools:itemCount="1"/>
+                        tools:itemCount="1"
+                        tools:listitem="@layout/_page_displist" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/page_sections_events"

@@ -43,7 +43,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
     private static final int ID_KEY_SECTIONS_ADD = 4;
     private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
-    private Id.IdObj scrollFunc = (oi, i)->{};
     private OnClickListener ocl = null;
     private Instant clicked = Instant.now();
 
@@ -129,10 +128,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         setAgenda(agenda);
     }
 
-    public void setScrollToFunc(Id.IdObj scrollFunc) {
-        this.scrollFunc = scrollFunc;
-    }
-
     private boolean swapping = false;
     public void swapItems(int fromPosition, int toPosition) {
         if (swapping) return;
@@ -166,12 +161,15 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
     }
     public void editTagOfChecked() {
         /* TODO: Edit tag for activity
-        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
+        AppModule.retrieveEditEventUseCases().invokeDialogForTagType(
                 checkedList, this::updateUi
         );//*/
     }
+    public void moveChecked() {}
 
     List<_Activity> getList() { return agenda.activities; }
+
+    public void refreshDataset() { setAgenda(agenda); }
 
     class ActivityHolder extends _BaseHolder<ActivityAdapter.ActivityHolder, _Activity, ActivityAdapter> {
 
@@ -310,7 +308,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
                 checkToggle(gp);
             else {
                 toAddSection.setId(0);
-                scrollFunc.run(i, i);
                 if (ocl != null)
                     ocl.onClick(gp);
             }

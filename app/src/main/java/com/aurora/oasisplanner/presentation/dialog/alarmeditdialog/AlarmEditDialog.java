@@ -26,7 +26,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.EditEventUseCases;
 import com.aurora.oasisplanner.databinding.AlarmEditBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditDatesBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditInfosBinding;
@@ -62,7 +62,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        EditAlarmListUseCases editAlarmListUseCase = AppModule.retrieveEditAlarmListUseCases();
+        EditEventUseCases editAlarmListUseCase = AppModule.retrieveEditEventUseCases();
         this.event = editAlarmListUseCase.retrieveAlarms();
 
         assert event != null;

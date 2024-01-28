@@ -156,7 +156,6 @@ public class AgendaEditDialog extends Fragment {
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
         recyclerView.setAdapter(adapter);
-        adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
         adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
@@ -179,7 +178,7 @@ public class AgendaEditDialog extends Fragment {
         final EventAdapter adapter = eventAdapter = new EventAdapter(
                 (alarmList)->show(selected),
                 this::checkboxOnSelect,
-                recyclerView, tSwitch
+                recyclerView, tSwitch, agenda
         );
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -234,6 +233,7 @@ public class AgendaEditDialog extends Fragment {
         }, true);
         binding.agendaPageDelete.setOnClickListener((v)-> adapter.removeChecked());
         binding.agendaPageEdit.setOnClickListener((v)-> adapter.editTagOfChecked());
+        binding.agendaPageMove.setOnClickListener((v)-> adapter.moveChecked());
         binding.agendaPageCheckbox.setOnCheckedChangeListener((v,checked)->{
             if (v.getTag() != null)
                 return;

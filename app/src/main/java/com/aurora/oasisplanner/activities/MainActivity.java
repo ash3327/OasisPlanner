@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupDatabase() {
         // INFO: setup database and usecases
         AppModule.retrieveAgendaUseCases().setFragmentManager(getSupportFragmentManager());
-        AppModule.retrieveEditAlarmListUseCases().setFragmentManager(getSupportFragmentManager());
+        AppModule.retrieveEditEventUseCases().setFragmentManager(getSupportFragmentManager());
         AppModule.retrieveMemoUseCases().setFragmentManager(getSupportFragmentManager());
     }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.TagType;
@@ -34,15 +35,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     public Switch bSwitch = new Switch(false);
 
     private Activity activity;
+    private Agenda agenda;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
-                        RecyclerView recyclerView, Switch tSwitch) {
+                        RecyclerView recyclerView, Switch tSwitch, Agenda agenda) {
         super(onSelectListener, tSwitch);
         this.onSaveAlarmListener = onSaveAlarmListener;
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
         }, true);
+        this.agenda = agenda;
     }
 
     @NonNull
@@ -94,8 +97,14 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
 
     public void editTagOfChecked() {
-        AppModule.retrieveEditAlarmListUseCases().invokeDialogForTagType(
+        AppModule.retrieveEditEventUseCases().invokeDialogForTagType(
                 checkedList, this::updateUi
+        );
+    }
+
+    public void moveChecked() {
+        AppModule.retrieveEditEventUseCases().invokeDialogForMovingEvent(
+                checkedList, agenda, activity, this::forceUpdateUi
         );
     }
 
@@ -146,6 +155,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
 
     List<_Event> getList() { return activity.alarmLists; }
+
+    public void refreshDataset() { setEventList(activity); }
 
     private boolean swapping = false;
     public void swapItems(int fromPosition, int toPosition) {
@@ -215,7 +226,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                         if (aSwitch.getState())
                             checkToggle(gp);
                         else {
-                            AppModule.retrieveEditAlarmListUseCases()
+                            AppModule.retrieveEditEventUseCases()
                                     .invoke(
                                             gp, grp,
                                             onSaveAlarmListener

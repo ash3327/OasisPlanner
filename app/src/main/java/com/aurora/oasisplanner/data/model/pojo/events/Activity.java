@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -14,8 +15,11 @@ import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Activity {
     @Embedded
@@ -136,8 +140,13 @@ public class Activity {
         return new List[]{list, types};
     }
 
+    interface CheckFunction {
+        /** returns true when you want to DISCARD the item. */
+        boolean check(Object obj);
+    }
+    /** the check function returns true when you want to DISCARD the item. */
     @Ignore
-    public void update() {
+    private int updateWithCheck(CheckFunction checker) {
         List<Object> list = getObjList(false)[0];
 
         alarmLists = new ArrayList<>();
@@ -146,6 +155,8 @@ public class Activity {
 
         int i = 0;
         for (Object obj : list) {
+            if (checker.check(obj))
+                continue;
             if (obj instanceof _Event) {
                 types.add(new ActivityType(ActivityType.Type.activity, alarmLists.size()));
                 alarmLists.add(((_Event) obj).setI(i));
@@ -162,6 +173,24 @@ public class Activity {
         }
         activity.types.clear();
         activity.types.addAll(types);
+        return i;
+    }
+    @Ignore
+    public int update() {
+        return updateWithCheck(obj-> false);
+    }
+
+    /** Should only be used if we DON'T NEED TO delete the event from the database. */
+    public void removeEvents(Set<_Event> events) {
+        updateWithCheck(events::contains);
+    }
+    public void insertEvents(Set<_Event> events) {
+        int i = update();
+        for (_Event event : events.stream().sorted(Comparator.comparingInt(a -> a.i)).collect(Collectors.toList())) {
+            activity.types.add(new ActivityType(ActivityType.Type.activity, alarmLists.size()));
+            alarmLists.add(event.setI(i++));
+            event.activityId = getId();
+        }
     }
 
     public Activity setI(int i) {

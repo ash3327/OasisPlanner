@@ -7,13 +7,15 @@ import androidx.fragment.app.FragmentManager;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
+import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventMoveDialog;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 
 import java.util.Set;
 
-public class EditAlarmListUseCases {
+public class EditEventUseCases {
     private FragmentManager fragmentManager;
     private Event event;
 
@@ -41,6 +43,13 @@ public class EditAlarmListUseCases {
         TagEditDialog dialog = new TagEditDialog();
         dialog.setUpdateUiFunction(updateUi);
         dialog.setSelectedList(checkedList);
+        dialog.show(fragmentManager, "dialogTagType");
+    }
+
+    public void invokeDialogForMovingEvent(Set<_Event> checkedList, Agenda agenda, Activity activity, Runnable updateUi) {
+        EventMoveDialog dialog = new EventMoveDialog();
+        dialog.setUpdateUiFunction(updateUi);
+        dialog.setSelectedList(checkedList, agenda, activity);
         dialog.show(fragmentManager, "dialogTagType");
     }
 

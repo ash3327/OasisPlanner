@@ -15,7 +15,7 @@ import com.aurora.oasisplanner.data.repository.ActivityRepository;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.use_cases.AgendaUseCases;
-import com.aurora.oasisplanner.data.core.use_cases.EditAlarmListUseCases;
+import com.aurora.oasisplanner.data.core.use_cases.EditEventUseCases;
 import com.aurora.oasisplanner.data.repository.EventRepository;
 import com.aurora.oasisplanner.data.repository.MultimediaRepository;
 import com.aurora.oasisplanner.data.repository.TagRepository;
@@ -34,7 +34,7 @@ public class AppModule {
     private static ActivityUseCases activityUseCases;
     private static EventUseCases eventUseCases;
     private static AlarmUseCases alarmUseCases;
-    private static EditAlarmListUseCases editAlarmListUseCases;
+    private static EditEventUseCases editEventUseCases;
     private static MemoUseCases memoUseCases;
     private static GetTagUseCases getTagUseCases;
     private static AlarmScheduler alarmScheduler;
@@ -126,14 +126,14 @@ public class AppModule {
         return alarmUseCases;
     }
 
-    public static EditAlarmListUseCases provideEditAlarmListUseCases() {
-        if (editAlarmListUseCases != null) return editAlarmListUseCases;
-        return editAlarmListUseCases = new EditAlarmListUseCases();
+    public static EditEventUseCases provideEditAlarmListUseCases() {
+        if (editEventUseCases != null) return editEventUseCases;
+        return editEventUseCases = new EditEventUseCases();
     }
-    public static EditAlarmListUseCases retrieveEditAlarmListUseCases() {
-        if (editAlarmListUseCases == null)
+    public static EditEventUseCases retrieveEditEventUseCases() {
+        if (editEventUseCases == null)
             throw new Resources.NotFoundException("The Usecase is Not Defined Yet.");
-        return editAlarmListUseCases;
+        return editEventUseCases;
     }
 
     public static MemoUseCases provideMemoUseCases(MemoRepository repository) {
