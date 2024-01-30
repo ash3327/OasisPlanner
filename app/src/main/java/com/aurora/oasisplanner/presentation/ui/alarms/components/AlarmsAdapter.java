@@ -337,7 +337,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             DayLabelBinding binding = (DayLabelBinding) vbinding;
 
             binding.tvDayOfWeek.setText(DateTimesFormatter.getWEEK(dayData.day));
-            binding.tvDayLabel.setText(DateTimesFormatter.toDate(dayData.day));
+            String dayStr = DateTimesFormatter.toDate(dayData.day);
+            if (LocalDate.now().isEqual(dayData.day))
+                dayStr += "  "+Resources.getString(R.string.bar_today);
+            binding.tvDayLabel.setText(dayStr);
 
             return true;
         }

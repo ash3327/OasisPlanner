@@ -66,6 +66,8 @@
     <string name="bar_task">Task</string>
     <string name="bar_event">Event</string>
 
+    <string name="bar_today"> (Today)</string>
+
     <!-- Edit _Agenda Dialog / Page -->
         <!-- PAGE OVERHEAD TITLE -->
         <string name="page_overhead_new_agenda">New Agenda</string>

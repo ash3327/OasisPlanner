@@ -67,6 +67,8 @@
     <string name="bar_task">任務</string>
     <string name="bar_event">活動</string>
 
+    <string name="bar_today"> (今天)</string>
+
     <!-- Edit _Agenda Dialog / Page -->
         <!-- PAGE OVERHEAD TITLE -->
         <string name="page_overhead_new_agenda">新增日程</string>
