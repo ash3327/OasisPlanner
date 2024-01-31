@@ -92,7 +92,7 @@ public class ChooseTypeDialog {
         hideMenu();
         switch (i) {
             case 0:
-                AppModule.retrieveAgendaUseCases().edit(-1, -1);
+                AppModule.retrieveAgendaUseCases().edit(-1, -1, -1);
                 break;
             case 2:
                 AppModule.retrieveMemoUseCases().edit(-1);

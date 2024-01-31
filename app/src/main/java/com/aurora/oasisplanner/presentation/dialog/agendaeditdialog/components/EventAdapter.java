@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +39,21 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
     private Activity activity;
     private Agenda agenda;
+    private long eventLId;
+    private RecyclerView recyclerView;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
-                        RecyclerView recyclerView, Switch tSwitch, Agenda agenda) {
+                        RecyclerView recyclerView, Switch tSwitch, Agenda agenda,
+                        long eventLId) {
         super(onSelectListener, tSwitch);
         this.onSaveAlarmListener = onSaveAlarmListener;
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
         }, true);
         this.agenda = agenda;
+        this.eventLId = eventLId;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -77,10 +83,12 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0;
+        int i = 0, pinned = -1;
         List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
+            if (obj instanceof _Event && ((_Event)obj).id == eventLId)
+                pinned = i;
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
@@ -88,6 +96,9 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         this.items = list;
         this.types = types;
         this.len = i;
+
+        if (pinned != -1)
+            recyclerView.scrollToPosition(pinned);
     }
 
     public void removeChecked() {

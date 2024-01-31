@@ -51,11 +51,13 @@ public class SplashActivity extends AppCompatActivity {
             String notificationMode = extras.getString(NotificationModule.NOTIFICATION_MODE);
             long agendaId = extras.getLong(NotificationModule.NOTIFICATION_CONTENT);
             long activityLId = extras.getLong(NotificationModule.NOTIFICATION_ACTIVITY);
+            long eventLId = extras.getLong(NotificationModule.NOTIFICATION_EVENT);
 
             Intent mainActivityIntent = new Intent(this, MainActivity.class);
             mainActivityIntent.putExtra(NotificationModule.NOTIFICATION_MODE, notificationMode);
             mainActivityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, agendaId);
             mainActivityIntent.putExtra(NotificationModule.NOTIFICATION_ACTIVITY, activityLId);
+            mainActivityIntent.putExtra(NotificationModule.NOTIFICATION_EVENT, eventLId);
             return mainActivityIntent;
         } catch (Exception e) {}
         return new Intent(this, MainActivity.class);

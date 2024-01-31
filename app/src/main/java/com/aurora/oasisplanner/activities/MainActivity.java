@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 long agendaId = extras.getLong(NotificationModule.NOTIFICATION_CONTENT);
                 long activityLId = extras.getLong(NotificationModule.NOTIFICATION_ACTIVITY);
-                AppModule.retrieveAgendaUseCases().edit(agendaId, activityLId);
+                long eventLId = extras.getLong(NotificationModule.NOTIFICATION_EVENT);
+                AppModule.retrieveAgendaUseCases().edit(agendaId, activityLId, eventLId);
             }
 
             intent.removeExtra(NotificationModule.NOTIFICATION_MODE);

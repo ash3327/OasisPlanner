@@ -266,7 +266,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             BoxNotifBinding binding = (BoxNotifBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId(), alarm.getEventId())
             );
             binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_notif));
@@ -282,7 +282,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             BoxEventBinding binding = (BoxEventBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId(), alarm.getEventId())
             );
             binding.boxToptag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));
             binding.boxBottomtag.setText(Resources.getString(R.string.bar_event));
@@ -313,7 +313,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             BoxTaskBinding binding = (BoxTaskBinding) vbinding;
 
             binding.bar.setOnClickListener(
-                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId())
+                    (v)-> AppModule.retrieveAgendaUseCases().edit(alarm.getAgendaId(), alarm.getActivityId(), alarm.getEventId())
             );
             binding.boxToptag.setText(Resources.getString(R.string.bar_task));
             binding.boxBottomtag.setText(DateTimesFormatter.toTime12h(alarm.getDateTime().toLocalTime()));

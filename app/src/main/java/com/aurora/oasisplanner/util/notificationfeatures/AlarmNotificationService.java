@@ -16,7 +16,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.IBinder;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -26,13 +25,10 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
-import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
-
-import java.util.Arrays;
 
 public class AlarmNotificationService extends Service {
 
@@ -75,6 +71,7 @@ public class AlarmNotificationService extends Service {
 
         activityIntent.putExtra(NotificationModule.NOTIFICATION_CONTENT, alarm.getAgendaId());
         activityIntent.putExtra(NotificationModule.NOTIFICATION_ACTIVITY, alarm.getActivityId());
+        activityIntent.putExtra(NotificationModule.NOTIFICATION_EVENT, alarm.getEventId());
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(

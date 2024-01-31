@@ -99,7 +99,7 @@ public class Alarm {
     public long getActivityId() {
         return getActivity().id;
     }
-    public long getAlarmListId() {
+    public long getEventId() {
         return getEvent().id;
     }
     public long getAlarmId() {

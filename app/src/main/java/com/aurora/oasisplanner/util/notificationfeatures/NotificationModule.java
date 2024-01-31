@@ -6,4 +6,5 @@ public class NotificationModule {
 
     public static final String NOTIFICATION_CONTENT = "notif_content";
     public static final String NOTIFICATION_ACTIVITY = "notif_activity";
+    public static final String NOTIFICATION_EVENT = "notif_event";
 }

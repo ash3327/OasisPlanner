@@ -50,12 +50,16 @@ import java.util.concurrent.ExecutorService;
 public class AgendaEditDialog extends Fragment {
     public static final String EXTRA_AGENDA_ID = "agendaId";
     public static final String EXTRA_ACTIVL_ID = "activityLId";
+    public static final String EXTRA_EVENT_ID = "eventLId";
 
     private Agenda agenda;
     private long activityLId;
+    private long eventLId;
 
     private List<_Activity> selected = new ArrayList<>();
     private PageBinding binding;
+
+    public static final long LId_NULL = -1;
 
     @NonNull
     @Override
@@ -90,13 +94,14 @@ public class AgendaEditDialog extends Fragment {
         AppModule.provideExecutor().submit(()->{
             long agendaId = getArguments().getLong(EXTRA_AGENDA_ID, -1);
             activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
+            eventLId = getArguments().getLong(EXTRA_EVENT_ID, -1);
 
-            if (agendaId != -1)
+            if (agendaId != LId_NULL)
                 agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
             else
                 agenda = Agenda.empty();
 
-            if (activityLId != -1) {
+            if (activityLId != LId_NULL) {
                 for (_Activity actv : agenda.activities) {
                     if (actv.id == activityLId) {
                         selected = Collections.singletonList(actv);
@@ -136,6 +141,7 @@ public class AgendaEditDialog extends Fragment {
     private ActivityAdapter activityAdapter = null;
     private EventAdapter eventAdapter = null;
     public void showActivities(Agenda agenda) {
+        eventLId = LId_NULL;
         eventAdapter = null;
         binding.agendaPageEdit.setVisibility(View.GONE);
         binding.agendaPageMove.setVisibility(View.GONE);
@@ -178,7 +184,7 @@ public class AgendaEditDialog extends Fragment {
         final EventAdapter adapter = eventAdapter = new EventAdapter(
                 (alarmList)->show(selected),
                 this::checkboxOnSelect,
-                recyclerView, tSwitch, agenda
+                recyclerView, tSwitch, agenda, eventLId
         );
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
