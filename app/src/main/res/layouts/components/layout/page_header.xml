@@ -7,15 +7,23 @@
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/box_vmargin"
     android:padding="7.5dp"
+    android:gravity="center_vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
-        android:id="@+id/page_header_0"
-        android:layout_width="match_parent"
+        android:id="@+id/page_header_tv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="@string/edit_agenda_details"
         android:textStyle="bold"
-        android:paddingHorizontal="@dimen/page_header_hpadding"
-        android:paddingVertical="@dimen/page_header_vpadding"
+        android:layout_marginHorizontal="@dimen/page_header_hpadding"
+        android:layout_marginVertical="@dimen/page_header_vpadding"
         android:letterSpacing="0.1"
         android:textSize="@dimen/boxtitle_textsize"/>
+    <ImageView
+        android:id="@+id/page_header_icon"
+        android:layout_width="@dimen/medium_small_icon_height"
+        android:layout_height="@dimen/medium_small_icon_height"
+        android:src="@drawable/ic_symb_pen"
+        android:layout_marginEnd="@dimen/page_header_hpadding"/>
 </LinearLayout>

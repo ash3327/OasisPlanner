@@ -26,5 +26,6 @@
     </declare-styleable>
     <declare-styleable name="PageHeader">
         <attr name="text" format="string"/>
+        <attr name="icon_src" format="reference"/>
     </declare-styleable>
 </resources>

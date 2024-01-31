@@ -179,6 +179,9 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         this.editable = editable;
         refreshDataset();
     }
+    public boolean isEditable() {
+        return editable;
+    }
 
     class ActivityHolder extends _BaseHolder<ActivityAdapter.ActivityHolder, _Activity, ActivityAdapter> {
 

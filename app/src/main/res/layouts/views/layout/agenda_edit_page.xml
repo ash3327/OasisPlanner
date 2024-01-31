@@ -107,6 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:text="@string/edit_agenda_events"
+                        app:icon_src="@drawable/ic_symb_pen"
                         android:visibility="gone"/>
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/agenda_page_checkbox_ll"

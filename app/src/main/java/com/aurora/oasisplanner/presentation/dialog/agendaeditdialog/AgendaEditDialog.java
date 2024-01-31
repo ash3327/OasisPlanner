@@ -39,6 +39,7 @@ import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventAdapter;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components._BaseAdapter;
+import com.aurora.oasisplanner.presentation.widget.PageHeader;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
@@ -151,13 +152,15 @@ public class AgendaEditDialog extends Fragment {
         binding.pageSectionsActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsEvents.setVisibility(View.GONE);
 
+        binding.pageHeader0.setIconDrawable(R.drawable.ic_symb_pen);
+
         RecyclerView recyclerView = binding.pageSectionsActivities;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
         recyclerView.setHasFixedSize(false);
 
         Switch tSwitch = new Switch(false);
         final ActivityAdapter adapter = activityAdapter
-                = new ActivityAdapter(this::checkboxOnSelect, tSwitch, true);
+                = new ActivityAdapter(this::checkboxOnSelect, tSwitch, false);
 
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -166,6 +169,18 @@ public class AgendaEditDialog extends Fragment {
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         adapter.setAgenda(agenda);
+
+        binding.pageHeader0.getImgButton().setOnClickListener(
+                (v)-> {
+                    if (!adapter.isEditable()) {
+                        adapter.setEditable(true);
+                        v.setAlpha(.5f);
+                    } else {
+                        adapter.setEditable(false);
+                        v.setAlpha(1);
+                    }
+                }
+        );
     }
     public void showEvents(List<_Activity> selected) {
         binding.agendaPageEdit.setVisibility(View.VISIBLE);
@@ -175,6 +190,10 @@ public class AgendaEditDialog extends Fragment {
         binding.pageActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsActivities.setVisibility(View.GONE);
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);
+
+        binding.pageHeader0.setIconDrawable(PageHeader.NIL);
+        //binding.pageHeader1.setIconDrawable(R.drawable.ic_symb_pen);
+        binding.pageHeader1.setIconDrawable(PageHeader.NIL);
 
         RecyclerView recyclerView = binding.pageSectionsEvents;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
