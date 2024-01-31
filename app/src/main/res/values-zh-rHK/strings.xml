@@ -91,6 +91,9 @@
         <string name="yellow_bar_tag_delete">刪除標簽</string>
         <!-- OnConfirm -->
         <string name="page_no_title_warning">日程的標題不能為空！</string>
+        <!-- Headers -->
+        <string name="edit_agenda_details">詳細資料</string>
+        <string name="edit_agenda_events">相關日程</string>
 
     <!-- General Save -->
     <string name="save_change">您有未保存的更改。您是否希望在退出前保存它們？</string>

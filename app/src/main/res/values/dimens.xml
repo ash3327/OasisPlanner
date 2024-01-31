@@ -110,6 +110,8 @@
         <dimen name="page_gap_unfocused_height">6dp</dimen>
         <dimen name="page_selection_tools_gap">20dp</dimen>
         <dimen name="page_item_textsize">16sp</dimen>
+        <dimen name="page_header_hpadding">25dp</dimen>
+        <dimen name="page_header_vpadding">7dp</dimen>
 
     <!-- Edit _Alarm Dimensions -->
     <dimen name="edit_alarm_pickerHeaderSize">15sp</dimen>
