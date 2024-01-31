@@ -82,15 +82,6 @@
 
                                 android:inputType="textMultiLine"
 
-                                app:layout_constraintBottom_toTopOf="@id/agenda_tags_tv"
-                                app:layout_constraintStart_toStartOf="parent"
-                                />
-                            <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
-                                android:id="@+id/agenda_tags_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textMultiLine"
-
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 />
@@ -156,7 +147,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="20dp"
-                            android:layout_marginVertical="10dp"
 
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

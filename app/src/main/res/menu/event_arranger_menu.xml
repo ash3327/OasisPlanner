@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/eventArranger_calendar"
-        android:icon="@drawable/menuic_calendar"
+        android:icon="@drawable/menuic_calendar_2"
         android:title="@string/tag_dashboard"
         app:showAsAction="ifRoom"/>
 

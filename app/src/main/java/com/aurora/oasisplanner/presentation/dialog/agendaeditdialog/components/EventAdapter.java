@@ -1,6 +1,8 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -253,8 +255,13 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
             if (item instanceof _Event) {
                 _Event gp = (_Event) item;
 
-                binding.icon.setImageDrawable(gp.type.getDrawable());
-                binding.importanceLabel.setColorFilter(gp.importance.getColorPr());
+                Drawable icon = gp.type.getOutlineDrawable();
+                icon.setColorFilter(
+                        gp.importance.getColorPr(),
+                        PorterDuff.Mode.SRC_IN
+                );
+                binding.icon.setImageDrawable(icon);
+
                 binding.barDescriptionText.setText(gp.getDateTime());
                 RecyclerView recyclerView = binding.itemAlarmRecyclerView;
                 TagsAdapter adapter = new TagsAdapter();

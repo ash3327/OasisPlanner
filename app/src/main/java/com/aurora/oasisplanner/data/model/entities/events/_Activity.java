@@ -33,8 +33,8 @@ public class _Activity {
 
         /** [DRAWABLE ICON, STRING BELOW, COLOR PRIMARY, COLOR SECONDARY] */
         public static int[][] typeIds = {
-                {R.drawable.ic_agenda_calendar, R.string.activities, R.color.grey_500,         R.color.grey_300, R.drawable.ic_agendatype_calendar},
-                {R.drawable.ic_agenda_todo,            R.string.todo,       R.color.grey_500,         R.color.grey_300, R.drawable.ic_todo}
+                {R.drawable.ic_agenda_calendar, R.string.activities, R.color.grey_500,         R.color.grey_300, R.drawable.ic_calendar_big},
+                {R.drawable.ic_agenda_todo,            R.string.todo,       R.color.grey_500,         R.color.grey_300, R.drawable.ic_assignment_outline_big}
         };
 
         public Drawable getDrawable() {

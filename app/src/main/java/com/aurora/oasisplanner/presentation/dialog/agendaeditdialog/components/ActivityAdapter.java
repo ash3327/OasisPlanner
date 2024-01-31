@@ -260,13 +260,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             );
             binding.docIcon.setImageDrawable(icon);
 
-            Drawable bg = binding.sectionCard.getBackground();
-            bg.setColorFilter(
-                    gp.getImportance().getColorPr(),
-                    PorterDuff.Mode.SRC_IN
-            );//*/
-            binding.sectionCard.setBackground(bg);
-
             EditText docText = binding.docTag;
             associate(docText, gp.descr);
             docText.setFocusableInTouchMode(true);

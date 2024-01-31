@@ -10,7 +10,7 @@ import com.aurora.oasisplanner.R;
 
 public class Resources {
     /** indices of the required resources in the Ids list. */
-    public static int DRAWABLE = 0, STRING = 1, COLOR_PR = 2, COLOR_SC = 3, SIMPLEDRAWABLE = 4;
+    public static int DRAWABLE = 0, STRING = 1, COLOR_PR = 2, COLOR_SC = 3, SIMPLEDRAWABLE = 4, EXTRA_1 = 5;
 
     public static Context context = MainActivity.main;
     public static int[] frameTitles = {
