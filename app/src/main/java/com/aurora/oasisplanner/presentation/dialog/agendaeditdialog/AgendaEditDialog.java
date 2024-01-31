@@ -157,7 +157,7 @@ public class AgendaEditDialog extends Fragment {
 
         Switch tSwitch = new Switch(false);
         final ActivityAdapter adapter = activityAdapter
-                = new ActivityAdapter(this::checkboxOnSelect, tSwitch);
+                = new ActivityAdapter(this::checkboxOnSelect, tSwitch, true);
 
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -208,7 +208,7 @@ public class AgendaEditDialog extends Fragment {
         });
 
         // INFO: Showing a list of activities that the event belongs to.
-        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString())
+        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString().replace(" ", "_"))
                 .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
         binding.pageActivities.setOnUpdateListener((tags)->{
             if (tags.trim().isEmpty()) {

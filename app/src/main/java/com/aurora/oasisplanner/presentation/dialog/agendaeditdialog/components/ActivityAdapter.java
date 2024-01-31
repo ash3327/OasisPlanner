@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +49,11 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
     private Instant clicked = Instant.now();
 
     private Agenda agenda;
+    private boolean editable = false;
 
-    public ActivityAdapter(OnSelectListener onSelectListener, Switch tSwitch) {
+    public ActivityAdapter(OnSelectListener onSelectListener, Switch tSwitch, boolean editable) {
         super(onSelectListener, tSwitch);
+        this.editable = editable;
     }
 
     @NonNull
@@ -171,6 +175,11 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
     public void refreshDataset() { setAgenda(agenda); }
 
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+        refreshDataset();
+    }
+
     class ActivityHolder extends _BaseHolder<ActivityAdapter.ActivityHolder, _Activity, ActivityAdapter> {
 
         public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter, Switch tSwitch, Set<_Activity> checkedList) {
@@ -260,10 +269,32 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             );
             binding.docIcon.setImageDrawable(icon);
 
+            bindDocText(binding, gp, i);
+
+            return true;
+        }
+
+        private void bindDocText(SectionBinding binding, _Activity gp, int i) {
+            if (editable)
+                bindDocEditText(binding, gp, i);
+            else
+                bindDocTextView(binding, gp);
+        }
+        private void bindDocTextView(SectionBinding binding, _Activity gp) {
+            binding.docTag.setVisibility(View.GONE);
+            binding.docTagTv.setVisibility(View.VISIBLE);
+            binding.docTagTv.setText(gp.descr);
+        }
+        private void bindDocEditText(SectionBinding binding, _Activity gp, int i) {
+            binding.docTagTv.setVisibility(View.GONE);
+            binding.docTag.setVisibility(View.VISIBLE);
             EditText docText = binding.docTag;
             associate(docText, gp.descr);
+
+            docText.setEnabled(true);
             docText.setFocusableInTouchMode(true);
             docText.setFocusable(true);
+
             docText.setOnClickListener(
                     (v)->{
                         docText.setFocusable(true);
@@ -290,8 +321,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             };
             docText.setTag(textWatcher);
             docText.addTextChangedListener(textWatcher);
-
-            return true;
         }
 
         public void barOnClicked(int i, _Activity gp) {
