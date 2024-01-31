@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/page_grey_bar_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey_50"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/box_vmargin"
+    android:padding="7.5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/page_header_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_agenda_details"
+        android:textStyle="bold"
+        android:paddingHorizontal="@dimen/page_header_hpadding"
+        android:paddingVertical="@dimen/page_header_vpadding"
+        android:letterSpacing="0.1"
+        android:textSize="@dimen/boxtitle_textsize"/>
+</LinearLayout>

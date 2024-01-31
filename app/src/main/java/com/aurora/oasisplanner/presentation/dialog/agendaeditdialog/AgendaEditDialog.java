@@ -146,7 +146,7 @@ public class AgendaEditDialog extends Fragment {
         binding.agendaPageEdit.setVisibility(View.GONE);
         binding.agendaPageMove.setVisibility(View.GONE);
 
-        binding.pageGreyBar1.setVisibility(View.GONE);
+        binding.pageHeader1.setVisibility(View.GONE);
         binding.pageActivities.setVisibility(View.GONE);
         binding.pageSectionsActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsEvents.setVisibility(View.GONE);
@@ -171,7 +171,7 @@ public class AgendaEditDialog extends Fragment {
         binding.agendaPageEdit.setVisibility(View.VISIBLE);
         binding.agendaPageMove.setVisibility(View.VISIBLE);
 
-        binding.pageGreyBar1.setVisibility(View.VISIBLE);
+        binding.pageHeader1.setVisibility(View.VISIBLE);
         binding.pageActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsActivities.setVisibility(View.GONE);
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);

@@ -24,4 +24,7 @@
     <declare-styleable name="TagInputEditText">
         <attr name="editable" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="PageHeader">
+        <attr name="text" format="string"/>
+    </declare-styleable>
 </resources>
