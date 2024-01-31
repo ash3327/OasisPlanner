@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Entity()
-public class _Activity {
+public class _Activity extends __Item {
     public enum Type {
         event, task;
 
@@ -79,6 +79,15 @@ public class _Activity {
             importance = Importance.regular;
         return importance;
     }//*/
+
+    @Ignore
+    public CharSequence getTitle() {
+        return descr;
+    }
+    @Ignore
+    public void setTitle(CharSequence val) {
+        descr = new SpannableStringBuilder(val);
+    }
 
     @Ignore
     public _Activity setI(int i) {

@@ -1,16 +1,20 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events.__Item;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.util.styling.Styles;
@@ -20,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extends RecyclerView.Adapter<T> {
+public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends __Item> extends RecyclerView.Adapter<T> {
 
     ItemTouchHelper itemTouchHelper = null;
     final Set<T2> checkedList;
@@ -29,15 +33,23 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
 
     public List<Object> items = new ArrayList<>();
     public List<ActivityType.Type> types = new ArrayList<>();
+    long LId;
+    RecyclerView recyclerView;
+
+    boolean editable = false;
 
     {
         setHasStableIds(true);
     }
 
-    public _BaseAdapter(OnSelectListener onSelectListener, Switch tSwitch) {
+    public _BaseAdapter(OnSelectListener onSelectListener, RecyclerView recyclerView,
+                        Switch tSwitch, boolean editable, long LId) {
         this.checkedList = new HashSet<>();
+        this.recyclerView = recyclerView;
         this.tSwitch = tSwitch;
         this.onSelectListener = onSelectListener;
+        this.editable = editable;
+        this.LId = LId;
     }
 
     // INFO: IMPLEMENTED METHODS
@@ -62,6 +74,9 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
     public abstract void refreshDataset();
 
     // INFO: UTIL METHODS
+    public void clearScroll() {
+        LId = -1;
+    }
     public void clearChecked() {
         checkedList.clear();
         tSwitch.setState(false, true);
@@ -90,7 +105,7 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
             baseAdapter.save();
     }
 
-    public static void associate(EditText editText, SpannableStringBuilder text) {
+    public static void associate(EditText editText, CharSequence text) {
         //prevents triggering at the initial change in text (initialization)
         Object tag = editText.getTag();
         if (tag instanceof TextWatcher)
@@ -115,10 +130,19 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
             onSelectListener.onSelect(checkedList.size()==getItemCount());
     }
 
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+        clearScroll();
+        refreshDataset();
+    }
+    public boolean isEditable() {
+        return editable;
+    }
+
     public interface OnSelectListener {void onSelect(boolean isFull);}
 
     // INFO: Base Holder
-    abstract static class _BaseHolder<T4 extends RecyclerView.ViewHolder, T5, T3 extends _BaseAdapter<T4,T5>>
+    abstract static class _BaseHolder<T4 extends RecyclerView.ViewHolder, T5 extends __Item, T3 extends _BaseAdapter<T4,T5>>
             extends RecyclerView.ViewHolder {
         ViewDataBinding vbinding;
         T3 adapter;
@@ -134,6 +158,8 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
             this.checkedList = checkedList;
         }
 
+        public abstract void barOnClicked(int i, T5 gp, SpannableStringBuilder ssb);
+
         public void checkToggle(T5 gp) {
             if (checkedList.contains(gp))
                 checkedList.remove(gp);
@@ -141,6 +167,55 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2> extend
                 checkedList.add(gp);
             aSwitch.setState(!checkedList.isEmpty(), true);
             adapter.onUpdate(checkedList);
+        }
+
+        void bindDocText(EditText docTag, TextView docTagTv, T5 gp, int i, SpannableStringBuilder descr) {
+            if (adapter.editable)
+                bindDocEditText(docTag, docTagTv, gp, i, descr);
+            else
+                bindDocTextView(docTag, docTagTv, gp);
+        }
+        private void bindDocTextView(EditText docTag, TextView docTagTv, T5 gp) {
+            docTag.setVisibility(View.GONE);
+            docTagTv.setVisibility(View.VISIBLE);
+            docTagTv.setText(gp.getTitle());
+        }
+        private void bindDocEditText(EditText docTag, TextView docTagTv, T5 gp, int i, SpannableStringBuilder descr) {
+            docTagTv.setVisibility(View.GONE);
+            docTag.setVisibility(View.VISIBLE);
+            EditText docText = docTag;
+            associate(docText, gp.getTitle());
+
+            docText.setEnabled(true);
+            docText.setFocusableInTouchMode(true);
+            docText.setFocusable(true);
+
+            docText.setOnClickListener(
+                    (v)->{
+                        docText.setFocusable(true);
+                        barOnClicked(i, gp, descr);
+                    }
+            );//*/
+
+            TextWatcher textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    docText.clearComposingText();
+                    gp.setTitle(new SpannableStringBuilder(docText.getText()));
+                }
+            };
+            docText.setTag(textWatcher);
+            docText.addTextChangedListener(textWatcher);
         }
     }
 }

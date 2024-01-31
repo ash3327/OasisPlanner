@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
-public class _Event {
+public class _Event extends __Item {
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
@@ -117,9 +117,9 @@ public class _Event {
     }
 
     @Ignore
-    public void setTitle(SpannableStringBuilder ssb) {
+    public void setTitle(CharSequence ssb) {
         title = ssb.toString();
-        putArgs(TagType.DESCR.name(), ssb);
+        putArgs(TagType.DESCR.name(), new SpannableStringBuilder(ssb));
     }
     @Ignore
     public void setTitle(String s) {

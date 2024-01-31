@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.content.res.Resources;
+import android.text.SpannableStringBuilder;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -23,11 +24,12 @@ public class EditEventUseCases {
         this.fragmentManager = fragmentManager;
     }
 
-    public void invoke(_Event alarmList, Activity grp, AlarmEditDialog.OnSaveListener onSaveListener) {
+    public void invoke(_Event alarmList, SpannableStringBuilder activityDescr,
+                       AlarmEditDialog.OnSaveListener onSaveListener) {
         AppModule.provideExecutor().submit(
                 ()->{
                     this.event = alarmList.getAssociates();
-                    this.event.contents = grp.activity.descr;//_Doc.getFirst(, "(no content)");
+                    this.event.contents = activityDescr;//_Doc.getFirst(, "(no content)");
 
                     if (fragmentManager == null)
                         throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");

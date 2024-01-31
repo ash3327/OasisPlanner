@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
@@ -49,11 +50,10 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
     private Instant clicked = Instant.now();
 
     private Agenda agenda;
-    private boolean editable = false;
 
-    public ActivityAdapter(OnSelectListener onSelectListener, Switch tSwitch, boolean editable) {
-        super(onSelectListener, tSwitch);
-        this.editable = editable;
+    public ActivityAdapter(OnSelectListener onSelectListener, RecyclerView recyclerView,
+                           Switch tSwitch, boolean editable, long activityLId) {
+        super(onSelectListener, recyclerView, tSwitch, editable, activityLId);
     }
 
     @NonNull
@@ -89,10 +89,12 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0;
+        int i = 0, pinned = -1;
         List[] objlist = agenda.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
+            if (obj instanceof _Activity && ((_Activity)obj).id == LId)
+                pinned = i;
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
@@ -100,6 +102,8 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
         this.items = list;
         this.types = types;
         notifyDataSetChanged();
+        if (pinned != -1)
+            recyclerView.scrollToPosition(pinned);
     }
 
     public void remove(Object obj, int i) {
@@ -175,14 +179,6 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
     public void refreshDataset() { setAgenda(agenda); }
 
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-        refreshDataset();
-    }
-    public boolean isEditable() {
-        return editable;
-    }
-
     class ActivityHolder extends _BaseHolder<ActivityAdapter.ActivityHolder, _Activity, ActivityAdapter> {
 
         public ActivityHolder(ViewDataBinding binding, ActivityAdapter adapter, Switch tSwitch, Set<_Activity> checkedList) {
@@ -217,7 +213,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        barOnClicked(i, gp);
+                        barOnClicked(i, gp, null);
                         tSwitch.setState(false);
                     }
             );
@@ -272,61 +268,12 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
             );
             binding.docIcon.setImageDrawable(icon);
 
-            bindDocText(binding, gp, i);
+            bindDocText(binding.docTag, binding.docTagTv, gp, i, null);
 
             return true;
         }
 
-        private void bindDocText(SectionBinding binding, _Activity gp, int i) {
-            if (editable)
-                bindDocEditText(binding, gp, i);
-            else
-                bindDocTextView(binding, gp);
-        }
-        private void bindDocTextView(SectionBinding binding, _Activity gp) {
-            binding.docTag.setVisibility(View.GONE);
-            binding.docTagTv.setVisibility(View.VISIBLE);
-            binding.docTagTv.setText(gp.descr);
-        }
-        private void bindDocEditText(SectionBinding binding, _Activity gp, int i) {
-            binding.docTagTv.setVisibility(View.GONE);
-            binding.docTag.setVisibility(View.VISIBLE);
-            EditText docText = binding.docTag;
-            associate(docText, gp.descr);
-
-            docText.setEnabled(true);
-            docText.setFocusableInTouchMode(true);
-            docText.setFocusable(true);
-
-            docText.setOnClickListener(
-                    (v)->{
-                        docText.setFocusable(true);
-                        barOnClicked(i, gp);
-                    }
-            );//*/
-
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    docText.clearComposingText();
-                    gp.descr = new SpannableStringBuilder(docText.getText());
-                }
-            };
-            docText.setTag(textWatcher);
-            docText.addTextChangedListener(textWatcher);
-        }
-
-        public void barOnClicked(int i, _Activity gp) {
+        public void barOnClicked(int i, _Activity gp, SpannableStringBuilder ssb) {
             if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
                 return;
             if (aSwitch.getState())

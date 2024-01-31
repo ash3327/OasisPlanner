@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
@@ -29,6 +30,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event> {
@@ -39,21 +41,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
     private Activity activity;
     private Agenda agenda;
-    private long eventLId;
-    private RecyclerView recyclerView;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
                         RecyclerView recyclerView, Switch tSwitch, Agenda agenda,
-                        long eventLId) {
-        super(onSelectListener, tSwitch);
+                        long eventLId, boolean editable) {
+        super(onSelectListener, recyclerView, tSwitch, editable, eventLId);
         this.onSaveAlarmListener = onSaveAlarmListener;
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
         }, true);
         this.agenda = agenda;
-        this.eventLId = eventLId;
-        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -87,7 +85,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
-            if (obj instanceof _Event && ((_Event)obj).id == eventLId)
+            if (obj instanceof _Event && ((_Event)obj).id == LId)
                 pinned = i;
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
@@ -234,17 +232,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
-                            return;
-                        if (aSwitch.getState())
-                            checkToggle(gp);
-                        else {
-                            AppModule.retrieveEditEventUseCases()
-                                    .invoke(
-                                            gp, grp,
-                                            onSaveAlarmListener
-                                    );
-                        }
+                        barOnClicked(i, gp, grp.activity.descr);
                     }
             );
             binding.bar.setOnLongClickListener(
@@ -257,6 +245,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
             );
 
             alarmRefreshUi();
+
+            bindDocText(binding.docTag, binding.docTagTv, gp, i, grp.activity.descr);
 
             return true;
         }
@@ -279,7 +269,21 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
-                adapter.setTags(gp.getArgs());
+                adapter.setTags(gp.getArgs(), Collections.singletonList(TagType.DESCR));
+            }
+        }
+
+        public void barOnClicked(int i, _Event gp, SpannableStringBuilder activityTitle) {
+            if (Instant.now().toEpochMilli() - clicked.toEpochMilli() < 500)
+                return;
+            if (aSwitch.getState())
+                checkToggle(gp);
+            else {
+                AppModule.retrieveEditEventUseCases()
+                        .invoke(
+                                gp, activityTitle,
+                                onSaveAlarmListener
+                        );
             }
         }
     }

@@ -160,7 +160,7 @@ public class AgendaEditDialog extends Fragment {
 
         Switch tSwitch = new Switch(false);
         final ActivityAdapter adapter = activityAdapter
-                = new ActivityAdapter(this::checkboxOnSelect, tSwitch, false);
+                = new ActivityAdapter(this::checkboxOnSelect, recyclerView, tSwitch, false, activityLId);
 
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -192,8 +192,8 @@ public class AgendaEditDialog extends Fragment {
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);
 
         binding.pageHeader0.setIconDrawable(PageHeader.NIL);
-        //binding.pageHeader1.setIconDrawable(R.drawable.ic_symb_pen);
-        binding.pageHeader1.setIconDrawable(PageHeader.NIL);
+        binding.pageHeader1.setIconDrawable(R.drawable.ic_symb_pen);
+        //binding.pageHeader1.setIconDrawable(PageHeader.NIL);
 
         RecyclerView recyclerView = binding.pageSectionsEvents;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
@@ -203,7 +203,7 @@ public class AgendaEditDialog extends Fragment {
         final EventAdapter adapter = eventAdapter = new EventAdapter(
                 (alarmList)->show(selected),
                 this::checkboxOnSelect,
-                recyclerView, tSwitch, agenda, eventLId
+                recyclerView, tSwitch, agenda, eventLId, false
         );
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -237,6 +237,18 @@ public class AgendaEditDialog extends Fragment {
             }
         });
         binding.pageActivities.format();
+
+        binding.pageHeader1.getImgButton().setOnClickListener(
+                (v)-> {
+                    if (!adapter.isEditable()) {
+                        adapter.setEditable(true);
+                        v.setAlpha(.5f);
+                    } else {
+                        adapter.setEditable(false);
+                        v.setAlpha(1);
+                    }
+                }
+        );
     }
     public void show(List<_Activity> selected) {
         if (selected == null || selected.size() == 0)
