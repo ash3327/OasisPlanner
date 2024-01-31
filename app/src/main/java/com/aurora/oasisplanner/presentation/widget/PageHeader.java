@@ -3,9 +3,7 @@ package com.aurora.oasisplanner.presentation.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,15 +12,12 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.databinding.AddItemEditTextBinding;
 import com.aurora.oasisplanner.databinding.PageHeaderBinding;
-
-import org.w3c.dom.Text;
 
 public class PageHeader extends LinearLayout {
     public static final int NIL = -1;
     private final TextView tv;
-    private final ImageView icon;
+    private final ImageView editButton, detailsButton;
     private final PageHeaderBinding binding;
 
     public PageHeader(Context context, @Nullable AttributeSet attrs) {
@@ -31,7 +26,8 @@ public class PageHeader extends LinearLayout {
         binding = PageHeaderBinding.inflate(inflater, this, true);
 
         tv = binding.pageHeaderTv;
-        icon = binding.pageHeaderIcon;
+        editButton = binding.pageHeaderIcon;
+        detailsButton = binding.pageHeaderIcon2;
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
@@ -48,21 +44,53 @@ public class PageHeader extends LinearLayout {
         }
 
         tv.setText(text == null ? "Default Title" : text);
-        setIconDrawable(iconSrc);
+        setEditButtonIcon(iconSrc);
     }
 
-    public void setIconDrawable(@DrawableRes int iconSrc) {
+    public void setEditButtonIcon(@DrawableRes int iconSrc) {
         if (iconSrc != NIL) {
-            icon.setVisibility(VISIBLE);
-            icon.setImageResource(iconSrc);
+            editButton.setVisibility(VISIBLE);
+            editButton.setImageResource(iconSrc);
         } else
-            icon.setVisibility(GONE);
+            editButton.setVisibility(GONE);
     }
 
     public TextView getTextView() {
         return tv;
     }
-    public ImageView getImgButton() {
-        return icon;
+    public ImageView getEditButton() {
+        return editButton;
+    }
+    public ImageView getDetailsButton() {
+        return detailsButton;
+    }
+
+    public interface BooleanFunc { boolean eval(); }
+    public interface BranchFunc { void eval(boolean criteria); }
+    public void setEditButtonBehavior(BooleanFunc criteria, BranchFunc operator) {
+        editButton.setOnClickListener(
+                (v)->{
+                    if (criteria.eval()) {
+                        operator.eval(true);
+                        v.setAlpha(.5f);
+                    } else {
+                        operator.eval(false);
+                        v.setAlpha(1);
+                    }
+                }
+        );
+    }
+    public void setDetailsButtonBehavior(BooleanFunc criteria, BranchFunc operator) {
+        detailsButton.setOnClickListener(
+                (v)->{
+                    if (criteria.eval()) {
+                        operator.eval(true);
+                        detailsButton.setImageResource(R.drawable.ic_dir_collapse);
+                    } else {
+                        operator.eval(false);
+                        detailsButton.setImageResource(R.drawable.ic_dir_expand);
+                    }
+                }
+        );
     }
 }

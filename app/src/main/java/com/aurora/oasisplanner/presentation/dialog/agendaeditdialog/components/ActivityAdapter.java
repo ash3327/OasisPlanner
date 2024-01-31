@@ -52,8 +52,8 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
     private Agenda agenda;
 
     public ActivityAdapter(OnSelectListener onSelectListener, RecyclerView recyclerView,
-                           Switch tSwitch, boolean editable, long activityLId) {
-        super(onSelectListener, recyclerView, tSwitch, editable, activityLId);
+                           Switch tSwitch, long activityLId) {
+        super(onSelectListener, recyclerView, tSwitch, activityLId);
     }
 
     @NonNull

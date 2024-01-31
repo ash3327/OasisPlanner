@@ -45,8 +45,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
                         RecyclerView recyclerView, Switch tSwitch, Agenda agenda,
-                        long eventLId, boolean editable) {
-        super(onSelectListener, recyclerView, tSwitch, editable, eventLId);
+                        long eventLId) {
+        super(onSelectListener, recyclerView, tSwitch, eventLId);
         this.onSaveAlarmListener = onSaveAlarmListener;
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
@@ -197,6 +197,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
+        private int i = -1;
 
         public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
                            Switch tSwitch, Set<_Event> checkedList) {
@@ -205,6 +206,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         }
 
         public boolean bind(int i, Object sect, Activity gp) {
+            this.i = i;
             this.item = sect;
             if (sect instanceof _Event)
                 return bindAlarms(i, (_Event) sect, gp);
@@ -264,7 +266,15 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 binding.icon.setImageDrawable(icon);
 
                 binding.barDescriptionText.setText(gp.getDateTime());
+
                 RecyclerView recyclerView = binding.itemAlarmRecyclerView;
+
+                if (!expanded) {
+                    recyclerView.suppressLayout(false);
+                    recyclerView.setVisibility(View.GONE);
+                    return;
+                }
+                recyclerView.setVisibility(View.VISIBLE);
                 TagsAdapter adapter = new TagsAdapter();
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);

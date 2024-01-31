@@ -81,7 +81,7 @@ public class EventMoveDialog extends AppCompatDialogFragment {
         recyclerView.setHasFixedSize(false);
 
         Switch tSwitch = new Switch(false);
-        final ActivityAdapter adapter = new ActivityAdapter(null, recyclerView, tSwitch, false, -1);
+        final ActivityAdapter adapter = new ActivityAdapter(null, recyclerView, tSwitch, -1);
 
         recyclerView.setAdapter(adapter);
         adapter.setOnClickListener(this::moveEventsToActivity);

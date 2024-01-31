@@ -36,19 +36,18 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends
     long LId;
     RecyclerView recyclerView;
 
-    boolean editable = false;
+    boolean editable = false, expanded = false;
 
     {
         setHasStableIds(true);
     }
 
     public _BaseAdapter(OnSelectListener onSelectListener, RecyclerView recyclerView,
-                        Switch tSwitch, boolean editable, long LId) {
+                        Switch tSwitch, long LId) {
         this.checkedList = new HashSet<>();
         this.recyclerView = recyclerView;
         this.tSwitch = tSwitch;
         this.onSelectListener = onSelectListener;
-        this.editable = editable;
         this.LId = LId;
     }
 
@@ -130,13 +129,26 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends
             onSelectListener.onSelect(checkedList.size()==getItemCount());
     }
 
+    public void initEditable(boolean editable) { this.editable = editable; }
+    @SuppressLint("NotifyDataSetChanged")
     public void setEditable(boolean editable) {
         this.editable = editable;
         clearScroll();
-        refreshDataset();
+        notifyDataSetChanged();
     }
     public boolean isEditable() {
         return editable;
+    }
+
+    public void initExpanded(boolean expanded) { this.expanded = expanded; }
+    @SuppressLint("NotifyDataSetChanged")
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+        clearScroll();
+        notifyDataSetChanged();
+    }
+    public boolean isExpanded() {
+        return expanded;
     }
 
     public interface OnSelectListener {void onSelect(boolean isFull);}

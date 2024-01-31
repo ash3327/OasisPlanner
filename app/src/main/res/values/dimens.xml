@@ -127,6 +127,7 @@
     <!-- Icon Dimensions -->
     <dimen name="icon_txt_size">12dp</dimen>
     <dimen name="icon_height">15dp</dimen>
+    <dimen name="medium_small_big_gap">5dp</dimen>
     <dimen name="medium_small_icon_height">20dp</dimen>
     <dimen name="medium_small_icon_height_plus_padding">40dp</dimen>
     <dimen name="medium_icon_height">25dp</dimen>

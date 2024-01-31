@@ -45,9 +45,10 @@
                 android:id="@+id/icon"
                 android:layout_height="@dimen/big_icon_height"
                 android:layout_width="@dimen/big_icon_height"
+                android:layout_marginTop="7dp"
                 android:src="@drawable/ic_calendar"
                 app:tint="@color/pr_semi_important"
-                android:layout_gravity="center" />
+                android:layout_gravity="top" />
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"

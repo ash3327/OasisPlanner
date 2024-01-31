@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +42,6 @@ import com.aurora.oasisplanner.presentation.widget.PageHeader;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -152,7 +150,8 @@ public class AgendaEditDialog extends Fragment {
         binding.pageSectionsActivities.setVisibility(View.VISIBLE);
         binding.pageSectionsEvents.setVisibility(View.GONE);
 
-        binding.pageHeader0.setIconDrawable(R.drawable.ic_symb_pen);
+        binding.pageHeader0.getEditButton().setVisibility(View.VISIBLE);
+        binding.pageHeader0.getDetailsButton().setVisibility(View.GONE);
 
         RecyclerView recyclerView = binding.pageSectionsActivities;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
@@ -160,7 +159,7 @@ public class AgendaEditDialog extends Fragment {
 
         Switch tSwitch = new Switch(false);
         final ActivityAdapter adapter = activityAdapter
-                = new ActivityAdapter(this::checkboxOnSelect, recyclerView, tSwitch, false, activityLId);
+                = new ActivityAdapter(this::checkboxOnSelect, recyclerView, tSwitch, activityLId);
 
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
@@ -170,16 +169,8 @@ public class AgendaEditDialog extends Fragment {
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         adapter.setAgenda(agenda);
 
-        binding.pageHeader0.getImgButton().setOnClickListener(
-                (v)-> {
-                    if (!adapter.isEditable()) {
-                        adapter.setEditable(true);
-                        v.setAlpha(.5f);
-                    } else {
-                        adapter.setEditable(false);
-                        v.setAlpha(1);
-                    }
-                }
+        binding.pageHeader0.setEditButtonBehavior(
+                ()->!adapter.isEditable(), adapter::setEditable
         );
     }
     public void showEvents(List<_Activity> selected) {
@@ -191,9 +182,10 @@ public class AgendaEditDialog extends Fragment {
         binding.pageSectionsActivities.setVisibility(View.GONE);
         binding.pageSectionsEvents.setVisibility(View.VISIBLE);
 
-        binding.pageHeader0.setIconDrawable(PageHeader.NIL);
-        binding.pageHeader1.setIconDrawable(R.drawable.ic_symb_pen);
-        //binding.pageHeader1.setIconDrawable(PageHeader.NIL);
+        binding.pageHeader0.getEditButton().setVisibility(View.GONE);
+        binding.pageHeader0.getDetailsButton().setVisibility(View.GONE);
+        binding.pageHeader1.getEditButton().setVisibility(View.VISIBLE);
+        binding.pageHeader1.getDetailsButton().setVisibility(View.VISIBLE);
 
         RecyclerView recyclerView = binding.pageSectionsEvents;
         recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
@@ -203,8 +195,9 @@ public class AgendaEditDialog extends Fragment {
         final EventAdapter adapter = eventAdapter = new EventAdapter(
                 (alarmList)->show(selected),
                 this::checkboxOnSelect,
-                recyclerView, tSwitch, agenda, eventLId, false
+                recyclerView, tSwitch, agenda, eventLId
         );
+
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
         recyclerView.setAdapter(adapter);
@@ -238,16 +231,11 @@ public class AgendaEditDialog extends Fragment {
         });
         binding.pageActivities.format();
 
-        binding.pageHeader1.getImgButton().setOnClickListener(
-                (v)-> {
-                    if (!adapter.isEditable()) {
-                        adapter.setEditable(true);
-                        v.setAlpha(.5f);
-                    } else {
-                        adapter.setEditable(false);
-                        v.setAlpha(1);
-                    }
-                }
+        binding.pageHeader1.setEditButtonBehavior(
+                ()->!adapter.isEditable(), adapter::setEditable
+        );
+        binding.pageHeader1.setDetailsButtonBehavior(
+                ()->!adapter.isExpanded(), adapter::setExpanded
         );
     }
     public void show(List<_Activity> selected) {
