@@ -69,7 +69,8 @@ public class Alarm {
     @Ignore
     public SpannableStringBuilder getContents(boolean inExpandedMode) {
         SpannableStringBuilder out = new SpannableStringBuilder(), temp;
-        String SEP = inExpandedMode ? "\n\n" : " • ", temp2;
+        String SEP = " • ";//inExpandedMode ? "\n" : " • ";
+        String temp2;
 
         if (!Styles.isEmpty(temp = getActivityDescr()))  out.append(temp).append(SEP);
         if (!Styles.isEmpty(temp2 = getEventDescr()))     out.append(temp2).append(SEP);

@@ -102,7 +102,7 @@ public class AlarmNotificationService extends Service {
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
         expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.getDateTime().toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.getTitle());
-        expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(true));
+        expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
         SpannableStringBuilder locText = alarm.getLoc();
         if (locText == null) {
             expandedView.setViewVisibility(R.id.notif_loc_text, View.INVISIBLE);
