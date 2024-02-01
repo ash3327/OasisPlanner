@@ -3,7 +3,9 @@ package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
@@ -25,6 +28,8 @@ import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
+import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -265,7 +270,24 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 );
                 binding.icon.setImageDrawable(icon);
 
-                binding.barDescriptionText.setText(gp.getDateTime());
+                SpannableStringBuilder desc = new SpannableStringBuilder(gp.getDateTime());
+                SpannableStringBuilder loc = gp.getLoc();
+                if (loc != null) desc.append(" • "+loc);
+
+                String to_append = " • ";
+                if (gp.getArg(TagType.ALARM) != null) {
+                    Styles.appendImageSpan(
+                            binding.barDescriptionText, desc.append(to_append), R.drawable.menuic_notification
+                    );
+                    to_append = " ";
+                }
+                if (!Styles.isEmpty(gp.getTagsString())) {
+                    Styles.appendImageSpan(
+                            binding.barDescriptionText, desc.append(to_append), R.drawable.ic_tag
+                    );
+                    to_append = " ";
+                }
+                binding.barDescriptionText.setText(desc);
 
                 RecyclerView recyclerView = binding.itemAlarmRecyclerView;
 
@@ -279,7 +301,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
-                adapter.setTags(gp.getArgs(), Collections.singletonList(TagType.DESCR));
+                adapter.setTags(gp.getArgs(), List.of(TagType.DESCR, TagType.LOC));
             }
         }
 

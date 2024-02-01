@@ -6,7 +6,7 @@
     <color name="white">#FFFBFAFA </color>
     <color name="cream">#FFF4EFE4 </color>
     <color name="base"> #FFFBF4EA </color>
-    <color name="grey"> #FFADA79F </color>
+    <color name="grey"> @color/grey_200 </color> <!--#FFADA79F-->
     <color name="theme">#FF4A5A40 </color>
     <color name="black">#FF2F2E31 </color>
 

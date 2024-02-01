@@ -293,7 +293,13 @@ public class TagInputEditText extends TextInputEditText {
     private SpannableStringBuilder setTokenView(View tokenView, int startIdx, int endIdx,
                                                SpannableStringBuilder stringBuilder) {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) convertViewToDrawable(tokenView);
-        bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight());
+        int w = bitmapDrawable.getIntrinsicWidth(), h = bitmapDrawable.getIntrinsicHeight();
+        int line_height = getLineHeight() * 5 / 3;
+        bitmapDrawable.setBounds(
+                0, 0, //w, h
+                line_height * w / h,
+                line_height
+        );
 
         stringBuilder.setSpan(new ImageSpan(bitmapDrawable), startIdx, endIdx, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return stringBuilder;

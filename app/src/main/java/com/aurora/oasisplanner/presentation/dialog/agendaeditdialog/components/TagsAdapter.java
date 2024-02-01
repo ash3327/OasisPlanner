@@ -17,6 +17,7 @@ import com.aurora.oasisplanner.databinding.ItemTagTagsBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +73,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
     public void setTags(Map<String, String> map, List<TagType> exclude) {
         if (map == null) map = new HashMap<>();
         Set<Map.Entry<String,String>> entrySet = map.entrySet();
+        entrySet = new HashSet<>(entrySet);
         entrySet.removeIf((e)->!TagType.contains(e.getKey())||exclude.contains(TagType.valueOf(e.getKey())));
         this.entries = new ArrayList<>(entrySet);
         notifyDataSetChanged();

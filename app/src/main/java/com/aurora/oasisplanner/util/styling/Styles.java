@@ -1,7 +1,14 @@
 package com.aurora.oasisplanner.util.styling;
 
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+
+import com.aurora.oasisplanner.R;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -95,6 +102,14 @@ public class Styles {
     public static boolean isEmpty(String s) {
         if (s == null) return true;
         return s.isEmpty();
+    }
+
+    public static void appendImageSpan(
+            TextView tv, SpannableStringBuilder desc, @DrawableRes int drawableId) {
+        int lineHei = tv.getLineHeight();
+        Drawable tag = Resources.getDrawable(drawableId);
+        tag.setBounds(0, 0, lineHei, lineHei);
+        desc.append(" ", new ImageSpan(tag), 0);
     }
 
     public static String loremIpsum() {

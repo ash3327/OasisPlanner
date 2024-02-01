@@ -139,10 +139,10 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 TextInputLayout til = alarmEditInfosBinding.aedInfosAlarmTypeTil;
                 spinnerType.setAdapter(adapter);
                 setOnItemSelectListener(spinnerType, til,
-                        type.toString(), type.getSimpleDrawable(),
+                        type.toString(), type.getOutlineDrawable(),
                         (adapterView, view, position, id) -> {
                             type = AlarmType.values()[position];
-                            til.setStartIconDrawable(type.getSimpleDrawable());
+                            til.setStartIconDrawable(type.getOutlineDrawable());
                         });
 
                 ImportanceAdapter adapterImp = new ImportanceAdapter(

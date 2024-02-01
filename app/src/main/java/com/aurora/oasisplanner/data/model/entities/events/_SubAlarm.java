@@ -27,7 +27,7 @@ public class _SubAlarm extends _Alarm {
         for (_Alarm alarm : event.alarms) {
             if (alarm.visible)
                 list.addAll(generateSubAlarms(alarm,
-                        event.alarmList.getArg(TagType.ALARM.name())));
+                        event.alarmList.getArg(TagType.ALARM)));
         }
         return list;
     }
