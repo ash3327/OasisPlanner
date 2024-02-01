@@ -67,6 +67,9 @@ public class Styles {
                         .replaceAll("[A-Za-z]", "").length();
         return (sLen + chinLen) / 2;
     }
+    public static String truncate(String str, int maxlen){
+        return truncate(new SpannableStringBuilder(str), maxlen).toString();
+    }
     public static SpannableStringBuilder truncate(SpannableStringBuilder str, int maxlen){
         String s = str.toString();
         if (getLength(s) < maxlen)

@@ -32,6 +32,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.model.entities.util._Tag;
 import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.util.styling.Styles;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.MessageFormat;
@@ -121,6 +122,8 @@ public class TagInputEditText extends TextInputEditText {
 
         for (int i = 0; i < strings.length; i++) {
             String s = strings[i];
+            if (s != null)
+                s = Styles.truncate(s, 10);
             stringBuilder.append(s);
 
             if (fullString.charAt(fullStringLastCh) != SEP.charAt(0) && i == strings.length-1)

@@ -111,8 +111,11 @@ public class _Event extends __Item {
 
     @Ignore
     public String getTitle() {
-        if (title == null || title.isEmpty())
-            title = getArg(TagType.DESCR).toString();
+        if (title == null || title.isEmpty()) {
+            SpannableStringBuilder t = getArg(TagType.DESCR);
+            if (t != null)
+                title = t.toString();
+        }
         return title;
     }
 
