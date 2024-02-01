@@ -4,9 +4,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 
+import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.memoeditdialog.MemoEditDialog;
 
 public class MemoUseCases {
@@ -25,11 +29,12 @@ public class MemoUseCases {
     public void edit(long memoId) {
         if (fragmentManager == null)
             throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
-        MemoEditDialog dialog = new MemoEditDialog();
+
         Bundle bundle = new Bundle();
         bundle.putLong(MemoEditDialog.EXTRA_MEMO_ID, memoId);
-        dialog.setArguments(bundle);
-        dialog.show(fragmentManager, "myDialog");
+
+        Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment).navigate(
+                R.id.navigation_memoEditDialog, bundle);
     }
 
     public _Memo get(long memoId) {

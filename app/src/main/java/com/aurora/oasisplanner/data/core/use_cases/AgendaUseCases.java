@@ -38,15 +38,14 @@ public class AgendaUseCases {
     public void edit(long agendaId, long activityLId, long eventLId) {
         if (fragmentManager == null)
             throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
-        //AgendaEditDialog dialog = new AgendaEditDialog();
+
         Bundle bundle = new Bundle();
         bundle.putLong(AgendaEditDialog.EXTRA_AGENDA_ID, agendaId);
         bundle.putLong(AgendaEditDialog.EXTRA_ACTIVL_ID, activityLId);
         bundle.putLong(AgendaEditDialog.EXTRA_EVENT_ID, eventLId);
-        //dialog.setArguments(bundle);
+
         Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment).navigate(
                 R.id.navigation_agendaEditDialog, bundle);
-        //dialog.show(fragmentManager, "myDialog");
     }
 
     public Agenda get(long agendaId) {

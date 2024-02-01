@@ -176,7 +176,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/_page_header.xml" value="0.32371794871794873" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/_section_displist.xml" value="0.1368106028217187" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/add_item_edit_text.xml" value="0.22" />
-        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/agenda_edit_page.xml" value="0.22" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/agenda_edit_page.xml" value="0.20388349514563106" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog.xml" value="0.14666666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog_page_dates.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/layouts/views/layout/alarm_edit_dialog_page_infos.xml" value="0.19223300970873786" />
@@ -234,6 +234,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/context_menu.xml" value="0.10666666666666667" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/editAgenda_menu.xml" value="0.1368106028217187" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/edit_agenda_menu.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/eventArranger_menu.xml" value="0.16666666666666666" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/event_arranger_calendar_menu.xml" value="0.13333333333333333" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/menu/event_arranger_menu.xml" value="0.16666666666666666" />

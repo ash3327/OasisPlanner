@@ -58,4 +58,10 @@
             app:uri="oasis://oasis.com/editalarmdialog" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_memoEditDialog"
+        android:name="com.aurora.oasisplanner.presentation.dialog.memoeditdialog.MemoEditDialog"
+        android:label="@string/page_overhead_edit_memo"/>
+
+
 </navigation>

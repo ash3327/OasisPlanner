@@ -9,18 +9,27 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.databinding.MemoPageBinding;
@@ -30,17 +39,39 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class MemoEditDialog extends AppCompatDialogFragment {
+public class MemoEditDialog extends Fragment {
     public static final String EXTRA_MEMO_ID = "memoId";
 
     private _Memo memo;
-    private AlertDialog dialog;
     private MemoPageBinding vbinding;
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
         assert getArguments() != null;
+
+        setHasOptionsMenu(true);
+        MainActivity activity = (MainActivity) requireActivity();
+        MainActivity.bottomBar.setVisibility(View.GONE);
+        activity.setDrawerLocked(true);
+        activity.mDrawerToggle.setDrawerIndicatorEnabled(false);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
+
+        activity.mDrawerToggle.setToolbarNavigationClickListener((v)-> showCancelConfirmDialog());
+
+        activity.getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        showCancelConfirmDialog();
+                    }
+                });
 
         long memoId = getArguments().getLong(EXTRA_MEMO_ID, -1);
         if (memoId != -1)
@@ -48,28 +79,19 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         else
             memo = _Memo.empty();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         MemoPageBinding binding = MemoPageBinding.inflate(getLayoutInflater());
         onBind(binding);
 
-        ViewGroup vg = (ViewGroup) binding.getRoot();
-        builder.setView(vg);
-        dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        return dialog;
+        return binding.getRoot();
     }
 
     public void onBind(MemoPageBinding binding) {
         vbinding = binding;
-        binding.header.setText(memo.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
+        requireActivity().setTitle(memo.id <= 0 ? R.string.page_overhead_new_memo : R.string.page_overhead_edit_agenda);
+
         binding.img.setImageResource(R.drawable.blur_v1);
-        binding.confirmBtn.setOnClickListener(
+        binding.memoConfirmEdit.setOnClickListener(
                 (v)->onConfirm()
-        );
-        binding.cancelButton.setOnClickListener(
-                (v)->onCancel()
         );
 
         associateTitle(binding.pageTitle);
@@ -78,31 +100,6 @@ public class MemoEditDialog extends AppCompatDialogFragment {
         binding.tagTagsTv.setText(memo.getTagsString());
         binding.deleteButton.setVisibility(memo.id == -1 ? View.GONE : View.VISIBLE);
         binding.deleteButton.setOnClickListener((v)->onDelete());
-
-        /**
-        RecyclerView recyclerView = binding.pageSections;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(false);
-
-
-        final MemoSectionAdapter adapter = new MemoSectionAdapter();
-        recyclerView.setAdapter(adapter);
-        adapter.setScrollToFunc((oid, id)-> scrollTo(id, recyclerView));
-        adapter.setBinaryLabel(
-                new MemoSectionAdapter.Label(
-                        binding.pageYellowLabel,
-                        binding.pageYellowLabelText,
-                        binding.pageYellowLabelIcon
-                ),
-                new MemoSectionAdapter.Label(
-                        binding.pageYellowLabel2,
-                        binding.pageYellowLabel2Text,
-                        binding.pageYellowLabel2Icon
-                )
-        );
-        int expandId = adapter.setMemo(Memo, activityLId);
-        recyclerView.post(()-> scrollTo(expandId, recyclerView));
-         */
     }
 
     public void scrollTo(int pos, RecyclerView recyclerView) {
@@ -147,10 +144,13 @@ public class MemoEditDialog extends AppCompatDialogFragment {
             return;
         }
         if (saveMemo())
-            dialog.dismiss();
+            navigateUp();
     }
     public void onCancel() {
-        dialog.dismiss();
+
+    }
+    public void onDiscard() {
+        navigateUp();
     }
     public void onDelete() {
         new AlertDialog.Builder(requireContext())
@@ -159,9 +159,23 @@ public class MemoEditDialog extends AppCompatDialogFragment {
                 .setIcon(R.drawable.ic_symb_cross)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     deleteMemo();
-                    this.dialog.dismiss();
+                    navigateUp();
                 })
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+    public void showCancelConfirmDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.page_overhead_edit_memo)
+                .setMessage(R.string.save_change)
+                .setPositiveButton(R.string.page_confirm, (dialog, whichButton) -> {
+                    onConfirm();
+                })
+                .setNegativeButton(R.string.page_cancel, (dialog, which) -> {
+                    onCancel();
+                })
+                .setNeutralButton(R.string.discard, ((dialog, which) -> {
+                    onDiscard();
+                })).show();
     }
 
     public boolean saveMemo() {
@@ -182,6 +196,41 @@ public class MemoEditDialog extends AppCompatDialogFragment {
     public boolean deleteMemo() {
         AppModule.retrieveMemoUseCases().delete(memo);
         return true;
+    }
+
+    private void navigateUp() {
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+    }
+
+    // INFO: Options Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.edit_agenda_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onDestroy() {
+        MainActivity.bottomBar.setVisibility(View.VISIBLE);
+        MainActivity activity = MainActivity.main;
+        activity.setDrawerLocked(false);
+        activity.mDrawerToggle.setDrawerIndicatorEnabled(true);
+        activity.refreshToolbar();
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                showCancelConfirmDialog();
+                return true;
+            case R.id.editAgenda_discard:
+                onDiscard();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

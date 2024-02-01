@@ -123,6 +123,8 @@
         <string name="before">Before</string>
 
     <!-- Edit _Memo Dialog -->
+    <string name="page_overhead_new_memo">New Memo</string>
+    <string name="page_overhead_edit_memo">Edit Memo</string>
     <string name="memo_content_title">Content of Your Memo: </string>
     <string name="memo_tag_title">Tags: </string>
     <string name="memo_search">Searching For: </string>

@@ -125,6 +125,8 @@
         <string name="before">前</string>
 
     <!-- Edit _Memo Dialog -->
+    <string name="page_overhead_new_memo">新增備忘</string>
+    <string name="page_overhead_edit_memo">修改備忘</string>
     <string name="memo_content_title">備忘内容：</string>
     <string name="memo_tag_title">標簽：</string>
     <string name="memo_search">搜索内容：</string>

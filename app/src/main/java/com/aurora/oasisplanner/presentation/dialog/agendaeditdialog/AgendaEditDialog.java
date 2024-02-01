@@ -125,7 +125,8 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void onBind() {
-        //binding.header.setText(agenda.agenda.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
+        requireActivity().setTitle(agenda.agenda.id <= 0 ? R.string.page_overhead_new_agenda : R.string.page_overhead_edit_agenda);
+
         binding.img.setImageResource(R.drawable.blur_v1);
         binding.agendaConfirmEdit.setOnClickListener(
                 (v)->onConfirm()
