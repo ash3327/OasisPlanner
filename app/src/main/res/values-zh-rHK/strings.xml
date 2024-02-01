@@ -137,6 +137,9 @@
     <string name="no_title">[標題]</string>
     <string name="no_desc">[描述]</string>
 
+    <!-- WARNINGS -->
+    <string name="warning_input_too_long">提示：日程標題請盡量輸入簡短易懂的文字。</string>
+
     <!-- WEEKDAYS -->
     <string-array name="weekdays">
         <item>日</item>

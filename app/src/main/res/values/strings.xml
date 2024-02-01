@@ -135,6 +135,9 @@
     <string name="no_title">[TITLE]</string>
     <string name="no_desc">[CONTENT]</string>
 
+    <!-- WARNINGS -->
+    <string name="warning_input_too_long">Tips: You may want to have a shorter name for your activities.</string>
+
     <!-- WEEKDAYS -->
     <string-array name="weekdays">
         <item>Sun</item>
