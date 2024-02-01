@@ -104,10 +104,10 @@ public class TagInputEditText extends TextInputEditText {
         return set.stream().reduce(SEP, (a,b)->a+SEP+b).trim()+SEP;
     }
     public static SpannableStringBuilder combine(
-            SpannableStringBuilder a, SpannableStringBuilder b
+            CharSequence a, CharSequence b
     ) {
-        if (a == null) a = new SpannableStringBuilder();
-        if (b == null) b = new SpannableStringBuilder();
+        if (a == null) a = "";
+        if (b == null) b = "";
         String c = a+SEP+b;
         return new SpannableStringBuilder(format(c));
     }

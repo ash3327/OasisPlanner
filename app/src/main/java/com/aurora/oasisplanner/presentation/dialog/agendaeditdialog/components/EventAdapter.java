@@ -33,6 +33,7 @@ import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -301,7 +302,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 recyclerView.setLayoutManager(new LinearLayoutManager(vbinding.getRoot().getContext()));
                 recyclerView.setAdapter(adapter);
                 recyclerView.suppressLayout(true); // prevent it from having any kind of interaction
-                adapter.setTags(gp.getArgs(), List.of(TagType.DESCR, TagType.LOC));
+                adapter.setTags(gp.getArgs(), Arrays.asList(TagType.DESCR, TagType.LOC));
             }
         }
 

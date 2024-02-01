@@ -293,7 +293,7 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 break;
             case TAGS:
                 for (_Event checked : checkedList) {
-                    SpannableStringBuilder ssb2 = checked.getArg(type);
+                    SpannableStringBuilder ssb2 = checked.getArgSpannable(type);
                     checked.putArgs(type.name(), TagInputEditText.combine(ssb2, ssb));
                 }
                 break;

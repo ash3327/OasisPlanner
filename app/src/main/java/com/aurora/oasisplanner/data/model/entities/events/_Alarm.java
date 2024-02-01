@@ -73,10 +73,10 @@ public class _Alarm {
     }
 
     @Ignore
-    public SpannableStringBuilder getArg(String key) {
-        if (args == null || !args.containsKey(key))
+    public String getArg(ArgType key) {
+        if (args == null || !args.containsKey(key.name()))
             return null;
-        return new Converters().spannableFromString(args.get(key));
+        return args.get(key.name());
     }
 
     @Ignore
@@ -87,9 +87,14 @@ public class _Alarm {
     }
 
     @Ignore
-    public void putArgs(String key, SpannableStringBuilder sb) {
+    public void putArgs(ArgType key, SpannableStringBuilder sb) {
         if (args == null) args = new HashMap<>();
-        args.put(key, new Converters().spannableToString(sb));
+        args.put(key.name(), new Converters().spannableToString(sb));
+    }
+    @Ignore
+    public void putArgs(ArgType key, String s) {
+        if (args == null) args = new HashMap<>();
+        args.put(key.name(), s);
     }
 
     @Ignore
@@ -134,5 +139,19 @@ public class _Alarm {
         unpack(alarm, extras);
 
         return alarm;
+    }
+
+    @Ignore
+    public LocalDateTime getParentDatetime() {
+        assert isSubalarm();
+        try {
+            return new Converters().datetimeFromTimestamp(Long.parseLong(getArg(ArgType.PARENT_TIME)));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public enum ArgType {
+        PARENT_TIME
     }
 }

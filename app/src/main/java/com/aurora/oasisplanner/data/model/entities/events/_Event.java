@@ -79,10 +79,16 @@ public class _Event extends __Item {
     }
 
     @Ignore
-    public SpannableStringBuilder getArg(TagType key) {
+    public SpannableStringBuilder getArgSpannable(TagType key) {
         if (args == null || !args.containsKey(key.name()))
             return null;
         return new Converters().spannableFromString(args.get(key.name()));
+    }
+    @Ignore
+    public String getArg(TagType key) {
+        if (args == null || !args.containsKey(key.name()))
+            return null;
+        return args.get(key.name());
     }
 
     @Ignore
@@ -111,11 +117,8 @@ public class _Event extends __Item {
 
     @Ignore
     public String getTitle() {
-        if (title == null || title.isEmpty()) {
-            SpannableStringBuilder t = getArg(TagType.DESCR);
-            if (t != null)
-                title = t.toString();
-        }
+        if (title == null || title.isEmpty())
+            title = getArg(TagType.DESCR);
         return title;
     }
 
@@ -132,15 +135,14 @@ public class _Event extends __Item {
 
     @Ignore
     public String getTagsString() {
-        SpannableStringBuilder ssb = getArg(TagType.TAGS);
-        return ssb==null ? null : ssb.toString();
+        return getArgSpannable(TagType.TAGS).toString();
     }
     // INFO: GET ARGS:
     public SpannableStringBuilder getLoc() {
-        SpannableStringBuilder out = getArg(TagType.LOC);
-        if (out == null || out.toString().isEmpty() || out.toString().equals("null"))
+        String out = getArg(TagType.LOC);
+        if (out == null || out.isEmpty())
             return null;
-        return out;
+        return new SpannableStringBuilder(out);
     }
 
 

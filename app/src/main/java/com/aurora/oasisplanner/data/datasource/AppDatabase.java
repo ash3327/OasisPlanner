@@ -50,6 +50,7 @@ import com.aurora.oasisplanner.data.util.Converters;
                 //INFO: v0.1.1 update
                 @AutoMigration(from=23, to=24, spec=AppDatabase.Migration23to24.class),
                 @AutoMigration(from=24, to=25, spec=AppDatabase.Migration24to25.class),
+                //INFO: v0.1.2 update
         }
 )
 @TypeConverters({Converters.class})

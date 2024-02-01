@@ -9,7 +9,9 @@ import androidx.room.Ignore;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
+import com.aurora.oasisplanner.data.util.Converters;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +29,21 @@ public class _SubAlarm extends _Alarm {
         for (_Alarm alarm : event.alarms) {
             if (alarm.visible)
                 list.addAll(generateSubAlarms(alarm,
-                        event.alarmList.getArg(TagType.ALARM)));
+                        event.alarmList.getArgSpannable(TagType.ALARM).toString()));
         }
         return list;
     }
 
     @Ignore
-    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, SpannableStringBuilder subAlarmArg) {
+    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, String subAlarmArg) {
         ArrayList<_SubAlarm> list = new ArrayList<>();
         if (subAlarmArg == null)
             return list;
-        NotifType notifType = new NotifType(subAlarmArg.toString());
+        NotifType notifType = new NotifType(subAlarmArg);
         _SubAlarm subAlarm = new _SubAlarm();
         LocalDateTime ldt = notifType.translate(alarm.datetime);
         subAlarm.setDateTime(ldt);
+        subAlarm.putArgs(ArgType.PARENT_TIME, new Converters().datetimeToTimestamp(alarm.datetime)+"");
         list.add(subAlarm);
         return list;
     }

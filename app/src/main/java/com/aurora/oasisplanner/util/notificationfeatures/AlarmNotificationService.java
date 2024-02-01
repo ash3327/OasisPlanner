@@ -16,6 +16,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.IBinder;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -25,10 +26,14 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
+import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule.NotificationMode;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
+
+import java.time.LocalDateTime;
 
 public class AlarmNotificationService extends Service {
 
@@ -98,9 +103,19 @@ public class AlarmNotificationService extends Service {
         collapsedView.setTextViewText(R.id.text_view_collapsed_1, alarm.title);
         collapsedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
         //*/
+
+        LocalDateTime ldt = alarm.getDateTime();
+        if (alarm.getAlarm().isSubalarm()) {
+            try {
+                ldt = alarm.getAlarm().getParentDatetime();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.notification_collapsed_view);
         expandedView.setImageViewBitmap(R.id.logo_collapsed, bitmapResult);
-        expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(alarm.getDateTime().toLocalTime()));
+        expandedView.setTextViewText(R.id.time, DateTimesFormatter.getTime(ldt.toLocalTime()));
         expandedView.setTextViewText(R.id.text_view_collapsed_1, alarm.getTitle());
         expandedView.setTextViewText(R.id.text_view_collapsed_2, alarm.getContents(false));
         SpannableStringBuilder locText = alarm.getLoc();
