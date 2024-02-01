@@ -79,6 +79,11 @@ public class _Event extends __Item {
     }
 
     @Ignore
+    public String getArgSpannableStr(TagType key) {
+        SpannableStringBuilder ssb = getArgSpannable(key);
+        return ssb != null ? ssb.toString() : null;
+    }
+    @Ignore
     public SpannableStringBuilder getArgSpannable(TagType key) {
         if (args == null || !args.containsKey(key.name()))
             return null;
@@ -135,7 +140,7 @@ public class _Event extends __Item {
 
     @Ignore
     public String getTagsString() {
-        return getArgSpannable(TagType.TAGS).toString();
+        return getArgSpannableStr(TagType.TAGS);
     }
     // INFO: GET ARGS:
     public SpannableStringBuilder getLoc() {

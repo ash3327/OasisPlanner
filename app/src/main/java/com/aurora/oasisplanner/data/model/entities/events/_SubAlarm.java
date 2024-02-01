@@ -29,7 +29,7 @@ public class _SubAlarm extends _Alarm {
         for (_Alarm alarm : event.alarms) {
             if (alarm.visible)
                 list.addAll(generateSubAlarms(alarm,
-                        event.alarmList.getArgSpannable(TagType.ALARM).toString()));
+                        event.alarmList.getArgSpannableStr(TagType.ALARM)));
         }
         return list;
     }
