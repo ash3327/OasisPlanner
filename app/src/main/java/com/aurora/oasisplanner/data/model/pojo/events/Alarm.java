@@ -81,7 +81,7 @@ public class Alarm {
         int len = out.length();
         out = out.delete(len-SEP.length(), len);
 
-        return inExpandedMode ? out : Styles.truncate(out, 12);
+        return inExpandedMode ? out : Styles.truncate(out, 30);
     }
     @Ignore
     public String getTagsString() {

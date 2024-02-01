@@ -235,7 +235,11 @@ public class AgendaEditDialog extends Fragment {
                 ()->!adapter.isEditable(), adapter::setEditable
         );
         binding.pageHeader1.setDetailsButtonBehavior(
-                ()->!adapter.isExpanded(), adapter::setExpanded
+                ()->!adapter.isExpanded(),
+                (b)->{
+                    adapter.setExpanded(b);
+                    binding.pageHeader1.turnOffEditButton();
+                }
         );
     }
     public void show(List<_Activity> selected) {

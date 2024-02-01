@@ -65,17 +65,25 @@ public class PageHeader extends LinearLayout {
         return detailsButton;
     }
 
+    public void turnOffEditButton() {
+        if (editButtonOn)
+            editButton.callOnClick();
+    }
+
     public interface BooleanFunc { boolean eval(); }
     public interface BranchFunc { void eval(boolean criteria); }
+    private boolean editButtonOn = false;
     public void setEditButtonBehavior(BooleanFunc criteria, BranchFunc operator) {
         editButton.setOnClickListener(
                 (v)->{
                     if (criteria.eval()) {
                         operator.eval(true);
                         v.setAlpha(.5f);
+                        editButtonOn = true;
                     } else {
                         operator.eval(false);
                         v.setAlpha(1);
+                        editButtonOn = false;
                     }
                 }
         );
