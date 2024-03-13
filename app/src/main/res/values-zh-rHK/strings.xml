@@ -167,6 +167,12 @@
         <item>個月前</item>
     </string-array>
 
+    <!-- SETTINGS -->
+    <string-array name="settings">
+        <item>應用程式權限</item>
+        <item>占位符</item>
+    </string-array>
+
     <!-- FUNCTIONAL BUTTONS -->
     <string name="show_today">顯示今天</string>
 

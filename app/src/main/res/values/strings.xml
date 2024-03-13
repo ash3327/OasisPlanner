@@ -165,6 +165,12 @@
         <item>Months Before</item>
     </string-array>
 
+    <!-- SETTINGS -->
+    <string-array name="settings">
+        <item>Permissions</item>
+        <item>Placeholder</item>
+    </string-array>
+
     <!-- FUNCTIONAL BUTTONS -->
     <string name="show_today">Show Today</string>
 

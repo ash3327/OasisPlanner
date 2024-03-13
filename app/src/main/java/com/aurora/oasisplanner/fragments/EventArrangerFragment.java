@@ -120,7 +120,6 @@ public class EventArrangerFragment extends Fragment {
                     }
                 }
         );
-
     }
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {

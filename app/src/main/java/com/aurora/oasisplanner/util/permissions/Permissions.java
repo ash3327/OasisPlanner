@@ -56,7 +56,7 @@ public class Permissions {
         SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
         boolean skipMessage = settings.getBoolean("skipProtectedAppCheck", false);
         if (!(skipMessage && allowSkip)) {
-            Utils.startPowerSaverIntent(context, latch);
+            Utils.startPowerSaverIntent(context, latch, allowSkip);
         } else {
             latch.countDown();
         }

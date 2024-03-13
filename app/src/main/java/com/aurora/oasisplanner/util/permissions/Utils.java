@@ -25,26 +25,29 @@ import java.util.concurrent.CountDownLatch;
 
 public class Utils {
 
-    public static void startPowerSaverIntent(Activity context, CountDownLatch latch) {
+    public static void startPowerSaverIntent(Activity context, CountDownLatch latch, boolean allowSkip) {
         SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = settings.edit();
         boolean foundCorrectIntent = false;
         for (Intent intent : Constants.POWERMANAGER_INTENTS) {
             if (isCallable(context, intent)) {
                 foundCorrectIntent = true;
-                final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(context);
-                dontShowAgain.setText(R.string.options_permission_do_not_show_again);
+                AppCompatCheckBox dontShowAgain = null;
+                if (allowSkip) {
+                    dontShowAgain = new AppCompatCheckBox(context);
+                    dontShowAgain.setText(R.string.options_permission_do_not_show_again);
 
-                ColorStateList colorStateList = ColorStateList.valueOf(Color.BLACK);
-                dontShowAgain.setSupportButtonTintList(colorStateList);
+                    ColorStateList colorStateList = ColorStateList.valueOf(Color.BLACK);
+                    dontShowAgain.setSupportButtonTintList(colorStateList);
 
-                dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        editor.putBoolean("skipProtectedAppCheck", isChecked);
-                        editor.apply();
-                    }
-                });
+                    dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            editor.putBoolean("skipProtectedAppCheck", isChecked);
+                            editor.apply();
+                        }
+                    });
+                }
 
                 AlertDialog dialog = new AlertDialog.Builder(context, R.style.WhiteDialogTheme)
                         .setTitle(Build.MANUFACTURER + Resources.getString(R.string.warning_protected_apps))
@@ -55,7 +58,7 @@ public class Utils {
                                 context.startActivityForResult(intent, Constants.REQUEST_CODE_PERMISSIONS_SET);
                             }
                         })
-                        .setNegativeButton(R.string.options_permission_close, (x,v)->latch.countDown())
+                        .setNegativeButton(R.string.options_permission_close, (x,v)->{if(latch!=null) latch.countDown();})
                         .show();
                 break;
             }
