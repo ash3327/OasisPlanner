@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -32,6 +34,10 @@ public class Utils {
                 foundCorrectIntent = true;
                 final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(context);
                 dontShowAgain.setText(R.string.options_permission_do_not_show_again);
+
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.BLACK);
+                dontShowAgain.setSupportButtonTintList(colorStateList);
+
                 dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
