@@ -24,6 +24,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.OasisApp;
 import com.aurora.oasisplanner.activities.SplashActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
@@ -164,8 +165,8 @@ public class AlarmNotificationService extends Service {
                 (int) alarm.getEncodedId(), notification
         );
 
-        if (MainActivity.main != null)
-            Resources.context = MainActivity.main;
+        if (OasisApp.getContext() != null)
+            Resources.context = OasisApp.getContext();
     }
 
 }

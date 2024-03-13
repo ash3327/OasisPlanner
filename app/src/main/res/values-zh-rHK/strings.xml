@@ -139,6 +139,13 @@
 
     <!-- WARNINGS -->
     <string name="warning_input_too_long">提示：日程標題請盡量輸入簡短易懂的文字。</string>
+    <string name="warning_protected_apps">自動管理</string>
+    <string name="warning_protected_apps_msg">%n%s需要您在「自動管理」中轉爲手動管理以正常運行。請允許自動啓動與背景活動。%n</string>
+
+    <!-- PERMISSION WARNING OPTIONS -->
+    <string name="options_permission_settings">前往設定</string>
+    <string name="options_permission_do_not_show_again">不要再顯示此對話框</string>
+    <string name="options_permission_close">關閉</string>
 
     <!-- WEEKDAYS -->
     <string-array name="weekdays">

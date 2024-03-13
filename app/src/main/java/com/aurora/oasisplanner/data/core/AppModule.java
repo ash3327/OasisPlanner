@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.data.core;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
 

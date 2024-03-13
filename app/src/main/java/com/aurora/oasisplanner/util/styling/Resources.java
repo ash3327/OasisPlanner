@@ -7,12 +7,13 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.OasisApp;
 
 public class Resources {
     /** indices of the required resources in the Ids list. */
     public static int DRAWABLE = 0, STRING = 1, COLOR_PR = 2, COLOR_SC = 3, SIMPLEDRAWABLE = 4, EXTRA_1 = 5;
 
-    public static Context context = MainActivity.main;
+    public static Context context = OasisApp.getContext();
     public static int[] frameTitles = {
             R.string.title_home, R.string.title_dashboard,
             R.string.title_eventarranger, R.string.title_projects,

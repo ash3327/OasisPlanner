@@ -8,9 +8,11 @@ import android.content.Context;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmNotificationService;
 
 public class OasisApp extends Application {
+    private static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         createNotificationChannel();
     }
 
@@ -26,5 +28,9 @@ public class OasisApp extends Application {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

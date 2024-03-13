@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <uses-permission android:name="oppo.permission.OPPO_COMPONENT_SAFE"/>
+    <uses-permission android:name="com.huawei.permission.external_app_settings.USE_COMPONENT"/>
+
     <application
         android:name=".activities.OasisApp"
         android:allowBackup="true"
@@ -48,8 +51,14 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <receiver android:name=".util.notificationfeatures.AlarmReceiver"/>
-        <service android:name=".util.notificationfeatures.AlarmNotificationService" />
+        <receiver
+            android:name=".util.notificationfeatures.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
+            android:name=".util.notificationfeatures.AlarmNotificationService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

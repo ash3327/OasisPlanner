@@ -10,6 +10,8 @@ import android.os.Looper;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.util.notificationfeatures.NotificationModule;
+import com.aurora.oasisplanner.util.permissions.Constants;
+import com.aurora.oasisplanner.util.permissions.Permissions;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -24,8 +26,9 @@ public class SplashActivity extends AppCompatActivity {
 
         //getSupportActionBar().hide();
 
-        latch = new CountDownLatch(2);
+        latch = new CountDownLatch(3);
 
+        Permissions.setupPermission(getApplication(), this, latch);
         AppModule.setupDatabase(getApplication(), this, latch);
 
         new Thread(()->{
@@ -42,6 +45,16 @@ public class SplashActivity extends AppCompatActivity {
         }).start();
 
         new Handler(Looper.getMainLooper()).postDelayed(latch::countDown, 600);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,
+                                 int resultCode,
+                                 Intent data) {
+        if (requestCode == Constants.REQUEST_CODE_PERMISSIONS_SET) {
+            latch.countDown();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public Intent handleRedirections() {

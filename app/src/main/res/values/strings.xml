@@ -137,6 +137,13 @@
 
     <!-- WARNINGS -->
     <string name="warning_input_too_long">Tips: You may want to have a shorter name for your activities.</string>
+    <string name="warning_protected_apps"> Protected Apps</string>
+    <string name="warning_protected_apps_msg">%n%s requires to be enabled in \'Protected Apps\' to function properly. Please switch to manual management in Auto Management and allow automatic startup and background activity.%n</string>
+
+    <!-- PERMISSION WARNING OPTIONS -->
+    <string name="options_permission_settings">Go to settings</string>
+    <string name="options_permission_do_not_show_again">Do not show again</string>
+    <string name="options_permission_close">Close</string>
 
     <!-- WEEKDAYS -->
     <string-array name="weekdays">

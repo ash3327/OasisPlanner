@@ -10,20 +10,25 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 
+import java.util.Objects;
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Alarm alarm = Alarm.unpackContents(intent.getBundleExtra("ALARM"));
-
         wakeDevice(context);
+        if (Objects.equals(intent.getAction(), NotificationModule.NOTIFICATION_EVENT)) {
+            Alarm alarm = Alarm.unpackContents(intent.getBundleExtra("ALARM"));
 
-        Intent serviceIntent = new Intent(context, AlarmNotificationService.class);
-        serviceIntent.putExtra("ALARM", alarm.packContents());
-        context.startService(serviceIntent);
+            wakeDevice(context);
 
-        if (MainActivity.main != null)
-            new Handler().postDelayed(()->MainActivity.main.navigateTo(MainActivity.page), 1000);
+            Intent serviceIntent = new Intent(context, AlarmNotificationService.class);
+            serviceIntent.putExtra("ALARM", alarm.packContents());
+            context.startService(serviceIntent);
+
+            if (MainActivity.main != null)
+                new Handler().postDelayed(() -> MainActivity.main.navigateTo(MainActivity.page), 1000);
+        }
     }
 
     public void wakeDevice(Context context) {
