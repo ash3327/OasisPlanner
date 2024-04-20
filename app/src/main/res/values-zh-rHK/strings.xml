@@ -170,7 +170,7 @@
     <!-- SETTINGS -->
     <string-array name="settings">
         <item>應用程式權限</item>
-        <item>占位符</item>
+        <item>重置鬧鐘</item>
     </string-array>
 
     <!-- FUNCTIONAL BUTTONS -->

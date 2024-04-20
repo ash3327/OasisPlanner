@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.OasisApp;
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.FragmentSettingsBinding;
 import com.aurora.oasisplanner.util.permissions.Permissions;
@@ -45,6 +47,9 @@ public class SettingsFragment extends Fragment {
         switch (pos) {
             case 0:
                 Permissions.requestProtectedAppsPermission(requireActivity(), null, false);
+                break;
+            case 1:
+                AppModule.forceUpdateAlarms(this);
                 break;
         }
     }

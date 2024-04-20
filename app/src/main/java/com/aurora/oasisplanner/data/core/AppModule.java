@@ -3,8 +3,10 @@ package com.aurora.oasisplanner.data.core;
 import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.aurora.oasisplanner.data.core.use_cases.ActivityUseCases;
 import com.aurora.oasisplanner.data.core.use_cases.AlarmUseCases;
@@ -177,10 +179,17 @@ public class AppModule {
         provideMultimediaRepository(db, executor);
 
         // INFO: setup alarms
-        executor.submit(()->alarmRepository.schedule(alarmScheduler, activity));
+        try {
+            new Handler().post(() -> alarmRepository.schedule(alarmScheduler, activity));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         latch.countDown();
     }
 
+    public static void forceUpdateAlarms(LifecycleOwner lifecycleOwner) {
+        new Handler().post(()->retrieveAlarmUseCases().forceUpdateAlarms(alarmScheduler, lifecycleOwner));
+    }
 
     public static void newAgenda(){
         new ChooseTypeDialog().show();

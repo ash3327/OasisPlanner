@@ -168,7 +168,7 @@
     <!-- SETTINGS -->
     <string-array name="settings">
         <item>Permissions</item>
-        <item>Placeholder</item>
+        <item>Refresh Alarms</item>
     </string-array>
 
     <!-- FUNCTIONAL BUTTONS -->

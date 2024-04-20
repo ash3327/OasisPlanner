@@ -2,11 +2,13 @@ package com.aurora.oasisplanner.data.repository;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.activities.OasisApp;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.AlarmDao;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
@@ -37,32 +39,45 @@ public class AlarmRepository {
     }
 
     private boolean firstTime = true, firstTimeSubAlarm = true;
+    public void scheduleAlarms(AlarmScheduler alarmScheduler, List<Alarm> _alarms) {
+        try {
+            for (Alarm alarm : _alarms)
+                alarmScheduler.schedule(alarm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void scheduleSubAlarms(AlarmScheduler alarmScheduler, List<SubAlarm> _subalarms) {
+        try {
+            for (SubAlarm alarm : _subalarms)
+                alarmScheduler.schedule(alarm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void schedule(AlarmScheduler alarmScheduler, LifecycleOwner obs) {
-        firstTime = true;
-        alarms.observe(obs, (_alarms)->{
-            if (!firstTime) return;
-            firstTime = false;
-            try {
-                for (Alarm alarm : _alarms)
-                    alarmScheduler.schedule(alarm);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //latch.countDown();
-            //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
-        });
-        subalarms.observe(obs, (_subalarms)->{
-            if (!firstTimeSubAlarm) return;
-            firstTimeSubAlarm = false;
-            try {
-                for (SubAlarm alarm : _subalarms)
-                    alarmScheduler.schedule(alarm);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //latch.countDown();
-            //Log.d("test3", "SCHEDULED ALARMS: "+_alarms);
-        });
+        firstTime = true; firstTimeSubAlarm = true;
+        List<Alarm> lia = alarms.getValue();
+        if (lia == null || lia.isEmpty()) {
+            alarms.observe(obs, (_alarms) -> {
+                if (!firstTime) return;
+                firstTime = false;
+                scheduleAlarms(alarmScheduler, _alarms);
+            });
+        } else {
+            scheduleAlarms(alarmScheduler, lia);
+        }
+
+        List<SubAlarm> lisa = subalarms.getValue();
+        if (lisa == null || lisa.isEmpty()) {
+            subalarms.observe(obs, (_subalarms) -> {
+                if (!firstTimeSubAlarm) return;
+                firstTimeSubAlarm = false;
+                scheduleSubAlarms(alarmScheduler, _subalarms);
+            });
+        } else {
+            scheduleSubAlarms(alarmScheduler, lisa);
+        }
     }
 
     public void insert(_Alarm alarm) {
