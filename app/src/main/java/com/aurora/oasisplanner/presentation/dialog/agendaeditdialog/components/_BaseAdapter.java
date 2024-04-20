@@ -222,8 +222,7 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    docText.clearComposingText();
-                    gp.setTitle(new SpannableStringBuilder(docText.getText()));
+                    gp.setTitle(new SpannableStringBuilder(docText.getText().toString()));
                 }
             };
             docText.setTag(textWatcher);
