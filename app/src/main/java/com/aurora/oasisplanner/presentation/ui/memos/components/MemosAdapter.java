@@ -15,6 +15,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.util.Id;
 import com.aurora.oasisplanner.databinding.BoxMemoBinding;
+import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder>
             recyclerView.addItemDecoration(
                     new PaddingItemDecoration(
                             R.dimen.paddingBoxesDecorationDefault,
-                            R.dimen.paddingItemDecorationEdge
+                            R.dimen.paddingItemDecorationEdge,
+                            new Integer[]{}
                     )
             );
             recyclerView.setTag("hasDivider".hashCode(), true);

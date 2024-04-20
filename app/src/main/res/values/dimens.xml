@@ -71,6 +71,9 @@
         <dimen name="box_vmargin">7dp</dimen>
         <dimen name="box_hmargin">15dp</dimen>
         <dimen name="bar_padding">1dp</dimen>
+        <dimen name="bar_dot_vpadding">10dp</dimen>
+        <dimen name="bar_dot_hpadding">10dp</dimen>
+        <dimen name="bar_vbar_width">3dp</dimen>
         <dimen name="gap_padding">3dp</dimen>
         <dimen name="boxtitle_textsize">14sp</dimen>
         <dimen name="boxcontent_textsize">13sp</dimen>

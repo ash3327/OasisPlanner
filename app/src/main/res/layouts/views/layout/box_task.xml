@@ -47,6 +47,14 @@
                     android:letterSpacing="0.05"
                     android:paddingVertical="2dp"/>
             </LinearLayout>
+            <ImageView
+                android:id="@+id/radio_panel"
+                android:layout_width="@dimen/medium_icon_height"
+                android:layout_height="@dimen/medium_icon_height"
+                android:src="@drawable/radio_unchecked"
+                android:layout_marginEnd="@dimen/bar_dot_hpadding"
+                android:layout_marginVertical="@dimen/bar_dot_vpadding"
+                android:orientation="vertical"/>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,14 +92,6 @@
                             android:paddingVertical="@dimen/bar_vpadding"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-                            <ImageView
-                                android:id="@+id/radio_panel"
-                                android:layout_width="@dimen/medium_icon_height"
-                                android:layout_height="@dimen/medium_icon_height"
-                                android:src="@drawable/radio_unchecked"
-                                android:layout_marginEnd="@dimen/bar_vpadding"
-                                android:orientation="vertical">
-                            </ImageView>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -144,10 +144,8 @@ public class _Event extends __Item {
     }
     // INFO: GET ARGS:
     public SpannableStringBuilder getLoc() {
-        String out = getArg(TagType.LOC);
-        if (out == null || out.isEmpty())
-            return null;
-        return new SpannableStringBuilder(out);
+        SpannableStringBuilder out = getArgSpannable(TagType.LOC);
+        return out;
     }
 
 
