@@ -19,22 +19,15 @@ public class PaddingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mPaddingPx;
     private int mPaddingEdgesPx;
-    private List<Integer> viewTypesToIgnore;
 
-    public PaddingItemDecoration(@DimenRes int padding, @DimenRes int paddingEdge, Integer[] viewTypesToIgnore) {
+    public PaddingItemDecoration(@DimenRes int padding, @DimenRes int paddingEdge) {
         mPaddingPx = (int) Resources.getDimension(padding);
         mPaddingEdgesPx = (int) Resources.getDimension(paddingEdge);
-        this.viewTypesToIgnore = Arrays.asList(viewTypesToIgnore);
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-
-        int position = parent.getChildAdapterPosition(view);
-        int viewType = parent.getAdapter().getItemViewType(position);
-        if (viewTypesToIgnore.contains(viewType))
-            return;
 
         final int itemPosition = parent.getChildAdapterPosition(view);
         if (itemPosition == RecyclerView.NO_POSITION) {

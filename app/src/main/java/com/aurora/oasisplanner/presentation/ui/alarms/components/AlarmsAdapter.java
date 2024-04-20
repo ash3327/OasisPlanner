@@ -20,6 +20,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.structure.Image;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.util.Id;
+import com.aurora.oasisplanner.databinding.BoxEndBinding;
 import com.aurora.oasisplanner.databinding.BoxEventBinding;
 import com.aurora.oasisplanner.databinding.DayLabelBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
@@ -54,15 +55,14 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             recyclerView.addItemDecoration(
                     new PaddingItemDecoration(
                             R.dimen.paddingBoxesDecorationDefault,
-                            R.dimen.paddingItemDecorationEdge,
-                            new Integer[]{ViewType.Alarm.ordinal()}
+                            R.dimen.paddingItemDecorationEdge
                     )
             );
             recyclerView.setTag("hasDivider".hashCode(), true);
         }
     }
 
-    enum ViewType {MonthData, DayData, Alarm}
+    enum ViewType {MonthData, DayData, Alarm, EndData}
     @Override
     public int getItemViewType(int position) {
         Object item = alarms.get(position);
@@ -80,6 +80,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             return ViewType.MonthData.ordinal();
         if (item instanceof DayData)
             return ViewType.DayData.ordinal();
+        if (item instanceof EndData)
+            return ViewType.EndData.ordinal();
         return -1;
     }
 
@@ -114,6 +116,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             case DayData:
                 binding = DayLabelBinding.inflate(li, parent, false);
                 break;
+            case EndData:
+                binding = BoxEndBinding.inflate(li, parent, false);
         }
         return new AlarmsHolder(binding);
     }
@@ -164,6 +168,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             }
             list.add(gp);
         }
+        list.add(new EndData());
         this.alarms = list;
         if (onChangeListener != null)
             onChangeListener.run(list.size());
@@ -248,6 +253,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                     return bindMonth(i, (MonthData) alarmGp);
                 case DayData:
                     return bindDay(i, (DayData) alarmGp);
+                case EndData:
+                    return true;
             }
             return false;
         }
@@ -298,6 +305,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
         public boolean bindMonth(int i, MonthData monthData) {
             HeaderImageBinding binding = (HeaderImageBinding) vbinding;
 
+            binding.setShowVLine(i != 0);
             binding.textView.setText(DateTimesFormatter.getYM(monthData.month));
             Image.monthBannerOf(monthData.month.getMonth()).showImageOn(binding.imgBg);
 
@@ -331,6 +339,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             this.day = day;
         }
     }
+
+    public static class EndData {}
 
     public interface OnChangeListener {
         void run(int size);

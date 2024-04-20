@@ -59,26 +59,31 @@
 
     <!-- Dividers for RecyclerViews -->
     <dimen name="paddingItemDecorationDefault">5dp</dimen>
-    <dimen name="paddingBoxesDecorationDefault">8dp</dimen>
+    <dimen name="paddingBoxesDecorationDefault">0dp</dimen>
     <dimen name="paddingItemDecorationEdge">16dp</dimen>
 
     <!-- Box Dimensions -->
         <!-- Shared Dimensions -->
         <dimen name="bar_vmargin">0dp</dimen>
         <dimen name="box_margin">7dp</dimen>
-        <dimen name="boximg_topmargin">10dp</dimen>
-        <dimen name="boximg_bottommargin">5dp</dimen>
         <dimen name="box_vmargin">7dp</dimen>
         <dimen name="box_hmargin">15dp</dimen>
         <dimen name="bar_padding">1dp</dimen>
-        <dimen name="bar_dot_vpadding">10dp</dimen>
-        <dimen name="bar_dot_hpadding">10dp</dimen>
-        <dimen name="bar_vbar_width">3dp</dimen>
         <dimen name="gap_padding">3dp</dimen>
         <dimen name="boxtitle_textsize">14sp</dimen>
         <dimen name="boxcontent_textsize">13sp</dimen>
         <dimen name="card_radius">20dp</dimen>
         <dimen name="card_doc_radius">10dp</dimen>
+        <!-- Related to Detailed UI -->
+        <dimen name="boximg_topmargin">20dp</dimen>
+        <dimen name="boximg_bottommargin">0dp</dimen>
+        <dimen name="bar_dot_vpadding">10dp</dimen>
+        <dimen name="bar_dot_hpadding">10dp</dimen>
+        <dimen name="bar_vbar_width">3dp</dimen>
+        <dimen name="bar_daytimelabel_width">75dp</dimen>
+        <dimen name="bar_daylabel_top">12.5dp</dimen>
+        <dimen name="bar_daylabel_spacing">10dp</dimen>
+        <dimen name="box_widgets_padding_top">8dp</dimen>
         <!-- Dimensions for Date Bar -->
         <dimen name="bar_hpadding_top">10dp</dimen>
         <dimen name="bar_vpadding_top">6dp</dimen>
@@ -129,6 +134,7 @@
 
     <!-- Icon Dimensions -->
     <dimen name="icon_txt_size">12dp</dimen>
+    <dimen name="small_icon_height">10dp</dimen>
     <dimen name="icon_height">15dp</dimen>
     <dimen name="medium_small_big_gap">5dp</dimen>
     <dimen name="medium_small_icon_height">20dp</dimen>
