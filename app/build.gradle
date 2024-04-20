@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.nebulawings.oasisplannere"
+        applicationId "com.nebulawings.oasisplanner"
         minSdk 26
         targetSdk 33
         versionCode 2
