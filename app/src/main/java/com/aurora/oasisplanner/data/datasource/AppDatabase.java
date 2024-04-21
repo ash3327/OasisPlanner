@@ -39,7 +39,8 @@ import com.aurora.oasisplanner.data.util.Converters;
                 _Alarm.class, _Agenda.class, _Activity.class, _Event.class, _Doc.class,
                 _SubPeriod.class, _SelectedDates.class, _SubAlarm.class, _Memo.class, _Tag.class
         },
-        version = 25,
+        version = 28,
+        exportSchema = true,
         autoMigrations = {
                 //INFO: v0.1.0 update
                 @AutoMigration(from=5, to=8, spec=AppDatabase.Migration5to6.class),
@@ -51,6 +52,10 @@ import com.aurora.oasisplanner.data.util.Converters;
                 @AutoMigration(from=23, to=24, spec=AppDatabase.Migration23to24.class),
                 @AutoMigration(from=24, to=25, spec=AppDatabase.Migration24to25.class),
                 //INFO: v0.1.2 update
+                //INFO: v0.1.3 update
+                @AutoMigration(from=25, to=26, spec=AppDatabase.Migration25to26.class),
+                @AutoMigration(from=26, to=27, spec=AppDatabase.Migration26to27.class),
+                @AutoMigration(from=27, to=28, spec=AppDatabase.Migration27to28.class),
         }
 )
 @TypeConverters({Converters.class})
@@ -116,4 +121,44 @@ public abstract class AppDatabase extends RoomDatabase {
 
     @RenameTable(fromTableName = "_AlarmList", toTableName = "_Event")
     public static class Migration24to25 implements AutoMigrationSpec {}
+
+    @RenameColumn(tableName = "_Agenda", fromColumnName = "id", toColumnName = "agendaId")
+    @RenameColumn(tableName = "_Agenda", fromColumnName = "title", toColumnName = "agendaTitle")
+    @RenameColumn(tableName = "_Agenda", fromColumnName = "type", toColumnName = "agendaType")
+    @RenameColumn(tableName = "_Agenda", fromColumnName = "types", toColumnName = "agendaTypes")
+    @RenameColumn(tableName = "_Agenda", fromColumnName = "args", toColumnName = "agendaArgs")
+    public static class Migration25to26 implements AutoMigrationSpec {}
+
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "id", toColumnName = "alarmId")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "datetime", toColumnName = "alarmDatetime")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "duration", toColumnName = "alarmDuration")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "date", toColumnName = "alarmDate")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "type", toColumnName = "alarmType")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "importance", toColumnName = "alarmImportance")
+    @RenameColumn(tableName = "_Alarm", fromColumnName = "args", toColumnName = "alarmArgs")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "id", toColumnName = "alarmId")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "datetime", toColumnName = "alarmDatetime")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "duration", toColumnName = "alarmDuration")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "date", toColumnName = "alarmDate")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "type", toColumnName = "alarmType")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "importance", toColumnName = "alarmImportance")
+    @RenameColumn(tableName = "_SubAlarm", fromColumnName = "args", toColumnName = "alarmArgs")
+    public static class Migration26to27 implements AutoMigrationSpec {}
+
+    @RenameColumn(tableName = "_Activity", fromColumnName = "id", toColumnName = "activityId")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "types", toColumnName = "activityTypes")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "type", toColumnName = "activityType")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "importance", toColumnName = "activityImportance")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "descr", toColumnName = "activityDescr")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "args", toColumnName = "activityArgs")
+    @RenameColumn(tableName = "_Activity", fromColumnName = "i", toColumnName = "activityI")
+    @RenameColumn(tableName = "_Event", fromColumnName = "id", toColumnName = "eventId")
+    @RenameColumn(tableName = "_Event", fromColumnName = "title", toColumnName = "eventTitle")
+    @RenameColumn(tableName = "_Event", fromColumnName = "dates", toColumnName = "eventDates")
+    @RenameColumn(tableName = "_Event", fromColumnName = "time", toColumnName = "eventTime")
+    @RenameColumn(tableName = "_Event", fromColumnName = "type", toColumnName = "eventType")
+    @RenameColumn(tableName = "_Event", fromColumnName = "importance", toColumnName = "eventImportance")
+    @RenameColumn(tableName = "_Event", fromColumnName = "i", toColumnName = "eventI")
+    @RenameColumn(tableName = "_Event", fromColumnName = "args", toColumnName = "eventArgs")
+    public static class Migration27to28 implements AutoMigrationSpec {}
 }

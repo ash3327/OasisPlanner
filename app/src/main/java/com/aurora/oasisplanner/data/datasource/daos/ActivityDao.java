@@ -16,10 +16,10 @@ public interface ActivityDao {
     // INFO: ACTIVITIES
 
     @Transaction
-    @Query("SELECT * FROM _Activity WHERE id = :id")
+    @Query("SELECT * FROM _Activity WHERE activityId = :id")
     _Activity getActivityById(long id);
     @Transaction
-    @Query("SELECT * FROM _Activity WHERE id = :id")
+    @Query("SELECT * FROM _Activity WHERE activityId = :id")
     Activity getActivityWithChildById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

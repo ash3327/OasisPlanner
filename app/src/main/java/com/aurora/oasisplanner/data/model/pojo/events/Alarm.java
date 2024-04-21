@@ -2,9 +2,11 @@ package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
@@ -23,11 +25,11 @@ public class Alarm {
     @Embedded
     public _Alarm alarm;
     
-    @Relation(parentColumn = "agendaId", entityColumn = "id", entity = _Agenda.class)
+    @Relation(parentColumn = "agendaId", entityColumn = "agendaId", entity = _Agenda.class)
     public _Agenda agenda;
-    @Relation(parentColumn = "activityId", entityColumn = "id", entity = _Activity.class)
+    @Relation(parentColumn = "activityId", entityColumn = "activityId", entity = _Activity.class)
     public _Activity activity;
-    @Relation(parentColumn = "alarmListId", entityColumn = "id", entity = _Event.class)
+    @Relation(parentColumn = "alarmListId", entityColumn = "eventId", entity = _Event.class)
     public _Event event;
 
     public Alarm(){}
@@ -109,6 +111,17 @@ public class Alarm {
     public long getEncodedId() {
         return getAlarmId() * 2 + (getAlarm().isSubalarm()?0:1);
     }
+    public String getArg(_Alarm.ArgType argType) {return getAlarm().getArg(argType);}
+    @Ignore
+    public String getArgDefault(_Alarm.ArgType argType) {
+        String val = getArg(argType);
+        if (val == null) {
+            getAlarm().putArgs(argType, argType.getDefault());
+            return getArg(argType);
+        }
+        return val;
+    }
+    public void putArg(_Alarm.ArgType argType, String val) {getAlarm().putArgs(argType, val);}
 
     @Ignore
     public Bundle packContents() {
@@ -140,6 +153,6 @@ public class Alarm {
 
     @Ignore
     public String toString() {
-        return "<ALARM "+alarm+"\nALARMLIST "+ event +"\nACTIVITY "+activity+"\nAGENDA"+agenda+">";
+        return "\n\n<ALARM "+getAlarmId()+"-"+getEventId()+"::"+alarm+"\nALARMLIST "+ event +"\nACTIVITY "+activity+"\nAGENDA"+agenda+">";
     }
 }

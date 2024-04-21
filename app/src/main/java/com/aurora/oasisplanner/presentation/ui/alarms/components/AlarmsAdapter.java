@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.structure.Image;
 import com.aurora.oasisplanner.data.tags.AlarmType;
@@ -31,6 +33,7 @@ import com.aurora.oasisplanner.util.styling.Resources;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -151,6 +154,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
     public void setAlarms(List<Alarm> alarms) {
+        Log.d("test3", "#$#"+ Arrays.deepToString(alarms.toArray()));
         List<Object> list = new ArrayList<>();
 
         LocalDate currentMonth = null;
@@ -278,8 +282,27 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                 binding.triangle.getBackground().setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
                 binding.setFgColor(Color.BLACK);
             }
-            binding.circ.setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
-            binding.setIsTask(alarm.getType() == AlarmType.todo);
+            if (alarm.getType() == AlarmType.todo) {
+                binding.circ.setImageResource(
+                        Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?
+                                R.drawable.radio_checked : R.drawable.radio_unchecked);
+                binding.circ.clearColorFilter();
+                binding.circ.setOnClickListener((v)-> {
+                    Log.d("test3", "%%#"+alarm.getAlarmId() + "::"+alarm.getAlarm().id+"$$"+alarm.getArg(_Alarm.ArgType.STATE));
+                    String state = alarm.getArgDefault(_Alarm.ArgType.STATE);
+                    Log.d("test3", "%%"+state + "::" +alarm.getAlarmId() + "::"+alarm.getAlarm().id);
+                    alarm.putArg(_Alarm.ArgType.STATE, Objects.equals(state, "FINISHED") ? "UNFINISHED" : "FINISHED");
+
+                    Log.d("test3", "%%+"+alarm.getArgDefault(_Alarm.ArgType.STATE));
+                    binding.circ.setImageResource(
+                            Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?
+                                    R.drawable.radio_checked : R.drawable.radio_unchecked);
+                    AppModule.retrieveAlarmUseCases().putWith(alarm);
+                });
+            } else {
+                binding.circ.setImageResource(R.drawable.shp_circ_filled);
+                binding.circ.setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
+            }
 
             binding.barTitle.setText(alarm.getTitle());
             binding.barDescriptionText.setText(alarm.getContents(false));

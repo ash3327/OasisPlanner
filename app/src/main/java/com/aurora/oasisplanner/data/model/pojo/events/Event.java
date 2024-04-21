@@ -23,10 +23,10 @@ public class Event {
     @Embedded
     public _Event alarmList;
 
-    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    @Relation(parentColumn = "eventId", entityColumn = "alarmListId")
     public List<_Alarm> alarms = new ArrayList<>();
 
-    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    @Relation(parentColumn = "eventId", entityColumn = "alarmListId")
     public List<_SubAlarm> subalarms = new ArrayList<>();
 
     @Ignore

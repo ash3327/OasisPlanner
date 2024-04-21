@@ -9,6 +9,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.RenameColumn;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -43,14 +44,20 @@ public class _Activity extends __Item {
     }
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "activityId")
     public long id;
     public long agendaId;
+    @ColumnInfo(name = "activityTypes")
     public List<ActivityType> types = new ArrayList<>();
+    @ColumnInfo(name = "activityType")
     public Type type;
+    @ColumnInfo(name = "activityImportance")
     public Importance importance;
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(name = "activityDescr", defaultValue = "")
     public SpannableStringBuilder descr;
+    @ColumnInfo(name = "activityArgs")
     public Map<String,String> args = new HashMap<>();
+    @ColumnInfo(name = "activityI")
     public int i = -1;
 
     @Ignore

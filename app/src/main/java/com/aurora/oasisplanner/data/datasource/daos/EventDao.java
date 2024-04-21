@@ -17,10 +17,10 @@ public interface EventDao {
     // INFO: EVENTS
 
     @Transaction
-    @Query("SELECT * FROM _Event WHERE id = :id")
+    @Query("SELECT * FROM _Event WHERE eventId = :id")
     _Event getEventById(long id);
     @Transaction
-    @Query("SELECT * FROM _Event WHERE id = :id")
+    @Query("SELECT * FROM _Event WHERE eventId = :id")
     Event getEventWithChildById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

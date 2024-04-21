@@ -23,10 +23,10 @@ public interface AgendaDao {
     LiveData<List<Agenda>> getAgendas();
 
     @Transaction
-    @Query("SELECT * FROM _agenda WHERE id = :id")
+    @Query("SELECT * FROM _agenda WHERE agendaId = :id")
     Agenda getAgendaById(long id);
     @Transaction
-    @Query("SELECT * FROM _agenda WHERE id = :id")
+    @Query("SELECT * FROM _agenda WHERE agendaId = :id")
     _Agenda get_AgendaById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -25,10 +25,10 @@ public class Activity {
     @Embedded
     public _Activity activity;
 
-    @Relation(parentColumn = "id", entityColumn = "activityId", entity = _Event.class)
+    @Relation(parentColumn = "activityId", entityColumn = "activityId", entity = _Event.class)
     public List<_Event> alarmLists = new ArrayList<>();
 
-    @Relation(parentColumn = "id", entityColumn = "groupId", entity = _Doc.class)
+    @Relation(parentColumn = "activityId", entityColumn = "groupId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore

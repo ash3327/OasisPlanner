@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.RenameColumn;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
@@ -30,19 +31,27 @@ import java.util.stream.Collectors;
 
 @Entity
 public class _Event extends __Item {
+
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "eventId")
     public long id;
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(name = "eventTitle", defaultValue = "")
     public String title;
+    @ColumnInfo(name = "eventDates")
     public List<LocalDate> dates;
+    @ColumnInfo(name = "eventTime")
     public LocalTime time;
+    @ColumnInfo(name = "eventType")
     public AlarmType type;
+    @ColumnInfo(name = "eventImportance")
     public Importance importance;
     public long activityId;
     public long agendaId;
+    @ColumnInfo(name = "eventI")
     public int i = -1;
+    @ColumnInfo(name = "eventArgs")
     public Map<String,String> args = new HashMap<>();
 
     @Ignore

@@ -94,6 +94,18 @@ public class AlarmRepository {
         });
     }
 
+    public void insertWith(Alarm alarm) {
+        executor.execute(()->{
+            _Alarm _alarm = alarm.getAlarm();
+
+            _alarm.alarmListId = alarm.getEventId();
+            _alarm.activityId = alarm.getActivityId();
+            _alarm.agendaId = alarm.getAgendaId();
+
+            AppModule.retrieveAlarmUseCases().put(_alarm);
+        });
+    }
+
     public void delete(_Alarm alarm) {
         executor.execute(()->alarmDao.delete(alarm));
         AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), alarm);
