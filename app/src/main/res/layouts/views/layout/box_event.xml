@@ -54,7 +54,7 @@
                     android:paddingVertical="2dp"/>
             </LinearLayout>
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/medium_icon_height"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/bar_dot_hpadding">
                 <View
@@ -63,16 +63,22 @@
                     android:layout_gravity="center"
                     android:background="@color/grey_100"/>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/medium_icon_height"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/box_widgets_padding_top">
-                    <ImageView
-                        android:id="@+id/circ"
+                    <LinearLayout
                         android:layout_width="@dimen/medium_icon_height"
                         android:layout_height="@dimen/medium_icon_height"
-                        android:src="@drawable/shp_circ_filled"
                         android:layout_marginVertical="@dimen/bar_dot_vpadding"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/circ"
+                            android:layout_width="@dimen/medium_icon_height"
+                            android:layout_height="@dimen/medium_icon_height"
+                            android:src="@drawable/shp_circ_filled"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
             <androidx.cardview.widget.CardView

@@ -20,8 +20,10 @@ import com.aurora.oasisplanner.activities.OasisApp;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.FragmentSettingsBinding;
+import com.aurora.oasisplanner.util.Configs;
 import com.aurora.oasisplanner.util.permissions.Permissions;
 import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.util.styling.Styles;
 
 public class SettingsFragment extends Fragment {
 
@@ -49,6 +51,11 @@ public class SettingsFragment extends Fragment {
                 Permissions.requestProtectedAppsPermission(requireActivity(), null, false);
                 break;
             case 1:
+                Configs.clickSoundIsOn = !Configs.clickSoundIsOn;
+                String notifText = Resources.getString(R.string.settings_notifClickSound);
+                Toast.makeText(getContext(), Styles.substituteText(notifText, Configs.clickSoundIsOn), Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
                 AppModule.forceUpdateAlarms(this);
                 break;
         }

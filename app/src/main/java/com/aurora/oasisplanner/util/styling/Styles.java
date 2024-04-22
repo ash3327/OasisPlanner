@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -113,6 +114,23 @@ public class Styles {
         Drawable tag = Resources.getDrawable(drawableId);
         tag.setBounds(0, 0, lineHei, lineHei);
         desc.append(" ", new ImageSpan(tag), 0);
+    }
+
+    /**
+     * NOTE: PLEASE FOLLOW THE FOLLOWING FORMAT:
+     *      [formatted text],[opt 1 for $1],[opt 2 for $1],[opt 1 for $2],...
+     * Inside [formatted text], please write your formats in the following style:
+     *      [other text]$[num] [other text]
+     * *PLEASE REMEMBER TO ADD A SPACE AFTER THE $[num]. Also, indices starts from $1
+     * */
+    public static String substituteText(String text, boolean... options) {
+        String[] sarr = text.split(",");
+        String out = sarr[0];
+        try {
+            for (int i = sarr.length / 2 - 1; i >= 0; i--)
+                out = out.replaceAll("\\$" + (i + 1) + " ", options[i] ? sarr[i * 2 + 1] : sarr[i * 2 + 2]);
+        } catch (Exception e) { Log.e("StyleError (Internal)",Log.getStackTraceString(e.getCause())); }
+        return out;
     }
 
     public static String loremIpsum() {

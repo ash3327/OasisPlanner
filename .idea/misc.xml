@@ -17,6 +17,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/app_icons/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_assignment_outline.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_assignment_outline_big.xml" value="0.1" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_assignment_outline_done.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_calendar.xml" value="0.105" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_calendar_wcolor.xml" value="0.115" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/importance_icons/drawable/ic_circle.xml" value="0.1" />
@@ -90,6 +91,7 @@
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_time.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_addnote.xml" value="0.105" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_note.xml" value="0.105" />
+        <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/ic_type_task.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/selector_full_checkbox.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/other_icons/drawable/selector_half_checkbox.xml" value="0.1" />
         <entry key="..\:/software/workspace/OasisPlanner/app/src/main/res/drawables/shapes/drawable/border_gold.xml" value="0.1" />

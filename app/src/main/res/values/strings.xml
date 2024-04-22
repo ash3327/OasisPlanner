@@ -168,8 +168,10 @@
     <!-- SETTINGS -->
     <string-array name="settings">
         <item>Permissions</item>
+        <item>Volume Settings</item>
         <item>Refresh Alarms</item>
     </string-array>
+    <string name="settings_notifClickSound">Click sound is now turned $1 ,on,off</string>
 
     <!-- FUNCTIONAL BUTTONS -->
     <string name="show_today">Show Today</string>

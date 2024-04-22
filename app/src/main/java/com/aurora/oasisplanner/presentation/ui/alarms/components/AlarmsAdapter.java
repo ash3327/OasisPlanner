@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.presentation.ui.alarms.components;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.aurora.oasisplanner.databinding.BoxEventBinding;
 import com.aurora.oasisplanner.databinding.DayLabelBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
+import com.aurora.oasisplanner.util.Configs;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 
@@ -154,7 +156,6 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
      *  a global notification in change of ui is required. */
     @SuppressLint("NotifyDataSetChanged")
     public void setAlarms(List<Alarm> alarms) {
-        Log.d("test3", "#$#"+ Arrays.deepToString(alarms.toArray()));
         List<Object> list = new ArrayList<>();
 
         LocalDate currentMonth = null;
@@ -288,12 +289,15 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                                 R.drawable.radio_checked : R.drawable.radio_unchecked);
                 binding.circ.clearColorFilter();
                 binding.circ.setOnClickListener((v)-> {
-                    Log.d("test3", "%%#"+alarm.getAlarmId() + "::"+alarm.getAlarm().id+"$$"+alarm.getArg(_Alarm.ArgType.STATE));
                     String state = alarm.getArgDefault(_Alarm.ArgType.STATE);
-                    Log.d("test3", "%%"+state + "::" +alarm.getAlarmId() + "::"+alarm.getAlarm().id);
-                    alarm.putArg(_Alarm.ArgType.STATE, Objects.equals(state, "FINISHED") ? "UNFINISHED" : "FINISHED");
+                    boolean hasFinished = Objects.equals(state, "FINISHED");
+                    alarm.putArg(_Alarm.ArgType.STATE, hasFinished ? "UNFINISHED" : "FINISHED");
 
-                    Log.d("test3", "%%+"+alarm.getArgDefault(_Alarm.ArgType.STATE));
+                    if (!hasFinished && Configs.clickSoundIsOn) {
+                        final MediaPlayer mp = MediaPlayer.create(v.getContext(), R.raw.done_bellring);
+                        mp.setOnCompletionListener(MediaPlayer::release);
+                        mp.start();
+                    }
                     binding.circ.setImageResource(
                             Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?
                                     R.drawable.radio_checked : R.drawable.radio_unchecked);
@@ -302,6 +306,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             } else {
                 binding.circ.setImageResource(R.drawable.shp_circ_filled);
                 binding.circ.setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
+                if (alarm.getType() == AlarmType.notif) {
+                    ViewGroup.LayoutParams lp = binding.circ.getLayoutParams();
+                    lp.height = lp.width = (int)Resources.getDimension(R.dimen.icon_height);
+                    binding.circ.setLayoutParams(lp);
+                }
             }
 
             binding.barTitle.setText(alarm.getTitle());

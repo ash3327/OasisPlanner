@@ -18,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
@@ -35,8 +37,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event> {
@@ -265,6 +269,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 _Event gp = (_Event) item;
 
                 Drawable icon = gp.type.getOutlineDrawable();
+                StringBuilder eachIsDone = new StringBuilder();
+                if (gp.type == AlarmType.todo) {
+                    boolean allDone = true;
+                    for (_Alarm alarm : ((_Event) item).getAssociates().alarms) {
+                        boolean isDone = Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED");
+                        eachIsDone.append(isDone ? "T" : "F");
+                        allDone &= isDone;
+                    }
+                    if (allDone)
+                        icon = Resources.getDrawable(R.drawable.ic_assignment_outline_done);
+                }
                 icon.setColorFilter(
                         gp.importance.getColorPr(),
                         PorterDuff.Mode.SRC_IN

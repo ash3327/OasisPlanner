@@ -2,6 +2,7 @@ package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
                 break;
             case TAGS:
                 binding = ItemTagTagsBinding.inflate(li, parent, false);
+                break;
         }
         return new TagHolder(binding);
     }

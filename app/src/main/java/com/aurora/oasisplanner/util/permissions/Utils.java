@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.util.permissions;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class Utils {
 
+    @SuppressLint("RestrictedApi")
     public static void startPowerSaverIntent(Activity context, CountDownLatch latch, boolean allowSkip) {
         SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = settings.edit();

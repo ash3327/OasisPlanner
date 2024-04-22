@@ -92,14 +92,14 @@ public class TagEditDialog extends AppCompatDialogFragment {
         vbinding.tagDateTypeTv.setKeyListener(null);
         vbinding.tagChoiceTv.setKeyListener(null);
 
-        SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.values());
+        SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.getAvailableValues());
         AutoCompleteTextView spinnerType = vbinding.tagTypeTv;
         TextInputLayout til = vbinding.tagTypeTil;
         spinnerType.setAdapter(spinAdapter);
         setOnItemSelectListener(spinnerType, til,
                 type.toString(), type.getDrawable(),
                 (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
-                    type = TagType.values()[position];
+                    type = TagType.getAvailableValues()[position];
                     changeUiToInputType(type);
                 },
                 (v)->type.getType());

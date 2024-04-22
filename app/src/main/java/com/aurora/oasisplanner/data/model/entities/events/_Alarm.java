@@ -85,13 +85,22 @@ public class _Alarm {
             return null;
         return args.get(key.name());
     }
-
+    @Ignore
+    public String getArgDefault(_Alarm.ArgType argType) {
+        String val = getArg(argType);
+        if (val == null) {
+            putArgs(argType, argType.getDefault());
+            return getArg(argType);
+        }
+        return val;
+    }
     @Ignore
     public Map<String, String> getArgs() {
         if (args == null)
             args = new HashMap<>();
         return args;
     }
+
 
     @Ignore
     public void putArgs(ArgType key, SpannableStringBuilder sb) {
