@@ -6,13 +6,19 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -47,11 +53,11 @@ import java.util.List;
 public class AlarmEditDialog extends AppCompatDialogFragment {
 
     private Event event;
-    private AlertDialog dialog;
+    private Dialog dialog;
 
     public AlarmType type;
     public Importance importance;
-    private SpannableStringBuilder contents;
+    private String contents;
     private MultiDatePicker datePicker;
     private TimePicker timePicker;
     private TabSelector tabSelector;
@@ -71,19 +77,27 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         this.importance = event.alarmList.importance;
         this.selectedDates = event.alarmList.dates;
         this.selectedTime = event.alarmList.time;
-        this.contents = event.contents;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        this.contents = event.alarmList.title;
 
         AlarmEditBinding binding = AlarmEditBinding.inflate(getLayoutInflater());
         onBind(binding);
 
         ViewGroup vg = (ViewGroup) binding.getRoot();
-        builder.setView(vg);
-        dialog = builder.create();
+        dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setContentView(vg);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new Handler().post(() -> getDialog().getWindow().setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
     }
 
     public void onBind(AlarmEditBinding binding) {
@@ -159,7 +173,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                             tilImp.setStartIconDrawable(importance.getSimpleDrawable());
                         });
 
-                alarmEditInfosBinding.aedInfosDescTv.setText(contents);
+                associateTitle(alarmEditInfosBinding.aedInfosDescTv);
                 alarmEditInfosBinding.aedInfosDatesTv.setText(DateTimesFormatter.toDate(selectedDates));
                 alarmEditInfosBinding.aedInfosTimesTv.setText(DateTimesFormatter.toTime(selectedTime));
                 alarmEditInfosBinding.aedInfosDatesTil.setOnClickListener(
@@ -218,6 +232,28 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 );
                 break;
         }
+    }
+
+    public void associateTitle(EditText editText) {
+        editText.setText(event.alarmList.title);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                event.alarmList.title = editText.getText().toString();
+            }
+        };
+        editText.setTag(textWatcher);
+        editText.addTextChangedListener(textWatcher);
     }
 
     public void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,

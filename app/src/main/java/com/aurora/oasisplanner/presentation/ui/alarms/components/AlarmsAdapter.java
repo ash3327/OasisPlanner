@@ -306,11 +306,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             } else {
                 binding.circ.setImageResource(R.drawable.shp_circ_filled);
                 binding.circ.setColorFilter(alarm.getImportance().getColorPr(), PorterDuff.Mode.SRC_OVER);
-                if (alarm.getType() == AlarmType.notif) {
-                    ViewGroup.LayoutParams lp = binding.circ.getLayoutParams();
-                    lp.height = lp.width = (int)Resources.getDimension(R.dimen.icon_height);
-                    binding.circ.setLayoutParams(lp);
-                }
+                ViewGroup.LayoutParams lp = binding.circ.getLayoutParams();
+                lp.height = lp.width = (int)Resources.getDimension(
+                        alarm.getType() == AlarmType.notif ? R.dimen.icon_height : R.dimen.medium_icon_height
+                );
+                binding.circ.setLayoutParams(lp);
             }
 
             binding.barTitle.setText(alarm.getTitle());
