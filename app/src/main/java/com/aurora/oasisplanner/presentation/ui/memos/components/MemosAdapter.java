@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
-import com.aurora.oasisplanner.data.util.Id;
+import com.aurora.oasisplanner.presentation.util.Id;
 import com.aurora.oasisplanner.databinding.BoxMemoBinding;
 import com.aurora.oasisplanner.presentation.ui.dividers.PaddingItemDecoration;
 

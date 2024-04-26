@@ -33,12 +33,11 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.util.Switch;
+import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventAdapter;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components._BaseAdapter;
-import com.aurora.oasisplanner.presentation.widget.PageHeader;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;

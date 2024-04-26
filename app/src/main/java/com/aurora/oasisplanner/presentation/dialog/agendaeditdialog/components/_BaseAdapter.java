@@ -13,10 +13,9 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events.__Item;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.util.Switch;
+import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.util.ArrayList;
