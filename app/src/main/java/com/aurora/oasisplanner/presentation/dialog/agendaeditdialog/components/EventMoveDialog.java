@@ -36,6 +36,7 @@ import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 

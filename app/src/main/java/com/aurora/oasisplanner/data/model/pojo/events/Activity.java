@@ -7,11 +7,13 @@ import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.data.tags.TagType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -60,9 +62,11 @@ public class Activity {
     }
 
     @Ignore
+    /** a value of -1 means failing in getting the id. */
     public long getId() {
-        assert activity != null && activity.id != 0;
-        return activity.id;
+        if (activity != null && activity.id != 0)
+            return activity.id;
+        return -1;
     }
     /** Returns Object[3]: {_AlarmList: _AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
