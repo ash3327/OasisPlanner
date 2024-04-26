@@ -4,14 +4,10 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,19 +21,11 @@ import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
-import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.tags.AlarmType;
-import com.aurora.oasisplanner.data.tags.Importance;
-import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
-import com.aurora.oasisplanner.data.util.Switch;
+import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.EventMoveDialogBinding;
 import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
-import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
-import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Set;
 
 public class EventMoveDialog extends AppCompatDialogFragment {

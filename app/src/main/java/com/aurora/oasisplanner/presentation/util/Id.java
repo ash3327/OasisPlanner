@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.data.util;
+package com.aurora.oasisplanner.presentation.util;
 
 import android.util.Log;
 
