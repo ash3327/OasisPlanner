@@ -1,23 +1,23 @@
 package com.aurora.oasisplanner.data.tags;
 
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.LocalDateTime;
 
 public class NotifType {
     int val;
-    TagEditDialog.DateType dateType;
+    AlarmTagEditDialog.DateType dateType;
     int hour, minute;
     boolean hasTime;
 
-    public NotifType(int val, TagEditDialog.DateType dateType) {
+    public NotifType(int val, AlarmTagEditDialog.DateType dateType) {
         this.val = val;
         this.dateType = dateType;
         this.hasTime = false;
     }
-    public NotifType(int val, TagEditDialog.DateType dateType, int hour, int minute) {
+    public NotifType(int val, AlarmTagEditDialog.DateType dateType, int hour, int minute) {
         this.val = val;
         this.dateType = dateType;
         this.hasTime = true;
@@ -28,7 +28,7 @@ public class NotifType {
         String[] res = encoded.split(":");
         assert res.length >= 2;
         this.val = Integer.parseInt(res[0]);
-        this.dateType = TagEditDialog.DateType.valueOf(res[1]);
+        this.dateType = AlarmTagEditDialog.DateType.valueOf(res[1]);
         if (res.length == 4) {
             hasTime = true;
             this.hour = Integer.parseInt(res[2]);

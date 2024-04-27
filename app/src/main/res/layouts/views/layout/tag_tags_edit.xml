@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/tag_tags_box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+    <ImageView
+        android:layout_width="@dimen/medium_icon_height"
+        android:layout_height="@dimen/medium_icon_height"
+        android:layout_margin="@dimen/edit_alarm_icon_padding"
+        android:src="@drawable/ic_tag"
+        app:tint="@color/grey_300"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tag_tags_til"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/cream"
+        android:hint="@string/memo_tag_title">
+        <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+            android:id="@+id/tag_tags_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

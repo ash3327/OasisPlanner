@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -40,10 +40,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TagEditDialog extends AppCompatDialogFragment {
+public class AlarmTagEditDialog extends AppCompatDialogFragment {
     public static final String EXTRA_ALARM_LISTS = "alarmLists";
 
     private AlertDialog dialog;
@@ -84,107 +85,77 @@ public class TagEditDialog extends AppCompatDialogFragment {
                 (v)->onDelete()
         );
 
-        vbinding.tagTypeTv.setInputType(InputType.TYPE_NULL);
-        vbinding.tagDateTv.setInputType(InputType.TYPE_CLASS_NUMBER);
-        vbinding.tagDateTypeTv.setInputType(InputType.TYPE_NULL);
-        vbinding.tagChoiceTv.setInputType(InputType.TYPE_NULL);
-        vbinding.tagTypeTv.setKeyListener(null);
-        vbinding.tagDateTypeTv.setKeyListener(null);
-        vbinding.tagChoiceTv.setKeyListener(null);
-
         SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.getAvailableValues());
-        AutoCompleteTextView spinnerType = vbinding.tagTypeTv;
-        TextInputLayout til = vbinding.tagTypeTil;
-        spinnerType.setAdapter(spinAdapter);
-        setOnItemSelectListener(spinnerType, til,
-                type.toString(), type.getDrawable(),
+        vbinding.ietdTagChooseTypeBox.setOnItemSelectListener(
+                spinAdapter, type.toString(), type.getDrawable(),
                 (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                     type = TagType.getAvailableValues()[position];
                     changeUiToInputType(type);
                 },
                 (v)->type.getType());
 
-        AutoCompleteTextView spinnerDateType = vbinding.tagDateTypeTv;
-        TextInputLayout dateTypeTil = vbinding.tagTypeTil;
         ArrayAdapter<DateType> dateTypeAdapter = new ArrayAdapter<DateType>(requireContext(), R.layout.datetype_spinner_element);
-        setOnItemSelectListener(spinnerDateType, dateTypeTil,
-                dateType.toString(), null,
+        dateTypeAdapter.addAll(DateType.values());
+        vbinding.ietdTagDatetimeBox.setOnItemSelectListener(
+                dateTypeAdapter, dateType.toString(), null,
                 (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                     dateType = DateType.values()[position];
-                    vbinding.tagTimeBox.setVisibility(dateType.hasTime() ? View.VISIBLE : View.GONE);
-                    vbinding.tagTimeBox.requestLayout();
+                    vbinding.ietdTagDatetimeBox.setDateType(dateType);
                 },
                 (v)->dateType.ordinal());
-        dateTypeAdapter.addAll(DateType.values());
-        spinnerDateType.setAdapter(dateTypeAdapter);
-        vbinding.tagTimeHourPicker.setMinValue(0);
-        vbinding.tagTimeHourPicker.setMaxValue(23);
-        vbinding.tagTimeHourPicker.setFormatter((v)->{return String.format("%02d", v);});
-        vbinding.tagTimeHourPicker.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        vbinding.tagTimeMinutePicker.setMinValue(0);
-        vbinding.tagTimeMinutePicker.setMaxValue(59);
-        vbinding.tagTimeMinutePicker.setFormatter((v)->{return String.format("%02d", v);});
-        vbinding.tagTimeMinutePicker.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        vbinding.tagTagsTv.setText("");
     }
 
     public void changeUiToInputType(TagType type) {
-        vbinding.tagTypeTil.setStartIconDrawable(type.getDrawable());
+        vbinding.ietdTagChooseTypeBox.changeType(type);
 
-        vbinding.tagContentBox.setVisibility(View.GONE);
-        vbinding.tagDatetimeBox.setVisibility(View.GONE);
-        vbinding.tagChoiceBox.setVisibility(View.GONE);
-        vbinding.tagTagsBox.setVisibility(View.GONE);
+        vbinding.ietdTagContentBox.setVisibility(View.GONE);
+        vbinding.ietdTagDatetimeBox.setVisibility(View.GONE);
+        vbinding.ietdTagChoiceBox.setVisibility(View.GONE);
+        vbinding.ietdTagTagsBox.setVisibility(View.GONE);
         vbinding.deleteButton.setVisibility(View.VISIBLE);
         switch (type) {
             case LOC:
             case DESCR:
-                vbinding.tagContentBox.setVisibility(View.VISIBLE);
+                vbinding.ietdTagContentBox.setVisibility(View.VISIBLE);
                 break;
             case ALARM:
-                vbinding.tagDatetimeBox.setVisibility(View.VISIBLE);
+                vbinding.ietdTagDatetimeBox.setVisibility(View.VISIBLE);
                 break;
             case IMPORTANCE:
             case ALARMTYPE:
                 vbinding.deleteButton.setVisibility(View.GONE);
-                vbinding.tagChoiceBox.setVisibility(View.VISIBLE);
+                vbinding.ietdTagChoiceBox.setVisibility(View.VISIBLE);
                 break;
             case TAGS:
-                vbinding.tagTagsBox.setVisibility(View.VISIBLE);
+                vbinding.ietdTagTagsBox.setVisibility(View.VISIBLE);
                 break;
         }
         switch (type) {
             case IMPORTANCE:
-                AutoCompleteTextView spinnerImportance = vbinding.tagChoiceTv;
-                TextInputLayout importanceTil = vbinding.tagChoiceTil;
                 ArrayAdapter<Importance> importanceAdapter = new ArrayAdapter<Importance>(requireContext(), R.layout.datetype_spinner_element);
-                setOnItemSelectListener(spinnerImportance, importanceTil,
-                        Importance.values()[idx].toString(), null,
+                importanceAdapter.addAll(Importance.values());
+                vbinding.ietdTagChoiceBox.setOnItemSelectListener(
+                        importanceAdapter, Importance.values()[idx].toString(), null,
                         (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                             idx = position;
                         },
                         (v)->Importance.values()[idx].ordinal());
-                importanceAdapter.addAll(Importance.values());
-                spinnerImportance.setAdapter(importanceAdapter);
                 break;
             case ALARMTYPE:
-                AutoCompleteTextView spinnerAlarmType = vbinding.tagChoiceTv;
-                TextInputLayout alarmTypeTil = vbinding.tagChoiceTil;
                 ArrayAdapter<AlarmType> alarmTypeAdapter = new ArrayAdapter<AlarmType>(requireContext(), R.layout.datetype_spinner_element);
-                setOnItemSelectListener(spinnerAlarmType, alarmTypeTil,
-                        AlarmType.values()[idx].toString(), null,
+                alarmTypeAdapter.addAll(AlarmType.values());
+                vbinding.ietdTagChoiceBox.setOnItemSelectListener(
+                        alarmTypeAdapter, AlarmType.values()[idx].toString(), null,
                         (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                             idx = position;
                         },
                         (v)->AlarmType.values()[idx].ordinal());
-                alarmTypeAdapter.addAll(AlarmType.values());
-                spinnerAlarmType.setAdapter(alarmTypeAdapter);
                 break;
         }
-        vbinding.tagContentBox.requestLayout();
-        vbinding.tagDatetimeBox.requestLayout();
-        vbinding.tagChoiceBox.requestLayout();
-        vbinding.tagTagsBox.requestLayout();
+        vbinding.ietdTagContentBox.requestLayout();
+        vbinding.ietdTagDatetimeBox.requestLayout();
+        vbinding.ietdTagChoiceBox.requestLayout();
+        vbinding.ietdTagTagsBox.requestLayout();
     }
 
     private void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
@@ -247,37 +218,26 @@ public class TagEditDialog extends AppCompatDialogFragment {
         switch (type) {
             case LOC:
             case DESCR:
-                TextInputEditText tiet = vbinding.tagContentTv;
-                ssb = new SpannableStringBuilder(tiet.getText());
-                ssb.clearSpans();
-                if (ssb.length() == 0) {
+                String text = vbinding.ietdTagContentBox.getText();
+                if (text == null || text.length() == 0) {
                     Toast.makeText(getContext(), R.string.tab_no_content_warning, Toast.LENGTH_SHORT).show();
                     return false;
                 }
+                ssb = new SpannableStringBuilder(text);
                 break;
             case ALARM:
-                TextInputEditText tietD = vbinding.tagDateTv;
-                AutoCompleteTextView tietDT = vbinding.tagDateTypeTv;
-                int val;
-                try {
-                    val = Integer.parseInt(tietD.getText().toString());
-                } catch (Exception e) {
+                NotifType notifType = vbinding.ietdTagDatetimeBox.getNotifType(dateType);
+                if (notifType == null) {
                     Toast.makeText(getContext(), R.string.tab_no_content_warning, Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                NotifType notifType;
-                DateType dt = dateType;
-                if (dt.hasTime())
-                    notifType = new NotifType(val, dt, vbinding.tagTimeHourPicker.getValue(), vbinding.tagTimeMinutePicker.getValue());
-                else
-                    notifType = new NotifType(val, dt);
                 ssb = new SpannableStringBuilder(notifType.toString());
                 break;
             case IMPORTANCE:
             case ALARMTYPE:
                 break;
             case TAGS:
-                ssb = new SpannableStringBuilder(vbinding.tagTagsTv.getText());
+                ssb = new SpannableStringBuilder(vbinding.ietdTagTagsBox.getText());
                 break;
         }
 

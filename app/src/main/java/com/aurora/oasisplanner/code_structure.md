@@ -30,11 +30,14 @@ Stores all the fragments.
 ## Presentation
 - Dialog
   - Holds classes that are related to the ui of a dialog
+  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
 - Ui
   - Holds classes that are related to the ui of non-dialogs
+  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
 - Widget
   - Holds classes that are components of another bigger ui element
   - Classes within have very specific functionality
+  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
 - Util
   - Utility classes for ui-related use
 

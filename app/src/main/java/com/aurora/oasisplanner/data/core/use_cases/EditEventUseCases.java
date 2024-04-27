@@ -11,7 +11,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventMoveDialog;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.TagEditDialog;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 
 import java.util.Set;
@@ -42,7 +42,7 @@ public class EditEventUseCases {
     }
 
     public void invokeDialogForTagType(Set<_Event> checkedList, Runnable updateUi) {
-        TagEditDialog dialog = new TagEditDialog();
+        AlarmTagEditDialog dialog = new AlarmTagEditDialog();
         dialog.setUpdateUiFunction(updateUi);
         dialog.setSelectedList(checkedList);
         dialog.show(fragmentManager, "dialogTagType");
