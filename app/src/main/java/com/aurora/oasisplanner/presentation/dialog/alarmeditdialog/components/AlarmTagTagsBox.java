@@ -5,9 +5,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import com.aurora.oasisplanner.databinding.TagTagsEditBinding;
-import com.aurora.oasisplanner.databinding.TagTextEditBinding;
 
-public class AlarmTagTagsBox extends AlarmTagBaseBox {
+public class AlarmTagTagsBox extends AEDBaseBox {
     private TagTagsEditBinding binding;
 
     public AlarmTagTagsBox(Context context, AttributeSet attrs) {

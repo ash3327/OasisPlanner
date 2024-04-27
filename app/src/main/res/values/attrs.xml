@@ -28,4 +28,12 @@
         <attr name="text" format="string"/>
         <attr name="icon_src" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="AEDBaseBox">
+        <attr name="mainIcon" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="AEDContentBox">
+        <attr name="textHint" format="string"/>
+        <attr name="focusable" format="boolean"/>
+        <attr name="textSize" format="dimension"/>
+    </declare-styleable>
 </resources>

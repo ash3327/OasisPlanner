@@ -7,17 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
-import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.tags.NotifType;
-import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.TagSubalarmDatetimePickBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AlarmTagDatetimeBox extends AlarmTagDropdownMenu {
+public class AlarmTagDatetimeBox extends AEDDropdownMenu {
     private TagSubalarmDatetimePickBinding binding;
 
     public AlarmTagDatetimeBox(Context context, AttributeSet attrs) {

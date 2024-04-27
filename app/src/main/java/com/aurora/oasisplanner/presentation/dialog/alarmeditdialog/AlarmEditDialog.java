@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,47 +146,43 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 AlarmEditInfosBinding alarmEditInfosBinding = AlarmEditInfosBinding.inflate(li);
                 binding.dialogContents.addView(alarmEditInfosBinding.getRoot());
 
+                // Title Box
+                associateTitle(alarmEditInfosBinding.aedpiTagContentBox.getEditText());
+
+                // Alarm Box
                 AlarmTypeAdapter adapter = new AlarmTypeAdapter(
                         li,
                         Arrays.asList(AlarmType.values())
                 );
-                AutoCompleteTextView spinnerType = alarmEditInfosBinding.aedInfosAlarmTypeTv;
-                TextInputLayout til = alarmEditInfosBinding.aedInfosAlarmTypeTil;
-                spinnerType.setAdapter(adapter);
-                setOnItemSelectListener(spinnerType, til,
-                        type.toString(), type.getOutlineDrawable(),
+                TextInputLayout til = alarmEditInfosBinding.aedpiTagAlarmTypeBox.getSpinnerTil();
+                alarmEditInfosBinding.aedpiTagAlarmTypeBox.setOnItemSelectListener(
+                        adapter, type.toString(), type.getOutlineDrawable(),
                         (adapterView, view, position, id) -> {
                             type = AlarmType.values()[position];
                             til.setStartIconDrawable(type.getOutlineDrawable());
-                        });
+                        },
+                        (v)->type.getType());
 
+                // Importance Box
                 ImportanceAdapter adapterImp = new ImportanceAdapter(
                         li,
                         Arrays.asList(Importance.values())
                 );
-                AutoCompleteTextView spinnerImp = alarmEditInfosBinding.aedInfosImpTypeTv;
-                TextInputLayout tilImp = alarmEditInfosBinding.aedInfosImpTypeTil;
-                spinnerImp.setAdapter(adapterImp);
-                setOnItemSelectListener(spinnerImp, tilImp,
-                        importance.toString(), importance.getSimpleDrawable(),
+                TextInputLayout tilImp = alarmEditInfosBinding.aedpiTagImportanceBox.getSpinnerTil();
+                alarmEditInfosBinding.aedpiTagImportanceBox.setOnItemSelectListener(
+                        adapterImp, importance.toString(), importance.getSimpleDrawable(),
                         (adapterView, view, position, id) -> {
                             importance = Importance.values()[position];
                             tilImp.setStartIconDrawable(importance.getSimpleDrawable());
-                        });
+                        },
+                        (v)->importance.getImportance());
 
-                associateTitle(alarmEditInfosBinding.aedInfosDescTv);
-                alarmEditInfosBinding.aedInfosDatesTv.setText(DateTimesFormatter.toDate(selectedDates));
-                alarmEditInfosBinding.aedInfosTimesTv.setText(DateTimesFormatter.toTime(selectedTime));
-                alarmEditInfosBinding.aedInfosDatesTil.setOnClickListener(
+                alarmEditInfosBinding.aedpiTagNotifDateBox.setText(DateTimesFormatter.toDate(selectedDates));
+                alarmEditInfosBinding.aedpiTagNotifTimeBox.setText(DateTimesFormatter.toTime(selectedTime));
+                alarmEditInfosBinding.aedpiTagNotifDateBox.setOnClickListener(
                         (v)->tabSelector.onClick(1)
                 );
-                alarmEditInfosBinding.aedInfosDatesTv.setOnClickListener(
-                        (v)->tabSelector.onClick(1)
-                );
-                alarmEditInfosBinding.aedInfosTimesTil.setOnClickListener(
-                        (v)->tabSelector.onClick(2)
-                );
-                alarmEditInfosBinding.aedInfosTimesTv.setOnClickListener(
+                alarmEditInfosBinding.aedpiTagNotifTimeBox.setOnClickListener(
                         (v)->tabSelector.onClick(2)
                 );
 

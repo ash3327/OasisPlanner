@@ -79,7 +79,7 @@
                         android:layout_marginEnd="32dp"
                         android:layout_marginVertical="3dp"/>
                     <!-- Text -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AlarmTagContentBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
                         android:id="@+id/ietd_tag_content_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,7 +88,9 @@
 
                         android:layout_marginStart="32dp"
                         android:layout_marginEnd="32dp"
-                        android:layout_marginVertical="3dp"/>
+                        android:layout_marginVertical="3dp"
+
+                        app:textHint="@string/tab_tag_content_title"/>
                     <!-- DATETIME -->
                     <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AlarmTagDatetimeBox
                         android:id="@+id/ietd_tag_datetime_box"
@@ -100,7 +102,7 @@
                         android:layout_marginEnd="32dp"
                         android:layout_marginVertical="3dp"/>
                     <!-- Choose -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AlarmTagOptionsDropdownBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
                         android:id="@+id/ietd_tag_choice_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,7 +111,9 @@
 
                         android:layout_marginStart="32dp"
                         android:layout_marginEnd="32dp"
-                        android:layout_marginVertical="3dp"/>
+                        android:layout_marginVertical="3dp"
+
+                        app:textHint="@string/tab_tag_content_title"/>
                     <!-- Tags -->
                     <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AlarmTagTagsBox
                         android:id="@+id/ietd_tag_tags_box"

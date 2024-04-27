@@ -13,9 +13,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.function.Function;
 
-public abstract class AlarmTagBaseBox extends LinearLayout {
+public abstract class AEDBaseBox extends LinearLayout {
 
-    public AlarmTagBaseBox(Context context, AttributeSet attrs) {
+    public AEDBaseBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         initBinding(context);
         init();

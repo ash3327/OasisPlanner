@@ -13,7 +13,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal">
-            <LinearLayout
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
+                android:id="@+id/aedpi_tag_content_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -21,36 +22,12 @@
 
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginVertical="3dp">
-                <ImageView
-                    android:layout_width="@dimen/medium_icon_height"
-                    android:layout_height="@dimen/medium_icon_height"
-                    android:layout_margin="@dimen/edit_alarm_icon_padding"
-                    android:src="@drawable/ic_type_note"
-                    app:tint="@color/grey_300"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/aed_infos_desc_til"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@color/cream"
-                    android:hint="@string/tab_info_title">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/aed_infos_desc_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:inputType="text"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/grey_75"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"/>
-            <LinearLayout
+                android:layout_marginVertical="3dp"
+
+                app:textHint="@string/tab_info_title"/>
+            <include layout="@layout/tag_separator"/>
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
+                android:id="@+id/aedpi_tag_alarm_type_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -58,31 +35,11 @@
 
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginVertical="3dp">
-                <ImageView
-                    android:layout_width="@dimen/medium_icon_height"
-                    android:layout_height="@dimen/medium_icon_height"
-                    android:layout_margin="@dimen/edit_alarm_icon_padding"
-                    android:src="@drawable/menuic_notification"
-                    app:tint="@color/grey_300"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/aed_infos_alarm_type_til"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/type_spinner_title"
-                    app:boxBackgroundColor="@color/cream"
-                    app:startIconDrawable="@drawable/menuic_notification">
-                    <AutoCompleteTextView
-                        android:id="@+id/aed_infos_alarm_type_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:focusable="false"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginVertical="3dp"
+
+                app:mainIcon="@drawable/menuic_notification"/>
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
+                android:id="@+id/aedpi_tag_importance_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -90,31 +47,11 @@
 
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginVertical="3dp">
-                <ImageView
-                    android:layout_width="@dimen/medium_icon_height"
-                    android:layout_height="@dimen/medium_icon_height"
-                    android:layout_margin="@dimen/edit_alarm_icon_padding"
-                    android:src="@drawable/ic_importance_exclaimation"
-                    app:tint="@color/grey_300"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/aed_infos_imp_type_til"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/importance_spinner_title"
-                    app:boxBackgroundColor="@color/cream"
-                    app:startIconDrawable="@drawable/ic_importance_exclaimation">
-                    <AutoCompleteTextView
-                        android:id="@+id/aed_infos_imp_type_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:focusable="false"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginVertical="3dp"
+
+                app:mainIcon="@drawable/ic_importance_exclaimation"/>
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
+                android:id="@+id/aedpi_tag_notif_date_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -122,31 +59,14 @@
 
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginVertical="3dp">
-                <ImageView
-                    android:layout_width="@dimen/medium_icon_height"
-                    android:layout_height="@dimen/medium_icon_height"
-                    android:layout_margin="@dimen/edit_alarm_icon_padding"
-                    android:src="@drawable/ic_type_agenda"
-                    app:tint="@color/grey_300"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/aed_infos_dates_til"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@color/cream"
-                    android:hint="@string/tab_date_title">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/aed_infos_dates_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/small_textsize"
-                        android:inputType="textMultiLine"
-                        android:focusable="false"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginVertical="3dp"
+
+                app:textHint="@string/tab_date_title"
+                app:mainIcon="@drawable/ic_type_agenda"
+                app:focusable="false"
+                app:textSize="@dimen/small_textsize"/>
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
+                android:id="@+id/aedpi_tag_notif_time_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -154,36 +74,13 @@
 
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginVertical="3dp">
-                <ImageView
-                    android:layout_width="@dimen/medium_icon_height"
-                    android:layout_height="@dimen/medium_icon_height"
-                    android:layout_margin="@dimen/edit_alarm_icon_padding"
-                    android:src="@drawable/ic_symb_time"
-                    app:tint="@color/grey_300"/>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/aed_infos_times_til"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@color/cream"
-                    android:hint="@string/tab_time_title">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/aed_infos_times_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:inputType="textMultiLine"
-                        android:focusable="false"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/grey_75"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"/>
+                android:layout_marginVertical="3dp"
+
+                app:textHint="@string/tab_time_title"
+                app:mainIcon="@drawable/ic_symb_time"
+                app:focusable="false"
+                app:textSize="@dimen/small_textsize"/>
+            <include layout="@layout/tag_separator"/>
         </LinearLayout>
     </ScrollView>
 </layout>

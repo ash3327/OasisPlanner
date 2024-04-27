@@ -7,16 +7,14 @@ import android.util.AttributeSet;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.function.Function;
 
-public abstract class AlarmTagDropdownMenu extends AlarmTagBaseBox {
+public abstract class AEDDropdownMenu extends AEDBaseBox {
 
-    public AlarmTagDropdownMenu(Context context, AttributeSet attrs) {
+    public AEDDropdownMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
