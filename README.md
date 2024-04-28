@@ -1,49 +1,31 @@
-# Design Reference on Code Structure
+# OasisPlanner 
+_Calendar App Project_ (Developing Phase)
 
-## Activities
-Stores the list of activities and the Application class.
+## Our Goals
 
-## Fragments
-Stores all the fragments.
+Oasis: where you find calm _in the past, present, and future._
 
-## Data
-- Core
-  - Use-cases for fetching data from and storing data to repositories
-  - AppModule: manages the initialization and fetching of all use-cases
-- Datasource
-  - Daos for data exchange with the underlying RoomDatabase
-  - AppDatabase for management of all Daos and changes in the tables
-- Model
-  - Entities
-    - Entities specified as table records within the database
-  - Pojo
-    - A collection of entities that represent information relevant to each functionality
-- Repository
-  - As its name suggests - stores all the repositories for data exchange
-- Structure
-  - Holds the classes that are currently not stored in the database
-- Tags
-  - Stores the enum classes for representing the states of entities and ui
-- Util
-  - Utility classes for data-related use
+We aim to provide a convenient and simple interface for users to effortlessly jot down and analyze their everyday productive work, without putting too much stress on yourself. 
 
-## Presentation
-- Dialog
-  - Holds classes that are related to the ui of a dialog
-  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
-- Ui
-  - Holds classes that are related to the ui of non-dialogs
-  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
-- Widget
-  - Holds classes that are components of another bigger ui element
-  - Classes within have very specific functionality
-  - Components: subfolder within each xxdialog directory for a specific ui function that holds the ui-specific classes for building a component within the bigger ui
-- Util
-  - Utility classes for ui-related use
+We believe:
+- Visualizing past work done can improve confidence
+- Striking a balance between work and relaxing is crucial to boosting long-term productivity
 
-## Util
-Holds the other classes that are neither directly related to ui logic nor related to data fetching and editing.
-- Notification features
-- Permissions
-- Styling (for text, or for retrieving image resources)
-- Configs
+## Code Maintenance
+_Most part of the features are still under development._
+- [Design Reference on Code Structure](app/src/main/java/com/aurora/oasisplanner/code_structure.md)
+
+## Our Plan
+- Complete basic functionalities as described in our goals before September 2024.
+- We are currently working on:
+  - Modularizing our previous code to increase readability
+  - Redesigning several components to increase cohesion between UI elements and enhance user experience
+
+## Functionalities
+- Preview of work:
+
+  <img src="https://github.com/ash3327/ash3327/assets/86100752/3548ccde-c41b-440f-af3d-4f35303066e4" width=200/>
+  <img src="https://github.com/ash3327/ash3327/assets/86100752/43f12dbf-4ab5-45ec-9f50-6086b3f7e601" width=200/>
+  <img src="https://github.com/ash3327/ash3327/assets/86100752/82471662-dfac-44f0-bbc5-c06190d2a21e" width=200/>
+
+- Relevant documents will be uploaded later.

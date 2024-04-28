@@ -4,15 +4,21 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+
+import androidx.annotation.CallSuper;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.function.Function;
 
 public abstract class AEDDropdownMenu extends AEDBaseBox {
+
+    protected int mPosition = 0;
+    private AdapterView.OnItemClickListener ocl_base = null;
 
     public AEDDropdownMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,15 +34,26 @@ public abstract class AEDDropdownMenu extends AEDBaseBox {
     public abstract AutoCompleteTextView getSpinner();
     public abstract TextInputLayout getSpinnerTil();
 
-    public void setOnItemSelectListener(ArrayAdapter spinAdapter, String text, Drawable drawable,
+    @CallSuper
+    protected void executeOnClickListener(AdapterView<?> parent, View view, int pos, long id) {
+        mPosition = pos;
+        if (ocl_base != null)
+            ocl_base.onItemClick(parent, view, pos, id);
+    }
+
+    public void setOnItemSelectListener(ArrayAdapter spinAdapter, int pos, Drawable drawable,
                                         AdapterView.OnItemClickListener listener,
                                         Function<String, Integer> getType) {
         AutoCompleteTextView spinner = getSpinner();
         TextInputLayout til = getSpinnerTil();
-        spinner.setText(text);
         til.setStartIconDrawable(drawable);
-        spinner.setOnItemClickListener(listener);
+        spinner.setText(spinAdapter.getItem(pos).toString());
+        spinner.setOnItemClickListener(ocl_base = (adapterView, view, position, id)->{
+            mPosition = position;
+            listener.onItemClick(adapterView, view, position, id);
+        });
         spinner.setAdapter(spinAdapter);
-        listener.onItemClick(null, spinner.getRootView(), getType.apply(null), 0);
+        mPosition = pos;
+        listener.onItemClick(null, spinner.getRootView(), pos, 0);
     }
 }

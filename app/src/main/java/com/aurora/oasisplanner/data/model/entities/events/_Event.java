@@ -114,6 +114,11 @@ public class _Event extends __Item {
     }
 
     @Ignore
+    public void putArgs(String key, String sb) {
+        if (args == null) args = new HashMap<>();
+        args.put(key, new Converters().spannableToString(sb));
+    }
+    @Ignore
     public void putArgs(String key, SpannableStringBuilder sb) {
         if (args == null) args = new HashMap<>();
         args.put(key, new Converters().spannableToString(sb));

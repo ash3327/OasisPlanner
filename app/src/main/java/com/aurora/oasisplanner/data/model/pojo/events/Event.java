@@ -60,7 +60,7 @@ public class Event {
         return this;
     }
     @Ignore
-    public Event setSubalarms() {
+    public Event generateSubalarms() {
         for (_SubAlarm subAlarm : this.subalarms)
             subAlarm.visible = false;
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));

@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -22,6 +22,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.tags.TagType;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
 import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.EventMoveDialogBinding;
 import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;

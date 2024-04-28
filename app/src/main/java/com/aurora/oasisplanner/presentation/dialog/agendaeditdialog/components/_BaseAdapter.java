@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.data.model.entities.events.__Item;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.util.styling.Styles;
 
@@ -208,17 +209,7 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends
                     }
             );//*/
 
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
+            TextWatcher textWatcher = new OnTextChangeListener() {
                 @Override
                 public void afterTextChanged(Editable s) {
                     gp.setTitle(new SpannableStringBuilder(docText.getText().toString()));

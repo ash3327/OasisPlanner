@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.databinding.TagTextEditBinding;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class AEDContentBox extends AEDBaseBox {
@@ -78,5 +81,17 @@ public class AEDContentBox extends AEDBaseBox {
     public void setOnClickListener(View.OnClickListener l) {
         getTil().setOnClickListener(l);
         getEditText().setOnClickListener(l);
+    }
+    public void setOnChangeListener(OnChangeListener ocl) {
+        getEditText().addTextChangedListener(new OnTextChangeListener() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                ocl.onChange(s.toString());
+            }
+        });
+    }
+
+    public interface OnChangeListener {
+        void onChange(String content);
     }
 }

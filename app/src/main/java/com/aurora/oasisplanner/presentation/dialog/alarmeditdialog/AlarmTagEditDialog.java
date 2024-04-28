@@ -7,10 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,15 +30,11 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.ItemEditTagBinding;
-import com.aurora.oasisplanner.databinding.TagTypeSpinnerElementBinding;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.DateType;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.SpinAdapter;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
-import com.aurora.oasisplanner.util.styling.Resources;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -87,7 +81,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
 
         SpinAdapter spinAdapter = new SpinAdapter(getLayoutInflater(), TagType.getAvailableValues());
         vbinding.ietdTagChooseTypeBox.setOnItemSelectListener(
-                spinAdapter, type.toString(), type.getDrawable(),
+                spinAdapter, type.ordinal(), type.getDrawable(),
                 (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                     type = TagType.getAvailableValues()[position];
                     changeUiToInputType(type);
@@ -97,7 +91,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
         ArrayAdapter<DateType> dateTypeAdapter = new ArrayAdapter<DateType>(requireContext(), R.layout.datetype_spinner_element);
         dateTypeAdapter.addAll(DateType.values());
         vbinding.ietdTagDatetimeBox.setOnItemSelectListener(
-                dateTypeAdapter, dateType.toString(), null,
+                dateTypeAdapter, dateType.ordinal(), null,
                 (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                     dateType = DateType.values()[position];
                     vbinding.ietdTagDatetimeBox.setDateType(dateType);
@@ -135,7 +129,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
                 ArrayAdapter<Importance> importanceAdapter = new ArrayAdapter<Importance>(requireContext(), R.layout.datetype_spinner_element);
                 importanceAdapter.addAll(Importance.values());
                 vbinding.ietdTagChoiceBox.setOnItemSelectListener(
-                        importanceAdapter, Importance.values()[idx].toString(), null,
+                        importanceAdapter, idx, null,
                         (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                             idx = position;
                         },
@@ -145,7 +139,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
                 ArrayAdapter<AlarmType> alarmTypeAdapter = new ArrayAdapter<AlarmType>(requireContext(), R.layout.datetype_spinner_element);
                 alarmTypeAdapter.addAll(AlarmType.values());
                 vbinding.ietdTagChoiceBox.setOnItemSelectListener(
-                        alarmTypeAdapter, AlarmType.values()[idx].toString(), null,
+                        alarmTypeAdapter, idx, null,
                         (AdapterView.OnItemClickListener) (adapterView, view, position, id) -> {
                             idx = position;
                         },
@@ -185,9 +179,8 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
     public void onConfirm() {
         AppModule.provideExecutor().submit(
                 ()->{
-                    Log.d("test3", "STARTED CONFIRM");
                     try {
-                        if (saveTags()) {
+                        if (saveArgs()) {
                             Activity a = getActivity();
                             a.runOnUiThread(
                                     ()->{
@@ -213,7 +206,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
         }
     }
 
-    public boolean saveTags() {
+    public boolean saveArgs() {
         SpannableStringBuilder ssb = null;
         switch (type) {
             case LOC:
@@ -260,7 +253,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
             case ALARM:
                 for (_Event checked : checkedList) {
                     checked.putArgs(type.name(), ssb);
-                    checked.getAssociates().setSubalarms();
+                    checked.getAssociates().generateSubalarms();
                 }
                 break;
             case DESCR:
@@ -292,81 +285,5 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
     public void setUpdateUiFunction(Runnable updateUiFunction) {
         this.updateUiFunction = updateUiFunction;
     }
-
-    public static class SpinAdapter extends ArrayAdapter<TagType> {
-        private LayoutInflater li;
-        private TagType[] vals;
-
-        public SpinAdapter(LayoutInflater li, @NonNull TagType[] typeList) {
-            super(li.getContext(), R.layout.tagtype_spinner_element);
-            this.li      = li;
-            this.vals    = typeList;
-        }
-
-        @Override
-        public int getCount() {
-            return vals.length;
-        }
-
-        @Override
-        public TagType getItem(int position) {
-            return vals[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getDaView(position, convertView, parent);
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getDaView(position, convertView, parent);
-        }
-
-        public View getDaView(int position, View convertView, ViewGroup parent) {
-            TagTypeSpinnerElementBinding binding = TagTypeSpinnerElementBinding.inflate(li);
-            TagType type = getItem(position);
-            binding.text.setText(type.toString());
-            binding.icon.setImageDrawable(type.getDrawable());
-            return binding.getRoot();
-        }
-    }
-
-    public enum DateType {
-        minutes, hours, days, weeks, months;
-
-        private static String[] dateTypeStrings = Resources.getStringArr(R.array.date_types);
-
-        @NonNull
-        @Override
-        public String toString() {
-            if (dateTypeStrings == null) dateTypeStrings = Resources.getStringArr(R.array.date_types);
-            return dateTypeStrings[ordinal()];
-        }
-
-        public boolean hasTime() {
-            switch (this) {
-                case minutes:
-                case hours:
-                    return false;
-                default:
-                    return true;
-            }
-        }
-
-        private static final TemporalUnit[] units = new TemporalUnit[]{
-                ChronoUnit.MINUTES, ChronoUnit.HOURS, ChronoUnit.DAYS,
-                ChronoUnit.WEEKS, ChronoUnit.MONTHS
-        };
-
-        public TemporalUnit getTemporalUnit() {
-            return units[ordinal()];
-        }
-    };
 }
 

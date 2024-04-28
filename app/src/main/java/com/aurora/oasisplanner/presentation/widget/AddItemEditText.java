@@ -18,6 +18,7 @@ import androidx.annotation.StringRes;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.databinding.AddItemEditTextBinding;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
@@ -47,12 +48,9 @@ public class AddItemEditText extends LinearLayout {
         return -1;
     }
     public void setOnEnterListener(OnEnterListener r) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void afterTextChanged(Editable s) {}
-
+        editText.addTextChangedListener(new OnTextChangeListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void afterTextChanged(Editable s) {
                 @StringRes int warnings = inputWarnings(s);
                 if (warnings != -1) {
                     root.setBackgroundColor(Resources.getColor(R.color.warning_color));

@@ -33,6 +33,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.ActivityAdapter;
@@ -333,17 +334,7 @@ public class AgendaEditDialog extends Fragment {
 
     public void associateTitle(EditText editText) {
         editText.setText(agenda.agenda.title);
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        TextWatcher textWatcher = new OnTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 agenda.agenda.title = editText.getText().toString();

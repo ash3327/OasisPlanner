@@ -10,7 +10,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.components.EventMoveDialog;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.EventMoveDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 

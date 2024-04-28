@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,14 +16,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.aurora.oasisplanner.R;
@@ -35,12 +32,15 @@ import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.core.use_cases.EditEventUseCases;
 import com.aurora.oasisplanner.data.tags.NotifType;
+import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.databinding.AlarmEditBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditDatesBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditInfosBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditTimesBinding;
 import com.aurora.oasisplanner.databinding.SpinnerElementBinding;
 import com.aurora.oasisplanner.databinding.TabSelectorBinding;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.DateType;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
@@ -53,20 +53,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AlarmEditDialog extends AppCompatDialogFragment {
-
+    // Root data
     private Event event;
     private Dialog dialog;
-
-    public AlarmType type;
-    public Importance importance;
-    private String contents;
+    // Components
     private MultiDatePicker datePicker;
     private TimePicker timePicker;
     private TabSelector tabSelector;
+    // Data
     private List<LocalDate> selectedDates;
     private LocalTime selectedTime;
-
-    private AlarmTagEditDialog.DateType dateType = AlarmTagEditDialog.DateType.minutes;
+    // Associated Data
+    private AlarmType type;
+    private Importance importance;
+    private DateType dateType = DateType.minutes;
+    private NotifType notifType;
 
     @NonNull
     @Override
@@ -81,7 +82,8 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         this.importance = event.alarmList.importance;
         this.selectedDates = event.alarmList.dates;
         this.selectedTime = event.alarmList.time;
-        this.contents = event.alarmList.title;
+        this.notifType = event.alarmList.getNotifType();
+        this.dateType = notifType.dateType;
 
         AlarmEditBinding binding = AlarmEditBinding.inflate(getLayoutInflater());
         onBind(binding);
@@ -159,7 +161,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 );
                 TextInputLayout til = alarmEditInfosBinding.aedpiTagAlarmTypeBox.getSpinnerTil();
                 alarmEditInfosBinding.aedpiTagAlarmTypeBox.setOnItemSelectListener(
-                        adapter, type.toString(), type.getOutlineDrawable(),
+                        adapter, type.ordinal(), type.getOutlineDrawable(),
                         (adapterView, view, position, id) -> {
                             type = AlarmType.values()[position];
                             til.setStartIconDrawable(type.getOutlineDrawable());
@@ -173,7 +175,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 );
                 TextInputLayout tilImp = alarmEditInfosBinding.aedpiTagImportanceBox.getSpinnerTil();
                 alarmEditInfosBinding.aedpiTagImportanceBox.setOnItemSelectListener(
-                        adapterImp, importance.toString(), importance.getSimpleDrawable(),
+                        adapterImp, importance.ordinal(), importance.getSimpleDrawable(),
                         (adapterView, view, position, id) -> {
                             importance = Importance.values()[position];
                             tilImp.setStartIconDrawable(importance.getSimpleDrawable());
@@ -192,34 +194,45 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
 
                 // Locations
                 SpannableStringBuilder ssb = event.alarmList.getLoc();
-                if (ssb != null)
+                if (ssb != null) {
                     alarmEditInfosBinding.aedpiTagLocationBox.setText(ssb.toString());
-                else
+                    alarmEditInfosBinding.aedpiTagLocationBox.setOnChangeListener(
+                            (_loc)-> this.event.alarmList.putArgs(TagType.LOC.name(), _loc)
+                    );
+                } else {
                     alarmEditInfosBinding.aedpiTagLocationBox.setVisibility(View.GONE);
+                }
 
                 // DateTime
-                ArrayAdapter<AlarmTagEditDialog.DateType> dateTypeAdapter = new ArrayAdapter<AlarmTagEditDialog.DateType>(requireContext(), R.layout.datetype_spinner_element);
-                dateTypeAdapter.addAll(AlarmTagEditDialog.DateType.values());
+                ArrayAdapter<DateType> dateTypeAdapter = new ArrayAdapter<DateType>(requireContext(), R.layout.datetype_spinner_element);
+                dateTypeAdapter.addAll(DateType.values());
                 alarmEditInfosBinding.aedpiTagDatetimeBox.setOnItemSelectListener(
-                        dateTypeAdapter, dateType.toString(), null,
+                        dateTypeAdapter, dateType.ordinal(), null,
                         (adapterView, view, position, id) -> {
-                            dateType = AlarmTagEditDialog.DateType.values()[position];
+                            dateType = DateType.values()[position];
                             alarmEditInfosBinding.aedpiTagDatetimeBox.setDateType(dateType);
                         },
                         (v)->dateType.ordinal());
 
-                NotifType subalarm = event.alarmList.getNotifType();
-                if (subalarm != null)
-                    alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifType(subalarm);
-                else
+                if (notifType != null) {
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifType(notifType);
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setOnChangeListener(
+                            (_notifType)-> this.notifType = _notifType
+                    );
+                } else {
                     alarmEditInfosBinding.aedpiTagDatetimeBox.setVisibility(View.GONE);
+                }
 
                 // Tags
                 String tags = event.alarmList.getTagsString();
-                if (tags != null && !tags.isEmpty())
+                if (tags != null && !tags.isEmpty()) {
                     alarmEditInfosBinding.aedpiTagTagsBox.setText(tags);
-                else
+                    alarmEditInfosBinding.aedpiTagTagsBox.setOnChangeListener(
+                            (_tags)->event.alarmList.putArgs(TagType.TAGS.name(), _tags)
+                    );
+                } else {
                     alarmEditInfosBinding.aedpiTagTagsBox.setVisibility(View.GONE);
+                }
 
                 break;
             case 1:
@@ -243,10 +256,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 datePicker.selected.clear();
                 datePicker.selected.addAll(selectedDates);
                 datePicker.setOnUpdateListener(
-                        (selected)-> {
-                            alarmEditDatesBinding.datesSelectedText.setText(DateTimesFormatter.toDate(selected));
-                            selectedDates = selected;
-                        }
+                        (selected)-> selectedDates = selected
                 );
                 datePicker.setDate(date, false, true, true);
                 break;
@@ -268,17 +278,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
 
     public void associateTitle(EditText editText) {
         editText.setText(event.alarmList.title);
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        TextWatcher textWatcher = new OnTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 event.alarmList.title = editText.getText().toString();
@@ -288,24 +288,16 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         editText.addTextChangedListener(textWatcher);
     }
 
-    public void setOnItemSelectListener(AutoCompleteTextView spinner, TextInputLayout til,
-                                        String text, Drawable drawable,
-                                        AdapterView.OnItemClickListener listener) {
-        spinner.setText(text);
-        til.setStartIconDrawable(drawable);
-        spinner.setOnItemClickListener(listener);
-    }
-
     private OnSaveListener onSaveListener;
     public void setOnSaveListener(OnSaveListener onSaveListener) {
         this.onSaveListener = onSaveListener;
     }
 
     public void onConfirm() {
-        /*if (agenda.agenda.title.isEmpty()) {
+        if (event.alarmList.title.isEmpty()) {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
         saveAlarms();
         dialog.dismiss();
     }
@@ -316,6 +308,8 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     public void saveAlarms() {
         event.alarmList.importance = importance;
         event.alarmList.type = type;
+        event.alarmList.putArgs(TagType.ALARM.name(), notifType.toString());
+        event.alarmList.getAssociates().generateSubalarms();
         event.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
         if (onSaveListener != null)
             onSaveListener.save(event);
@@ -388,15 +382,6 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
             binding.text.setText(type.toString());
             binding.icon.setImageDrawable(type.getDrawable());
             return binding.getRoot();
-        }
-    }
-
-    interface OnItemSelectedListener extends AdapterView.OnItemSelectedListener {
-        @Override
-        default void onNothingSelected(AdapterView<?> parent) {}
-
-        static void setOnItemSelectedListener(Spinner spinner, OnItemSelectedListener listener) {
-            spinner.setOnItemSelectedListener(listener);
         }
     }
 

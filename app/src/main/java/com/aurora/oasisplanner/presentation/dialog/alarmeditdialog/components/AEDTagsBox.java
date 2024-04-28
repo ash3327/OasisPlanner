@@ -1,12 +1,14 @@
 package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.aurora.oasisplanner.databinding.TagTagsEditBinding;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 public class AEDTagsBox extends AEDBaseBox {
@@ -34,9 +36,6 @@ public class AEDTagsBox extends AEDBaseBox {
             return "";
         }
     }
-    public void setText(String tags) {
-        getTagEditText().setTags(tags);
-    }
 
     private TagInputEditText getTagEditText() { return binding.tagTagsTv; }
     @Override
@@ -44,5 +43,21 @@ public class AEDTagsBox extends AEDBaseBox {
     @Override
     protected ImageView getIcon() {
         return binding.icon;
+    }
+
+    public void setText(String tags) {
+        getTagEditText().setTags(tags);
+    }
+    public void setOnChangeListener(OnChangeListener ocl) {
+        getTagEditText().addTextChangedListener(new OnTextChangeListener() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                ocl.onChange(s.toString());
+            }
+        });
+    }
+
+    public interface OnChangeListener {
+        void onChange(String text);
     }
 }

@@ -31,6 +31,7 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.core.use_cases.GetTagUseCases;
 import com.aurora.oasisplanner.data.model.entities.util._Tag;
+import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 import com.google.android.material.textfield.TextInputEditText;
@@ -64,17 +65,7 @@ public class TagInputEditText extends TextInputEditText {
     private void init() {
         setMovementMethod(LinkMovementMethod.getInstance());
 
-        textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        textWatcher = new OnTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 String str = s.toString();
