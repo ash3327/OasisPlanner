@@ -106,7 +106,7 @@ public class AlarmTagEditDialog extends AppCompatDialogFragment {
     }
 
     public void changeUiToInputType(TagType type) {
-        vbinding.ietdTagChooseTypeBox.changeType(type);
+        vbinding.ietdTagChooseTypeBox.getSpinnerTil().setStartIconDrawable(type.getDrawable());
 
         vbinding.ietdTagContentBox.setVisibility(View.GONE);
         vbinding.ietdTagDatetimeBox.setVisibility(View.GONE);

@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.databinding.TagOptionsDropdownBinding;
@@ -16,12 +18,6 @@ public class AEDOptionsDropdownBox extends AEDDropdownMenu {
 
     public AEDOptionsDropdownBox(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // attributes handling
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AEDBaseBox);
-        Drawable iconDrawable = a.getDrawable(R.styleable.AEDBaseBox_mainIcon);
-        if (iconDrawable != null)
-            binding.icon.setImageDrawable(iconDrawable);
-        a.recycle();
     }
 
     @Override
@@ -35,5 +31,11 @@ public class AEDOptionsDropdownBox extends AEDDropdownMenu {
     @Override
     public TextInputLayout getSpinnerTil() {
         return binding.tagChoiceTil;
+    }
+    @Override
+    protected EditText getEditText() { return getSpinner(); }
+    @Override
+    protected ImageView getIcon() {
+        return binding.icon;
     }
 }

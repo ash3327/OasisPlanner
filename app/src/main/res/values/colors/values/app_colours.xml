@@ -38,7 +38,7 @@
     <color name="transparent_black">#102F2E31</color>
 
     <!-- Importance Colors -->
-    <color name="pr_unimportant">   @color/grey_500</color>
+    <color name="pr_unimportant">   @color/grey_300  </color>
     <color name="pr_routine">       @color/grey_500  </color>
     <color name="pr_standard">      @color/blue_400  </color>
     <color name="pr_special">       @color/green_700 </color>

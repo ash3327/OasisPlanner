@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.databinding.TagSubalarmDatetimePickBinding;
@@ -14,10 +16,10 @@ import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditD
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AlarmTagDatetimeBox extends AEDDropdownMenu {
+public class AEDDatetimeBox extends AEDDropdownMenu {
     private TagSubalarmDatetimePickBinding binding;
 
-    public AlarmTagDatetimeBox(Context context, AttributeSet attrs) {
+    public AEDDatetimeBox(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -42,6 +44,8 @@ public class AlarmTagDatetimeBox extends AEDDropdownMenu {
     public TextInputLayout getSpinnerTil() {
         return binding.tagDateTypeTil;
     }
+    @Override
+    protected EditText getEditText() { return getSpinner(); }
 
     public void setDateType(AlarmTagEditDialog.DateType dateType) {
         binding.tagTimeBox.setVisibility(dateType.hasTime() ? View.VISIBLE : View.GONE);
@@ -62,5 +66,9 @@ public class AlarmTagDatetimeBox extends AEDDropdownMenu {
         else
             notifType = new NotifType(val, dt);
         return notifType;
+    }
+    @Override
+    protected ImageView getIcon() {
+        return binding.iconTop;
     }
 }

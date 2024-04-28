@@ -22,6 +22,7 @@ public abstract class AEDDropdownMenu extends AEDBaseBox {
     protected void init() {
         getSpinner().setInputType(InputType.TYPE_NULL);
         getSpinner().setKeyListener(null);
+        getSpinner().setFocusable(false);
     }
 
     public abstract AutoCompleteTextView getSpinner();

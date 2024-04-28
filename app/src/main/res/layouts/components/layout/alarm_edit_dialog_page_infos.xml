@@ -37,7 +37,8 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginVertical="3dp"
 
-                app:mainIcon="@drawable/menuic_notification"/>
+                app:mainIcon="@drawable/menuic_notification"
+                app:textSize="@dimen/aedpi_textsize"/>
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
                 android:id="@+id/aedpi_tag_importance_box"
                 android:layout_width="match_parent"
@@ -49,7 +50,8 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginVertical="3dp"
 
-                app:mainIcon="@drawable/ic_importance_exclaimation"/>
+                app:mainIcon="@drawable/ic_importance_exclaimation"
+                app:textSize="@dimen/aedpi_textsize"/>
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
                 android:id="@+id/aedpi_tag_notif_date_box"
                 android:layout_width="match_parent"
@@ -64,7 +66,8 @@
                 app:textHint="@string/tab_date_title"
                 app:mainIcon="@drawable/ic_type_agenda"
                 app:focusable="false"
-                app:textSize="@dimen/small_textsize"/>
+                app:textSize="@dimen/aedpi_textsize"
+                app:multiLine="true"/>
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
                 android:id="@+id/aedpi_tag_notif_time_box"
                 android:layout_width="match_parent"
@@ -78,8 +81,8 @@
 
                 app:textHint="@string/tab_time_title"
                 app:mainIcon="@drawable/ic_symb_time"
-                app:focusable="false"
-                app:textSize="@dimen/small_textsize"/>
+                app:textSize="@dimen/aedpi_textsize"
+                app:focusable="false"/>
             <include layout="@layout/tag_separator"/>
         </LinearLayout>
     </ScrollView>

@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.databinding.TagTextEditBinding;
@@ -21,26 +23,23 @@ public class AEDContentBox extends AEDBaseBox {
 
     public AEDContentBox(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // attributes handling
-        @SuppressLint("CustomViewStyleable")
-        TypedArray a1 = context.obtainStyledAttributes(attrs, R.styleable.AEDBaseBox);
-        TypedArray a2 = context.obtainStyledAttributes(attrs, R.styleable.AEDContentBox);
+        handleAttributes(context, attrs);
+    }
 
-        String textHint = a2.getString(R.styleable.AEDContentBox_textHint);
-        Drawable iconDrawable = a1.getDrawable(R.styleable.AEDBaseBox_mainIcon);
-        boolean focusable = a2.getBoolean(R.styleable.AEDContentBox_focusable, true);
-        float textSize = a2.getDimensionPixelSize(R.styleable.AEDContentBox_textSize, -1);
+    private void handleAttributes(Context context, AttributeSet attrs) {
+        // attributes handling
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AEDContentBox);
+
+        String textHint = a.getString(R.styleable.AEDContentBox_textHint);
+        boolean focusable = a.getBoolean(R.styleable.AEDContentBox_focusable, true);
+        boolean multiLine = a.getBoolean(R.styleable.AEDContentBox_multiLine, false);
 
         if (textHint != null)
             binding.tagContentTil.setHint(textHint);
-        if (iconDrawable != null)
-            binding.icon.setImageDrawable(iconDrawable);
         binding.tagContentTv.setFocusable(focusable);
-        if (textSize != -1)
-            binding.tagContentTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        binding.tagContentTv.setInputType(multiLine ? InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT);
 
-        a1.recycle();
-        a2.recycle();
+        a.recycle();
     }
 
     @Override
@@ -53,11 +52,16 @@ public class AEDContentBox extends AEDBaseBox {
         binding = TagTextEditBinding.inflate(LayoutInflater.from(context), this, true);
     }
 
+    @Override
     public EditText getEditText() {
         return binding.tagContentTv;
     }
     private TextInputLayout getTil() {
         return binding.tagContentTil;
+    }
+    @Override
+    protected ImageView getIcon() {
+        return binding.icon;
     }
 
     public String getText() {
