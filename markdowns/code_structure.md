@@ -1,4 +1,5 @@
 # Design Reference on Code Structure
+[Back to README](../README.md)
 
 ## Activities
 Stores the list of activities and the Application class.

@@ -13,7 +13,7 @@ We believe:
 
 ## Code Maintenance
 _Most part of the features are still under development._
-- [Design Reference on Code Structure](app/src/main/java/com/aurora/oasisplanner/code_structure.md)
+- [Design Reference on Code Structure](markdowns/code_structure.md)
 
 ## Our Plan
 - Complete basic functionalities as described in our goals before September 2024.
