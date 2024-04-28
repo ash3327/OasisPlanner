@@ -34,6 +34,7 @@ import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.core.use_cases.EditEventUseCases;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.databinding.AlarmEditBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditDatesBinding;
 import com.aurora.oasisplanner.databinding.AlarmEditInfosBinding;
@@ -64,6 +65,8 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
     private TabSelector tabSelector;
     private List<LocalDate> selectedDates;
     private LocalTime selectedTime;
+
+    private AlarmTagEditDialog.DateType dateType = AlarmTagEditDialog.DateType.minutes;
 
     @NonNull
     @Override
@@ -177,6 +180,7 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                         },
                         (v)->importance.getImportance());
 
+                // Dates and Times
                 alarmEditInfosBinding.aedpiTagNotifDateBox.setText(DateTimesFormatter.toDate(selectedDates));
                 alarmEditInfosBinding.aedpiTagNotifTimeBox.setText(DateTimesFormatter.toTime(selectedTime));
                 alarmEditInfosBinding.aedpiTagNotifDateBox.setOnClickListener(
@@ -185,6 +189,37 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
                 alarmEditInfosBinding.aedpiTagNotifTimeBox.setOnClickListener(
                         (v)->tabSelector.onClick(2)
                 );
+
+                // Locations
+                SpannableStringBuilder ssb = event.alarmList.getLoc();
+                if (ssb != null)
+                    alarmEditInfosBinding.aedpiTagLocationBox.setText(ssb.toString());
+                else
+                    alarmEditInfosBinding.aedpiTagLocationBox.setVisibility(View.GONE);
+
+                // DateTime
+                ArrayAdapter<AlarmTagEditDialog.DateType> dateTypeAdapter = new ArrayAdapter<AlarmTagEditDialog.DateType>(requireContext(), R.layout.datetype_spinner_element);
+                dateTypeAdapter.addAll(AlarmTagEditDialog.DateType.values());
+                alarmEditInfosBinding.aedpiTagDatetimeBox.setOnItemSelectListener(
+                        dateTypeAdapter, dateType.toString(), null,
+                        (adapterView, view, position, id) -> {
+                            dateType = AlarmTagEditDialog.DateType.values()[position];
+                            alarmEditInfosBinding.aedpiTagDatetimeBox.setDateType(dateType);
+                        },
+                        (v)->dateType.ordinal());
+
+                NotifType subalarm = event.alarmList.getNotifType();
+                if (subalarm != null)
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifType(subalarm);
+                else
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setVisibility(View.GONE);
+
+                // Tags
+                String tags = event.alarmList.getTagsString();
+                if (tags != null && !tags.isEmpty())
+                    alarmEditInfosBinding.aedpiTagTagsBox.setText(tags);
+                else
+                    alarmEditInfosBinding.aedpiTagTagsBox.setVisibility(View.GONE);
 
                 break;
             case 1:

@@ -7,10 +7,10 @@ import com.aurora.oasisplanner.util.styling.Resources;
 import java.time.LocalDateTime;
 
 public class NotifType {
-    int val;
-    AlarmTagEditDialog.DateType dateType;
-    int hour, minute;
-    boolean hasTime;
+    public int val;
+    public AlarmTagEditDialog.DateType dateType;
+    public int hour, minute;
+    public boolean hasTime;
 
     public NotifType(int val, AlarmTagEditDialog.DateType dateType) {
         this.val = val;

@@ -13,6 +13,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
@@ -151,10 +152,15 @@ public class _Event extends __Item {
     public String getTagsString() {
         return getArgSpannableStr(TagType.TAGS);
     }
+
     // INFO: GET ARGS:
     public SpannableStringBuilder getLoc() {
         SpannableStringBuilder out = getArgSpannable(TagType.LOC);
         return out;
+    }
+    public NotifType getNotifType() {
+        String val = getArgSpannableStr(TagType.ALARM);
+        return val != null ? new NotifType(val) : null;
     }
 
 

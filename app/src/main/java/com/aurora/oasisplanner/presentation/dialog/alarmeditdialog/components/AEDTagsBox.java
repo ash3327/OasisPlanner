@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.aurora.oasisplanner.databinding.TagTagsEditBinding;
+import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 
 public class AEDTagsBox extends AEDBaseBox {
     private TagTagsEditBinding binding;
@@ -33,8 +34,13 @@ public class AEDTagsBox extends AEDBaseBox {
             return "";
         }
     }
+    public void setText(String tags) {
+        getTagEditText().setTags(tags);
+    }
+
+    private TagInputEditText getTagEditText() { return binding.tagTagsTv; }
     @Override
-    protected EditText getEditText() { return binding.tagTagsTv; }
+    protected EditText getEditText() { return getTagEditText(); }
     @Override
     protected ImageView getIcon() {
         return binding.icon;

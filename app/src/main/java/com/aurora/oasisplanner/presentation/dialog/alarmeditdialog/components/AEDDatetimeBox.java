@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -53,10 +54,9 @@ public class AEDDatetimeBox extends AEDDropdownMenu {
     }
 
     public NotifType getNotifType(AlarmTagEditDialog.DateType dt) {
-        TextInputEditText tietD = binding.tagDateTv;
         int val;
         try {
-            val = Integer.parseInt(tietD.getText().toString());
+            val = Integer.parseInt(binding.tagDateTv.getText().toString());
         } catch (Exception e) {
             return null;
         }
@@ -66,6 +66,16 @@ public class AEDDatetimeBox extends AEDDropdownMenu {
         else
             notifType = new NotifType(val, dt);
         return notifType;
+    }
+    @SuppressLint("SetTextI18n")
+    public void setNotifType(NotifType notifType) {
+        setDateType(notifType.dateType);
+        binding.tagDateTv.setText(notifType.val+"");
+        getSpinner().setText(notifType.dateType.toString());
+        if (notifType.dateType.hasTime()) {
+            binding.tagTimeHourPicker.setValue(notifType.hour);
+            binding.tagTimeMinutePicker.setValue(notifType.minute);
+        }
     }
     @Override
     protected ImageView getIcon() {
