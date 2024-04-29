@@ -60,8 +60,7 @@ public class _Activity extends __Item {
     @ColumnInfo(name = "activityI")
     public int i = -1;
 
-    @Ignore
-    public boolean visible = true;
+    @Ignore public boolean visible = true;
 
     public _Activity(){}
 
@@ -165,7 +164,8 @@ public class _Activity extends __Item {
         if (cache == null)
             cache = Activity.empty();
         cache.activity = this;
-        return this.cache = cache;
+        this.cache = cache;
+        return this.cache;
     }
 
     @Ignore

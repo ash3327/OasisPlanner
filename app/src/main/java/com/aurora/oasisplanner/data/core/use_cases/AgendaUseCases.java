@@ -1,10 +1,6 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
@@ -22,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 public class AgendaUseCases {
     private AgendaRepository repository;
-    private FragmentManager fragmentManager;
 
     public AgendaUseCases(
             AgendaRepository repository
@@ -30,22 +25,15 @@ public class AgendaUseCases {
         this.repository = repository;
     }
 
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-    }
-
     /** -1 indicates a new agenda. */
     public void edit(long agendaId, long activityLId, long eventLId) {
-        if (fragmentManager == null)
-            throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
-
         Bundle bundle = new Bundle();
         bundle.putLong(AgendaEditDialog.EXTRA_AGENDA_ID, agendaId);
         bundle.putLong(AgendaEditDialog.EXTRA_ACTIVL_ID, activityLId);
         bundle.putLong(AgendaEditDialog.EXTRA_EVENT_ID, eventLId);
 
-        Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment).navigate(
-                R.id.navigation_agendaEditDialog, bundle);
+
+        MainActivity.getNavController().navigate(R.id.navigation_agendaEditDialog, bundle);
     }
 
     public Agenda get(long agendaId) {

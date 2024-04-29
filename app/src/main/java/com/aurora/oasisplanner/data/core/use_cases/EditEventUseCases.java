@@ -1,11 +1,12 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
-import android.content.res.Resources;
+import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class EditEventUseCases {
     private FragmentManager fragmentManager;
     private Event event;
+    private AlarmEditDialog.OnSaveListener onSaveListener;
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -26,19 +28,14 @@ public class EditEventUseCases {
 
     public void invoke(_Event alarmList, SpannableStringBuilder activityDescr,
                        AlarmEditDialog.OnSaveListener onSaveListener) {
-        AppModule.provideExecutor().submit(
-                ()->{
-                    this.event = alarmList.getAssociates();
-                    this.event.contents = activityDescr;//_Doc.getFirst(, "(no content)");
+        this.event = alarmList.getAssociates();
+        this.event.contents = activityDescr;
 
-                    if (fragmentManager == null)
-                        throw new Resources.NotFoundException("Fragment Manager is Not Set Properly.");
-                    AlarmEditDialog dialog = new AlarmEditDialog();
-                    dialog.setOnSaveListener(onSaveListener);
+        this.onSaveListener = onSaveListener;
 
-                    dialog.show(fragmentManager, "dialogAlarmEdit");
-                }
-        );
+
+
+        MainActivity.getNavController().navigate(R.id.navigation_alarmEditDialog, new Bundle());
     }
 
     public void invokeDialogForTagType(Set<_Event> checkedList, Runnable updateUi) {
@@ -58,4 +55,5 @@ public class EditEventUseCases {
     public Event retrieveAlarms() {
         return event;
     }
+    public AlarmEditDialog.OnSaveListener getOnSaveListener() { return onSaveListener; }
 }

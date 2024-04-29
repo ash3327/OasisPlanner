@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.presentation.dialog.agendaeditdialog;
 import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -88,6 +88,8 @@ public class AgendaEditDialog extends Fragment {
                     }
                 });
 
+
+
         binding = PageBinding.inflate(getLayoutInflater());
 
         AppModule.provideExecutor().submit(()->{
@@ -95,10 +97,12 @@ public class AgendaEditDialog extends Fragment {
             activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
             eventLId = getArguments().getLong(EXTRA_EVENT_ID, -1);
 
-            if (agendaId != LId_NULL)
-                agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
-            else
-                agenda = Agenda.empty();
+            if (agenda == null) {
+                if (agendaId != LId_NULL)
+                    agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
+                else
+                    agenda = Agenda.empty();
+            }
 
             if (activityLId != LId_NULL) {
                 for (_Activity actv : agenda.activities) {
@@ -134,7 +138,6 @@ public class AgendaEditDialog extends Fragment {
 
         associateTitle(binding.pageTitle);
         binding.pageTitle.setOnKeyListener((v, keyCode, event)->keyCode == KeyEvent.KEYCODE_ENTER);
-
         show(selected);
     }
 
@@ -165,7 +168,9 @@ public class AgendaEditDialog extends Fragment {
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
         recyclerView.setAdapter(adapter);
-        adapter.setOnClickListener((actv)->showEvents(Collections.singletonList(actv)));
+        adapter.setOnClickListener((actv)->{
+            showEvents(Collections.singletonList(actv));
+        });
         binding.pageAddItemEditText.setOnEnterListener(
                 (s)->adapter.insert(ActivityType.Type.activity, 0, s));
         adapter.setAgenda(agenda);
@@ -194,7 +199,9 @@ public class AgendaEditDialog extends Fragment {
 
         Switch tSwitch = new Switch(false);
         final EventAdapter adapter = eventAdapter = new EventAdapter(
-                (alarmList)->show(selected),
+                (_event)->{
+                    show(selected);
+                },
                 this::checkboxOnSelect,
                 recyclerView, tSwitch, agenda, eventLId
         );
@@ -210,9 +217,7 @@ public class AgendaEditDialog extends Fragment {
                 _Activity actv = selected.get(0);
                 Activity activity = actv.getCache();
                 assert activity != null;
-                binding.getRoot().post(()->{
-                    adapter.setEventList(activity);
-                });
+                binding.getRoot().post(()-> adapter.setEventList(activity));
                 binding.pageAddItemEditText.setOnEnterListener(
                         (s)->adapter.insert(ActivityType.Type.activity, 0, s));
             } catch (Exception e) {
@@ -379,8 +384,12 @@ public class AgendaEditDialog extends Fragment {
         AppModule.retrieveAgendaUseCases().put(agenda);
     }
 
+    @SuppressLint("RestrictedApi")
     private void navigateUp() {
-        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigateUp();
+
+//        MainActivity.getNavController().navigateUp();
+        MainActivity.getNavController().popBackStack(R.id.navigation_agendaEditDialog, true);
+
     }
 
     // INFO: Options Menu

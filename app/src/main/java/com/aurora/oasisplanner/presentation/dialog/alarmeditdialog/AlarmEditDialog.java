@@ -1,31 +1,31 @@
 package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
@@ -52,10 +52,10 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
-public class AlarmEditDialog extends AppCompatDialogFragment {
+public class AlarmEditDialog extends Fragment {
     // Root data
     private Event event;
-    private Dialog dialog;
+    private AlarmEditBinding binding;
     // Components
     private MultiDatePicker datePicker;
     private TimePicker timePicker;
@@ -71,10 +71,33 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        setHasOptionsMenu(true);
+        MainActivity activity = (MainActivity) requireActivity();
+        MainActivity.bottomBar.setVisibility(View.GONE);
+        activity.setDrawerLocked(true);
+        activity.mDrawerToggle.setDrawerIndicatorEnabled(false);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
+
+        activity.mDrawerToggle.setToolbarNavigationClickListener((v)-> showCancelConfirmDialog());
+
+        activity.getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        showCancelConfirmDialog();
+                    }
+                });
 
         EditEventUseCases editAlarmListUseCase = AppModule.retrieveEditEventUseCases();
         this.event = editAlarmListUseCase.retrieveAlarms();
+        setOnSaveListener(editAlarmListUseCase.getOnSaveListener());
 
         assert event != null;
 
@@ -83,36 +106,19 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         this.selectedDates = event.alarmList.dates;
         this.selectedTime = event.alarmList.time;
         this.notifType = event.alarmList.getNotifType();
-        this.dateType = notifType.dateType;
+        if (notifType != null)
+            this.dateType = notifType.dateType;
 
-        AlarmEditBinding binding = AlarmEditBinding.inflate(getLayoutInflater());
-        onBind(binding);
+        binding = AlarmEditBinding.inflate(getLayoutInflater());
+        onBind();
 
-        ViewGroup vg = (ViewGroup) binding.getRoot();
-        dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setContentView(vg);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        return dialog;
+        return binding.getRoot();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        new Handler().post(() -> getDialog().getWindow().setLayout(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-    }
-
-    public void onBind(AlarmEditBinding binding) {
+    public void onBind() {
 
         binding.btnConfirm.setOnClickListener(
                 (v)->onConfirm()
-        );
-        binding.btnCancel.setOnClickListener(
-                (v)->onCancel()
         );
 
         tabSelector = binding.tabSelector;
@@ -141,11 +147,6 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
 
     public void switchToPage(int i, AlarmEditBinding binding, LayoutInflater li) {
         binding.dialogContents.removeAllViews();
-        binding.dialogContents.setLayoutParams(
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        binding.placeholder.getHeight())
-        );
         switch (i) {
             case 0:
                 AlarmEditInfosBinding alarmEditInfosBinding = AlarmEditInfosBinding.inflate(li);
@@ -299,10 +300,13 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
             return;
         }
         saveAlarms();
-        dialog.dismiss();
+        navigateUp();
     }
     public void onCancel() {
-        dialog.dismiss();
+
+    }
+    public void onDiscard() {
+        navigateUp();
     }
 
     public void saveAlarms() {
@@ -311,8 +315,50 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
         event.alarmList.putArgs(TagType.ALARM.name(), notifType.toString());
         event.alarmList.getAssociates().generateSubalarms();
         event.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
+
         if (onSaveListener != null)
             onSaveListener.save(event);
+    }
+
+    public void showCancelConfirmDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.page_overhead_edit_agenda)
+                .setMessage(R.string.save_change)
+                .setPositiveButton(R.string.page_confirm, (dialog, whichButton) -> {
+                    onConfirm();
+                })
+                .setNegativeButton(R.string.page_cancel, (dialog, which) -> {
+                    onCancel();
+                })
+                .setNeutralButton(R.string.discard, ((dialog, which) -> {
+                    onDiscard();
+                })).show();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void navigateUp() {
+        MainActivity.getNavController().popBackStack(R.id.navigation_alarmEditDialog, true);
+    }
+
+    // INFO: Options Menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.edit_agenda_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                showCancelConfirmDialog();
+                return true;
+            case R.id.editAgenda_discard:
+                onDiscard();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static class AlarmTypeAdapter extends ArrayAdapter<AlarmType> {
@@ -340,7 +386,8 @@ public class AlarmEditDialog extends AppCompatDialogFragment {
             return position;
         }
 
-        @Override
+        @Override@
+        SuppressLint("ViewHolder")
         public View getView(int position, View convertView, ViewGroup parent) {
             SpinnerElementBinding binding = SpinnerElementBinding.inflate(li);
             AlarmType type = typeList.get(position);
