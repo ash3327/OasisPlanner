@@ -29,10 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
+import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.PageBinding;
@@ -57,6 +59,7 @@ public class AgendaEditDialog extends Fragment {
 
     private List<_Activity> selected = new ArrayList<>();
     private PageBinding binding;
+    private boolean alarmEditOpened = false;
 
     public static final long LId_NULL = -1;
 
@@ -87,8 +90,6 @@ public class AgendaEditDialog extends Fragment {
                         showCancelConfirmDialog();
                     }
                 });
-
-
 
         binding = PageBinding.inflate(getLayoutInflater());
 
@@ -194,14 +195,12 @@ public class AgendaEditDialog extends Fragment {
         binding.pageHeader1.getDetailsButton().setVisibility(View.VISIBLE);
 
         RecyclerView recyclerView = binding.pageSectionsEvents;
-        recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
         recyclerView.setHasFixedSize(false);
 
         Switch tSwitch = new Switch(false);
+        AlarmEditDialog.OnSaveListener onEventSaveListener = (_event)-> show(selected);
         final EventAdapter adapter = eventAdapter = new EventAdapter(
-                (_event)->{
-                    show(selected);
-                },
+                onEventSaveListener,
                 this::checkboxOnSelect,
                 recyclerView, tSwitch, agenda, eventLId
         );
@@ -209,6 +208,17 @@ public class AgendaEditDialog extends Fragment {
         setupEditToolbar(tSwitch, adapter);
         associateDragToReorder(adapter, recyclerView);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()){
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                _Event event = adapter.getPinnedEvent();
+                if (event != null && !alarmEditOpened) {
+                    alarmEditOpened = true;
+                    AppModule.retrieveEditEventUseCases().invoke(adapter.getPinnedEvent(), onEventSaveListener);
+                }
+            }
+        });
 
         ExecutorService executor = AppModule.provideExecutor();
         executor.submit(()->{

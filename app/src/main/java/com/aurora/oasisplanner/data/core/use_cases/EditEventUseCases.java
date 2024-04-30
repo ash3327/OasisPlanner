@@ -26,16 +26,11 @@ public class EditEventUseCases {
         this.fragmentManager = fragmentManager;
     }
 
-    public void invoke(_Event alarmList, SpannableStringBuilder activityDescr,
-                       AlarmEditDialog.OnSaveListener onSaveListener) {
+    public void invoke(_Event alarmList, AlarmEditDialog.OnSaveListener onSaveListener) {
         this.event = alarmList.getAssociates();
-        this.event.contents = activityDescr;
-
         this.onSaveListener = onSaveListener;
 
-
-
-        MainActivity.getNavController().navigate(R.id.navigation_alarmEditDialog, new Bundle());
+        MainActivity.getNavController().navigate(R.id.navigation_alarmEditDialog);
     }
 
     public void invokeDialogForTagType(Set<_Event> checkedList, Runnable updateUi) {

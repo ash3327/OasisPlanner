@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +46,9 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     private Activity activity;
     private Agenda agenda;
 
+    public final int NIL_VAL = -1;
+    private int mPinned = NIL_VAL;
+
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
                         OnSelectListener onSelectListener,
                         RecyclerView recyclerView, Switch tSwitch, Agenda agenda,
@@ -86,12 +88,13 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         List<Object> list = new ArrayList<>();
         List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0, pinned = -1;
+        int i = 0;
+        mPinned = NIL_VAL;
         List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
             if (obj instanceof _Event && ((_Event)obj).id == LId)
-                pinned = i;
+                mPinned = i;
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
@@ -100,8 +103,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         this.types = types;
         this.len = i;
 
-        if (pinned != -1)
-            recyclerView.scrollToPosition(pinned);
+        if (mPinned != NIL_VAL)
+            recyclerView.scrollToPosition(mPinned);
     }
 
     public void removeChecked() {
@@ -125,7 +128,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
 
     public void remove(Object obj, int i) {
-        if (i == -1) return;
+        if (i == NIL_VAL) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
         if (obj instanceof _Event && type.type == ActivityType.Type.activity
@@ -198,11 +201,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         activity.getObjList(true);
     }
 
+    public _Event getPinnedEvent() {
+        if (mPinned == NIL_VAL)
+            return null;
+        return (_Event) items.get(mPinned);
+    }
+
     class EventHolder extends _BaseHolder<EventAdapter.EventHolder, _Event, EventAdapter> {
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
-        private int i = -1;
+        private int i = NIL_VAL;
 
         public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
                            Switch tSwitch, Set<_Event> checkedList) {
@@ -321,13 +330,8 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 return;
             if (aSwitch.getState())
                 checkToggle(gp);
-            else {
-                AppModule.retrieveEditEventUseCases()
-                        .invoke(
-                                gp, activityTitle,
-                                onSaveAlarmListener
-                        );
-            }
+            else
+                AppModule.retrieveEditEventUseCases().invoke(gp, onSaveAlarmListener);
         }
     }
 }

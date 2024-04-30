@@ -312,8 +312,10 @@ public class AlarmEditDialog extends Fragment {
     public void saveAlarms() {
         event.alarmList.importance = importance;
         event.alarmList.type = type;
-        event.alarmList.putArgs(TagType.ALARM.name(), notifType.toString());
-        event.alarmList.getAssociates().generateSubalarms();
+        if (notifType != null) {
+            event.alarmList.putArgs(TagType.ALARM.name(), notifType.toString());
+            event.alarmList.getAssociates().generateSubalarms();
+        }
         event.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
 
         if (onSaveListener != null)
