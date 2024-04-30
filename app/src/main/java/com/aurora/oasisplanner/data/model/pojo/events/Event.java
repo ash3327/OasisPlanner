@@ -32,7 +32,7 @@ public class Event {
     @Ignore
     public boolean visible = true;
     @Ignore
-    public SpannableStringBuilder contents;
+    public String contents;
 
     public Event(){}
 

@@ -1,23 +1,19 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
-import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.tags.TagType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +43,7 @@ public class Activity {
     @Ignore
     public Activity(String descr) {
         this.activity = new _Activity();
-        this.activity.descr = descr == null ? null : new SpannableStringBuilder(descr);
+        this.activity.title = descr == null ? null : new SpannableStringBuilder(descr);
     }
 
     /** Please always use this constructor with content NULL. */
@@ -200,6 +196,13 @@ public class Activity {
     public Activity setI(int i) {
         this.activity.i = i;
         return this;
+    }
+
+    @Ignore
+    public SpannableStringBuilder getTitle() {
+        if (activity != null)
+            return activity.title;
+        return null;
     }
 
     @Ignore

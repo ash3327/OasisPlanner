@@ -108,7 +108,7 @@ public class AgendaRepository {
         for (_Event gp : activity.invisGroups)
             _delete(gp);
 
-        SpannableStringBuilder alarmDescr = activity.activity.descr;
+        SpannableStringBuilder alarmDescr = activity.activity.title;
 
         Importance activityImp = Importance.unimportant;
         for (_Event alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))

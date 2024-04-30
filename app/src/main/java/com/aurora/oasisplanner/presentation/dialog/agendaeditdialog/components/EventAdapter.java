@@ -19,6 +19,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.entities.util._Doc;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.AlarmType;
@@ -204,7 +205,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     public _Event getPinnedEvent() {
         if (mPinned == NIL_VAL)
             return null;
-        return (_Event) items.get(mPinned);
+        _Event pinnedEvent = (_Event) items.get(mPinned);
+        pinnedEvent.activityDescr = getContentString(pinnedEvent);
+        return pinnedEvent;
+    }
+    public String getContentString(_Event event) {
+        return Alarm.getContentStringFrom(
+                agenda.getTitle(),
+                activity.getTitle(),
+                event.getTitle(),
+                false
+        ).toString();
     }
 
     class EventHolder extends _BaseHolder<EventAdapter.EventHolder, _Event, EventAdapter> {
@@ -248,7 +259,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
             binding.bar.setOnClickListener(
                     (v)->{
-                        barOnClicked(i, gp, grp.activity.descr);
+                        barOnClicked(i, gp, grp.activity.title);
                     }
             );
             binding.bar.setOnLongClickListener(
@@ -262,7 +273,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
             alarmRefreshUi();
 
-            bindDocText(binding.docTag, binding.docTagTv, gp, i, grp.activity.descr);
+            bindDocText(binding.docTag, binding.docTagTv, gp, i, grp.activity.title);
 
             return true;
         }
@@ -331,7 +342,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
             if (aSwitch.getState())
                 checkToggle(gp);
             else
-                AppModule.retrieveEditEventUseCases().invoke(gp, onSaveAlarmListener);
+                AppModule.retrieveEditEventUseCases().invoke(gp, getContentString(gp), onSaveAlarmListener);
         }
     }
 }

@@ -57,6 +57,8 @@ public class _Event extends __Item {
 
     @Ignore
     private Event associates = null;
+    @Ignore
+    public String activityDescr = null;
 
     public _Event(){}
 

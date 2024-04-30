@@ -215,7 +215,7 @@ public class AgendaEditDialog extends Fragment {
                 _Event event = adapter.getPinnedEvent();
                 if (event != null && !alarmEditOpened) {
                     alarmEditOpened = true;
-                    AppModule.retrieveEditEventUseCases().invoke(adapter.getPinnedEvent(), onEventSaveListener);
+                    AppModule.retrieveEditEventUseCases().invoke(event, event.activityDescr, onEventSaveListener);
                 }
             }
         });
@@ -236,7 +236,7 @@ public class AgendaEditDialog extends Fragment {
         });
 
         // INFO: Showing a list of activities that the event belongs to.
-        binding.pageActivities.setTags(selected.stream().map((s)->s.descr.toString().replace(" ", "_"))
+        binding.pageActivities.setTags(selected.stream().map((s)->s.title.toString().replace(" ", "_"))
                 .reduce(TagInputEditText.SEP, (a,b)->a+TagInputEditText.SEP+b)+TagInputEditText.SEP);
         binding.pageActivities.setOnUpdateListener((tags)->{
             if (tags.trim().isEmpty()) {

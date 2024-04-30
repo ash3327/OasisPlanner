@@ -117,10 +117,16 @@ public class AlarmEditDialog extends Fragment {
 
     public void onBind() {
 
+        // Title Box
+        binding.aedAlarmNameSuppBox.setText(event.contents);
+        associateTitle(binding.aedAlarmNameBox);
+
+        // Confirm Button
         binding.btnConfirm.setOnClickListener(
                 (v)->onConfirm()
         );
 
+        // Tab Selector
         tabSelector = binding.tabSelector;
         tabSelector.createOptionMenu(
                 0,
@@ -151,9 +157,6 @@ public class AlarmEditDialog extends Fragment {
             case 0:
                 AlarmEditInfosBinding alarmEditInfosBinding = AlarmEditInfosBinding.inflate(li);
                 binding.dialogContents.addView(alarmEditInfosBinding.getRoot());
-
-                // Title Box
-                associateTitle(alarmEditInfosBinding.aedpiTagContentBox.getEditText());
 
                 // Alarm Box
                 AlarmTypeAdapter adapter = new AlarmTypeAdapter(

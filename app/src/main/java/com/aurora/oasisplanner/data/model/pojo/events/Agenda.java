@@ -105,6 +105,13 @@ public class Agenda {
     }
 
     @Ignore
+    public String getTitle() {
+        if (agenda != null)
+            return agenda.title;
+        return null;
+    }
+
+    @Ignore
     public String toString() {
         return "\n [ Agenda : "+agenda.id+" : "+agenda.title+" : "+getObjList(false)[0]+"\n delete gps: "+ invisGroups +"\n delete docs: "+invisDocs+"\n ]";
     }

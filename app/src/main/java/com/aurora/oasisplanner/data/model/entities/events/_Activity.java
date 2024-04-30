@@ -3,19 +3,16 @@ package com.aurora.oasisplanner.data.model.entities.events;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.RenameColumn;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.Resources;
@@ -54,7 +51,7 @@ public class _Activity extends __Item {
     @ColumnInfo(name = "activityImportance")
     public Importance importance;
     @ColumnInfo(name = "activityDescr", defaultValue = "")
-    public SpannableStringBuilder descr;
+    public SpannableStringBuilder title;
     @ColumnInfo(name = "activityArgs")
     public Map<String,String> args = new HashMap<>();
     @ColumnInfo(name = "activityI")
@@ -70,8 +67,8 @@ public class _Activity extends __Item {
     }
 
     @Ignore
-    public _Activity(String descr) {
-        this.descr = new SpannableStringBuilder(descr);
+    public _Activity(String title) {
+        this.title = new SpannableStringBuilder(title);
     }
 
     public Type getType() {
@@ -88,11 +85,11 @@ public class _Activity extends __Item {
 
     @Ignore
     public CharSequence getTitle() {
-        return descr;
+        return title;
     }
     @Ignore
     public void setTitle(CharSequence val) {
-        descr = new SpannableStringBuilder(val);
+        title = new SpannableStringBuilder(val);
     }
 
     @Ignore
@@ -112,7 +109,7 @@ public class _Activity extends __Item {
         extras.putString("types", converter.typeListToString(types));
         extras.putString("type", getType().name());
         extras.putString("importance", getImportance().name());
-        extras.putString("descr", converter.spannableToString(descr));
+        extras.putString("descr", converter.spannableToString(title));
         extras.putSerializable("args", (Serializable) args);
 
         return extras;
@@ -129,7 +126,7 @@ public class _Activity extends __Item {
         alarm.types = converter.typeListFromString(extras.getString("types"));
         alarm.type = Type.valueOf(extras.getString("type"));
         alarm.importance = Importance.valueOf(extras.getString("importance"));
-        alarm.descr = converter.spannableFromString(extras.getString("descr"));
+        alarm.title = converter.spannableFromString(extras.getString("descr"));
         alarm.args = (Map<String,String>) extras.getSerializable("args");
 
         return alarm;
@@ -138,7 +135,7 @@ public class _Activity extends __Item {
     @Ignore
     public String toString() {
         return "\n\t\t [ Activity : "+id+" : \n\t\t\t"+importance.name()+"\n\t\t\t"+type.name()+
-                "\n\t\t\t"+descr.toString()+"\n\t\t ]";
+                "\n\t\t\t"+ title.toString()+"\n\t\t ]";
     }
 
 

@@ -2,11 +2,9 @@ package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
 import com.aurora.oasisplanner.data.model.entities.events._Activity;
@@ -15,7 +13,6 @@ import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
-import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.time.LocalDate;
@@ -63,21 +60,33 @@ public class Alarm {
         return getAgenda().title;
     }
     public SpannableStringBuilder getActivityDescr() {
-        return getActivity().descr;
+        return getActivity().title;
     }
     public String getEventDescr() {
         return getEvent().getTitle();
     }
     @Ignore
     public SpannableStringBuilder getContents(boolean inExpandedMode) {
+        return getContentStringFrom(
+                getAgendaDescr(),
+                getActivityDescr(),
+                getEventDescr(),
+                inExpandedMode
+        );
+    }
+    @Ignore
+    public static SpannableStringBuilder getContentStringFrom(
+        String agendaDescr, SpannableStringBuilder activityDescr,
+        String eventDescr, boolean inExpandedMode
+    ) {
         SpannableStringBuilder out = new SpannableStringBuilder(), temp;
         String SEP = " • ";//inExpandedMode ? "\n" : " • ";
         String temp2;
 
-        if (!Styles.isEmpty(temp2 = getAgendaDescr()))  out.append(temp2).append(SEP);
-        if (!Styles.isEmpty(temp = getActivityDescr()))     out.append(temp).append(SEP);
+        if (!Styles.isEmpty(temp2 = agendaDescr))  out.append(temp2).append(SEP);
+        if (!Styles.isEmpty(temp = activityDescr)) out.append(temp).append(SEP);
 
-        if (!Styles.isEmpty(temp2 = getEventDescr()) && inExpandedMode)
+        if (!Styles.isEmpty(temp2 = eventDescr) && inExpandedMode)
             out.append(temp2).append(SEP);
 
         int len = out.length();

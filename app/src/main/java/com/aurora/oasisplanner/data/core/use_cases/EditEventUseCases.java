@@ -26,8 +26,9 @@ public class EditEventUseCases {
         this.fragmentManager = fragmentManager;
     }
 
-    public void invoke(_Event alarmList, AlarmEditDialog.OnSaveListener onSaveListener) {
+    public void invoke(_Event alarmList, String activityDescr, AlarmEditDialog.OnSaveListener onSaveListener) {
         this.event = alarmList.getAssociates();
+        this.event.contents = activityDescr;
         this.onSaveListener = onSaveListener;
 
         MainActivity.getNavController().navigate(R.id.navigation_alarmEditDialog);
