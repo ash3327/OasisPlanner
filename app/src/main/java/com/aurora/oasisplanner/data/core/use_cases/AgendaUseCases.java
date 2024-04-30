@@ -32,7 +32,6 @@ public class AgendaUseCases {
         bundle.putLong(AgendaEditDialog.EXTRA_ACTIVL_ID, activityLId);
         bundle.putLong(AgendaEditDialog.EXTRA_EVENT_ID, eventLId);
 
-
         MainActivity.getNavController().navigate(R.id.navigation_agendaEditDialog, bundle);
     }
 

@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static BottomNavigationView navBar;
     public static ViewGroup bottomBar;
     private static NavigationView navigationView;
-    private PowerManager.WakeLock partialWakeLock;
     private MainBinding binding;
     private int selectedTabId = 0;
 
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        getNavController();
+        requireNavController();
         NavigationUI.setupActionBarWithNavController(
                 this, mNavController,
                 new AppBarConfiguration.Builder(
@@ -194,6 +193,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static NavController getNavController() {
         if (mNavController != null)
             return mNavController;
+        return requireNavController();
+    }
+    public static NavController requireNavController() {
         return mNavController = Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment);
     }
 
