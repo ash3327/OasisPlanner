@@ -44,7 +44,9 @@
                 app:diffMonthSubHighlightedBgColor="@color/yellow_200_aa"
                 app:diffMonthSubHighlightedTextColor="@color/grey_300"
                 app:padding="0dp"
-                app:rowPadding="1dp"/>
+                app:rowPadding="1dp"
+
+                app:selectionMode="range"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -244,7 +244,6 @@ public class AlarmEditDialog extends Fragment {
                 binding.dialogContents.addView(alarmEditDatesBinding.getRoot());
 
                 datePicker = alarmEditDatesBinding.picker;
-                datePicker.multiSelectable = true;
                 datePicker.minDateAllowed = LocalDate.now();
                 
                 LocalDate date = selectedDates.get(0);
@@ -257,12 +256,15 @@ public class AlarmEditDialog extends Fragment {
                 datePicker.setMonth(date.getYear(), date.getMonthValue());
                 datePicker.refresh();
 
-                datePicker.selected.clear();
-                datePicker.selected.addAll(selectedDates);
+                datePicker.getMultiSelected().clear();
+                datePicker.getMultiSelected().addAll(selectedDates);
                 datePicker.setOnUpdateListener(
-                        (selected)-> selectedDates = selected
+                        (selected)-> {
+                            alarmEditDatesBinding.datesSelectedText.setText(DateTimesFormatter.toDate(selected));
+                            selectedDates = selected;
+                        }
                 );
-                datePicker.setDate(date, false, true, true);
+                datePicker.setFocus(date);
                 break;
             case 2:
                 AlarmEditTimesBinding alarmEditTimesBinding = AlarmEditTimesBinding.inflate(li);
