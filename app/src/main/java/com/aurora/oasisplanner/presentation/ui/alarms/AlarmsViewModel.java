@@ -11,6 +11,7 @@ import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.presentation.widget.multidatepicker.data.DateRange;
 
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class AlarmsViewModel extends AndroidViewModel {
 
     public void refreshAlarms(String searchEntry) {
         alarms = repository.requestAlarm(searchEntry);
+    }
+    public void refreshAlarmsBetween(String searchEntry, DateRange dateRange) {
+        alarms = repository.requestAlarm(searchEntry, dateRange.mStart, dateRange.mEnd);
     }
 
     public void insert(_Alarm alarm) {

@@ -52,13 +52,14 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     }
 
     public List<Object> alarms = new ArrayList<>();
+    public boolean monthIsOn = true;
 
-    public AlarmsAdapter(RecyclerView recyclerView) {
+    public AlarmsAdapter(RecyclerView recyclerView, boolean hasBoundary) {
         if (!Objects.equals(recyclerView.getTag("hasDivider".hashCode()), true)) {
             recyclerView.addItemDecoration(
                     new PaddingItemDecoration(
                             R.dimen.paddingBoxesDecorationDefault,
-                            R.dimen.paddingItemDecorationEdge
+                            hasBoundary ? R.dimen.paddingItemDecorationEdge : R.dimen.paddingBoxesDecorationDefault
                     )
             );
             recyclerView.setTag("hasDivider".hashCode(), true);
@@ -162,7 +163,8 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             LocalDate date = gp.getDate();
             LocalDate month = date.withDayOfMonth(1);
             if (!month.equals(currentMonth)) {
-                list.add(new MonthData(month));
+                if (monthIsOn)
+                    list.add(new MonthData(month));
                 currentMonth = month;
             }
             if (!date.equals(currentDay)) {

@@ -49,6 +49,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -259,7 +260,8 @@ public class AlarmEditDialog extends Fragment {
                 datePicker.getMultiSelected().clear();
                 datePicker.getMultiSelected().addAll(selectedDates);
                 datePicker.setOnUpdateListener(
-                        (selected)-> {
+                        (_picker)-> {
+                            ArrayList<LocalDate> selected = _picker.getMultiSelected();
                             alarmEditDatesBinding.datesSelectedText.setText(DateTimesFormatter.toDate(selected));
                             selectedDates = selected;
                         }

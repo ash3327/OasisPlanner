@@ -3,6 +3,7 @@ package com.aurora.oasisplanner.data.datasource.daos;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
+import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -10,10 +11,10 @@ import androidx.room.Transaction;
 
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
-import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.SubAlarm;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -73,18 +74,26 @@ public interface AlarmDao {
             "WHERE alarmDatetime >= :fromDate ORDER BY alarmDatetime ASC")
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate);
 
-    @Transaction
-    @Query("SELECT * FROM _Alarm " +
+    @Ignore
+    final String searchQuery_start = "SELECT * FROM _Alarm " +
             "JOIN _Agenda ON _Alarm.agendaId = _Agenda.agendaId " +
             "JOIN _Activity ON _Alarm.activityId = _Activity.activityId " +
-            "JOIN _Event ON _Alarm.alarmListId = _Event.eventId " +
-            "WHERE _Alarm.alarmDatetime >= :fromDate AND " +
+            "JOIN _Event ON _Alarm.alarmListId = _Event.eventId ";
+    @Ignore
+    final String searchQuery_end = " AND " +
             "(_Alarm.alarmArgs LIKE '%' || :searchEntry || '%' OR " +
             "_Agenda.agendaTitle LIKE '%' || :searchEntry || '%' OR " +
             "_Activity.activityDescr LIKE '%' || :htmlSearchEntry || '%' OR " +
             "_Event.eventTitle LIKE '%' || :searchEntry || '%') " +
-            "ORDER BY _Alarm.alarmDatetime ASC")
+            "ORDER BY _Alarm.alarmDatetime ASC";
+
+    @Transaction
+    @Query(searchQuery_start+"WHERE _Alarm.alarmDatetime >= :fromDate"+searchQuery_end)
     LiveData<List<Alarm>> getAlarmsInfoAfter(LocalDateTime fromDate, String searchEntry, String htmlSearchEntry);
+
+    @Transaction
+    @Query(searchQuery_start+"WHERE _Alarm.alarmDate >= :fromDate AND _Alarm.alarmDate <= :toDate"+searchQuery_end)
+    LiveData<List<Alarm>> getAlarmsInfoBetween(LocalDate fromDate, LocalDate toDate, String searchEntry, String htmlSearchEntry);
 
     @Transaction
     @Query("SELECT * FROM _Alarm " +

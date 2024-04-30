@@ -16,37 +16,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#FFFFFF"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker
-                android:id="@+id/picker"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF">
+                <com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker
+                    android:id="@+id/picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:layout_marginHorizontal="40dp"
-                android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="10dp"
 
-                app:baseColor="@color/black"
-                app:invalidColor="@color/grey_200"
-                app:regularBgColor="@android:color/transparent"
-                app:regularTextColor="@color/black"
-                app:diffMonthBgColor="@color/transparent_white"
-                app:diffMonthTextColor="@color/grey_300"
-                app:weekDayBgColor="@android:color/transparent"
-                app:weekDayTextColor="@color/grey_300"
-                app:highlightedBgColor="@color/yellow_500_a"
-                app:highlightedTextColor="@color/black"
-                app:subHighlightedBgColor="@color/yellow_200_a"
-                app:subHighlightedTextColor="@color/black"
-                app:diffMonthSubHighlightedBgColor="@color/yellow_200_aa"
-                app:diffMonthSubHighlightedTextColor="@color/grey_300"
-                app:padding="0dp"
-                app:rowPadding="1dp"
+                    app:baseColor="@color/black"
+                    app:invalidColor="@color/grey_200"
+                    app:regularBgColor="@android:color/transparent"
+                    app:regularTextColor="@color/black"
+                    app:diffMonthBgColor="@color/transparent_white"
+                    app:diffMonthTextColor="@color/grey_300"
+                    app:weekDayBgColor="@android:color/transparent"
+                    app:weekDayTextColor="@color/grey_300"
+                    app:highlightedBgColor="@color/yellow_500_a"
+                    app:highlightedTextColor="@color/black"
+                    app:subHighlightedBgColor="@color/yellow_200_a"
+                    app:subHighlightedTextColor="@color/black"
+                    app:diffMonthSubHighlightedBgColor="@color/yellow_200_aa"
+                    app:diffMonthSubHighlightedTextColor="@color/grey_300"
+                    app:padding="2dp"
+                    app:rowPadding="2dp"
 
-                app:selectionMode="range"/>
+                    app:selectionMode="range"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/boxList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:listitem="@layout/_fragment_calendarview_notification_displist"
+                tools:itemCount="5"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

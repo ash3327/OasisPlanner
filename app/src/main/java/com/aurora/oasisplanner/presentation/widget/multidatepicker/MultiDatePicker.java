@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.databinding.MultiDatePickerBinding;
+import com.aurora.oasisplanner.presentation.widget.multidatepicker.data.DateRange;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
 
@@ -32,7 +33,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MultiDatePicker extends LinearLayout implements Updatable {
+public class MultiDatePicker extends UpdatableLinearLayout {
     private MultiDatePickerBinding binding;
     private LocalDate now = LocalDate.now();
     private LocalDate focusedMoment;
@@ -389,7 +390,7 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
                 break;
         }
         refresh();
-        update(selected);
+        update(this);
     }
 
     /** returns the altered flag for the date (which is valid). */
@@ -787,7 +788,7 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     };
 
     public interface OnUpdateListener {
-        void run(ArrayList<LocalDate> selected);
+        void run(MultiDatePicker picker);
     }
 
     /** The enum values must be identical to that defined inside attrs.xml */
@@ -796,59 +797,25 @@ public class MultiDatePicker extends LinearLayout implements Updatable {
     }
 }
 
-class DateRange {
-    public LocalDate mStart, mEnd;
-    private Updating changingStartEndPointerState = Updating.notUpdating;
-
-    public DateRange setPoint(LocalDate point) {
-        changingStartEndPointerState = Updating.notUpdating;
-        mStart = mEnd = point;
-        return this;
-    }
-    public DateRange setRange(LocalDate start, LocalDate end) {
-        changingStartEndPointerState = Updating.notUpdating;
-        mStart = start;
-        mEnd   = end;
-        return this;
-    }
-    public void changeRangeBy(LocalDate pivot) {
-        if (pivot.isBefore(mStart) || pivot.equals(mStart))
-            changingStartEndPointerState = Updating.updatingStart;
-        else if (pivot.isAfter(mEnd) || pivot.equals(mEnd))
-            changingStartEndPointerState = Updating.updatingEnd;
-        switch (changingStartEndPointerState) {
-            case updatingStart:
-                mStart = pivot;
-                break;
-            case updatingEnd:
-                mEnd = pivot;
-                break;
-        }
-    }
-    public boolean contains(LocalDate date) {
-        return date.equals(mStart) || date.equals(mEnd) || date.isAfter(mStart) && date.isBefore(mEnd);
-    }
-
-    enum Updating {
-        notUpdating, updatingStart, updatingEnd
-    }
-}
-
-interface Updatable {
+abstract class UpdatableLinearLayout extends LinearLayout {
     ArrayList<MultiDatePicker.OnUpdateListener> onUpdateListeners = new ArrayList<>();
 
-    default void setOnUpdateListener(MultiDatePicker.OnUpdateListener onUpdateListener) {
+    public UpdatableLinearLayout(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public void setOnUpdateListener(MultiDatePicker.OnUpdateListener onUpdateListener) {
         onUpdateListeners.add(onUpdateListener);
     }
-    default void removeOnUpdateListener(MultiDatePicker.OnUpdateListener onUpdateListener) {
+    void removeOnUpdateListener(MultiDatePicker.OnUpdateListener onUpdateListener) {
         onUpdateListeners.remove(onUpdateListener);
     }
-    default void clearOnUpdateListeners() {
+    void clearOnUpdateListeners() {
         onUpdateListeners.clear();
     }
-    default void update(ArrayList<LocalDate> selected) {
+    void update(MultiDatePicker picker) {
         for (MultiDatePicker.OnUpdateListener onUpdateListener : onUpdateListeners)
-            onUpdateListener.run(selected);
+            onUpdateListener.run(picker);
     }
 }
 
