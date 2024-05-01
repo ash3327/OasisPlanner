@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

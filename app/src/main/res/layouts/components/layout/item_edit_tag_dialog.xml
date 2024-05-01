@@ -67,7 +67,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginBottom="60dp"
                     android:orientation="vertical">
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
                         android:id="@+id/ietd_tag_choose_type_box"
 
                         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
 
                         app:mainIcon="@drawable/ic_tag"/>
                     <!-- Text -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDContentBox
                         android:id="@+id/ietd_tag_content_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
                         app:textHint="@string/tab_tag_content_title"/>
                     <!-- DATETIME -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDDatetimeBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDDatetimeBox
                         android:id="@+id/ietd_tag_datetime_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                         android:layout_marginEnd="32dp"
                         android:layout_marginVertical="3dp"/>
                     <!-- Choose -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
                         android:id="@+id/ietd_tag_choice_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
 
                         app:textHint="@string/tab_tag_content_title"/>
                     <!-- Tags -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDTagsBox
+                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDTagsBox
                         android:id="@+id/ietd_tag_tags_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

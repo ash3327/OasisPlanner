@@ -1,11 +1,10 @@
-package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.aurora.oasisplanner.data.tags.NotifType;
-import com.aurora.oasisplanner.databinding.TagSubalarmDatetimePickBinding;
+import com.aurora.oasisplanner.databinding.TagEditSubalarmDatetimePickBinding;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.DateType;
 import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class AEDDatetimeBox extends AEDDropdownMenu {
-    private TagSubalarmDatetimePickBinding binding;
+    private TagEditSubalarmDatetimePickBinding binding;
     private OnChangeListener ocl;
 
     public AEDDatetimeBox(Context context, AttributeSet attrs) {
@@ -32,7 +32,7 @@ public class AEDDatetimeBox extends AEDDropdownMenu {
     @SuppressLint("DefaultLocale")
     @Override
     protected void initBinding(Context context) {
-        binding = TagSubalarmDatetimePickBinding.inflate(LayoutInflater.from(context), this, true);
+        binding = TagEditSubalarmDatetimePickBinding.inflate(LayoutInflater.from(context), this, true);
         getNumEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         getHourPicker().setMinValue(0);
         getHourPicker().setMaxValue(23);

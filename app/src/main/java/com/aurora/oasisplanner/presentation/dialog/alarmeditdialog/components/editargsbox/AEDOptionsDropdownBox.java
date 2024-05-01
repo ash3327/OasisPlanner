@@ -1,20 +1,17 @@
-package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.databinding.TagOptionsDropdownBinding;
+import com.aurora.oasisplanner.databinding.TagEditOptionsDropdownBinding;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class AEDOptionsDropdownBox extends AEDDropdownMenu {
-    private TagOptionsDropdownBinding binding;
+    private TagEditOptionsDropdownBinding binding;
 
     public AEDOptionsDropdownBox(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -22,7 +19,7 @@ public class AEDOptionsDropdownBox extends AEDDropdownMenu {
 
     @Override
     protected void initBinding(Context context) {
-        binding = TagOptionsDropdownBinding.inflate(LayoutInflater.from(context), this, true);
+        binding = TagEditOptionsDropdownBinding.inflate(LayoutInflater.from(context), this, true);
     }
     @Override
     public AutoCompleteTextView getSpinner() {

@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox;
 
 import android.content.Context;
 import android.text.Editable;
@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.aurora.oasisplanner.databinding.TagTagsEditBinding;
+import com.aurora.oasisplanner.databinding.TagEditTagsBinding;
 import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class AEDTagsBox extends AEDBaseBox {
-    private TagTagsEditBinding binding;
+    private TagEditTagsBinding binding;
 
     public AEDTagsBox(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,7 +26,7 @@ public class AEDTagsBox extends AEDBaseBox {
 
     @Override
     protected void initBinding(Context context) {
-        binding = TagTagsEditBinding.inflate(LayoutInflater.from(context), this, true);
+        binding = TagEditTagsBinding.inflate(LayoutInflater.from(context), this, true);
         getEditText().setText("");
     }
 
