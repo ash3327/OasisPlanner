@@ -127,6 +127,8 @@
     <dimen name="edit_alarm_textSize">14sp</dimen>
     <dimen name="edit_alarm_titleSize">16sp</dimen>
     <dimen name="edit_alarm_icon_padding">12dp</dimen>
+    <dimen name="edit_alarm_args_icon_rpadding">5dp</dimen>
+    <dimen name="edit_alarm_args_view_vpadding">5dp</dimen>
 
     <!-- Add & Edit Agendas (Page) -->
     <dimen name="tiny_doc_margin">4dp</dimen>

@@ -1,23 +1,17 @@
-package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox;
+package com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.aurora.oasisplanner.R;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.function.Function;
 
 public abstract class AEDBaseBox extends LinearLayout {
 
@@ -40,8 +34,7 @@ public abstract class AEDBaseBox extends LinearLayout {
         mIconDrawable = a.getDrawable(R.styleable.AEDBaseBox_mainIcon);
         mTextSize = a.getDimensionPixelSize(R.styleable.AEDBaseBox_textSize, -1);
 
-        if (mTextHint != null)
-            getTil().setHint(mTextHint);
+        getTitleView().setText(mTextHint);
         if (mIconDrawable != null)
             getIcon().setImageDrawable(mIconDrawable);
         if (mTextSize != -1)
@@ -52,7 +45,7 @@ public abstract class AEDBaseBox extends LinearLayout {
 
     protected abstract void init();
     protected abstract void initBinding(Context context);
+    protected abstract TextView getTitleView();
     protected abstract ImageView getIcon();
     protected abstract EditText getEditText();
-    protected abstract TextInputLayout getTil();
 }

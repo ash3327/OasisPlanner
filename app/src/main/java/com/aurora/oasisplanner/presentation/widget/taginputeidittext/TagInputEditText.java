@@ -1,5 +1,6 @@
 package com.aurora.oasisplanner.presentation.widget.taginputeidittext;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -45,8 +46,8 @@ public class TagInputEditText extends TextInputEditText {
     TextWatcher textWatcher;
     String lastString = null;
     public static final String SEP = " ";
-    public boolean editable;
     private OnUpdateListener onUpdateListener = null;
+    private boolean editable;
 
     public TagInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -62,6 +63,7 @@ public class TagInputEditText extends TextInputEditText {
         init();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
         setMovementMethod(LinkMovementMethod.getInstance());
 
