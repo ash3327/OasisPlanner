@@ -15,6 +15,10 @@ We believe:
 _Most part of the features are still under development._
 - [Design Reference on Code Structure](markdowns/code_structure.md)
 
+## Design
+- [Design Document](markdowns/first_draft_design_document.png)
+- Note: In the deisgn document, some feature designs are copied from existing apps. Such designs will ONLY BE USED AS A BASIC REFERENCE, and the final product WILL NOT include the exact same design.
+
 ## Our Plan
 - Complete basic functionalities as described in our goals before September 2024.
 - We are currently working on:
