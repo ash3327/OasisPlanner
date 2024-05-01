@@ -32,9 +32,12 @@ public abstract class AEDBaseBox extends LinearLayout {
         // attributes handling
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AEDBaseBox);
 
+        String textHint = a.getString(R.styleable.AEDBaseBox_textHint);
         Drawable iconDrawable = a.getDrawable(R.styleable.AEDBaseBox_mainIcon);
         float textSize = a.getDimensionPixelSize(R.styleable.AEDBaseBox_textSize, -1);
 
+        if (textHint != null)
+            getTil().setHint(textHint);
         if (iconDrawable != null)
             getIcon().setImageDrawable(iconDrawable);
         if (textSize != -1)
@@ -47,4 +50,5 @@ public abstract class AEDBaseBox extends LinearLayout {
     protected abstract void initBinding(Context context);
     protected abstract ImageView getIcon();
     protected abstract EditText getEditText();
+    protected abstract TextInputLayout getTil();
 }

@@ -42,24 +42,27 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
 
     private int len;
     private final AlarmEditDialog.OnSaveListener onSaveAlarmListener;
+    private final OnPinnedChangedListener onPinnedChangedListener;
     public Switch bSwitch = new Switch(false);
 
     private Activity activity;
     private Agenda agenda;
 
-    public final int NIL_VAL = -1;
-    private int mPinned = NIL_VAL;
+    public static final int NIL_VAL = -1;
+    private int mPinned;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
-                        OnSelectListener onSelectListener,
+                        OnSelectListener onSelectListener, OnPinnedChangedListener onPinnedChangedListener,
                         RecyclerView recyclerView, Switch tSwitch, Agenda agenda,
-                        long eventLId) {
+                        long eventLId, int pinned) {
         super(onSelectListener, recyclerView, tSwitch, eventLId);
         this.onSaveAlarmListener = onSaveAlarmListener;
+        this.onPinnedChangedListener = onPinnedChangedListener;
         tSwitch.observe((state)->{
             if (!state) checkedList.clear();
         }, true);
         this.agenda = agenda;
+        mPinned = pinned;
     }
 
     @NonNull
@@ -90,15 +93,17 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         List<ActivityType.Type> types = new ArrayList<>();
 
         int i = 0;
-        mPinned = NIL_VAL;
+        int _mPinned = NIL_VAL;
         List[] objlist = activity.getObjList(true);
         for (Object obj : objlist[0]) {
             list.add(obj);
             if (obj instanceof _Event && ((_Event)obj).id == LId)
-                mPinned = i;
+                _mPinned = i;
             types.add((ActivityType.Type) objlist[1].get(i));
             i++;
         }
+        if (mPinned == NIL_VAL)
+            mPinned = _mPinned;
 
         this.items = list;
         this.types = types;
@@ -202,8 +207,13 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         activity.getObjList(true);
     }
 
+    public void setPinned(int i) {
+        mPinned = i;
+        if (onPinnedChangedListener != null)
+            onPinnedChangedListener.onPinChanged(i);
+    }
     public _Event getPinnedEvent() {
-        if (mPinned == NIL_VAL)
+        if (mPinned == NIL_VAL || mPinned >= items.size())
             return null;
         _Event pinnedEvent = (_Event) items.get(mPinned);
         pinnedEvent.activityDescr = getContentString(pinnedEvent);
@@ -283,6 +293,10 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
             if (item instanceof _Event) {
                 _Event gp = (_Event) item;
 
+                // Highlight current selected event
+                binding.marker.setVisibility(adapter.mPinned == this.i ? View.VISIBLE : View.GONE);
+
+                // Icon of Alarm
                 Drawable icon = gp.type.getOutlineDrawable();
                 StringBuilder eachIsDone = new StringBuilder();
                 if (gp.type == AlarmType.todo) {
@@ -301,6 +315,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 );
                 binding.icon.setImageDrawable(icon);
 
+                // Details of Alarm
                 SpannableStringBuilder desc = new SpannableStringBuilder(gp.getDateTime());
                 SpannableStringBuilder loc = gp.getLoc();
                 if (loc != null) desc.append(" • "+loc);
@@ -320,6 +335,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 }
                 binding.barDescriptionText.setText(desc);
 
+                // Event expanded list of arguments
                 RecyclerView recyclerView = binding.itemAlarmRecyclerView;
 
                 if (!expanded) {
@@ -341,8 +357,12 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 return;
             if (aSwitch.getState())
                 checkToggle(gp);
-            else
+            else {
+                adapter.setPinned(i);
                 AppModule.retrieveEditEventUseCases().invoke(gp, getContentString(gp), onSaveAlarmListener);
+            }
         }
     }
+
+    public interface OnPinnedChangedListener {void onPinChanged(int mPinned);}
 }

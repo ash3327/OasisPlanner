@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.aurora.oasisplanner.databinding.TagTagsEditBinding;
 import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class AEDTagsBox extends AEDBaseBox {
     private TagTagsEditBinding binding;
@@ -43,6 +44,10 @@ public class AEDTagsBox extends AEDBaseBox {
     @Override
     protected ImageView getIcon() {
         return binding.icon;
+    }
+    @Override
+    protected TextInputLayout getTil() {
+        return binding.tagTagsTil;
     }
 
     public void setText(String tags) {

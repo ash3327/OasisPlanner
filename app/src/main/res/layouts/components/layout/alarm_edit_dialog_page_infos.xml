@@ -24,6 +24,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginVertical="3dp"
 
+                app:textHint="@string/type_spinner_title"
                 app:mainIcon="@drawable/menuic_notification"
                 app:textSize="@dimen/aedpi_textsize"/>
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDOptionsDropdownBox
@@ -37,6 +38,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginVertical="3dp"
 
+                app:textHint="@string/importance_spinner_title"
                 app:mainIcon="@drawable/ic_importance_exclaimation"
                 app:textSize="@dimen/aedpi_textsize"/>
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.AEDContentBox

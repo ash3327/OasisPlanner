@@ -33,14 +33,11 @@ public class AEDContentBox extends AEDBaseBox {
         // attributes handling
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AEDContentBox);
 
-        String textHint = a.getString(R.styleable.AEDContentBox_textHint);
         boolean focusable = a.getBoolean(R.styleable.AEDContentBox_focusable, true);
         boolean multiLine = a.getBoolean(R.styleable.AEDContentBox_multiLine, false);
 
-        if (textHint != null)
-            binding.tagContentTil.setHint(textHint);
-        binding.tagContentTv.setFocusable(focusable);
-        binding.tagContentTv.setInputType(multiLine ? InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT);
+        getEditText().setFocusable(focusable);
+        getEditText().setInputType(multiLine ? InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_TEXT);
 
         a.recycle();
     }
@@ -59,7 +56,8 @@ public class AEDContentBox extends AEDBaseBox {
     public EditText getEditText() {
         return binding.tagContentTv;
     }
-    private TextInputLayout getTil() {
+    @Override
+    protected TextInputLayout getTil() {
         return binding.tagContentTil;
     }
     @Override

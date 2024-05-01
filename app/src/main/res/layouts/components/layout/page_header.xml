@@ -3,7 +3,7 @@
     android:id="@+id/page_grey_bar_0"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey_50"
+    android:background="@color/grey_75"
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/box_vmargin"
     android:padding="7.5dp"

@@ -36,9 +36,9 @@
     <declare-styleable name="AEDBaseBox">
         <attr name="mainIcon" format="reference"/>
         <attr name="textSize" format="dimension"/>
+        <attr name="textHint" format="string"/>
     </declare-styleable>
     <declare-styleable name="AEDContentBox">
-        <attr name="textHint" format="string"/>
         <attr name="focusable" format="boolean"/>
         <attr name="multiLine" format="boolean"/>
     </declare-styleable>

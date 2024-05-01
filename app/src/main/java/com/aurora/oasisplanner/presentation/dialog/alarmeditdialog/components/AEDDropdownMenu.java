@@ -33,6 +33,9 @@ public abstract class AEDDropdownMenu extends AEDBaseBox {
 
     public abstract AutoCompleteTextView getSpinner();
     public abstract TextInputLayout getSpinnerTil();
+    protected TextInputLayout getTil() {
+        return getSpinnerTil();
+    }
 
     @CallSuper
     protected void executeOnClickListener(AdapterView<?> parent, View view, int pos, long id) {

@@ -60,6 +60,7 @@ public class AgendaEditDialog extends Fragment {
     private List<_Activity> selected = new ArrayList<>();
     private PageBinding binding;
     private boolean alarmEditOpened = false;
+    private int mEventPinned = EventAdapter.NIL_VAL;
 
     public static final long LId_NULL = -1;
 
@@ -202,7 +203,8 @@ public class AgendaEditDialog extends Fragment {
         final EventAdapter adapter = eventAdapter = new EventAdapter(
                 onEventSaveListener,
                 this::checkboxOnSelect,
-                recyclerView, tSwitch, agenda, eventLId
+                (_pinnedId)-> mEventPinned = _pinnedId,
+                recyclerView, tSwitch, agenda, eventLId, mEventPinned
         );
 
         setupEditToolbar(tSwitch, adapter);
