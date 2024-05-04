@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,9 +44,14 @@ public abstract class AEDBaseBox extends LinearLayout {
         a.recycle();
     }
 
+    public void setShowing(boolean isShowing) {
+        getChildContainer().setVisibility(isShowing ? VISIBLE : GONE);
+    }
+
     protected abstract void init();
     protected abstract void initBinding(Context context);
     protected abstract TextView getTitleView();
     protected abstract ImageView getIcon();
     protected abstract TextView getEditText();
+    protected abstract View getChildContainer();
 }

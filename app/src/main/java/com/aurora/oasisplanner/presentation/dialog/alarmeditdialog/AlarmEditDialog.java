@@ -205,7 +205,7 @@ public class AlarmEditDialog extends Fragment {
                             (_loc)-> this.event.alarmList.putArgs(TagType.LOC.name(), _loc)
                     );
                 } else {
-                    alarmEditInfosBinding.aedpiTagLocationBox.setVisibility(View.GONE);
+                    alarmEditInfosBinding.aedpiTagLocationBox.setShowing(false);
                 }
 
                 // DateTime
@@ -218,7 +218,7 @@ public class AlarmEditDialog extends Fragment {
                             (_notifType)-> this.notifType = _notifType
                     );
                 } else {
-                    alarmEditInfosBinding.aedpiTagDatetimeBox.setVisibility(View.GONE);
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setShowing(false);
                 }
 
                 // Tags
@@ -229,7 +229,7 @@ public class AlarmEditDialog extends Fragment {
                             (_tags)->event.alarmList.putArgs(TagType.TAGS.name(), _tags)
                     );
                 } else {
-                    alarmEditInfosBinding.aedpiTagTagsBox.setVisibility(View.GONE);
+                    alarmEditInfosBinding.aedpiTagTagsBox.setShowing(false);
                 }
 
                 break;

@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,10 @@ public class AEDContentBox extends AEDBaseBox {
     @Override
     protected TextView getTitleView() {
         return binding.tagTitleTv;
+    }
+    @Override
+    protected View getChildContainer() {
+        return binding.tagContentTv;
     }
 
     public String getText() {

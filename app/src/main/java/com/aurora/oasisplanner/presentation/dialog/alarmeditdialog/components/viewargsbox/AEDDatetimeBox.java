@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,11 @@ public class AEDDatetimeBox extends AEDBaseBox {
     }
 
     protected TextView getTextView() { return binding.tagContentTv; }
+
+    @Override
+    protected View getChildContainer() {
+        return binding.tagContentTv;
+    }
 
     @SuppressLint("SetTextI18n")
     public void setNotifType(NotifType notifType) {
