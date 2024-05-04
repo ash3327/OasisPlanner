@@ -37,7 +37,7 @@ public abstract class AEDBaseBox extends LinearLayout {
         getTitleView().setText(mTextHint);
         if (mIconDrawable != null)
             getIcon().setImageDrawable(mIconDrawable);
-        if (mTextSize != -1)
+        if (mTextSize != -1 && getEditText() != null)
             getEditText().setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
 
         a.recycle();
@@ -47,5 +47,5 @@ public abstract class AEDBaseBox extends LinearLayout {
     protected abstract void initBinding(Context context);
     protected abstract TextView getTitleView();
     protected abstract ImageView getIcon();
-    protected abstract EditText getEditText();
+    protected abstract TextView getEditText();
 }

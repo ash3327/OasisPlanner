@@ -1,8 +1,5 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
-import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-
 import androidx.fragment.app.FragmentManager;
 
 import com.aurora.oasisplanner.R;
@@ -11,7 +8,9 @@ import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.EventMoveDialog;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditSubalarmDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 
@@ -38,6 +37,12 @@ public class EditEventUseCases {
         AlarmTagEditDialog dialog = new AlarmTagEditDialog();
         dialog.setUpdateUiFunction(updateUi);
         dialog.setSelectedList(checkedList);
+        dialog.show(fragmentManager, "dialogTagType");
+    }
+    public void invokeDialogForSubalarm(NotifType notifType, AlarmEditSubalarmDialog.OnSaveListener updateUi) {
+        AlarmEditSubalarmDialog dialog = new AlarmEditSubalarmDialog();
+        dialog.setOnSaveListener(updateUi);
+        dialog.setNotifType(notifType);
         dialog.show(fragmentManager, "dialogTagType");
     }
 

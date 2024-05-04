@@ -42,6 +42,7 @@
     <dimen name="fragment_tips_textsize">20sp</dimen>
     <dimen name="small_textsize">11sp</dimen>
     <dimen name="aedpi_textsize">13sp</dimen>
+    <dimen name="aedpi_bigger_textsize">15sp</dimen>
 
     <!-- Home Titles Dimensions -->
     <dimen name="home_title_textsize">20sp</dimen>

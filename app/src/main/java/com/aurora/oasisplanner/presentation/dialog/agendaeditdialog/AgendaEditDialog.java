@@ -362,7 +362,7 @@ public class AgendaEditDialog extends Fragment {
     }
 
     public void onConfirm() {
-        if (agenda.agenda.title.isEmpty()) {
+        if (agenda.agenda.title.trim().isEmpty()) {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
         }

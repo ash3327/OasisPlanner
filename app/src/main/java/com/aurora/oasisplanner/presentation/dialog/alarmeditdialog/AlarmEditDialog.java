@@ -211,13 +211,6 @@ public class AlarmEditDialog extends Fragment {
                 // DateTime
                 ArrayAdapter<DateType> dateTypeAdapter = new ArrayAdapter<DateType>(requireContext(), R.layout.datetype_spinner_element);
                 dateTypeAdapter.addAll(DateType.values());
-                alarmEditInfosBinding.aedpiTagDatetimeBox.setOnItemSelectListener(
-                        dateTypeAdapter, dateType.ordinal(), null,
-                        (adapterView, view, position, id) -> {
-                            dateType = DateType.values()[position];
-                            alarmEditInfosBinding.aedpiTagDatetimeBox.setDateType(dateType);
-                        },
-                        (v)->dateType.ordinal());
 
                 if (notifType != null) {
                     alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifType(notifType);
@@ -302,7 +295,7 @@ public class AlarmEditDialog extends Fragment {
     }
 
     public void onConfirm() {
-        if (event.alarmList.title.isEmpty()) {
+        if (event.alarmList.title.trim().isEmpty()) {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
         }

@@ -245,7 +245,7 @@ public class TagInputEditText extends TextInputEditText {
                 removeText(startIdx, endIdx);
                 return;
             }
-            editColorOfTag(tokenView, startIdx, endIdx);
+            //editColorOfTag(tokenView, startIdx, endIdx);
         }
 
         public Rect getBounds(Layout layout) {

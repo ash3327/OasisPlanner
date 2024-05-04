@@ -86,9 +86,9 @@
 
                 app:textHint="@string/tag_loc"
                 app:mainIcon="@drawable/ic_location"
-                app:textSize="@dimen/aedpi_textsize"/>
+                app:textSize="@dimen/aedpi_bigger_textsize"/>
             <!-- DATETIME -->
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDDatetimeBox
+            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox.AEDDatetimeBox
                 android:id="@+id/aedpi_tag_datetime_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,9 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginVertical="3dp"
 
-                app:textSize="@dimen/aedpi_textsize"/>
+                app:textHint="@string/tab_tag_date_title"
+                app:mainIcon="@drawable/ic_agenda_notification"
+                app:textSize="@dimen/aedpi_bigger_textsize"/>
             <!-- Tags -->
             <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox.AEDTagsBox
                 android:id="@+id/aedpi_tag_tags_box"
@@ -113,7 +115,7 @@
 
                 app:mainIcon="@drawable/ic_tag"
                 app:textHint="@string/memo_tag_title"
-                app:textSize="@dimen/aedpi_textsize"/>
+                app:textSize="@dimen/aedpi_bigger_textsize"/>
         </LinearLayout>
     </ScrollView>
 </layout>
