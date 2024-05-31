@@ -19,6 +19,7 @@ public abstract class AEDBaseBox extends LinearLayout {
     protected String mTextHint;
     protected Drawable mIconDrawable;
     protected float mTextSize;
+    protected boolean mIsShowing = false;
 
     public AEDBaseBox(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,6 +46,7 @@ public abstract class AEDBaseBox extends LinearLayout {
     }
 
     public void setShowing(boolean isShowing) {
+        mIsShowing = isShowing;
         getChildContainer().setVisibility(isShowing ? VISIBLE : GONE);
     }
 

@@ -199,11 +199,16 @@ public class AlarmEditDialog extends Fragment {
 
                 // Locations
                 SpannableStringBuilder ssb = event.alarmList.getLoc();
+                alarmEditInfosBinding.aedpiTagLocationBox.setOnChangeListener(
+                        (_loc)-> {
+                            if (_loc == null)
+                                this.event.alarmList.removeKey(TagType.LOC.name());
+                            else
+                                this.event.alarmList.putArgs(TagType.LOC.name(), _loc);
+                        }
+                );
                 if (ssb != null) {
                     alarmEditInfosBinding.aedpiTagLocationBox.setText(ssb.toString());
-                    alarmEditInfosBinding.aedpiTagLocationBox.setOnChangeListener(
-                            (_loc)-> this.event.alarmList.putArgs(TagType.LOC.name(), _loc)
-                    );
                 } else {
                     alarmEditInfosBinding.aedpiTagLocationBox.setShowing(false);
                 }

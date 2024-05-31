@@ -17,6 +17,7 @@ import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 
 public class AEDContentBox extends AEDBaseBox {
     private TagViewTextBinding binding;
+    private OnTextChangeListener mOnTextChangeListener;
 
     public AEDContentBox(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,6 +63,9 @@ public class AEDContentBox extends AEDBaseBox {
     protected View getChildContainer() {
         return binding.tagContentTv;
     }
+    protected ImageView getAddRemoveButton() {
+        return binding.btnDelete;
+    }
 
     public String getText() {
         try {
@@ -77,12 +81,20 @@ public class AEDContentBox extends AEDBaseBox {
     public void setOnClickListener(OnClickListener l) {
         getEditText().setOnClickListener(l);
     }
+    /** Note: setShowing(false) must be set BEFORE this call - you can ignore if it is setShowing(true). */
     public void setOnChangeListener(OnChangeListener ocl) {
-        getEditText().addTextChangedListener(new OnTextChangeListener() {
+        if (mOnTextChangeListener != null)
+            getEditText().removeTextChangedListener(mOnTextChangeListener);
+        getEditText().addTextChangedListener(mOnTextChangeListener = new OnTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
                 ocl.onChange(s.toString());
             }
+        });
+        getAddRemoveButton().setOnClickListener((v)->{
+            ocl.onChange(mIsShowing ? null : getText());
+            setShowing(!mIsShowing);
+            getAddRemoveButton().setVisibility(mIsShowing ? VISIBLE : GONE);
         });
     }
 
