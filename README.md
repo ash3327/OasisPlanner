@@ -1,6 +1,10 @@
 # OasisPlanner 
 _Calendar App Project_ (Developing Phase)
 
+> [!INFO]
+> * Still under development and the functionalities are not completed yet.
+> * Distributable version not delivered yet.
+
 ## Our Goals
 
 Oasis: where you find calm _in the past, present, and future._
@@ -24,6 +28,9 @@ _Most part of the features are still under development._
 - We are currently working on:
   - Modularizing our previous code to increase readability
   - Redesigning several components to increase cohesion between UI elements and enhance user experience
+
+## Recent Updates
+- Our recent update added support to devices of Android version 13+. [16 JUN 2024]
 
 ## Functionalities
 - Preview of work:

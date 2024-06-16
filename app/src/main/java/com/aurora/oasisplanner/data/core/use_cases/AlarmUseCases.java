@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -38,6 +39,10 @@ public class AlarmUseCases {
 
     public Alarm getNextAlarmFromActivity(long activityId) {
         return repository.requestFirstAlarmFromActivity(activityId);
+    }
+
+    public LiveData<List<Alarm>> getAlarms() {
+        return repository.getAlarms();
     }
 
     public void put(_Alarm alarm) {

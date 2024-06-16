@@ -27,41 +27,12 @@ import java.util.concurrent.CountDownLatch;
 public class Utils {
 
     @SuppressLint("RestrictedApi")
-    public static void startPowerSaverIntent(Activity context, CountDownLatch latch, boolean allowSkip) {
-        SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = settings.edit();
+    public static void startPowerSaverIntent(Activity context, SharedPreferences.Editor editor, CountDownLatch latch, boolean allowSkip) {
         boolean foundCorrectIntent = false;
         for (Intent intent : Constants.POWERMANAGER_INTENTS) {
             if (isCallable(context, intent)) {
                 foundCorrectIntent = true;
-                AppCompatCheckBox dontShowAgain = null;
-                if (allowSkip) {
-                    dontShowAgain = new AppCompatCheckBox(context);
-                    dontShowAgain.setText(R.string.options_permission_do_not_show_again);
-
-                    ColorStateList colorStateList = ColorStateList.valueOf(Color.BLACK);
-                    dontShowAgain.setSupportButtonTintList(colorStateList);
-
-                    dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            editor.putBoolean("skipProtectedAppCheck", isChecked);
-                            editor.apply();
-                        }
-                    });
-                }
-
-                AlertDialog dialog = new AlertDialog.Builder(context, R.style.WhiteDialogTheme)
-                        .setTitle(Build.MANUFACTURER + Resources.getString(R.string.warning_protected_apps))
-                        .setMessage(String.format(Resources.getString(R.string.warning_protected_apps_msg), context.getString(R.string.app_name)))
-                        .setView(dontShowAgain)
-                        .setPositiveButton(R.string.options_permission_settings, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                context.startActivityForResult(intent, Constants.REQUEST_CODE_PERMISSIONS_SET);
-                            }
-                        })
-                        .setNegativeButton(R.string.options_permission_close, (x,v)->{if(latch!=null) latch.countDown();})
-                        .show();
+                context.startActivity(intent);
                 break;
             }
         }
@@ -69,6 +40,46 @@ public class Utils {
             editor.putBoolean("skipProtectedAppCheck", true);
             editor.apply();
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void postRequestDialog(Activity context, CountDownLatch latch, RequestDialogRunnable func, boolean allowSkip) {
+        SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = settings.edit();
+
+        AppCompatCheckBox dontShowAgain = null;
+        if (allowSkip) {
+            dontShowAgain = new AppCompatCheckBox(context);
+            dontShowAgain.setText(R.string.options_permission_do_not_show_again);
+
+            ColorStateList colorStateList = ColorStateList.valueOf(Color.BLACK);
+            dontShowAgain.setSupportButtonTintList(colorStateList);
+
+            dontShowAgain.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                editor.putBoolean("skipProtectedAppCheck", isChecked);
+                editor.apply();
+            });
+        }
+
+        // show dialog
+        new AlertDialog.Builder(context, R.style.WhiteDialogTheme)
+                .setTitle(Build.MANUFACTURER + Resources.getString(R.string.warning_protected_apps))
+                .setMessage(String.format(Resources.getString(R.string.warning_protected_apps_msg), context.getString(R.string.app_name)))
+                .setView(dontShowAgain)
+                .setPositiveButton(R.string.options_permission_settings, (dialog, which) -> func.run(editor))
+                .setNegativeButton(R.string.options_permission_close, (x,v)->{if(latch!=null) latch.countDown();})
+                .show();
+    }
+
+    public static void setSkipRequestPermission(Context context, boolean isChecked) {
+        SharedPreferences settings = context.getSharedPreferences("ProtectedApps", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("skipProtectedAppCheck", isChecked);
+        editor.apply();
+    }
+
+    public interface RequestDialogRunnable {
+        void run(SharedPreferences.Editor editor);
     }
 
     private static boolean isCallable(Context context, Intent intent) {

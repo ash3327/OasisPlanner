@@ -171,6 +171,10 @@
         <item>Volume Settings</item>
         <item>Refresh Alarms</item>
     </string-array>
+    <string-array name="settings_dev">
+        <item>NOTIF TEST</item>
+        <item>REMOVE SKIP ASK USER REQUESTS DIALOG</item>
+    </string-array>
     <string name="settings_notifClickSound">Click sound is now turned $1 ,on,off</string>
 
     <!-- FUNCTIONAL BUTTONS -->

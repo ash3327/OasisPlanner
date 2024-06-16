@@ -5,23 +5,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ListAdapter;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.activities.OasisApp;
 import com.aurora.oasisplanner.data.core.AppModule;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.FragmentSettingsBinding;
 import com.aurora.oasisplanner.util.Configs;
+import com.aurora.oasisplanner.util.notificationfeatures.AlarmNotificationService;
+import com.aurora.oasisplanner.util.notificationfeatures.NotificationHelperTest;
 import com.aurora.oasisplanner.util.permissions.Permissions;
+import com.aurora.oasisplanner.util.permissions.Utils;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.aurora.oasisplanner.util.styling.Styles;
 
@@ -42,13 +43,22 @@ public class SettingsFragment extends Fragment {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((p, v, pos, i)->handle(pos));
 
+        ListView listView_dev = binding.settingsListViewDev;
+        ArrayAdapter<String> adapter_dev = new ArrayAdapter<>(
+                this.requireContext(),
+                R.layout.settings_element
+        );
+        adapter_dev.addAll(Resources.getStringArr(R.array.settings_dev));
+        listView_dev.setAdapter(adapter_dev);
+        listView_dev.setOnItemClickListener((p, v, pos, i)->handle_dev(pos));
+
         return binding.getRoot();
     }
 
     public void handle(int pos) {
         switch (pos) {
             case 0:
-                Permissions.requestProtectedAppsPermission(requireActivity(), null, false);
+                Permissions.requestPermissions(requireActivity(), null, false);
                 break;
             case 1:
                 Configs.clickSoundIsOn = !Configs.clickSoundIsOn;
@@ -58,6 +68,21 @@ public class SettingsFragment extends Fragment {
             case 2:
                 AppModule.forceUpdateAlarms(this);
                 break;
+        }
+    }
+
+    public void handle_dev(int pos) {
+        switch (pos) {
+            case 0:
+                AppModule.provideExecutor().execute(()->{
+                    Alarm alarm = AppModule.retrieveAlarmUseCases().getAlarms().getValue().get(0);
+                    Log.d("test3", alarm+"");
+                    AlarmNotificationService.notify(requireContext(), alarm);
+                });
+                NotificationHelperTest.showNotification(requireContext(), "TITLE", "MSG");
+                break;
+            case 1:
+                Utils.setSkipRequestPermission(requireContext(), false);
         }
     }
 

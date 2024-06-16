@@ -173,6 +173,10 @@
         <item>音量設定</item>
         <item>重置鬧鐘</item>
     </string-array>
+    <string-array name="settings_dev">
+        <item>NOTIF TEST</item>
+        <item>REMOVE SKIP ASK USER REQUESTS DIALOG</item>
+    </string-array>
     <string name="settings_notifClickSound">已$1 按鍵音效,開啓,關閉</string>
 
     <!-- FUNCTIONAL BUTTONS -->
