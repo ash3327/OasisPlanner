@@ -85,6 +85,7 @@ public class AEDContentBox extends AEDBaseBox {
     public void setOnChangeListener(OnChangeListener ocl) {
         if (mOnTextChangeListener != null)
             getEditText().removeTextChangedListener(mOnTextChangeListener);
+
         getEditText().addTextChangedListener(mOnTextChangeListener = new OnTextChangeListener() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -94,8 +95,13 @@ public class AEDContentBox extends AEDBaseBox {
         getAddRemoveButton().setOnClickListener((v)->{
             ocl.onChange(mIsShowing ? null : getText());
             setShowing(!mIsShowing);
-            getAddRemoveButton().setVisibility(mIsShowing ? VISIBLE : GONE);
         });
+    }
+
+    @Override
+    public void setShowing(boolean isShowing) {
+        super.setShowing(isShowing);
+        getAddRemoveButton().setImageResource(mIsShowing ? R.drawable.ic_symb_remove : R.drawable.ic_symb_plus);
     }
 
     public interface OnChangeListener {

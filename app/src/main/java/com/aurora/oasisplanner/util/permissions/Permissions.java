@@ -33,7 +33,6 @@ public class Permissions {
         //FIXED: alarmmanager-not-working-in-several-devices
         //  credit: OussaMah, 2018
         // on https://stackoverflow.com/questions/31638986/protected-apps-setting-on-huawei-phones-and-how-to-handle-it
-        //TODO: This bug is fixed on Huawei but not on Samsung.
 //        Permissions.requestPermissions(activity, latch, true);
     }
     public static void requestPermissions(Activity context, String permission) {

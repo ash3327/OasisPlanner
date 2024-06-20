@@ -165,9 +165,9 @@ public class _Event extends __Item {
         SpannableStringBuilder out = getArgSpannable(TagType.LOC);
         return out;
     }
-    public NotifType getNotifType() {
+    public List<NotifType> getNotifTypes() {
         String val = getArgSpannableStr(TagType.ALARM);
-        return val != null ? new NotifType(val) : null;
+        return val != null ? NotifType.loadFromString(val) : null;
     }
 
 

@@ -1,10 +1,16 @@
 package com.aurora.oasisplanner.data.tags;
 
+import android.util.Log;
+
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.DateType;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NotifType {
     public int val;
@@ -34,6 +40,23 @@ public class NotifType {
             this.hour = Integer.parseInt(res[2]);
             this.minute = Integer.parseInt(res[3]);
         } else hasTime = false;
+    }
+
+    public static NotifType getDefault() {
+        return new NotifType(30, DateType.minutes);
+    }
+
+    public static final String SEP = ";";
+    public static List<NotifType> loadFromString(String notifString) {
+        if (notifString == null)
+            return new ArrayList<>();
+        return Arrays.stream(notifString.split(SEP)).map(NotifType::new).collect(Collectors.toList());
+    }
+    public static String saveToString(List<NotifType> notifTypes) {
+        return notifTypes.stream().map(NotifType::toString).collect(Collectors.joining(SEP));
+    }
+    public static String loadDescFrom(List<NotifType> notifTypes) {
+        return notifTypes.stream().map(NotifType::getDescription).collect(Collectors.joining(", "));
     }
 
     public LocalDateTime translate(LocalDateTime ldt) {

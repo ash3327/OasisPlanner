@@ -32,16 +32,19 @@
             android:textSize="15sp"
             android:textColor="@color/grey_300"
             android:letterSpacing="0.05"/>
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="@dimen/medium_small_icon_height"
+            android:layout_height="@dimen/medium_small_icon_height"
+            android:src="@drawable/ic_symb_plus"
+            app:tint="@color/black"
+
+            android:layout_marginStart="@dimen/edit_alarm_args_icon_rpadding"
+            android:layout_marginEnd="@dimen/edit_alarm_icon_padding"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/tag_content_tv"
+    <com.aurora.oasisplanner.presentation.widget.ExpandedListView
+        android:id="@+id/tag_content_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:padding="8dp"
-        android:textColor="@color/blue_300"
-        android:textStyle="bold"
-        android:text="3 hours ago"
-        android:theme="@style/BarContentTheme.EditableTheme"
-        />
+        android:layout_marginStart="50dp"/>
 </LinearLayout>

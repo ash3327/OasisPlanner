@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,14 +68,12 @@ public class AlarmEditDialog extends Fragment {
     // Associated Data
     private AlarmType type;
     private Importance importance;
-    private DateType dateType = DateType.minutes;
-    private NotifType notifType;
+    private List<NotifType> notifTypes;
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         setHasOptionsMenu(true);
         MainActivity activity = (MainActivity) requireActivity();
         MainActivity.bottomBar.setVisibility(View.GONE);
@@ -106,9 +105,7 @@ public class AlarmEditDialog extends Fragment {
         this.importance = event.alarmList.importance;
         this.selectedDates = event.alarmList.dates;
         this.selectedTime = event.alarmList.time;
-        this.notifType = event.alarmList.getNotifType();
-        if (notifType != null)
-            this.dateType = notifType.dateType;
+        this.notifTypes = event.alarmList.getNotifTypes();
 
         binding = AlarmEditBinding.inflate(getLayoutInflater());
         onBind();
@@ -201,7 +198,7 @@ public class AlarmEditDialog extends Fragment {
                 SpannableStringBuilder ssb = event.alarmList.getLoc();
                 alarmEditInfosBinding.aedpiTagLocationBox.setOnChangeListener(
                         (_loc)-> {
-                            if (_loc == null)
+                            if (_loc == null || _loc.isEmpty())
                                 this.event.alarmList.removeKey(TagType.LOC.name());
                             else
                                 this.event.alarmList.putArgs(TagType.LOC.name(), _loc);
@@ -209,33 +206,36 @@ public class AlarmEditDialog extends Fragment {
                 );
                 if (ssb != null) {
                     alarmEditInfosBinding.aedpiTagLocationBox.setText(ssb.toString());
-                } else {
-                    alarmEditInfosBinding.aedpiTagLocationBox.setShowing(false);
                 }
+                alarmEditInfosBinding.aedpiTagLocationBox.setShowing(ssb != null);
 
                 // DateTime
                 ArrayAdapter<DateType> dateTypeAdapter = new ArrayAdapter<DateType>(requireContext(), R.layout.datetype_spinner_element);
                 dateTypeAdapter.addAll(DateType.values());
 
-                if (notifType != null) {
-                    alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifType(notifType);
-                    alarmEditInfosBinding.aedpiTagDatetimeBox.setOnChangeListener(
-                            (_notifType)-> this.notifType = _notifType
-                    );
-                } else {
+                if (notifTypes != null)
+                    alarmEditInfosBinding.aedpiTagDatetimeBox.setNotifTypes(notifTypes);
+                else
                     alarmEditInfosBinding.aedpiTagDatetimeBox.setShowing(false);
-                }
+                alarmEditInfosBinding.aedpiTagDatetimeBox.setOnChangeListener(
+                        (_notifTypes)-> this.notifTypes = _notifTypes
+                );
 
                 // Tags
                 String tags = event.alarmList.getTagsString();
-                if (tags != null && !tags.isEmpty()) {
+                alarmEditInfosBinding.aedpiTagTagsBox.setOnChangeListener(
+                        (_tags)-> {
+                            if (_tags == null || _tags.isEmpty())
+                                this.event.alarmList.removeKey(TagType.TAGS.name());
+                            else
+                                this.event.alarmList.putArgs(TagType.TAGS.name(), _tags);
+                        }
+                );
+                boolean hasTags = tags != null && !tags.isEmpty();
+                if (hasTags) {
                     alarmEditInfosBinding.aedpiTagTagsBox.setText(tags);
-                    alarmEditInfosBinding.aedpiTagTagsBox.setOnChangeListener(
-                            (_tags)->event.alarmList.putArgs(TagType.TAGS.name(), _tags)
-                    );
-                } else {
-                    alarmEditInfosBinding.aedpiTagTagsBox.setShowing(false);
                 }
+                alarmEditInfosBinding.aedpiTagTagsBox.setShowing(hasTags);
 
                 break;
             case 1:
@@ -315,14 +315,18 @@ public class AlarmEditDialog extends Fragment {
     }
 
     public void saveAlarms() {
+        // Basic In-fo
         event.alarmList.importance = importance;
         event.alarmList.type = type;
-        if (notifType != null) {
-            event.alarmList.putArgs(TagType.ALARM.name(), notifType.toString());
-            event.alarmList.getAssociates().generateSubalarms();
-        }
+        // Alarm
         event.putDates(selectedTime, selectedDates.toArray(new LocalDate[0]));
-
+        // Subalarms
+        if (notifTypes != null && !notifTypes.isEmpty())
+            event.alarmList.putArgs(TagType.ALARM.name(), NotifType.saveToString(notifTypes));
+        else
+            event.alarmList.removeKey(TagType.ALARM.name());
+        event.alarmList.getAssociates().generateSubalarms();
+        // OnSave
         if (onSaveListener != null)
             onSaveListener.save(event);
     }
@@ -355,13 +359,14 @@ public class AlarmEditDialog extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                showCancelConfirmDialog();
-                return true;
             case R.id.editAgenda_discard:
+//                showCancelConfirmDialog();
+//                return true;
                 onDiscard();
                 return true;
         }

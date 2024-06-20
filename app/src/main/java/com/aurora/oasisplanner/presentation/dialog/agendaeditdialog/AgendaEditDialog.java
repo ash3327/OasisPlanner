@@ -416,11 +416,11 @@ public class AgendaEditDialog extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+            case R.id.editAgenda_discard:
                 showCancelConfirmDialog();
                 return true;
-            case R.id.editAgenda_discard:
-                onDiscard();
-                return true;
+//                onDiscard();
+//                return true;
         }
         return super.onOptionsItemSelected(item);
     }

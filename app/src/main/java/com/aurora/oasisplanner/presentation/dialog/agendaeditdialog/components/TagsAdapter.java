@@ -114,11 +114,12 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagHolder> {
 
             ItemTagNotifBinding binding = (ItemTagNotifBinding) vbinding;
             binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
-            binding.itemTagText.setText(new NotifType(val).getDescription());
+            binding.itemTagText.setText(NotifType.loadDescFrom(NotifType.loadFromString(val)));
             return true;
         }
 
         public boolean bindTags(int i, TagType key, String val) {
+            assert val != null;
             ItemTagTagsBinding binding = (ItemTagTagsBinding) vbinding;
             binding.itemTagIcon.setImageDrawable(key.getSmallDrawable());
             binding.boxMemoTags.setText(new Converters().spannableFromString(val).toString());
