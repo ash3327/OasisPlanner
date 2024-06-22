@@ -59,7 +59,7 @@
 
     <!-- NEW AGENDAS -->
         <string name="new_agenda">新增日程</string>
-        <string name="new_task">新增計劃</string>
+        <string name="new_task">快速提醒</string>
         <string name="new_note">新增筆記</string>
 
     <!-- Bars -->

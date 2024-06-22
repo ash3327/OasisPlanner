@@ -34,12 +34,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:translationX="@dimen/type_add_agenda_endX"
                 android:translationY="@dimen/type_add_agenda_endY">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_agenda"
+                    android:theme="@style/TypeTextTheme"
+                    android:paddingEnd="@dimen/type_add_spacing"
+
+                    android:textColor="@color/add_agenda_col"/>
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,13 +55,6 @@
 
                     android:backgroundTint="@color/add_agenda_col"
                     android:onClick="@{()->dialog.execute(0)}"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_agenda"
-                    android:theme="@style/TypeTextTheme"
-
-                    android:textColor="@color/add_agenda_col"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/add_task"
@@ -62,12 +63,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:translationX="@dimen/type_add_task_endX"
                 android:translationY="@dimen/type_add_task_endY">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_task"
+                    android:theme="@style/TypeTextTheme"
+                    android:paddingEnd="@dimen/type_add_spacing"
+
+                    android:textColor="@color/add_task_col"/>
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,13 +84,6 @@
 
                     android:backgroundTint="@color/add_task_col"
                     android:onClick="@{()->dialog.execute(1)}"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_task"
-                    android:theme="@style/TypeTextTheme"
-
-                    android:textColor="@color/add_task_col"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/add_note"
@@ -90,12 +92,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:translationX="@dimen/type_add_note_endX"
                 android:translationY="@dimen/type_add_note_endY">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_note"
+                    android:theme="@style/TypeTextTheme"
+                    android:paddingEnd="@dimen/type_add_spacing"
+
+                    android:textColor="@color/add_note_col"/>
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,13 +113,6 @@
 
                     android:backgroundTint="@color/add_note_col"
                     android:onClick="@{()->dialog.execute(2)}"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_note"
-                    android:theme="@style/TypeTextTheme"
-
-                    android:textColor="@color/add_note_col"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
