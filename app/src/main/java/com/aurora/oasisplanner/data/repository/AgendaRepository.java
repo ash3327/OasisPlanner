@@ -135,48 +135,7 @@ public class AgendaRepository {
             long actvId,
             Map<String, String> alarmArgs
     ) {
-
-        long id = AppModule.retrieveEventUseCases().put(alarmList);
-        /*alarmList.id = id;
-        AlarmList parent = alarmList.getAssociates();
-        for (_Alarm alarm : parent.alarms) {
-            if (alarm.visible) {
-                alarm.alarmListId = id;
-                alarm.activityId = actvId;
-                alarm.agendaId = alarmList.agendaId;
-                //alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                //alarm.setAlarmData(alarmList.type, alarmList.importance);
-                if (alarmArgs != null)
-                    alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.getArgs());
-                alarm.id = alarmDao._save(alarm);
-                if (alarmScheduler != null)
-                    alarmScheduler.schedule(alarm);
-            } else {
-                if (alarmScheduler != null)
-                    alarmScheduler.cancel(alarm);
-                alarmDao._delete(alarm);
-            }
-        }
-        for (_SubAlarm alarm : parent.subalarms) {
-            if (alarm.visible) {
-                alarm.alarmListId = id;
-                alarm.activityId = actvId;
-                alarm.agendaId = alarmList.agendaId;
-                alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                alarm.setAlarmData(alarmList.type, alarmList.importance);
-                if (alarmArgs != null)
-                    alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.getArgs());
-                alarm.id = alarmDao.insertSubAlarm(alarm);
-                if (alarmScheduler != null)
-                    alarmScheduler.schedule(alarm);
-            } else {
-                if (alarmScheduler != null)
-                    alarmScheduler.cancel(alarm);
-                alarmDao.deleteSubAlarm(alarm);
-            }
-        }//*/
+        long id = AppModule.retrieveEventUseCases().putWithChild(alarmList);
         return id;
     }
 

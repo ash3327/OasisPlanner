@@ -11,6 +11,7 @@ import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.databinding.ChooseTypeBinding;
+import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.util.AlarmQuickAddUtil;
 import com.aurora.oasisplanner.util.styling.Resources;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -93,6 +94,9 @@ public class ChooseTypeDialog {
         switch (i) {
             case 0:
                 AppModule.retrieveAgendaUseCases().edit(-1, -1, -1);
+                break;
+            case 1:
+                AlarmQuickAddUtil.quickAdd();
                 break;
             case 2:
                 AppModule.retrieveMemoUseCases().edit(-1);

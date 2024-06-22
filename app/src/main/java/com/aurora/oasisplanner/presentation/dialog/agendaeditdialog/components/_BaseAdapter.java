@@ -62,9 +62,9 @@ public abstract class _BaseAdapter<T extends RecyclerView.ViewHolder, T2 extends
     // INFO: ABSTRACT METHODS
     public abstract void remove(Object obj, int i);
     public abstract void insert(ActivityType.Type type, int i, String s);
+    protected abstract void save();
 
     public abstract void swapItems(int fromPosition, int toPosition);
-    public abstract void save();
     public abstract void removeChecked();
     public abstract void editTagOfChecked();
     public abstract void moveChecked();

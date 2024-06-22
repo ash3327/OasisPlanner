@@ -112,7 +112,7 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(ActivityType.Type type, int i, String descr) {
+    public static void _insert(Agenda agenda, ActivityType.Type type, int i, String descr) {
         switch (type) {
             case activity:
                 _Activity gp = new _Activity(descr);
@@ -122,8 +122,13 @@ public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder
                 activities.add(gp);
                 break;
         }
-        toAddSection.setId(0);
         agenda.update();
+    }
+
+    /** the index i is the index i IN THE VISUAL LIST. */
+    public void insert(ActivityType.Type type, int i, String descr) {
+        _insert(agenda, type, i, descr);
+        toAddSection.setId(0);
         setAgenda(agenda);
     }
 

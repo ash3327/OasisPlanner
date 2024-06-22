@@ -24,6 +24,7 @@ import com.aurora.oasisplanner.data.tags.ActivityType;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.TagType;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.util.AgendaAccessUtil;
 import com.aurora.oasisplanner.presentation.util.Switch;
 import com.aurora.oasisplanner.databinding.ItemAlarmBinding;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
@@ -48,7 +49,6 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     private Activity activity;
     private Agenda agenda;
 
-    public static final int NIL_VAL = -1;
     private int mPinned;
 
     public EventAdapter(AlarmEditDialog.OnSaveListener onSaveAlarmListener,
@@ -89,27 +89,19 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
     private void _setEventList(Activity activity) {
         this.activity = activity;
-        List<Object> list = new ArrayList<>();
-        List<ActivityType.Type> types = new ArrayList<>();
 
-        int i = 0;
-        int _mPinned = NIL_VAL;
         List[] objlist = activity.getObjList(true);
-        for (Object obj : objlist[0]) {
-            list.add(obj);
-            if (obj instanceof _Event && ((_Event)obj).id == LId)
-                _mPinned = i;
-            types.add((ActivityType.Type) objlist[1].get(i));
-            i++;
-        }
-        if (mPinned == NIL_VAL)
+        List<Object> list = new ArrayList<Object>(objlist[0]);
+        List<ActivityType.Type> types = new ArrayList<>((List<ActivityType.Type>) objlist[1]);
+        int _mPinned = AgendaAccessUtil.fetchEventId(list, LId);
+        if (mPinned == AgendaAccessUtil.NIL_VAL)
             mPinned = _mPinned;
 
         this.items = list;
         this.types = types;
-        this.len = i;
+        this.len = list.size();
 
-        if (mPinned != NIL_VAL)
+        if (mPinned != AgendaAccessUtil.NIL_VAL)
             recyclerView.scrollToPosition(mPinned);
     }
 
@@ -134,7 +126,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
 
     public void remove(Object obj, int i) {
-        if (i == NIL_VAL) return;
+        if (i == AgendaAccessUtil.NIL_VAL) return;
         ActivityType type = activity.activity.types.get(i);
         boolean valid = true;
         if (obj instanceof _Event && type.type == ActivityType.Type.activity
@@ -153,12 +145,14 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
     }
 
     /** the index i is the index i IN THE VISUAL LIST. */
-    public void insert(ActivityType.Type type, int i, String s) {
+    public static void _insert(Activity activity, ActivityType.Type type, int i, String s, _Event gp) {
         switch (type) {
             case activity:
-                _Event gp = _Event.empty();
-                gp.setTitle(s);
-                gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
+                if (gp == null) {
+                    gp = _Event.empty();
+                    gp.setTitle(s);
+                    gp.putArgs(TagType.DESCR.name(), new SpannableStringBuilder(s));
+                }
                 activity.activity.types.add(i, new ActivityType(type,
                         AppModule.retrieveAgendaUseCases().getAlarmLists(activity).size()));
                 AppModule.retrieveAgendaUseCases().getAlarmLists(activity).add(gp);
@@ -174,8 +168,11 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 activity.docs.add(loc);
                 break;
         }
-
         activity.update();
+    }
+    /** the index i is the index i IN THE VISUAL LIST. */
+    public void insert(ActivityType.Type type, int i, String s) {
+        _insert(activity, type, i, s, null);
         setEventList(activity);
     }
 
@@ -213,7 +210,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
             onPinnedChangedListener.onPinChanged(i);
     }
     public _Event getPinnedEvent() {
-        if (mPinned == NIL_VAL || mPinned >= items.size())
+        if (mPinned == AgendaAccessUtil.NIL_VAL || mPinned >= items.size())
             return null;
         _Event pinnedEvent = (_Event) items.get(mPinned);
         pinnedEvent.activityDescr = getContentString(pinnedEvent);
@@ -232,7 +229,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
         private Instant clicked = Instant.now();
         private Object item;
         private final int len;
-        private int i = NIL_VAL;
+        private int i = AgendaAccessUtil.NIL_VAL;
 
         public EventHolder(ViewDataBinding binding, EventAdapter adapter, int len,
                            Switch tSwitch, Set<_Event> checkedList) {
@@ -359,7 +356,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 checkToggle(gp);
             else {
                 adapter.setPinned(i);
-                AppModule.retrieveEditEventUseCases().invoke(gp, getContentString(gp), onSaveAlarmListener);
+                AppModule.retrieveEditEventUseCases().invoke(gp, getContentString(gp), onSaveAlarmListener, null);
             }
         }
     }

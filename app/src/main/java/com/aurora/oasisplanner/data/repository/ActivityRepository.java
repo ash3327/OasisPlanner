@@ -59,7 +59,7 @@ public class ActivityRepository {
                 alarm.activityId = activity.activity.activityId;
                 alarm.agendaId = activity.activity.agendaId;
             }
-            AppModule.retrieveAlarmUseCases().put(activity.alarms);
+            AppModule.retrieveAlarmUseCases().putWithChild(activity.alarms);
             AppModule.retrieveAlarmUseCases().putSubAlarms(activity.subalarms);
             return id;
         });*/

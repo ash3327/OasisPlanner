@@ -130,6 +130,7 @@
                                 android:orientation="vertical"
                                 android:id="@+id/bar_event_descAndLoc">
                                 <LinearLayout
+                                    android:id="@+id/bar_desc_text_lay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="3dp"

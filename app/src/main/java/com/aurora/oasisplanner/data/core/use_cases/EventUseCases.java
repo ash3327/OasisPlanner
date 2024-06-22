@@ -17,15 +17,6 @@ public class EventUseCases {
         return repository.getEvent(eventId);
     }
 
-    public long put(_Event event) {
-        try {
-            return repository.insertEvent(event).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return event.id;
-    }
-
     public void delete(_Event event) {
         repository.deleteEvent(event);
     }
@@ -35,9 +26,17 @@ public class EventUseCases {
         return repository.getEventWithChild(eventId);
     }
 
-    public void putWithChild(Event event) {
-        repository.insertEventWithChild(event);
+    public long putWithChild(_Event event) {
+        try {
+            return repository.insertEvent(event).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return event.id;
     }
+//    public void putWithChild(Event event) {
+//        repository.insertEventWithChild(event);
+//    }
 
     public void deleteWithChild(Event event) {
         repository.deleteEventWithChild(event);

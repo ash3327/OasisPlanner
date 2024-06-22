@@ -34,6 +34,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.ActivityType;
+import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.util.AgendaAccessUtil;
 import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
 import com.aurora.oasisplanner.presentation.util.OnTextChangeListener;
 import com.aurora.oasisplanner.presentation.util.Switch;
@@ -60,9 +61,7 @@ public class AgendaEditDialog extends Fragment {
     private List<_Activity> selected = new ArrayList<>();
     private PageBinding binding;
     private boolean alarmEditOpened = false;
-    private int mEventPinned = EventAdapter.NIL_VAL;
-
-    public static final long LId_NULL = -1;
+    private int mEventPinned = AgendaAccessUtil.NIL_VAL;
 
     @NonNull
     @Override
@@ -99,25 +98,23 @@ public class AgendaEditDialog extends Fragment {
             activityLId = getArguments().getLong(EXTRA_ACTIVL_ID, -1);
             eventLId = getArguments().getLong(EXTRA_EVENT_ID, -1);
 
-            if (agenda == null) {
-                if (agendaId != LId_NULL)
-                    agenda = AppModule.retrieveAgendaUseCases().get(agendaId);
-                else
-                    agenda = Agenda.empty();
-            }
+            if (agenda == null)
+                agenda = AgendaAccessUtil.fetchAgenda(agendaId);
 
-            if (activityLId != LId_NULL) {
-                for (_Activity actv : agenda.activities) {
-                    if (actv.id == activityLId) {
-                        selected = Collections.singletonList(actv);
-                        break;
-                    }
-                }
+            if (activityLId != AgendaAccessUtil.LId_NULL) {
+                _Activity actv = AgendaAccessUtil.fetchActivity(agenda, activityLId);
+                if (actv != null)
+                    selected = Collections.singletonList(actv);
             }
             binding.getRoot().post(this::onBind);
         });
 
         return binding.getRoot();
+    }
+
+    /** Checks if Agenda is just placeholder. */
+    public static boolean checkIfPlaceholder(long agendaId) {
+        return AgendaAccessUtil.fetchAgenda(agendaId).agenda.args.containsKey("NIL");
     }
 
     @Override
@@ -146,7 +143,7 @@ public class AgendaEditDialog extends Fragment {
     private ActivityAdapter activityAdapter = null;
     private EventAdapter eventAdapter = null;
     public void showActivities(Agenda agenda) {
-        eventLId = LId_NULL;
+        eventLId = AgendaAccessUtil.LId_NULL;
         eventAdapter = null;
         binding.agendaPageEdit.setVisibility(View.GONE);
         binding.agendaPageMove.setVisibility(View.GONE);
@@ -217,7 +214,7 @@ public class AgendaEditDialog extends Fragment {
                 _Event event = adapter.getPinnedEvent();
                 if (event != null && !alarmEditOpened) {
                     alarmEditOpened = true;
-                    AppModule.retrieveEditEventUseCases().invoke(event, event.activityDescr, onEventSaveListener);
+                    AppModule.retrieveEditEventUseCases().invoke(event, event.activityDescr, onEventSaveListener, null);
                 }
             }
         });

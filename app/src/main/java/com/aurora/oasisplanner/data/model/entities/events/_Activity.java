@@ -47,9 +47,9 @@ public class _Activity extends __Item {
     @ColumnInfo(name = "activityTypes")
     public List<ActivityType> types = new ArrayList<>();
     @ColumnInfo(name = "activityType")
-    public Type type;
+    public Type type = Type.event;
     @ColumnInfo(name = "activityImportance")
-    public Importance importance;
+    public Importance importance = Importance.regular;
     @ColumnInfo(name = "activityDescr", defaultValue = "")
     public SpannableStringBuilder title;
     @ColumnInfo(name = "activityArgs")

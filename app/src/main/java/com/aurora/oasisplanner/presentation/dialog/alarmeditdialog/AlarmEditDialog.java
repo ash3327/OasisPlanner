@@ -98,6 +98,7 @@ public class AlarmEditDialog extends Fragment {
         EditEventUseCases editAlarmListUseCase = AppModule.retrieveEditEventUseCases();
         this.event = editAlarmListUseCase.retrieveAlarms();
         setOnSaveListener(editAlarmListUseCase.getOnSaveListener());
+        setOnDestroyListener(editAlarmListUseCase.getOnDestroyListener());
 
         assert event != null;
 
@@ -295,12 +296,16 @@ public class AlarmEditDialog extends Fragment {
     }
 
     private OnSaveListener onSaveListener;
+    private Runnable onDestroyListener;
     public void setOnSaveListener(OnSaveListener onSaveListener) {
         this.onSaveListener = onSaveListener;
     }
+    public void setOnDestroyListener(Runnable onDestroyListener) {
+        this.onDestroyListener = onDestroyListener;
+    }
 
     public void onConfirm() {
-        if (event.alarmList.title.trim().isEmpty()) {
+        if (event.alarmList.title == null || event.alarmList.title.trim().isEmpty()) {
             Toast.makeText(getContext(), R.string.page_no_title_warning, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -312,6 +317,8 @@ public class AlarmEditDialog extends Fragment {
     }
     public void onDiscard() {
         navigateUp();
+        if (onDestroyListener != null)
+            onDestroyListener.run();
     }
 
     public void saveAlarms() {

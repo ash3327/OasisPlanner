@@ -20,15 +20,17 @@ public class EditEventUseCases {
     private FragmentManager fragmentManager;
     private Event event;
     private AlarmEditDialog.OnSaveListener onSaveListener;
+    private Runnable onDestroyListener;
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
-    public void invoke(_Event alarmList, String activityDescr, AlarmEditDialog.OnSaveListener onSaveListener) {
-        this.event = alarmList.getAssociates();
+    public void invoke(_Event event, String activityDescr, AlarmEditDialog.OnSaveListener onSaveListener, Runnable onDestroyListener) {
+        this.event = event.getAssociates();
         this.event.contents = activityDescr;
         this.onSaveListener = onSaveListener;
+        this.onDestroyListener = onDestroyListener;
 
         MainActivity.getNavController().navigate(R.id.navigation_alarmEditDialog);
     }
@@ -57,4 +59,5 @@ public class EditEventUseCases {
         return event;
     }
     public AlarmEditDialog.OnSaveListener getOnSaveListener() { return onSaveListener; }
+    public Runnable getOnDestroyListener() { return onDestroyListener; }
 }

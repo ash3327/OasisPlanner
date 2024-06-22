@@ -314,7 +314,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
             }
 
             binding.barTitle.setText(alarm.getTitle());
-            binding.barDescriptionText.setText(alarm.getContents(false));
+            SpannableStringBuilder content = alarm.getContents(false);
+            boolean hasDesc = content != null && !content.toString().isEmpty();
+            if (hasDesc)
+                binding.barDescriptionText.setText(content);
+            binding.barDescTextLay.setVisibility(hasDesc ? View.VISIBLE : View.GONE);
             SpannableStringBuilder loc = alarm.getLoc();
             if (loc == null)
                 binding.barLocSubBar.setVisibility(View.GONE);

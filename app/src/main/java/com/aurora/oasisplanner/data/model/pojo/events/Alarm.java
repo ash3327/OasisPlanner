@@ -90,7 +90,8 @@ public class Alarm {
             out.append(temp2).append(SEP);
 
         int len = out.length();
-        out = out.delete(len-SEP.length(), len);
+        if (len > SEP.length())
+            out = out.delete(len-SEP.length(), len);
 
         return inExpandedMode ? out : Styles.truncate(out, 30);
     }
@@ -138,8 +139,11 @@ public class Alarm {
 
         extras.putBundle("alarm", getAlarm().packContents());
         extras.putBundle("alarmList", getEvent().packContents());
-        extras.putBundle("activity", getActivity().packContents());
-        extras.putBundle("agenda", getAgenda().packContents());
+        if (getActivity() != null) {
+            extras.putBundle("activity", getActivity().packContents());
+            extras.putBundle("agenda", getAgenda().packContents());
+        }
+        extras.putBoolean("hasActivity", getActivity() != null);
 
         return extras;
     }
@@ -147,8 +151,10 @@ public class Alarm {
     @Ignore
     public static void unpackExceptAlarm(Alarm alarm, Bundle extras) {
         alarm.setEvent(_Event.unpackContents(extras.getBundle("alarmList")));
-        alarm.setActivity(_Activity.unpackContents(extras.getBundle("activity")));
-        alarm.setAgenda(_Agenda.unpackContents(extras.getBundle("agenda")));
+        if (extras.getBoolean("hasActivity")) {
+            alarm.setActivity(_Activity.unpackContents(extras.getBundle("activity")));
+            alarm.setAgenda(_Agenda.unpackContents(extras.getBundle("agenda")));
+        }
     }
     @Ignore
     public static Alarm unpackContents(Bundle extras) {
