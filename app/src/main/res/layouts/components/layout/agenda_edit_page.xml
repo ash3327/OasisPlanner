@@ -78,12 +78,12 @@
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-            <com.aurora.oasisplanner.presentation.widget.PageHeader
+            <com.aurora.oasisplanner.presentation.widgets.PageHeader
                 android:id="@+id/page_header_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:text="@string/edit_agenda_details"/>
-            <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+            <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
                 android:id="@+id/page_activities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 android:layout_marginHorizontal="25dp"
                 android:enabled="false"
                 android:visibility="gone"/>
-            <com.aurora.oasisplanner.presentation.widget.PageHeader
+            <com.aurora.oasisplanner.presentation.widgets.PageHeader
                 android:id="@+id/page_header_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <com.aurora.oasisplanner.presentation.widget.AddItemEditText
+                <com.aurora.oasisplanner.presentation.widgets.AddItemEditText
                     android:id="@+id/page_add_item_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

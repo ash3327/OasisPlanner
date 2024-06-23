@@ -1,9 +1,7 @@
 package com.aurora.oasisplanner.data.tags;
 
-import android.util.Log;
-
 import com.aurora.oasisplanner.R;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.DateType;
+import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.DateType;
 import com.aurora.oasisplanner.util.styling.Resources;
 
 import java.time.LocalDateTime;

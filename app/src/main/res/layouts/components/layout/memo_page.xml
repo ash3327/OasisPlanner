@@ -121,7 +121,7 @@
                                 android:padding="10dp"
                                 app:boxBackgroundColor="@color/cream"
                                 android:hint="@string/memo_tag_title">
-                                <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+                                <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
                                     android:id="@+id/tag_tags_tv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

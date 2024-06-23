@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal">
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
                 android:id="@+id/aedpi_tag_alarm_type_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 app:textHint="@string/type_spinner_title"
                 app:mainIcon="@drawable/menuic_notification"
                 app:textSize="@dimen/aedpi_textsize"/>
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.editargsbox.AEDOptionsDropdownBox
                 android:id="@+id/aedpi_tag_importance_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 app:textHint="@string/importance_spinner_title"
                 app:mainIcon="@drawable/ic_importance_exclaimation"
                 app:textSize="@dimen/aedpi_textsize"/>
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDContentBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.editargsbox.AEDContentBox
                 android:id="@+id/aedpi_tag_notif_date_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 app:focusable="false"
                 app:textSize="@dimen/aedpi_textsize"
                 app:multiLine="true"/>
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDContentBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.editargsbox.AEDContentBox
                 android:id="@+id/aedpi_tag_notif_time_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 app:textSize="@dimen/aedpi_textsize"
                 app:focusable="false"/>
             <include layout="@layout/tag_separator"/>
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox.AEDContentBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.viewargsbox.AEDContentBox
                 android:id="@+id/aedpi_tag_location_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 app:mainIcon="@drawable/ic_location"
                 app:textSize="@dimen/aedpi_bigger_textsize"/>
             <!-- DATETIME -->
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox.AEDDatetimeBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.viewargsbox.AEDDatetimeBox
                 android:id="@+id/aedpi_tag_datetime_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                 app:mainIcon="@drawable/ic_agenda_notification"
                 app:textSize="@dimen/aedpi_bigger_textsize"/>
             <!-- Tags -->
-            <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.viewargsbox.AEDTagsBox
+            <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.viewargsbox.AEDTagsBox
                 android:id="@+id/aedpi_tag_tags_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="dialog"
-            type="com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog"/>
+            type="com.aurora.oasisplanner.presentation.dialogs.choosetypedialog.ChooseTypeDialog"/>
     </data>
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"

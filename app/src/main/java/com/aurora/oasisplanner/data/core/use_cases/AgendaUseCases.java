@@ -1,7 +1,6 @@
 package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
@@ -12,8 +11,8 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.util.AlarmQuickEditUtil;
+import com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.AgendaEditDialog;
+import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.util.AlarmQuickEditUtil;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

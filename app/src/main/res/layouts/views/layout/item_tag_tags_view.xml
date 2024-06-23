@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/box_memo_tags_scroll">
-            <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+            <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
                 android:id="@+id/box_memo_tags"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"

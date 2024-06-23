@@ -1,6 +1,5 @@
 package com.aurora.oasisplanner.data.core;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -23,7 +22,7 @@ import com.aurora.oasisplanner.data.repository.EventRepository;
 import com.aurora.oasisplanner.data.repository.MultimediaRepository;
 import com.aurora.oasisplanner.data.repository.TagRepository;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
-import com.aurora.oasisplanner.presentation.dialog.choosetypedialog.ChooseTypeDialog;
+import com.aurora.oasisplanner.presentation.dialogs.choosetypedialog.ChooseTypeDialog;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.util.concurrent.CountDownLatch;

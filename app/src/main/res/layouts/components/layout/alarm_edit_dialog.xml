@@ -64,7 +64,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <com.aurora.oasisplanner.presentation.widget.tabselector.TabSelector
+            <com.aurora.oasisplanner.presentation.widgets.tabselector.TabSelector
                 android:id="@+id/tab_selector"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <!-- DATETIME -->
-                    <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDDatetimeBox
+                    <com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.components.editargsbox.AEDDatetimeBox
                         android:id="@+id/ietd_tag_datetime_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

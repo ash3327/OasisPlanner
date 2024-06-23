@@ -25,10 +25,10 @@ import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.ArrangerBinding;
 import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
 import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
-import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
-import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
-import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
-import com.aurora.oasisplanner.presentation.widget.multidatepicker.data.DateRange;
+import com.aurora.oasisplanner.presentation.panels.alarms.AlarmsViewModel;
+import com.aurora.oasisplanner.presentation.panels.alarms.components.AlarmsAdapter;
+import com.aurora.oasisplanner.presentation.widgets.multidatepicker.MultiDatePicker;
+import com.aurora.oasisplanner.presentation.widgets.multidatepicker.data.DateRange;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;

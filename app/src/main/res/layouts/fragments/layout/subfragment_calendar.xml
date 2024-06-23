@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="#FFFFFF">
-                <com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker
+                <com.aurora.oasisplanner.presentation.widgets.multidatepicker.MultiDatePicker
                     android:id="@+id/picker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

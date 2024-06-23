@@ -10,8 +10,7 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.data.repository.MemoRepository;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog;
-import com.aurora.oasisplanner.presentation.dialog.memoeditdialog.MemoEditDialog;
+import com.aurora.oasisplanner.presentation.dialogs.memoeditdialog.MemoEditDialog;
 
 public class MemoUseCases {
     private MemoRepository repository;

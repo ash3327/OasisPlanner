@@ -9,10 +9,10 @@ import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.NotifType;
-import com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.EventMoveDialog;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditSubalarmDialog;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmTagEditDialog;
-import com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.AlarmEditDialog;
+import com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.EventMoveDialog;
+import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.AlarmEditSubalarmDialog;
+import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.AlarmTagEditDialog;
+import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.AlarmEditDialog;
 
 import java.util.Set;
 

@@ -22,7 +22,7 @@
                 android:text="7月16日"
                 android:textSize="@dimen/boxtitle_textsize"/>
         </ScrollView>
-        <com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker
+        <com.aurora.oasisplanner.presentation.widgets.multidatepicker.MultiDatePicker
             android:id="@+id/picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

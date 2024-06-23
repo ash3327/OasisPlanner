@@ -13,23 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
-import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.FragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentAnalyticsBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
-import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.presentation.widgets.tabselector.TabMenu;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Arrays;
 
 public class ProjectsFragment extends Fragment {
 

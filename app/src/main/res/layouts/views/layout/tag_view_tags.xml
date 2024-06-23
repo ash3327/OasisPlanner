@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/edit_alarm_args_icon_rpadding"
             android:layout_marginEnd="@dimen/edit_alarm_icon_padding"/>
     </LinearLayout>
-    <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+    <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
         android:id="@+id/tag_tags_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
