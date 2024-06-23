@@ -41,14 +41,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Upcoming Tasks"
+                    android:text="@string/home_upcoming"
                     android:textStyle="bold"
                     android:letterSpacing=".1"
                     android:theme="@style/HomeTitleTheme"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Recommendations for you"
+                    android:text="@string/home_upcoming_desc"
                     android:letterSpacing=".1"
                     android:theme="@style/HomeSubtitleTheme"/>
                 <androidx.recyclerview.widget.RecyclerView
@@ -61,14 +61,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Schedule"
+                    android:text="@string/home_schedule"
                     android:textStyle="bold"
                     android:letterSpacing=".1"
                     android:theme="@style/HomeTitleTheme"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Next Event"
+                    android:text="@string/home_schedule_desc"
                     android:letterSpacing=".1"
                     android:theme="@style/HomeSubtitleTheme"/>
             </LinearLayout>

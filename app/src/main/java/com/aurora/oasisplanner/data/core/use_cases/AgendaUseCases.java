@@ -2,6 +2,8 @@ package com.aurora.oasisplanner.data.core.use_cases;
 
 import android.os.Bundle;
 
+import androidx.lifecycle.LiveData;
+
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.core.AppModule;
@@ -12,6 +14,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.repository.AgendaRepository;
 import com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.AgendaEditDialog;
+import com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.util.AgendaAccessUtil;
 import com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.util.AlarmQuickEditUtil;
 
 import java.util.List;
@@ -33,7 +36,7 @@ public class AgendaUseCases {
         bundle.putLong(AgendaEditDialog.EXTRA_ACTIVL_ID, activityLId);
         bundle.putLong(AgendaEditDialog.EXTRA_EVENT_ID, eventLId);
 
-        if (!AgendaEditDialog.checkIfPlaceholder(agendaId))
+        if (!AgendaAccessUtil.agendaIdIsPlaceholder(agendaId))
             MainActivity.getNavController().navigate(R.id.navigation_agendaEditDialog, bundle);
         else
             new AlarmQuickEditUtil(agendaId, activityLId, eventLId).quickEdit();
@@ -58,5 +61,13 @@ public class AgendaUseCases {
         if (activity.hasCache())
             return activity.getCache().getFirstAlarm();
         return AppModule.retrieveAlarmUseCases().getNextAlarmFromActivity(activity.id);
+    }
+
+    public LiveData<List<Agenda>> getAgendas() {
+        return repository.getAgendas();
+    }
+
+    public AgendaRepository getRepository() {
+        return repository;
     }
 }

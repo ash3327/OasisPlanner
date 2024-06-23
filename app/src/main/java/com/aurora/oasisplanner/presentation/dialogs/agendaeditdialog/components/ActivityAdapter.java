@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutorService;
 public class ActivityAdapter extends _BaseAdapter<ActivityAdapter.ActivityHolder, _Activity> {
 
     private static final int ID_KEY_SECTIONS_ADD = 4;
-    private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD);
+    private Id toAddSection = new Id(0, ID_KEY_SECTIONS_ADD); //4
     private OnClickListener ocl = null;
     private Instant clicked = Instant.now();
 

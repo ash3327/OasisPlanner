@@ -49,6 +49,11 @@
     <string name="tag_descr">Descriptions</string>
 
     <!-- FRAGMENTS -->
+        <!-- HOME -->
+            <string name="home_upcoming">Upcoming Tasks</string>
+            <string name="home_upcoming_desc">Recommendations for you</string>
+            <string name="home_schedule">Your Schedule</string>
+            <string name="home_schedule_desc">Next Event</string>
         <!-- NOTIFICATIONS -->
             <!-- TITLE -->
             <string name="agendas">Upcoming</string>

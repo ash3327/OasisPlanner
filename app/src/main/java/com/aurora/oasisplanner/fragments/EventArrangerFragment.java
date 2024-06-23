@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.ArrangerBinding;
 import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
@@ -70,14 +71,17 @@ public class EventArrangerFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         final AlarmsAdapter adapter = new AlarmsAdapter(recyclerView, true);
-        adapter.setOnChangeListener(
-                (size)-> binding.textHome.setVisibility(size == 0 ? View.VISIBLE : View.INVISIBLE)
-        );
         recyclerView.setAdapter(adapter);
 
         alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
         alarmsViewModel.refreshAlarms(searchEntry==null ? "" : searchEntry);
-        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+        alarmsViewModel.getAlarms().observe(
+                getViewLifecycleOwner(),
+                (_alarms) -> {
+                    adapter.setAlarms(_alarms);
+                    binding.textHome.setVisibility(adapter.getAlarmsCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+                }
+        );
 
         binding.tagSearchTv.setOnKeyListener(
                 (v, keyCode, event)->{
@@ -190,15 +194,22 @@ public class EventArrangerFragment extends Fragment {
         String str = Objects.requireNonNull(nbinding.tagSearchTv.getText()).toString();
         alarmsViewModel.refreshAlarms(str);
         searchEntry = str;
-        refreshDisplayResults(adapter);
+        refreshDisplayResults(adapter, nbinding);
         nbinding.textHome.setText(searchEntry.isEmpty() ? R.string.tips_no_agendas : R.string.tips_memo_not_found);
     }
     private void refreshSearchResultsWithDateRange(AlarmsAdapter adapter, DateRange dateRange) {
         alarmsViewModel.refreshAlarmsBetween("", dateRange); //TODO: add search function?
-        refreshDisplayResults(adapter);
+        refreshDisplayResults(adapter, null);
     }
-    private void refreshDisplayResults(AlarmsAdapter adapter) {
-        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+    private void refreshDisplayResults(AlarmsAdapter adapter, ArrangerNotificationsBinding nbinding) {
+        alarmsViewModel.getAlarms().observe(
+                getViewLifecycleOwner(),
+                (_alarms) -> {
+                    adapter.setAlarms(_alarms);
+                    if (nbinding != null)
+                        nbinding.textHome.setVisibility(adapter.getAlarmsCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+                }
+            );
     }
 
     @Override

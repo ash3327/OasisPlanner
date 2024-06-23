@@ -112,11 +112,6 @@ public class AgendaEditDialog extends Fragment {
         return binding.getRoot();
     }
 
-    /** Checks if Agenda is just placeholder. */
-    public static boolean checkIfPlaceholder(long agendaId) {
-        return AgendaAccessUtil.fetchAgenda(agendaId).agenda.args.containsKey("NIL");
-    }
-
     @Override
     public void onDestroy() {
         MainActivity.bottomBar.setVisibility(View.VISIBLE);

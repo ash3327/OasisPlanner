@@ -50,6 +50,11 @@
     <string name="tag_descr">描述</string>
 
     <!-- FRAGMENTS -->
+        <!-- HOME -->
+            <string name="home_upcoming">等待完成的任務</string>
+            <string name="home_upcoming_desc">想不到要做什麽？試試看這些推薦！</string>
+            <string name="home_schedule">您的日程</string>
+            <string name="home_schedule_desc">您的下一項任務</string>
         <!-- NOTIFICATIONS -->
             <!-- TITLE -->
             <string name="agendas">最近事項</string>

@@ -23,12 +23,12 @@ import java.util.Objects;
 
 public class MemosAdapter extends RecyclerView.Adapter<MemosAdapter.MemosHolder> {
 
-    private static final int ID_KEY_MEMOGROUPS = 0;
+    private static final int ID_KEY_MEMOGROUPS = 1;
     private Id id;
 
     {
         setHasStableIds(true);
-        id = new Id(-1, ID_KEY_MEMOGROUPS);
+        id = new Id(-1, ID_KEY_MEMOGROUPS);//1
         id.observe((oldId, newId)->{
             if(oldId >= 0) notifyItemChanged(oldId);
             if(newId >= 0) notifyItemChanged(newId);

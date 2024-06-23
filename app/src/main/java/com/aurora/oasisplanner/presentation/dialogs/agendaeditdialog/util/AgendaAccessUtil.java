@@ -54,4 +54,13 @@ public class AgendaAccessUtil {
         }
         return _mPinned;
     }
+
+    /** Checks if Agenda is just placeholder. */
+    public static boolean agendaIdIsPlaceholder(long agendaId) {
+        return agendaIsPlaceholder(fetchAgenda(agendaId));
+    }
+
+    public static boolean agendaIsPlaceholder(Agenda agenda) {
+        return agenda.agenda.args.containsKey("NIL");
+    }
 }

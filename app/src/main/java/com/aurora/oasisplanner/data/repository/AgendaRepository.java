@@ -2,6 +2,8 @@ package com.aurora.oasisplanner.data.repository;
 
 import android.text.SpannableStringBuilder;
 
+import androidx.lifecycle.LiveData;
+
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
 import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
@@ -12,13 +14,17 @@ import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +72,15 @@ public class AgendaRepository {
     public Agenda getAgendaFromId(long id) {
         try {
             return executor.submit(()-> agendaDao.getAgendaById(id)).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public LiveData<List<Agenda>> getAgendas() {
+        try {
+            return executor.submit(()-> agendaDao.getAgendas()).get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -186,5 +201,12 @@ public class AgendaRepository {
         alarmDao.deleteAllAlarms();
         alarmDao.deleteAllSubAlarms();
     }
+
+    public LiveData<List<Agenda>> requestAgenda(String searchEntry) {
+        return agendaDao.getAgendasAfter(searchEntry);
+    }
+//    public LiveData<List<Agenda>> requestAgenda(String searchEntry, LocalDate startDate, LocalDate endDate) {
+//        return agendaDao.getAgendasBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
+//    }
 
 }

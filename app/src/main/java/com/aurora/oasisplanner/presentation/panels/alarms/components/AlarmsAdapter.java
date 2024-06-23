@@ -48,7 +48,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
 
     {
         setHasStableIds(true);
-        id = new Id(-1, ID_KEY_ALARMGROUPS);
+        id = new Id(-1, ID_KEY_ALARMGROUPS);//0
         id.observe((oldId, newId)->{
             if(oldId >= 0) notifyItemChanged(oldId);
             if(newId >= 0) notifyItemChanged(newId);
@@ -56,6 +56,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     }
 
     public List<Object> alarms = new ArrayList<>();
+    private int size = 0;
     public boolean monthIsOn = true;
 
     public AlarmsAdapter(RecyclerView recyclerView, boolean hasBoundary) {
@@ -154,6 +155,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     public int getItemCount() {
         return alarms.size();
     }
+    public int getAlarmsCount() { return size; }
 
     /** Since the alarm list will be overall changed when any agenda is edited,
      *  a global notification in change of ui is required. */
@@ -161,6 +163,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
     public void setAlarms(List<Alarm> alarms) {
         List<Object> list = new ArrayList<>();
 
+        size = alarms.size();
         LocalDate currentMonth = null;
         LocalDate currentDay = null;
         for (Alarm gp : alarms) {
