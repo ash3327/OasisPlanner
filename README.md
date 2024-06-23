@@ -31,12 +31,15 @@ _Most part of the features are still under development._
 
 ## Recent Updates
 - Our recent update added support to devices of Android version 13+. [16 JUN 2024]
+- Added "Quick Add" and "Quick Edit" function - users can now add new events with just one click!
 
 ## Functionalities
 - Preview of work:
 
   <img src="https://github.com/ash3327/ash3327/assets/86100752/3548ccde-c41b-440f-af3d-4f35303066e4" width=200/>
+  <img src="https://github.com/ash3327/ash3327/assets/86100752/73996de9-525e-4c91-a27d-f76b8054de93" width=200/>
   <img src="https://github.com/ash3327/ash3327/assets/86100752/43f12dbf-4ab5-45ec-9f50-6086b3f7e601" width=200/>
   <img src="https://github.com/ash3327/ash3327/assets/86100752/82471662-dfac-44f0-bbc5-c06190d2a21e" width=200/>
+
 
 - Relevant documents will be uploaded later.

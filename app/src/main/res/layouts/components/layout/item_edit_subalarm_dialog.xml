@@ -20,7 +20,7 @@
             android:layout_marginVertical="@dimen/page_vmargin"
             android:layout_marginHorizontal="@dimen/page_hmargin">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey_50"
@@ -61,11 +61,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/item_edit_tag_diag_header"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginBottom="60dp"
                     android:orientation="vertical">
                     <!-- DATETIME -->
                     <com.aurora.oasisplanner.presentation.dialog.alarmeditdialog.components.editargsbox.AEDDatetimeBox
@@ -82,8 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/page_bottom_height"
                     android:gravity="end"
-                    android:paddingHorizontal="20dp"
-                    android:paddingBottom="15dp"
+                    android:layout_marginHorizontal="@dimen/page_bottom_hpadding"
+                    android:layout_marginBottom="5dp"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +110,7 @@
                         android:padding="10dp"
                         android:layout_marginHorizontal="5dp"/>
                 </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>

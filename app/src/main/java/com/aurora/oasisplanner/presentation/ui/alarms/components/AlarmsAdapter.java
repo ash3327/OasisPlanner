@@ -1,9 +1,13 @@
 package com.aurora.oasisplanner.presentation.ui.alarms.components;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
+import com.aurora.oasisplanner.activities.OasisApp;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
@@ -244,10 +249,12 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
 
     static class AlarmsHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding vbinding;
+        private Vibrator vibrator;
 
         public AlarmsHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.vbinding = binding;
+            this.vibrator = (Vibrator) OasisApp.getContext().getSystemService(Context.VIBRATOR_SERVICE);
         }
 
         public boolean bind(int i, Object alarmGp) {
@@ -293,10 +300,15 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                     boolean hasFinished = Objects.equals(state, "FINISHED");
                     alarm.putArg(_Alarm.ArgType.STATE, hasFinished ? "UNFINISHED" : "FINISHED");
 
-                    if (!hasFinished && Configs.clickSoundIsOn) {
-                        final MediaPlayer mp = MediaPlayer.create(v.getContext(), R.raw.done_bellring);
-                        mp.setOnCompletionListener(MediaPlayer::release);
-                        mp.start();
+                    if (!hasFinished) {
+                        if (Configs.clickSoundIsOn) {
+                            final MediaPlayer mp = MediaPlayer.create(v.getContext(), R.raw.done_bellring);
+                            mp.setOnCompletionListener(MediaPlayer::release);
+                            mp.start();
+                        }
+                        if (vibrator != null && vibrator.hasVibrator()) {
+                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        }
                     }
                     binding.circ.setImageResource(
                             Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?

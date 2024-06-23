@@ -132,8 +132,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/page_bottom_height"
                     android:gravity="end"
-                    android:paddingHorizontal="20dp"
-                    android:paddingBottom="15dp"
+                    android:layout_marginHorizontal="@dimen/page_bottom_hpadding"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,8 +145,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/yellow_bar_tag_delete"
                         android:textColor="@color/red_500"
-                        android:padding="10dp"
-                        android:layout_marginHorizontal="5dp"/>
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="10dp"/>
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -154,15 +155,15 @@
                         android:id="@+id/confirm_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
                         app:cardCornerRadius="10dp"
-                        android:layout_marginHorizontal="5dp">
+                        app:cardBackgroundColor="@color/theme"
+                        app:contentPadding="10dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/page_confirm"
-                            android:background="@color/theme"
-                            android:textColor="@color/white"
-                            android:padding="10dp"/>
+                            android:textColor="@color/white"/>
                     </androidx.cardview.widget.CardView>
                     <TextView
                         android:id="@+id/cancel_button"
@@ -170,8 +171,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/page_cancel"
                         android:textColor="@color/grey"
-                        android:padding="10dp"
-                        android:layout_marginHorizontal="5dp"/>
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="10dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
