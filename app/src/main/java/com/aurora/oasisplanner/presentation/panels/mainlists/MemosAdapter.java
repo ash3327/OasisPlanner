@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.memos.components;
+package com.aurora.oasisplanner.presentation.panels.mainlists;
 
 import android.annotation.SuppressLint;
 import android.text.InputType;
@@ -15,7 +15,7 @@ import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.memos._Memo;
 import com.aurora.oasisplanner.presentation.util.Id;
 import com.aurora.oasisplanner.databinding.BoxMemoBinding;
-import com.aurora.oasisplanner.presentation.panels.dividers.PaddingItemDecoration;
+import com.aurora.oasisplanner.presentation.panels.utils.PaddingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

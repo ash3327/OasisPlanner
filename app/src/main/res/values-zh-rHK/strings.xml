@@ -23,6 +23,7 @@
     <string name="tag_header_browse">我的日程</string>
 
     <!-- TIPS -->
+    <string name="tips_no_home_agendas">現在沒有即將到來的任務了！\n加上您新的目標吧！</string>
     <string name="tips_no_agendas">現在還沒有活動哦！\n加上您新的行程吧！</string>
     <string name="tips_no_memos">現在還沒有備忘哦！\n加上新的備忘記錄您的奇思妙想吧！</string>
     <string name="tips_memo_not_found">未找到包含您所有搜尋字詞的結果。</string>

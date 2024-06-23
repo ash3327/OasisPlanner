@@ -19,6 +19,13 @@ public class DateRange {
         return this;
     }
 
+    public DateRange setToday() {
+        changingStartEndPointerState = DateRange.Updating.notUpdating;
+        mStart = LocalDate.now();
+        mEnd = mStart.plusDays(1);
+        return this;
+    }
+
     public void changeRangeBy(LocalDate pivot) {
         if (pivot.isBefore(mStart) || pivot.equals(mStart))
             changingStartEndPointerState = DateRange.Updating.updatingStart;

@@ -14,7 +14,7 @@
     <string name="week_range_format_end_different_month">M月d日</string>
         <!-- SEPAREATED BY SEMICOLONS -->
         <string name="partial_date_formats">d;M月_日;uu年_</string>
-        <string name="home_date_formats">E;M _;uuuu,_</string>
+        <string name="home_date_formats">E;M月 _;uuuu年_</string>
         <string name="bar_date_formats">d日;E, M月_;_</string>
         <string name="month_formats">;M月;uuuu年_</string>
         <string name="year_week_formats">E;$ • _;uuuu年_</string>

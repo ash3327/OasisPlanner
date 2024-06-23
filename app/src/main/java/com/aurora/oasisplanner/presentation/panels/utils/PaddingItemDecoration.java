@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.dividers;
+package com.aurora.oasisplanner.presentation.panels.utils;
 
 import android.graphics.Rect;
 import android.view.View;

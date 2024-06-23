@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- DATA CLASS -->
+    <data class="VertDayLabelBinding"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top|center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="top|left"
+            android:paddingHorizontal="@dimen/bar_vpadding"
+            android:layout_marginVertical="@dimen/box_widgets_padding_top">
+            <TextView
+                android:id="@+id/tv_day_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:text='SUBHEADER'
+                android:textColor="@color/grey"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                />
+        </LinearLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bar_vbar_width"
+                android:layout_gravity="center"
+                android:background="@color/grey_100"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_icon_height"
+                android:layout_marginHorizontal="@dimen/box_widgets_padding_top"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingStart="@dimen/bar_daylabel_top">
+                <ImageView
+                    android:id="@+id/circ"
+                    android:layout_width="@dimen/icon_height"
+                    android:layout_height="@dimen/icon_height"
+                    android:src="@drawable/shp_circ_filled"
+                    app:tint="@color/grey_500"
+                    android:layout_marginHorizontal="@dimen/bar_dot_vpadding"
+                    android:orientation="vertical"/>
+            </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/tv_day_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center"
+
+            android:paddingTop="@dimen/bar_daylabel_spacing"
+            android:text='HEADER TEXT'
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:paddingStart="@dimen/bar_daylabel_top"
+            />
+    </LinearLayout>
+</layout>

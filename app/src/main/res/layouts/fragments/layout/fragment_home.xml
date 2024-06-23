@@ -25,9 +25,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
         <androidx.cardview.widget.CardView
+            android:id="@+id/home_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="235dp"
+            android:layout_marginTop="240dp"
             app:contentPaddingLeft="25dp"
             app:contentPaddingRight="25dp"
             app:contentPaddingTop="20dp"
@@ -38,52 +39,100 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_upcoming"
-                    android:textStyle="bold"
-                    android:letterSpacing=".1"
-                    android:theme="@style/HomeTitleTheme"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_upcoming_desc"
-                    android:letterSpacing=".1"
-                    android:theme="@style/HomeSubtitleTheme"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recommendation_list"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/home_recommendation_listitem_height"
-                    android:paddingStart="20dp"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/_home_recommendations_displist" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_schedule"
-                    android:textStyle="bold"
-                    android:letterSpacing=".1"
-                    android:theme="@style/HomeTitleTheme"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_schedule_desc"
-                    android:letterSpacing=".1"
-                    android:theme="@style/HomeSubtitleTheme"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_schedule"
+                        android:textStyle="bold"
+                        android:letterSpacing=".1"
+                        android:theme="@style/HomeTitleTheme"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_schedule_desc"
+                        android:letterSpacing=".1"
+                        android:theme="@style/HomeSubtitleTheme"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recommendation_list_schedule"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            tools:listitem="@layout/_home_recommendations_displist" />
+                        <TextView
+                            android:id="@+id/home_schedule_warning"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/tips_no_home_agendas"
+                            android:gravity="center"
+                            android:textSize="@dimen/type_text_size"
+                            android:translationZ="1dp"
+                            android:visibility="gone"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_upcoming"
+                        android:textStyle="bold"
+                        android:letterSpacing=".1"
+                        android:theme="@style/HomeTitleTheme"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_upcoming_desc"
+                        android:letterSpacing=".1"
+                        android:theme="@style/HomeSubtitleTheme"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recommendation_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            tools:listitem="@layout/_home_recommendations_displist" />
+                        <TextView
+                            android:id="@+id/home_recommendation_warning"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/tips_no_home_agendas"
+                            android:gravity="center"
+                            android:textSize="@dimen/type_text_size"
+                            android:translationZ="1dp"
+                            android:visibility="gone"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_card_height"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/home_card"
+            app:layout_constraintVertical_bias=".8"
             android:orientation="horizontal">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/home_card_width"
                 android:layout_height="match_parent"
                 android:background="@drawable/date_card"
-                android:backgroundTint="@color/theme">
+                android:backgroundTint="@color/theme_a">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

@@ -21,8 +21,8 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.MemoFragmentBinding;
-import com.aurora.oasisplanner.presentation.panels.memos.MemoViewModel;
-import com.aurora.oasisplanner.presentation.panels.memos.components.MemosAdapter;
+import com.aurora.oasisplanner.data.viewmodels.MemoViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.MemosAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;

@@ -21,13 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
-import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.ArrangerBinding;
 import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
 import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
-import com.aurora.oasisplanner.presentation.panels.alarms.AlarmsViewModel;
-import com.aurora.oasisplanner.presentation.panels.alarms.components.AlarmsAdapter;
+import com.aurora.oasisplanner.data.viewmodels.AlarmsViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.AlarmsAdapter;
 import com.aurora.oasisplanner.presentation.widgets.multidatepicker.MultiDatePicker;
 import com.aurora.oasisplanner.presentation.widgets.multidatepicker.data.DateRange;
 import com.google.android.material.textfield.TextInputLayout;

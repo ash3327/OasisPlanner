@@ -2,8 +2,6 @@ package com.aurora.oasisplanner.fragments;
 
 import static android.view.View.VISIBLE;
 
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -25,14 +23,12 @@ import androidx.viewbinding.ViewBinding;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
-import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.FragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentAnalyticsBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.presentation.panels.agendas.AgendasViewModel;
-import com.aurora.oasisplanner.presentation.panels.agendas.components.AgendasAdapter;
-import com.aurora.oasisplanner.presentation.widgets.multidatepicker.data.DateRange;
+import com.aurora.oasisplanner.data.viewmodels.AgendasViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.AgendasAdapter;
 import com.aurora.oasisplanner.presentation.widgets.tabselector.TabMenu;
 import com.google.android.material.textfield.TextInputLayout;
 

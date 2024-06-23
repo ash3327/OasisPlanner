@@ -96,6 +96,10 @@ public interface AlarmDao {
     LiveData<List<Alarm>> getAlarmsInfoBetween(LocalDate fromDate, LocalDate toDate, String searchEntry, String htmlSearchEntry);
 
     @Transaction
+    @Query(searchQuery_start+"WHERE _Alarm.alarmDatetime >= :fromDate AND _Alarm.alarmDatetime <= :toDate"+searchQuery_end)
+    LiveData<List<Alarm>> getAlarmsInfoBetween(LocalDateTime fromDate, LocalDateTime toDate, String searchEntry, String htmlSearchEntry);
+
+    @Transaction
     @Query("SELECT * FROM _Alarm " +
             "WHERE _Alarm.alarmId = :id")
     Alarm getAlarmInfoById(long id);

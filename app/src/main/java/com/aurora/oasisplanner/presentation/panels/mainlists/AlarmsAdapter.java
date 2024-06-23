@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.alarms.components;
+package com.aurora.oasisplanner.presentation.panels.mainlists;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,7 +30,7 @@ import com.aurora.oasisplanner.databinding.BoxEndBinding;
 import com.aurora.oasisplanner.databinding.BoxEventBinding;
 import com.aurora.oasisplanner.databinding.DayLabelBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
-import com.aurora.oasisplanner.presentation.panels.dividers.PaddingItemDecoration;
+import com.aurora.oasisplanner.presentation.panels.utils.PaddingItemDecoration;
 import com.aurora.oasisplanner.util.Configs;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
 import com.aurora.oasisplanner.util.styling.Resources;
@@ -293,13 +293,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                 binding.setFgColor(Color.BLACK);
             }
             if (alarm.getType() == AlarmType.todo) {
-                binding.circ.setImageResource(
-                        Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?
-                                R.drawable.radio_checked : R.drawable.radio_unchecked);
+                binding.circ.setImageResource(alarm.alarm.isFinished() ? R.drawable.radio_checked : R.drawable.radio_unchecked);
                 binding.circ.clearColorFilter();
                 binding.circ.setOnClickListener((v)-> {
-                    String state = alarm.getArgDefault(_Alarm.ArgType.STATE);
-                    boolean hasFinished = Objects.equals(state, "FINISHED");
+                    boolean hasFinished = alarm.alarm.isFinished();
                     alarm.putArg(_Alarm.ArgType.STATE, hasFinished ? "UNFINISHED" : "FINISHED");
 
                     if (!hasFinished) {
@@ -312,9 +309,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmsHold
                             vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                         }
                     }
-                    binding.circ.setImageResource(
-                            Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED") ?
-                                    R.drawable.radio_checked : R.drawable.radio_unchecked);
+                    binding.circ.setImageResource(alarm.alarm.isFinished() ? R.drawable.radio_checked : R.drawable.radio_unchecked);
                     AppModule.retrieveAlarmUseCases().putWith(alarm);
                 });
             } else {

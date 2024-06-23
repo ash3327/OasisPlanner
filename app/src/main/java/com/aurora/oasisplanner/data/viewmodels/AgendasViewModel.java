@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.agendas;
+package com.aurora.oasisplanner.data.viewmodels;
 
 import android.app.Application;
 

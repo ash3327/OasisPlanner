@@ -299,7 +299,7 @@ public class EventAdapter extends _BaseAdapter<EventAdapter.EventHolder, _Event>
                 if (gp.type == AlarmType.todo) {
                     boolean allDone = true;
                     for (_Alarm alarm : ((_Event) item).getAssociates().alarms) {
-                        boolean isDone = Objects.equals(alarm.getArgDefault(_Alarm.ArgType.STATE), "FINISHED");
+                        boolean isDone = alarm.isFinished();
                         eachIsDone.append(isDone ? "T" : "F");
                         allDone &= isDone;
                     }

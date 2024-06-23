@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.agendas.components;
+package com.aurora.oasisplanner.presentation.panels.mainlists;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
 import com.aurora.oasisplanner.databinding.BoxAgendaBinding;
 import com.aurora.oasisplanner.databinding.HeaderImageBinding;
 import com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.util.AgendaAccessUtil;
-import com.aurora.oasisplanner.presentation.panels.dividers.PaddingItemDecoration;
+import com.aurora.oasisplanner.presentation.panels.utils.PaddingItemDecoration;
 import com.aurora.oasisplanner.presentation.util.Id;
 import com.aurora.oasisplanner.util.styling.Resources;
 

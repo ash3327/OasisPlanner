@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="0dp">
-                <com.aurora.oasisplanner.presentation.panels.memos.components.InterceptLinearLayout
+                <com.aurora.oasisplanner.presentation.panels.utils.InterceptLinearLayout
                     android:id="@+id/bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                             </HorizontalScrollView>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.aurora.oasisplanner.presentation.panels.memos.components.InterceptLinearLayout>
+                </com.aurora.oasisplanner.presentation.panels.utils.InterceptLinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>

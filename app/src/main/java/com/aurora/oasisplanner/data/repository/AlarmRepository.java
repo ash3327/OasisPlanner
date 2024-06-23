@@ -134,6 +134,9 @@ public class AlarmRepository {
     public LiveData<List<Alarm>> requestAlarm(String searchEntry, LocalDate startDate, LocalDate endDate) {
         return alarms = alarmDao.getAlarmsInfoBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
     }
+    public LiveData<List<Alarm>> requestAlarm(String searchEntry, LocalDateTime startDate, LocalDateTime endDate) {
+        return alarms = alarmDao.getAlarmsInfoBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
+    }
     public Alarm requestAlarm(long id) {
         return alarmDao.getAlarmInfoById(id);
     }

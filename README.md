@@ -26,12 +26,12 @@ _Most part of the features are still under development._
 ## Our Plan
 - Complete basic functionalities as described in our goals before September 2024.
 - We are currently working on:
-  - Modularizing our previous code to increase readability
-  - Redesigning several components to increase cohesion between UI elements and enhance user experience
+  - Basic Functionalities
 
 ## Recent Updates
 - Our recent update added support to devices of Android version 13+. [16 JUN 2024]
 - Added "Quick Add" and "Quick Edit" function - users can now add new events with just one click!
+- Added UI for Home and Projects fragments.
 
 ## Functionalities
 - Preview of work:

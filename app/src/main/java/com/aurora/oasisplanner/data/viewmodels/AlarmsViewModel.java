@@ -1,4 +1,4 @@
-package com.aurora.oasisplanner.presentation.panels.alarms;
+package com.aurora.oasisplanner.data.viewmodels;
 
 import android.app.Application;
 
@@ -13,6 +13,7 @@ import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.presentation.widgets.multidatepicker.data.DateRange;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AlarmsViewModel extends AndroidViewModel {
@@ -31,6 +32,9 @@ public class AlarmsViewModel extends AndroidViewModel {
     }
     public void refreshAlarmsBetween(String searchEntry, DateRange dateRange) {
         alarms = repository.requestAlarm(searchEntry, dateRange.mStart, dateRange.mEnd);
+    }
+    public void refreshAlarmsBetween(String searchEntry, LocalDateTime start, LocalDateTime end) {
+        alarms = repository.requestAlarm(searchEntry, start, end);
     }
 
     public void insert(_Alarm alarm) {

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class _Alarm {
@@ -111,6 +112,13 @@ public class _Alarm {
     public void putArgs(ArgType key, String s) {
         if (args == null) args = new HashMap<>();
         args.put(key.name(), s);
+    }
+
+    public boolean isFinished() {
+        if (type == AlarmType.todo)
+            return false;
+        String state = getArgDefault(_Alarm.ArgType.STATE);
+        return Objects.equals(state, "FINISHED");
     }
 
     @Ignore
