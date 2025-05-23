@@ -53,7 +53,7 @@ public class AlarmNotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             Alarm alarm = Alarm.unpackContents(intent.getBundleExtra("ALARM"));
-            AppModule.provideExecutor().submit(
+            AppModule.provideExecutor().execute(
                     ()->showNotification(alarm)
             );
         }
@@ -68,7 +68,6 @@ public class AlarmNotificationService extends Service {
     }
 
     final String SHORTCUT_ID = "OasisShortcutId";
-    @SuppressLint("UnspecifiedImmutableFlag")
     public void showNotification(Alarm alarm) {
         Resources.context = this;
 
@@ -84,7 +83,8 @@ public class AlarmNotificationService extends Service {
                 this,
                 0,
                 activityIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT |
+                        (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0)
         );
 
         Bitmap img = BitmapFactory.decodeResource(this.getResources(), alarm.getImportance().getNotifIcon());
@@ -169,4 +169,9 @@ public class AlarmNotificationService extends Service {
             Resources.context = OasisApp.getContext();
     }
 
+    public static void notify(Context context, Alarm alarm) {
+        Intent serviceIntent = new Intent(context, AlarmNotificationService.class);
+        serviceIntent.putExtra("ALARM", alarm.packContents());
+        context.startService(serviceIntent);
+    }
 }

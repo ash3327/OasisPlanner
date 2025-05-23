@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.widget.Toast;
 
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;

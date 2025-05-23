@@ -3,8 +3,6 @@ package com.aurora.oasisplanner.fragments;
 import static android.view.View.VISIBLE;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,17 +25,13 @@ import com.aurora.oasisplanner.data.tags.Page;
 import com.aurora.oasisplanner.databinding.ArrangerBinding;
 import com.aurora.oasisplanner.databinding.ArrangerCalendarBinding;
 import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
-import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.presentation.ui.alarms.AlarmsViewModel;
-import com.aurora.oasisplanner.presentation.ui.alarms.components.AlarmsAdapter;
-import com.aurora.oasisplanner.presentation.ui.memos.components.MemosAdapter;
-import com.aurora.oasisplanner.presentation.widget.multidatepicker.MultiDatePicker;
-import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
-import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.data.viewmodels.AlarmsViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.AlarmsAdapter;
+import com.aurora.oasisplanner.presentation.widgets.multidatepicker.MultiDatePicker;
+import com.aurora.oasisplanner.presentation.widgets.multidatepicker.data.DateRange;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class EventArrangerFragment extends Fragment {
@@ -75,15 +69,18 @@ public class EventArrangerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        final AlarmsAdapter adapter = new AlarmsAdapter(recyclerView);
-        adapter.setOnChangeListener(
-                (size)-> binding.textHome.setVisibility(size == 0 ? View.VISIBLE : View.INVISIBLE)
-        );
+        final AlarmsAdapter adapter = new AlarmsAdapter(recyclerView, true);
         recyclerView.setAdapter(adapter);
 
         alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
         alarmsViewModel.refreshAlarms(searchEntry==null ? "" : searchEntry);
-        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+        alarmsViewModel.getAlarms().observe(
+                getViewLifecycleOwner(),
+                (_alarms) -> {
+                    adapter.setAlarms(_alarms);
+                    binding.textHome.setVisibility(adapter.getAlarmsCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+                }
+        );
 
         binding.tagSearchTv.setOnKeyListener(
                 (v, keyCode, event)->{
@@ -124,21 +121,35 @@ public class EventArrangerFragment extends Fragment {
 
     private void initCalendarSubfragment(ArrangerCalendarBinding binding) {
         subpageBinding = binding;
+
+        // Preparation
+        LocalDate date = LocalDate.now();
+
+        // List of Events
+        RecyclerView recyclerView = binding.boxList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+
+        final AlarmsAdapter adapter = new AlarmsAdapter(recyclerView, false);
+        adapter.monthIsOn = false;
+        recyclerView.setAdapter(adapter);
+
+        alarmsViewModel = new ViewModelProvider(this).get(AlarmsViewModel.class);
+        alarmsViewModel.refreshAlarmsBetween("", new DateRange().setPoint(date));
+        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
+
+        // Date Picker
         MultiDatePicker picker = binding.picker;
         picker.minDateAllowed = LocalDate.now();
-        LocalDate date = LocalDate.now();
         picker.setMonth(date.getYear(), date.getMonthValue());
+        picker.setOnUpdateListener(
+                (_picker)-> {
+                    DateRange selected = _picker.getRangeSelected();
+                    refreshSearchResultsWithDateRange(adapter, selected);
+                }
+        );
         picker.refresh();
     }
-
-    /*private void switchPageAnimation(int i, TabMenuBinding vbinding) {
-        String[] colors = new String[]{
-                "#FF0062EE", "#FFEE9337"
-        };
-        vbinding.selectContent.getBackground().setColorFilter(Color.parseColor(
-                colors[i]
-        ), PorterDuff.Mode.SRC_IN);
-    }*/
 
     private void switchToPage(int i) {
         MainActivity activity = (MainActivity) getActivity();
@@ -181,9 +192,23 @@ public class EventArrangerFragment extends Fragment {
     private void refreshSearchResults(AlarmsAdapter adapter, ArrangerNotificationsBinding nbinding) {
         String str = Objects.requireNonNull(nbinding.tagSearchTv.getText()).toString();
         alarmsViewModel.refreshAlarms(str);
-        alarmsViewModel.getAlarms().observe(getViewLifecycleOwner(), adapter::setAlarms);
         searchEntry = str;
+        refreshDisplayResults(adapter, nbinding);
         nbinding.textHome.setText(searchEntry.isEmpty() ? R.string.tips_no_agendas : R.string.tips_memo_not_found);
+    }
+    private void refreshSearchResultsWithDateRange(AlarmsAdapter adapter, DateRange dateRange) {
+        alarmsViewModel.refreshAlarmsBetween("", dateRange); //TODO: add search function?
+        refreshDisplayResults(adapter, null);
+    }
+    private void refreshDisplayResults(AlarmsAdapter adapter, ArrangerNotificationsBinding nbinding) {
+        alarmsViewModel.getAlarms().observe(
+                getViewLifecycleOwner(),
+                (_alarms) -> {
+                    adapter.setAlarms(_alarms);
+                    if (nbinding != null)
+                        nbinding.textHome.setVisibility(adapter.getAlarmsCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+                }
+            );
     }
 
     @Override

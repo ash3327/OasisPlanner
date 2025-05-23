@@ -9,20 +9,23 @@
     <dimen name="plus_icon_size">28dp</dimen>
     <dimen name="plus_icon_padding">10dp</dimen>
     <dimen name="tiny_text_size">10sp</dimen>
-    <dimen name="type_text_size">13sp</dimen>
-    <dimen name="type_text_padding_top">5dp</dimen>
+    <dimen name="type_text_size">15sp</dimen>
+    <dimen name="type_text_padding_top">0dp</dimen>
+    <dimen name="type_text_padding_btm">3dp</dimen>
 
     <dimen name="type_text_startX">-3dp</dimen>
     <dimen name="type_text_startY">2dp</dimen>
 
     <dimen name="type_add_crossX">-6dp</dimen>
     <dimen name="type_add_crossY">-14dp</dimen>
-    <dimen name="type_add_agenda_endX">-103dp</dimen>
-    <dimen name="type_add_agenda_endY">-2dp</dimen>
-    <dimen name="type_add_task_endX">-83dp</dimen>
-    <dimen name="type_add_task_endY">-82dp</dimen>
-    <dimen name="type_add_note_endX">-3dp</dimen>
-    <dimen name="type_add_note_endY">-102dp</dimen>
+    <dimen name="type_add_agenda_endX">-6dp</dimen>
+    <dimen name="type_add_agenda_endY">-84dp</dimen>
+    <dimen name="type_add_task_endX">-6dp</dimen>
+    <dimen name="type_add_task_endY">-154dp</dimen>
+    <dimen name="type_add_note_endX">-6dp</dimen>
+    <dimen name="type_add_note_endY">-224dp</dimen>
+
+    <dimen name="type_add_spacing">15dp</dimen>
 
     <!-- Navigation box width / heights -->
     <dimen name="portrait_action_bar_height">60dp</dimen>
@@ -41,6 +44,8 @@
     <dimen name="title_textsize">25sp</dimen>
     <dimen name="fragment_tips_textsize">20sp</dimen>
     <dimen name="small_textsize">11sp</dimen>
+    <dimen name="aedpi_textsize">13sp</dimen>
+    <dimen name="aedpi_bigger_textsize">15sp</dimen>
 
     <!-- Home Titles Dimensions -->
     <dimen name="home_title_textsize">20sp</dimen>
@@ -84,6 +89,10 @@
         <dimen name="bar_daylabel_top">12.5dp</dimen>
         <dimen name="bar_daylabel_spacing">10dp</dimen>
         <dimen name="box_widgets_padding_top">8dp</dimen>
+        <dimen name="box_widgets_padding_top_more">10dp</dimen>
+        <dimen name="box_widgets_padding_top_less">6dp</dimen>
+        <dimen name="box_widges_icon_right_padding">5dp</dimen>
+        <dimen name="home_box_widgets_padding_horizontal">12dp</dimen>
         <!-- Dimensions for Date Bar -->
         <dimen name="bar_hpadding_top">10dp</dimen>
         <dimen name="bar_vpadding_top">6dp</dimen>
@@ -120,12 +129,15 @@
         <dimen name="page_item_textsize">16sp</dimen>
         <dimen name="page_header_hpadding">25dp</dimen>
         <dimen name="page_header_vpadding">7dp</dimen>
+        <dimen name="page_bottom_hpadding">20dp</dimen>
 
     <!-- Edit _Alarm Dimensions -->
     <dimen name="edit_alarm_pickerHeaderSize">15sp</dimen>
     <dimen name="edit_alarm_textSize">14sp</dimen>
     <dimen name="edit_alarm_titleSize">16sp</dimen>
     <dimen name="edit_alarm_icon_padding">12dp</dimen>
+    <dimen name="edit_alarm_args_icon_rpadding">5dp</dimen>
+    <dimen name="edit_alarm_args_view_vpadding">5dp</dimen>
 
     <!-- Add & Edit Agendas (Page) -->
     <dimen name="tiny_doc_margin">4dp</dimen>

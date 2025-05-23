@@ -1,6 +1,7 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -23,16 +24,16 @@ public class Event {
     @Embedded
     public _Event alarmList;
 
-    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    @Relation(parentColumn = "eventId", entityColumn = "alarmListId")
     public List<_Alarm> alarms = new ArrayList<>();
 
-    @Relation(parentColumn = "id", entityColumn = "alarmListId")
+    @Relation(parentColumn = "eventId", entityColumn = "alarmListId")
     public List<_SubAlarm> subalarms = new ArrayList<>();
 
     @Ignore
     public boolean visible = true;
     @Ignore
-    public SpannableStringBuilder contents;
+    public String contents;
 
     public Event(){}
 
@@ -46,7 +47,7 @@ public class Event {
         return putDates(time, dates.toArray(new LocalDate[0]));
     }
     @Ignore
-    public Event putDates(LocalTime time, LocalDate... dates) {
+    public Event putDatesWithoutSubalarms(LocalTime time, LocalDate... dates) {
         for (_Alarm alarm : this.alarms)
             alarm.visible = false;
         for (_SubAlarm subAlarm : this.subalarms)
@@ -55,12 +56,19 @@ public class Event {
         this.alarmList.dates = Arrays.stream(dates).collect(Collectors.toList());
 
         this.alarms.addAll(Arrays.stream(dates).map((d)->new _Alarm().setDateTime(d, alarmList.time)).collect(Collectors.toList()));
+
+        return this;
+    }
+    @Ignore
+    public Event putDates(LocalTime time, LocalDate... dates) {
+        putDatesWithoutSubalarms(time, dates);
+
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));
 
         return this;
     }
     @Ignore
-    public Event setSubalarms() {
+    public Event generateSubalarms() {
         for (_SubAlarm subAlarm : this.subalarms)
             subAlarm.visible = false;
         this.subalarms.addAll(_SubAlarm.generateSubAlarms(this));

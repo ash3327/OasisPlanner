@@ -23,6 +23,7 @@
     <string name="tag_header_browse">我的日程</string>
 
     <!-- TIPS -->
+    <string name="tips_no_home_agendas">現在沒有即將到來的任務了！\n加上您新的目標吧！</string>
     <string name="tips_no_agendas">現在還沒有活動哦！\n加上您新的行程吧！</string>
     <string name="tips_no_memos">現在還沒有備忘哦！\n加上新的備忘記錄您的奇思妙想吧！</string>
     <string name="tips_memo_not_found">未找到包含您所有搜尋字詞的結果。</string>
@@ -50,6 +51,11 @@
     <string name="tag_descr">描述</string>
 
     <!-- FRAGMENTS -->
+        <!-- HOME -->
+            <string name="home_upcoming">等待完成的任務</string>
+            <string name="home_upcoming_desc">想不到要做什麽？試試看這些推薦！</string>
+            <string name="home_schedule">您的日程</string>
+            <string name="home_schedule_desc">您的下一項任務</string>
         <!-- NOTIFICATIONS -->
             <!-- TITLE -->
             <string name="agendas">最近事項</string>
@@ -59,7 +65,7 @@
 
     <!-- NEW AGENDAS -->
         <string name="new_agenda">新增日程</string>
-        <string name="new_task">新增計劃</string>
+        <string name="new_task">快速提醒</string>
         <string name="new_note">新增筆記</string>
 
     <!-- Bars -->
@@ -170,8 +176,14 @@
     <!-- SETTINGS -->
     <string-array name="settings">
         <item>應用程式權限</item>
+        <item>音量設定</item>
         <item>重置鬧鐘</item>
     </string-array>
+    <string-array name="settings_dev">
+        <item>NOTIF TEST</item>
+        <item>REMOVE SKIP ASK USER REQUESTS DIALOG</item>
+    </string-array>
+    <string name="settings_notifClickSound">已$1 按鍵音效,開啓,關閉</string>
 
     <!-- FUNCTIONAL BUTTONS -->
     <string name="show_today">顯示今天</string>

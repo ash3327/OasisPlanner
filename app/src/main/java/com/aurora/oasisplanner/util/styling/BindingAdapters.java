@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class BindingAdapters {
     @BindingAdapter("app:tint")
     public static void setTint(ImageView imageView, int color) {

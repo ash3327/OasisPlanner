@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static BottomNavigationView navBar;
     public static ViewGroup bottomBar;
     private static NavigationView navigationView;
-    private PowerManager.WakeLock partialWakeLock;
     private MainBinding binding;
     private int selectedTabId = 0;
 
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private CharSequence mTitle;
     Toolbar toolbar;
     public ActionBarDrawerToggle mDrawerToggle;
+    private static NavController mNavController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /** setting up the database */
     private void setupDatabase() {
         // INFO: setup database and usecases
-        AppModule.retrieveAgendaUseCases().setFragmentManager(getSupportFragmentManager());
         AppModule.retrieveEditEventUseCases().setFragmentManager(getSupportFragmentManager());
         AppModule.retrieveMemoUseCases().setFragmentManager(getSupportFragmentManager());
     }
@@ -141,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        requireNavController();
         NavigationUI.setupActionBarWithNavController(
-                this, navController,
+                this, mNavController,
                 new AppBarConfiguration.Builder(
                         Page.sideNavList
                 ).build());
@@ -170,14 +169,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             EventArrangerFragment.currentPage = page;
         if (bottomBarId == Page.PROJECTS.getNav())
             ProjectsFragment.currentPage = page;
-        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(bottomBarId);
+        getNavController().navigate(bottomBarId);
         uiChangeWhileNavigatingTo(page.getSideNav());
         activelyNavigating = false;
     }
     public void navigateTo(@IdRes int itemId) {
         if (activelyNavigating) return;
         activelyNavigating = true;
-        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(itemId);
+        getNavController().navigate(itemId);
         uiChangeWhileNavigatingTo(itemId);
         activelyNavigating = false;
     }
@@ -191,8 +190,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(sidebarId);
     }
 
-    public NavController getNavController() {
-        return Navigation.findNavController(this, R.id.nav_host_fragment);
+    public static NavController getNavController() {
+        if (mNavController != null)
+            return mNavController;
+        return requireNavController();
+    }
+    public static NavController requireNavController() {
+        return mNavController = Navigation.findNavController(MainActivity.main, R.id.nav_host_fragment);
     }
 
     @SuppressLint("NonConstantResourceId")

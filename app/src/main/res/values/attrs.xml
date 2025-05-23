@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MultiDatePicker">
+        <attr name="selectionMode" format="enum">
+            <enum name="multiSelect" value="0"/>
+            <enum name="singleSelect" value="1"/>
+            <enum name="range" value="2"/>
+        </attr>
         <attr name="baseColor" format="color"/>
         <attr name="invalidColor" format="color"/>
         <attr name="regularBgColor" format="color"/>
@@ -27,5 +32,14 @@
     <declare-styleable name="PageHeader">
         <attr name="text" format="string"/>
         <attr name="icon_src" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="AEDBaseBox">
+        <attr name="mainIcon" format="reference"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textHint" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="AEDContentBox">
+        <attr name="focusable" format="boolean"/>
+        <attr name="multiLine" format="boolean"/>
     </declare-styleable>
 </resources>

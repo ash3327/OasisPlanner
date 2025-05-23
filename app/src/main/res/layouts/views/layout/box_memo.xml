@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginEnd="@dimen/box_hmargin">
+        android:layout_marginEnd="@dimen/box_hmargin"
+        android:layout_marginVertical="@dimen/box_widgets_padding_top">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +54,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="0dp">
-                <com.aurora.oasisplanner.presentation.ui.memos.components.InterceptLinearLayout
+                <com.aurora.oasisplanner.presentation.panels.utils.InterceptLinearLayout
                     android:id="@+id/bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="match_parent"
                                 android:id="@+id/box_memo_tags_scroll">
-                                <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+                                <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
                                     android:id="@+id/box_memo_tags"
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
@@ -118,7 +119,7 @@
                             </HorizontalScrollView>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.aurora.oasisplanner.presentation.ui.memos.components.InterceptLinearLayout>
+                </com.aurora.oasisplanner.presentation.panels.utils.InterceptLinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>

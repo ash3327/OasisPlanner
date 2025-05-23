@@ -2,6 +2,8 @@ package com.aurora.oasisplanner.data.repository;
 
 import android.text.SpannableStringBuilder;
 
+import androidx.lifecycle.LiveData;
+
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.datasource.daos.ActivityDao;
 import com.aurora.oasisplanner.data.datasource.daos.AgendaDao;
@@ -12,13 +14,17 @@ import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._Event;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Agenda;
+import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -72,6 +78,15 @@ public class AgendaRepository {
         }
     }
 
+    public LiveData<List<Agenda>> getAgendas() {
+        try {
+            return executor.submit(()-> agendaDao.getAgendas()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private long _save(Agenda agenda) throws ExecutionException, InterruptedException {
         // convert to object list without invisible
         // convert back
@@ -108,7 +123,7 @@ public class AgendaRepository {
         for (_Event gp : activity.invisGroups)
             _delete(gp);
 
-        SpannableStringBuilder alarmDescr = activity.activity.descr;
+        SpannableStringBuilder alarmDescr = activity.activity.title;
 
         Importance activityImp = Importance.unimportant;
         for (_Event alarmList : AppModule.retrieveAgendaUseCases().getAlarmLists(activity))
@@ -135,48 +150,7 @@ public class AgendaRepository {
             long actvId,
             Map<String, String> alarmArgs
     ) {
-
-        long id = AppModule.retrieveEventUseCases().put(alarmList);
-        /*alarmList.id = id;
-        AlarmList parent = alarmList.getAssociates();
-        for (_Alarm alarm : parent.alarms) {
-            if (alarm.visible) {
-                alarm.alarmListId = id;
-                alarm.activityId = actvId;
-                alarm.agendaId = alarmList.agendaId;
-                //alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                //alarm.setAlarmData(alarmList.type, alarmList.importance);
-                if (alarmArgs != null)
-                    alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.getArgs());
-                alarm.id = alarmDao._save(alarm);
-                if (alarmScheduler != null)
-                    alarmScheduler.schedule(alarm);
-            } else {
-                if (alarmScheduler != null)
-                    alarmScheduler.cancel(alarm);
-                alarmDao._delete(alarm);
-            }
-        }
-        for (_SubAlarm alarm : parent.subalarms) {
-            if (alarm.visible) {
-                alarm.alarmListId = id;
-                alarm.activityId = actvId;
-                alarm.agendaId = alarmList.agendaId;
-                alarm.setAgendaData(title, agendaDescr, alarmDescr);
-                alarm.setAlarmData(alarmList.type, alarmList.importance);
-                if (alarmArgs != null)
-                    alarm.getArgs().putAll(alarmArgs);
-                alarm.getArgs().putAll(alarmList.getArgs());
-                alarm.id = alarmDao.insertSubAlarm(alarm);
-                if (alarmScheduler != null)
-                    alarmScheduler.schedule(alarm);
-            } else {
-                if (alarmScheduler != null)
-                    alarmScheduler.cancel(alarm);
-                alarmDao.deleteSubAlarm(alarm);
-            }
-        }//*/
+        long id = AppModule.retrieveEventUseCases().putWithChild(alarmList);
         return id;
     }
 
@@ -227,5 +201,12 @@ public class AgendaRepository {
         alarmDao.deleteAllAlarms();
         alarmDao.deleteAllSubAlarms();
     }
+
+    public LiveData<List<Agenda>> requestAgenda(String searchEntry) {
+        return agendaDao.getAgendasAfter(searchEntry);
+    }
+//    public LiveData<List<Agenda>> requestAgenda(String searchEntry, LocalDate startDate, LocalDate endDate) {
+//        return agendaDao.getAgendasBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
+//    }
 
 }

@@ -18,6 +18,7 @@ import com.aurora.oasisplanner.data.model.pojo.events.SubAlarm;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -94,6 +95,18 @@ public class AlarmRepository {
         });
     }
 
+    public void insertWith(Alarm alarm) {
+        executor.execute(()->{
+            _Alarm _alarm = alarm.getAlarm();
+
+            _alarm.alarmListId = alarm.getEventId();
+            _alarm.activityId = alarm.getActivityId();
+            _alarm.agendaId = alarm.getAgendaId();
+
+            AppModule.retrieveAlarmUseCases().put(_alarm);
+        });
+    }
+
     public void delete(_Alarm alarm) {
         executor.execute(()->alarmDao.delete(alarm));
         AlarmScheduler.cancelMany(AppModule.retrieveAlarmScheduler(), alarm);
@@ -117,6 +130,12 @@ public class AlarmRepository {
 
     public LiveData<List<Alarm>> requestAlarm(String searchEntry) {
         return alarms = alarmDao.getAlarmsInfoAfter(LocalDateTime.now(), searchEntry, new Converters().spannableToString(searchEntry));
+    }
+    public LiveData<List<Alarm>> requestAlarm(String searchEntry, LocalDate startDate, LocalDate endDate) {
+        return alarms = alarmDao.getAlarmsInfoBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
+    }
+    public LiveData<List<Alarm>> requestAlarm(String searchEntry, LocalDateTime startDate, LocalDateTime endDate) {
+        return alarms = alarmDao.getAlarmsInfoBetween(startDate, endDate, searchEntry, new Converters().spannableToString(searchEntry));
     }
     public Alarm requestAlarm(long id) {
         return alarmDao.getAlarmInfoById(id);

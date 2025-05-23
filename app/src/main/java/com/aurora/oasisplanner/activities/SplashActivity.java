@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
 
         latch = new CountDownLatch(3);
 
-        Permissions.setupPermission(getApplication(), this, latch);
+        Permissions.requestPermissions(this, latch, true);
         AppModule.setupDatabase(getApplication(), this, latch);
 
         new Thread(()->{
@@ -51,8 +51,8 @@ public class SplashActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode,
                                  int resultCode,
                                  Intent data) {
-        if (requestCode == Constants.REQUEST_CODE_PERMISSIONS_SET) {
-            latch.countDown();
+        if (requestCode == Constants.REQUEST_CODE_PERMISSIONS_SET || requestCode == Permissions.NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (latch != null) latch.countDown();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

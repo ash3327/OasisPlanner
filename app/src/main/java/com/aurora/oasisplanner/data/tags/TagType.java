@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.util.styling.Resources;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,5 +45,18 @@ public enum TagType {
 
     public String toString() {
         return Resources.getString(typeIds[getType()][1]);
+    }
+
+    private static TagType[] availableValues = null;
+    public static TagType[] getAvailableValues() {
+        if (availableValues == null) {
+            List<TagType> li = new ArrayList<>();
+            for (TagType type : values()) {
+                if (typeIds[type.getType()].length != 0)
+                    li.add(type);
+            }
+            availableValues = li.toArray(new TagType[0]);
+        }
+        return availableValues;
     }
 }

@@ -71,6 +71,7 @@
     <style name="TypeTextTheme">
         <item name="android:textSize">@dimen/type_text_size</item>
         <item name="android:paddingTop">@dimen/type_text_padding_top</item>
+        <item name="android:paddingBottom">@dimen/type_text_padding_btm</item>
     </style>
 
     <style name="DatePickerContentTheme">

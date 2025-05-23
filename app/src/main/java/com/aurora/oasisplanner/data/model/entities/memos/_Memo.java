@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.aurora.oasisplanner.data.util.Converters;
-import com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText;
+import com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;

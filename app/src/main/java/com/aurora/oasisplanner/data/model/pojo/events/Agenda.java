@@ -21,10 +21,10 @@ public class Agenda {
     @Embedded
     public _Agenda agenda;
 
-    @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Activity.class)
+    @Relation(parentColumn = "agendaId", entityColumn = "agendaId", entity = _Activity.class)
     public List<_Activity> activities = new ArrayList<>();
 
-    @Relation(parentColumn = "id", entityColumn = "agendaId", entity = _Doc.class)
+    @Relation(parentColumn = "agendaId", entityColumn = "agendaId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
@@ -102,6 +102,13 @@ public class Agenda {
             }
             i++;
         }
+    }
+
+    @Ignore
+    public String getTitle() {
+        if (agenda != null)
+            return agenda.title;
+        return null;
     }
 
     @Ignore

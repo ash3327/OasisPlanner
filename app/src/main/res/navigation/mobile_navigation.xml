@@ -51,16 +51,25 @@
 
     <fragment
         android:id="@+id/navigation_agendaEditDialog"
-        android:name="com.aurora.oasisplanner.presentation.dialog.agendaeditdialog.AgendaEditDialog"
+        android:name="com.aurora.oasisplanner.presentation.dialogs.agendaeditdialog.AgendaEditDialog"
         android:label="@string/page_overhead_edit_agenda">
         <deepLink
             android:id="@+id/deepLink2"
+            app:uri="oasis://oasis.com/editagendadialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_alarmEditDialog"
+        android:name="com.aurora.oasisplanner.presentation.dialogs.alarmeditdialog.AlarmEditDialog"
+        android:label="@string/page_overhead_edit_alarm">
+        <deepLink
+            android:id="@+id/deepLink3"
             app:uri="oasis://oasis.com/editalarmdialog" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_memoEditDialog"
-        android:name="com.aurora.oasisplanner.presentation.dialog.memoeditdialog.MemoEditDialog"
+        android:name="com.aurora.oasisplanner.presentation.dialogs.memoeditdialog.MemoEditDialog"
         android:label="@string/page_overhead_edit_memo"/>
 
 

@@ -42,6 +42,14 @@
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
             <ImageView
+                android:id="@+id/marker"
+                android:layout_width="@dimen/icon_height"
+                android:layout_height="@dimen/icon_height"
+                android:src="@drawable/ic_arrow_rightdouble"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="top"
+                android:visibility="gone"/>
+            <ImageView
                 android:id="@+id/icon"
                 android:layout_height="@dimen/big_icon_height"
                 android:layout_width="@dimen/big_icon_height"

@@ -2,6 +2,7 @@ package com.aurora.oasisplanner.data.model.entities.events;
 
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -35,16 +36,21 @@ public class _SubAlarm extends _Alarm {
     }
 
     @Ignore
-    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, String subAlarmArg) {
+    public static List<_SubAlarm> generateSubAlarms(_Alarm alarm, String subAlarmArgs) {
         ArrayList<_SubAlarm> list = new ArrayList<>();
-        if (subAlarmArg == null)
+        if (subAlarmArgs == null)
             return list;
-        NotifType notifType = new NotifType(subAlarmArg);
-        _SubAlarm subAlarm = new _SubAlarm();
-        LocalDateTime ldt = notifType.translate(alarm.datetime);
-        subAlarm.setDateTime(ldt);
-        subAlarm.putArgs(ArgType.PARENT_TIME, new Converters().datetimeToTimestamp(alarm.datetime)+"");
-        list.add(subAlarm);
+
+        for (String subAlarmArg : subAlarmArgs.split(";")) {
+            if (subAlarmArg.isEmpty())
+                continue;
+            NotifType notifType = new NotifType(subAlarmArg);
+            _SubAlarm subAlarm = new _SubAlarm();
+            LocalDateTime ldt = notifType.translate(alarm.datetime);
+            subAlarm.setDateTime(ldt);
+            subAlarm.putArgs(ArgType.PARENT_TIME, new Converters().datetimeToTimestamp(alarm.datetime) + "");
+            list.add(subAlarm);
+        }
         return list;
     }
 

@@ -9,9 +9,6 @@
         <variable
             name="fgColor"
             type="int"/>
-        <variable
-            name="isTask"
-            type="boolean" />
     </data>
 
     <!-- CLICKING AREA -->
@@ -57,7 +54,7 @@
                     android:paddingVertical="2dp"/>
             </LinearLayout>
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/medium_icon_height"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/bar_dot_hpadding">
                 <View
@@ -66,25 +63,22 @@
                     android:layout_gravity="center"
                     android:background="@color/grey_100"/>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/medium_icon_height"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/box_widgets_padding_top">
-                    <ImageView
-                        android:id="@+id/circ"
+                    <LinearLayout
                         android:layout_width="@dimen/medium_icon_height"
                         android:layout_height="@dimen/medium_icon_height"
-                        android:src="@drawable/shp_circ_filled"
                         android:layout_marginVertical="@dimen/bar_dot_vpadding"
                         android:orientation="vertical"
-                        android:visibility="@{isTask ? View.GONE : View.VISIBLE}"/>
-                    <ImageView
-                        android:id="@+id/radio_panel"
-                        android:layout_width="@dimen/medium_icon_height"
-                        android:layout_height="@dimen/medium_icon_height"
-                        android:src="@drawable/radio_unchecked"
-                        android:layout_marginVertical="@dimen/bar_dot_vpadding"
-                        android:orientation="vertical"
-                        android:visibility="@{isTask ? View.VISIBLE : View.GONE}"/>
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/circ"
+                            android:layout_width="@dimen/medium_icon_height"
+                            android:layout_height="@dimen/medium_icon_height"
+                            android:src="@drawable/shp_circ_filled"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
             <androidx.cardview.widget.CardView
@@ -92,7 +86,8 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="0dp"
-                android:layout_marginVertical="@dimen/box_widgets_padding_top">
+                android:layout_marginTop="@dimen/box_widgets_padding_top_more"
+                android:layout_marginBottom="@dimen/box_widgets_padding_top_less">
                 <LinearLayout
                     android:id="@+id/bar"
                     android:layout_width="match_parent"
@@ -136,9 +131,11 @@
                                 android:orientation="vertical"
                                 android:id="@+id/bar_event_descAndLoc">
                                 <LinearLayout
+                                    android:id="@+id/bar_desc_text_lay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="3dp"
+                                    android:gravity="center_vertical"
                                     android:orientation="horizontal">
                                     <ImageView
                                         android:id="@+id/bar_icon"
@@ -146,8 +143,7 @@
                                         android:layout_width="@dimen/icon_height"
                                         android:src="@drawable/ic_agendatype_calendar"
                                         app:tint="@{fgColor}"
-                                        android:scaleType="centerCrop"
-                                        android:layout_gravity="top" />
+                                        android:scaleType="centerCrop"/>
                                     <TextView
                                         android:id="@+id/bar_description_text"
                                         android:layout_height="wrap_content"
@@ -155,7 +151,7 @@
                                         android:theme="@style/BarContentTheme"
                                         android:text='description'
                                         android:textColor="@{fgColor}"
-                                        android:layout_marginStart="7dp"/>
+                                        android:layout_marginStart="@dimen/box_widges_icon_right_padding"/>
                                 </LinearLayout>
                                 <!-- Location -->
                                 <LinearLayout
@@ -163,6 +159,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="3dp"
                                     android:orientation="horizontal"
+                                    android:gravity="center_vertical"
                                     android:id="@+id/bar_loc_subBar">
                                     <ImageView
                                         android:id="@+id/bar_loc_icon"
@@ -170,8 +167,7 @@
                                         android:layout_width="@dimen/icon_height"
                                         android:src="@drawable/ic_location"
                                         app:tint="@{fgColor}"
-                                        android:scaleType="centerCrop"
-                                        android:layout_gravity="top" />
+                                        android:scaleType="centerCrop" />
                                     <TextView
                                         android:id="@+id/bar_loc_text"
                                         android:layout_height="wrap_content"
@@ -179,13 +175,13 @@
                                         android:theme="@style/BarContentTheme"
                                         android:text='location'
                                         android:textColor="@{fgColor}"
-                                        android:layout_marginStart="7dp"/>
+                                        android:layout_marginStart="@dimen/box_widges_icon_right_padding"/>
                                 </LinearLayout>
                                 <HorizontalScrollView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
                                     android:id="@+id/box_event_tags_scroll">
-                                    <com.aurora.oasisplanner.presentation.widget.taginputeidittext.TagInputEditText
+                                    <com.aurora.oasisplanner.presentation.widgets.taginputeidittext.TagInputEditText
                                         android:id="@+id/box_event_tags"
                                         android:layout_height="wrap_content"
                                         android:layout_width="wrap_content"

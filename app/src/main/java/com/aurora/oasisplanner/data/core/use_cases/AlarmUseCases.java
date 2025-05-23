@@ -5,16 +5,20 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import com.aurora.oasisplanner.activities.MainActivity;
+import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.entities.events._Alarm;
 import com.aurora.oasisplanner.data.model.entities.events._SubAlarm;
 import com.aurora.oasisplanner.data.model.pojo.events.Alarm;
+import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.repository.AlarmRepository;
 import com.aurora.oasisplanner.util.notificationfeatures.AlarmScheduler;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public class AlarmUseCases {
@@ -37,6 +41,10 @@ public class AlarmUseCases {
         return repository.requestFirstAlarmFromActivity(activityId);
     }
 
+    public LiveData<List<Alarm>> getAlarms() {
+        return repository.getAlarms();
+    }
+
     public void put(_Alarm alarm) {
         repository.insert(alarm);
     }
@@ -47,6 +55,9 @@ public class AlarmUseCases {
             else
                 delete(alarm);
         }
+    }
+    public void putWith(Alarm alarm) {
+        repository.insertWith(alarm);
     }
     public void putSubAlarm(_SubAlarm alarm) {
         repository.insertSubAlarm(alarm);

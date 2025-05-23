@@ -1,7 +1,6 @@
 package com.aurora.oasisplanner.data.model.pojo.events;
 
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -15,7 +14,6 @@ import com.aurora.oasisplanner.data.tags.ActivityType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -25,10 +23,10 @@ public class Activity {
     @Embedded
     public _Activity activity;
 
-    @Relation(parentColumn = "id", entityColumn = "activityId", entity = _Event.class)
+    @Relation(parentColumn = "activityId", entityColumn = "activityId", entity = _Event.class)
     public List<_Event> alarmLists = new ArrayList<>();
 
-    @Relation(parentColumn = "id", entityColumn = "groupId", entity = _Doc.class)
+    @Relation(parentColumn = "activityId", entityColumn = "groupId", entity = _Doc.class)
     public List<_Doc> docs = new ArrayList<>();
 
     @Ignore
@@ -45,7 +43,7 @@ public class Activity {
     @Ignore
     public Activity(String descr) {
         this.activity = new _Activity();
-        this.activity.descr = descr == null ? null : new SpannableStringBuilder(descr);
+        this.activity.title = descr == null ? null : new SpannableStringBuilder(descr);
     }
 
     /** Please always use this constructor with content NULL. */
@@ -60,9 +58,11 @@ public class Activity {
     }
 
     @Ignore
+    /** a value of -1 means failing in getting the id. */
     public long getId() {
-        assert activity != null && activity.id != 0;
-        return activity.id;
+        if (activity != null && activity.id != 0)
+            return activity.id;
+        return -1;
     }
     /** Returns Object[3]: {_AlarmList: _AlarmList, firstDateTime: LocalDateTime}*/
     @Ignore
@@ -196,6 +196,13 @@ public class Activity {
     public Activity setI(int i) {
         this.activity.i = i;
         return this;
+    }
+
+    @Ignore
+    public SpannableStringBuilder getTitle() {
+        if (activity != null)
+            return activity.title;
+        return null;
     }
 
     @Ignore

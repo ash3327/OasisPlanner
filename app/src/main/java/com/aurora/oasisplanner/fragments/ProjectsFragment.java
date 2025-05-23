@@ -5,6 +5,7 @@ import static android.view.View.VISIBLE;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,30 +14,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
-import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.FragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentAnalyticsBinding;
 import com.aurora.oasisplanner.databinding.SubfragmentProjectBinding;
 import com.aurora.oasisplanner.databinding.TabMenuBinding;
-import com.aurora.oasisplanner.presentation.widget.tabselector.TabMenu;
-import com.aurora.oasisplanner.util.styling.Resources;
+import com.aurora.oasisplanner.data.viewmodels.AgendasViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.AgendasAdapter;
+import com.aurora.oasisplanner.presentation.widgets.tabselector.TabMenu;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Arrays;
+import java.util.Objects;
 
 public class ProjectsFragment extends Fragment {
 
     public static Page currentPage = Page.PROJECTS;
     private FragmentProjectBinding binding;
     private TabMenu tabMenu;
+    private String searchEntry;
     private ViewBinding subpageBinding;
+    private AgendasViewModel agendasViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,80 @@ public class ProjectsFragment extends Fragment {
 
     private void initProjectSubfragment(SubfragmentProjectBinding binding) {
         subpageBinding = binding;
+
+        RecyclerView recyclerView = binding.boxList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+
+
+        final AgendasAdapter adapter = new AgendasAdapter(recyclerView, true);
+        recyclerView.setAdapter(adapter);
+
+        agendasViewModel = new ViewModelProvider(this).get(AgendasViewModel.class);
+        agendasViewModel.refreshAgendas(searchEntry==null ? "" : searchEntry);
+        agendasViewModel.getAgendas().observe(getViewLifecycleOwner(), adapter::setAgendas);
+
+        agendasViewModel = new ViewModelProvider(this).get(AgendasViewModel.class);
+        agendasViewModel.refreshAgendas(searchEntry==null ? "" : searchEntry);
+        agendasViewModel.getAgendas().observe(getViewLifecycleOwner(), adapter::setAgendas);
+
+        binding.tagSearchTv.setOnKeyListener(
+                (v, keyCode, event)->{
+                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        refreshSearchResults(adapter, binding);
+                    }
+                    return false;
+                }
+        );
+        binding.tagSearchTil.setEndIconOnClickListener(
+                (v)->{
+                    binding.tagSearchTv.setText("");
+                    refreshSearchResults(adapter, binding);
+                }
+        );
+//        binding.notifFragShowToday.setOnClickListener(
+//                (v)-> binding.boxList.scrollToPosition(0)
+//        );
+//        binding.notifFragPrevMo.setOnClickListener(
+//                (v)-> adapter.scrollToPrevMonth(binding.boxList)
+//        );
+//        binding.notifFragNextMo.setOnClickListener(
+//                (v)-> adapter.scrollToNextMonth(binding.boxList)
+//        );
+//        binding.boxList.addOnScrollListener(
+//                new RecyclerView.OnScrollListener(){
+//                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState){
+//                        super.onScrollStateChanged(recyclerView, newState);
+//
+//                        binding.notifFragChangeScroll.setAlpha(newState != SCROLL_STATE_IDLE ? 1.f : .75f);
+//                        binding.notifFragChangeScroll.setVisibility(
+//                                recyclerView.computeVerticalScrollOffset() != 0 ?
+//                                        View.VISIBLE : View.GONE);
+//                    }
+//                }
+//        );
+    }
+
+    private void refreshSearchResults(AgendasAdapter adapter, SubfragmentProjectBinding nbinding) {
+        String str = Objects.requireNonNull(nbinding.tagSearchTv.getText()).toString();
+        agendasViewModel.refreshAgendas(str);
+        searchEntry = str;
+        refreshDisplayResults(adapter, nbinding);
+        nbinding.textHome.setText(searchEntry.isEmpty() ? R.string.tips_no_agendas : R.string.tips_memo_not_found);
+    }
+//    private void refreshSearchResultsWithDateRange(AgendasAdapter adapter, DateRange dateRange) {
+//        agendasViewModel.refreshAgendasBetween("", dateRange); //TODO: add search function?
+//        refreshDisplayResults(adapter, null);
+//    }
+    private void refreshDisplayResults(AgendasAdapter adapter, SubfragmentProjectBinding nbinding) {
+        agendasViewModel.getAgendas().observe(
+                getViewLifecycleOwner(),
+                (_agendas) -> {
+                    adapter.setAgendas(_agendas);
+                    if (nbinding != null)
+                        nbinding.textHome.setVisibility(adapter.getAgendasCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+                }
+        );
     }
 
     private void switchPageAnimation(int i, TabMenuBinding vbinding) {

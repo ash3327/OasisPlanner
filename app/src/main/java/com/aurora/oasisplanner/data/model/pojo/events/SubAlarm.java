@@ -14,11 +14,11 @@ public class SubAlarm extends Alarm {
     @Embedded
     public _SubAlarm alarm;
 
-    @Relation(parentColumn = "agendaId", entityColumn = "id", entity = _Agenda.class)
+    @Relation(parentColumn = "agendaId", entityColumn = "agendaId", entity = _Agenda.class)
     public _Agenda agenda;
-    @Relation(parentColumn = "activityId", entityColumn = "id", entity = _Activity.class)
+    @Relation(parentColumn = "activityId", entityColumn = "activityId", entity = _Activity.class)
     public _Activity activity;
-    @Relation(parentColumn = "alarmListId", entityColumn = "id", entity = _Event.class)
+    @Relation(parentColumn = "alarmListId", entityColumn = "eventId", entity = _Event.class)
     public _Event alarmList;
 
     public SubAlarm(){}

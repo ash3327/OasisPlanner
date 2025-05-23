@@ -3,7 +3,6 @@ package com.aurora.oasisplanner.data.model.entities.events;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -14,7 +13,6 @@ import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.pojo.events.Activity;
 import com.aurora.oasisplanner.data.tags.ActivityType;
-import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.Resources;
@@ -43,18 +41,23 @@ public class _Activity extends __Item {
     }
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "activityId")
     public long id;
     public long agendaId;
+    @ColumnInfo(name = "activityTypes")
     public List<ActivityType> types = new ArrayList<>();
-    public Type type;
-    public Importance importance;
-    @ColumnInfo(defaultValue = "")
-    public SpannableStringBuilder descr;
+    @ColumnInfo(name = "activityType")
+    public Type type = Type.event;
+    @ColumnInfo(name = "activityImportance")
+    public Importance importance = Importance.regular;
+    @ColumnInfo(name = "activityDescr", defaultValue = "")
+    public SpannableStringBuilder title;
+    @ColumnInfo(name = "activityArgs")
     public Map<String,String> args = new HashMap<>();
+    @ColumnInfo(name = "activityI")
     public int i = -1;
 
-    @Ignore
-    public boolean visible = true;
+    @Ignore public boolean visible = true;
 
     public _Activity(){}
 
@@ -64,8 +67,8 @@ public class _Activity extends __Item {
     }
 
     @Ignore
-    public _Activity(String descr) {
-        this.descr = new SpannableStringBuilder(descr);
+    public _Activity(String title) {
+        this.title = new SpannableStringBuilder(title);
     }
 
     public Type getType() {
@@ -82,11 +85,11 @@ public class _Activity extends __Item {
 
     @Ignore
     public CharSequence getTitle() {
-        return descr;
+        return title;
     }
     @Ignore
     public void setTitle(CharSequence val) {
-        descr = new SpannableStringBuilder(val);
+        title = new SpannableStringBuilder(val);
     }
 
     @Ignore
@@ -106,7 +109,7 @@ public class _Activity extends __Item {
         extras.putString("types", converter.typeListToString(types));
         extras.putString("type", getType().name());
         extras.putString("importance", getImportance().name());
-        extras.putString("descr", converter.spannableToString(descr));
+        extras.putString("descr", converter.spannableToString(title));
         extras.putSerializable("args", (Serializable) args);
 
         return extras;
@@ -123,7 +126,7 @@ public class _Activity extends __Item {
         alarm.types = converter.typeListFromString(extras.getString("types"));
         alarm.type = Type.valueOf(extras.getString("type"));
         alarm.importance = Importance.valueOf(extras.getString("importance"));
-        alarm.descr = converter.spannableFromString(extras.getString("descr"));
+        alarm.title = converter.spannableFromString(extras.getString("descr"));
         alarm.args = (Map<String,String>) extras.getSerializable("args");
 
         return alarm;
@@ -132,7 +135,7 @@ public class _Activity extends __Item {
     @Ignore
     public String toString() {
         return "\n\t\t [ Activity : "+id+" : \n\t\t\t"+importance.name()+"\n\t\t\t"+type.name()+
-                "\n\t\t\t"+descr.toString()+"\n\t\t ]";
+                "\n\t\t\t"+ title.toString()+"\n\t\t ]";
     }
 
 
@@ -158,7 +161,8 @@ public class _Activity extends __Item {
         if (cache == null)
             cache = Activity.empty();
         cache.activity = this;
-        return this.cache = cache;
+        this.cache = cache;
+        return this.cache;
     }
 
     @Ignore

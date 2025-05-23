@@ -7,13 +7,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.RenameColumn;
 
-import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
-import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
-import com.aurora.oasisplanner.util.styling.Styles;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -22,20 +20,30 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class _Alarm {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "alarmId")
     public long id;
+    @ColumnInfo(name = "alarmDatetime")
     public LocalDateTime datetime;
+    @ColumnInfo(name = "alarmDuration")
     public Duration duration;
+    @ColumnInfo(name = "alarmDate")
     public LocalDate date;
+    @ColumnInfo(name = "alarmType")
     public AlarmType type;
+    @ColumnInfo(name = "alarmImportance")
     public Importance importance;
+    @ColumnInfo(name = "agendaId")
     public long agendaId = -1;
+    @ColumnInfo(name = "alarmListId")
     public long alarmListId;
-    @ColumnInfo(defaultValue = "-1")
+    @ColumnInfo(name = "activityId", defaultValue = "-1")
     public long activityId;
+    @ColumnInfo(name = "alarmArgs")
     public Map<String,String> args = new HashMap<>();
 
     @Ignore
@@ -78,13 +86,22 @@ public class _Alarm {
             return null;
         return args.get(key.name());
     }
-
+    @Ignore
+    public String getArgDefault(_Alarm.ArgType argType) {
+        String val = getArg(argType);
+        if (val == null) {
+            putArgs(argType, argType.getDefault());
+            return getArg(argType);
+        }
+        return val;
+    }
     @Ignore
     public Map<String, String> getArgs() {
         if (args == null)
             args = new HashMap<>();
         return args;
     }
+
 
     @Ignore
     public void putArgs(ArgType key, SpannableStringBuilder sb) {
@@ -95,6 +112,13 @@ public class _Alarm {
     public void putArgs(ArgType key, String s) {
         if (args == null) args = new HashMap<>();
         args.put(key.name(), s);
+    }
+
+    public boolean isFinished() {
+        if (type == AlarmType.todo)
+            return false;
+        String state = getArgDefault(_Alarm.ArgType.STATE);
+        return Objects.equals(state, "FINISHED");
     }
 
     @Ignore
@@ -152,6 +176,15 @@ public class _Alarm {
     }
 
     public enum ArgType {
-        PARENT_TIME
+        PARENT_TIME,
+        STATE;       // STATE: include options: {UNFINISHED, FINISHED}
+
+        public String getDefault() {
+            switch (this) {
+                case STATE:
+                    return "UNFINISHED";
+            }
+            return null;
+        }
     }
 }

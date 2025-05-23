@@ -10,6 +10,8 @@
     <color name="theme">#FF4A5A40 </color>
     <color name="black">#FF2F2E31 </color>
 
+    <color name="theme_a">#E04A5A40 </color>
+
     <color name="navtext">#FF13ABB4</color>
     <color name="bottomnavcolor">#2213ABB4 </color>
 
@@ -38,7 +40,7 @@
     <color name="transparent_black">#102F2E31</color>
 
     <!-- Importance Colors -->
-    <color name="pr_unimportant">   @color/grey_500</color>
+    <color name="pr_unimportant">   @color/grey_300  </color>
     <color name="pr_routine">       @color/grey_500  </color>
     <color name="pr_standard">      @color/blue_400  </color>
     <color name="pr_special">       @color/green_700 </color>

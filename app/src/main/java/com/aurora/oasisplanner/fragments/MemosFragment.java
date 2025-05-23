@@ -3,8 +3,6 @@ package com.aurora.oasisplanner.fragments;
 import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aurora.oasisplanner.R;
 import com.aurora.oasisplanner.activities.MainActivity;
 import com.aurora.oasisplanner.data.tags.Page;
-import com.aurora.oasisplanner.databinding.ArrangerNotificationsBinding;
 import com.aurora.oasisplanner.databinding.MemoFragmentBinding;
-import com.aurora.oasisplanner.presentation.ui.memos.MemoViewModel;
-import com.aurora.oasisplanner.presentation.ui.memos.components.MemosAdapter;
+import com.aurora.oasisplanner.data.viewmodels.MemoViewModel;
+import com.aurora.oasisplanner.presentation.panels.mainlists.MemosAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;

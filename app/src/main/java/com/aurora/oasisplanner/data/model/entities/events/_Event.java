@@ -7,11 +7,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.RenameColumn;
 
 import com.aurora.oasisplanner.data.core.AppModule;
 import com.aurora.oasisplanner.data.model.pojo.events.Event;
 import com.aurora.oasisplanner.data.tags.AlarmType;
 import com.aurora.oasisplanner.data.tags.Importance;
+import com.aurora.oasisplanner.data.tags.NotifType;
 import com.aurora.oasisplanner.data.tags.TagType;
 import com.aurora.oasisplanner.data.util.Converters;
 import com.aurora.oasisplanner.util.styling.DateTimesFormatter;
@@ -30,23 +32,33 @@ import java.util.stream.Collectors;
 
 @Entity
 public class _Event extends __Item {
+
     @Ignore
     public boolean visible = true;
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "eventId")
     public long id;
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(name = "eventTitle", defaultValue = "")
     public String title;
+    @ColumnInfo(name = "eventDates")
     public List<LocalDate> dates;
+    @ColumnInfo(name = "eventTime")
     public LocalTime time;
+    @ColumnInfo(name = "eventType")
     public AlarmType type;
+    @ColumnInfo(name = "eventImportance")
     public Importance importance;
     public long activityId;
     public long agendaId;
+    @ColumnInfo(name = "eventI")
     public int i = -1;
+    @ColumnInfo(name = "eventArgs")
     public Map<String,String> args = new HashMap<>();
 
     @Ignore
     private Event associates = null;
+    @Ignore
+    public String activityDescr = null;
 
     public _Event(){}
 
@@ -104,6 +116,11 @@ public class _Event extends __Item {
     }
 
     @Ignore
+    public void putArgs(String key, String sb) {
+        if (args == null) args = new HashMap<>();
+        args.put(key, new Converters().spannableToString(sb));
+    }
+    @Ignore
     public void putArgs(String key, SpannableStringBuilder sb) {
         if (args == null) args = new HashMap<>();
         args.put(key, new Converters().spannableToString(sb));
@@ -142,10 +159,15 @@ public class _Event extends __Item {
     public String getTagsString() {
         return getArgSpannableStr(TagType.TAGS);
     }
+
     // INFO: GET ARGS:
     public SpannableStringBuilder getLoc() {
         SpannableStringBuilder out = getArgSpannable(TagType.LOC);
         return out;
+    }
+    public List<NotifType> getNotifTypes() {
+        String val = getArgSpannableStr(TagType.ALARM);
+        return val != null ? NotifType.loadFromString(val) : null;
     }
 
 
