@@ -15,6 +15,12 @@ We believe:
 - Visualizing past work done can improve confidence
 - Striking a balance between work and relaxing is crucial to boosting long-term productivity
 
+## Environment Setup
+
+- **JDK**: Version 1.8 (Java 8). Download from [Oracle JDK 8](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html) or use [SDKMAN!](https://sdkman.io/).
+- **Gradle**: Use the included Gradle Wrapper (v7.3.3). Run `./gradlew` (Unix) or `gradlew.bat` (Windows).
+- **OS**: Tested on Windows 11. Should work on macOS/Linux with JDK installed.
+
 ## Code Maintenance
 _Most part of the features are still under development._
 - [Design Reference on Code Structure](markdowns/code_structure.md)
